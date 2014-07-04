@@ -101,6 +101,11 @@
    See http://app-framework-software.intel.com/documentation.php#afui/afui_jquery
   -->
     <!-- content goes here-->
+    <!--   
+   You may substitute jQuery for the App Framework selector library.
+   See http://app-framework-software.intel.com/documentation.php#afui/afui_jquery
+  -->
+    <!-- content goes here-->
 
     <head>
         <meta charset="UTF-8">
@@ -198,7 +203,7 @@
                             <div class="col uib_col_6 col-0_2-12_2-10" data-uib="layout/col" data-ver="0">
                                 <div class="widget-container content-area vertical-col">
 
-                                    <a class="{{classButtonNext}}" data-uib="app_framework/button" data-ver="1" id="NextDay" ng-click="forward()"></a>
+                                    <a class="button widget uib_w_8 smallNavigationButton d-margins icon right" data-uib="app_framework/button" data-ver="1" id="NextDay" ng-click="forward()" ng-show="hasFutureData()"></a>
                                     <span class="uib_shim"></span>
                                 </div>
                             </div>
@@ -209,13 +214,6 @@
                             <div class="col uib_col_9 col-0_6-12 cell" data-uib="layout/col" data-ver="0">
                                 <div class="widget-container content-area vertical-col">
 
-                                    <div class="widget uib_w_16 d-margins" data-uib="media/text" data-ver="0">
-                                        <div class="widget-container left-receptacle"></div>
-                                        <div class="widget-container right-receptacle"></div>
-                                        <div>
-                                            <p>{{ texts }}</p>
-                                        </div>
-                                    </div>
                                     <a class="button widget uib_w_17 d-margins icon loading" data-uib="app_framework/button" data-ver="1" ng-init="message='test'" ng-model="message" ng-click="callNotify(message)" href="#chart1" data-transition="fade">Load</a>
                                     <span class="uib_shim"></span>
                                 </div>
