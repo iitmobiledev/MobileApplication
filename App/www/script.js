@@ -6,6 +6,24 @@ angular.module('myService', []).
   }).
   controller('MyController', function($scope, notify) 
 {
+    $scope.date=new Date();
+     $scope.hasPreviousData=function(){
+         return true;
+     };
+    
+    $scope.forward=function(){
+        $scope.date.setDate($scope.date.getDate()+1);
+        $scope.action(); // remove                    
+    };
+   $scope.back=function(){
+        $scope.date.setDate($scope.date.getDate()-1);
+        $scope.reaction(); // remove                    
+    }
+    
+    $scope.getTitle = function(){
+        return $scope.date.toUTCString();
+    }
+
      $scope.action = function () {
         if ($scope.name == 'Вчера') {
             $scope.name = 'Сегодня';
@@ -17,7 +35,8 @@ angular.module('myService', []).
             $scope.classButtonPrev = 'button widget uib_w_8 smallNavigationButton d-margins icon left';
         }
     }
-
+     
+    
     $scope.name = 'Вчера';
 
     $scope.reaction = function () {
