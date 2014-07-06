@@ -1,18 +1,17 @@
+
+
 angular.module('myService', []).
 factory('notify', function () {
-    return function (day) {
-        var manyData = [];
-        var date = new Date();
-        var data = new Data(date.setDate(date.getDate()), 1000, 3000, 12, 705, 5000, 3000, 2500, -500);
-        manyData.push(data);
-        data = new Data(date.setDate(date.getDate() - 1), 18000, 35000, 12, 80, 5000, 3000, 2500, -500);
-        manyData.push(data);
-        data = new Data(date.setDate(date.getDate()) - 2, 2000, 3000, 12, 70, 5000, 3000, 2500, -500);
-        manyData.push(data);
-        //        manyData.filter(function (data) {
-        //            return data.date == day;
-        //        });
-        return manyData;
+    return function (startDay, endDay) {
+        var manyData = getData();
+        manyData = manyData.filter(function (d) {
+            return (d.date.getDate() <= startDay.getDate() && d.date.getDate() >= endDay.getDate());
+        });
+//        if ( manyData.length > 1)
+//        {
+//            throw new Error("Дате " + manyData[0].date.toDateString() + " соответствует > 1 объекта"); 
+//        }
+        return manyData;//[0];
     };
 }).
 controller('MyController', function ($scope, notify) {
@@ -29,21 +28,17 @@ controller('MyController', function ($scope, notify) {
     };
     $scope.forward = function () {
         $scope.date.setDate($scope.date.getDate() + 1);
-        $scope.action(); // remove                    
+        $scope.data = notify($scope.date);          
     };
     $scope.back = function () {
         $scope.date.setDate($scope.date.getDate() - 1);
-        $scope.reaction(); // remove                    
+        $scope.data = notify($scope.date);                 
     };
 
     $scope.getTitle = function () {
         return $scope.date.toUTCString();
     }
+    
+    $scope.data = notify($scope.date, $scope.date);// new Date($scope.date.getDate() - 7));
 
-    $scope.callNotify = function () {
-        $scope.test = {};
-        $scope.test = notify($scope.date);
-
-    };
-    //    $scope.callNotify('ffff');
 });
