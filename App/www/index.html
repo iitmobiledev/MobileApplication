@@ -300,9 +300,9 @@
                                 <div class="widget-container content-area vertical-col">
 
                                     <div class="button-grouped flex widget uib_w_4 d-margins buttonsPeriods" data-uib="app_framework/button_group" data-ver="1">
-                                        <a class="button widget uib_w_5 d-margins gray" data-uib="app_framework/button" data-ver="1">За день</a>
-                                        <a class="button widget uib_w_6 d-margins gray" data-uib="app_framework/button" data-ver="1">За неделю</a>
-                                        <a class="button widget uib_w_7 d-margins gray" data-uib="app_framework/button" data-ver="1">За месяц</a>
+                                        <a class="button widget uib_w_5 d-margins gray" data-uib="app_framework/button" data-ver="1" ng-click="forDay()" href="#mainpage">За день</a>
+                                        <a class="button widget uib_w_6 d-margins gray" data-uib="app_framework/button" data-ver="1" ng-click="forWeek()">За неделю</a>
+                                        <a class="button widget uib_w_7 d-margins gray" data-uib="app_framework/button" data-ver="1" ng-click="forMonth()">За месяц</a>
                                     </div>
                                     <span class="uib_shim"></span>
                                 </div>
@@ -326,6 +326,7 @@
                                         <div class="widget-container right-receptacle"></div>
                                         <div>
                                             <p>{{ date | date:'dd.MM.yyyy'}}</p>
+                                            <p>{{getTitle()}}</p>
                                         </div>
                                     </div>
                                     <span class="uib_shim"></span>
@@ -352,9 +353,8 @@
                                         <div class="widget-container right-receptacle"></div>
                                         <div>
                                             <p>Выручка за день</p>
-                                            <li ng-repeat="d in data">
-                                                <h3>{{d.proceeds}} р.</h3>
-                                            </li>
+                                            <h3>{{data.proceeds}} р.</h3>
+                                            
                                         </div>
                                     </div>
                                     <span class="uib_shim"></span>
@@ -370,7 +370,7 @@
                                         <div>
                                             <p>Прибыль</p>
                                             <p></p>
-                                            <h3>{{data[0].profit}} р.</h3>
+                                            <h3>{{data.profit}} р.</h3>
                                             <p></p>
                                         </div>
                                     </div>
@@ -390,7 +390,7 @@
                                         <div>
                                             <p>Клиентов</p>
                                             <p></p>
-                                            <h3>{{data[0].clients}}</h3>
+                                            <h3>{{data.clients}}</h3>
                                             <p></p>
                                         </div>
                                     </div>
@@ -406,7 +406,7 @@
                                         <div>
                                             <p>Загруженность</p>
                                             <p></p>
-                                            <h3>{{data[0].workload}}%</h3>
+                                            <h3>{{data.workload}}%</h3>
                                             <p></p>
                                         </div>
                                     </div>
@@ -450,20 +450,6 @@
                                             <p>Расход: {{data.debit}} р.</p>
                                         </div>
                                     </div>
-                                    <!--<div class="widget uib_w_14 d-margins" data-uib="media/text" data-ver="0">
-                                        <div class="widget-container left-receptacle"></div>
-                                        <div class="widget-container right-receptacle"></div>
-                                        <div>
-                                            <p>Приход: {{data.credit}} р.</p>
-                                        </div>
-                                    </div>
-                                    <div class="widget uib_w_15 d-margins" data-uib="media/text" data-ver="0">
-                                        <div class="widget-container left-receptacle"></div>
-                                        <div class="widget-container right-receptacle"></div>
-                                        <div>
-                                            <p>Расход: {{data.debit}} р.</p>
-                                        </div>
-                                    </div>-->
                                     <span class="uib_shim"></span>
                                 </div>
                             </div>
