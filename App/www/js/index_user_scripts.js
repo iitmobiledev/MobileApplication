@@ -39,7 +39,8 @@
                 manyData = manyData.filter(function (d) {
                     return (d.date.getDate() <= startDay.getDate() && d.date.getDate() >= endDay.getDate());
                 });
-            } else {
+            } 
+            else {
                 manyData = manyData.filter(function (d) {
                     return (d.date.getDate() <= startDay.getDate() || d.date.getDate() >= endDay.getDate());
                 });
@@ -74,9 +75,9 @@
 
         $scope.getTitle = function () {
             if ($scope.date.getDate() == $scope.endDay.getDate())
-                return $scope.date.toUTCString();
+                return $scope.date.toDateString();
             else {
-                return $scope.date.toUTCString() + " - " + $scope.endDay.toUTCString();
+                return $scope.date.toDateString()+ " - " + $scope.endDay.toDateString();
             }
         };
 
