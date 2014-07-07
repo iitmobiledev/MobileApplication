@@ -21,5 +21,8 @@ function getData(){
     manyData.push(new Data(new Date(2014, 5, 30), 5000, 3000, 11, 50, 5000, 3000, 2500, -500));
     manyData.push(new Data(new Date(2014, 5, 29), 2500, 2000, 6, 50, 5000, 3000, 2500, -500));
     manyData.push(new Data(new Date(2014, 5, 28), 1000, 1000, 5, 50, 5000, 3000, 2500, -500));
+    manyData.push(new Data(new Date(2014, 6, 6), 1000, 3000, 12, 70, 5000, 3000, 2500, -500));
+    manyData.push(new Data(new Date(2014, 6, 7), 5000, 3000, 11, 50, 5000, 3000, 2500, -500));
     return manyData;
 }
+

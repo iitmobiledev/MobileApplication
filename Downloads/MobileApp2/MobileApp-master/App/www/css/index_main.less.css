@@ -629,3 +629,89 @@ body:not(#afui) .upage-outer {
 .activeButton {
   background-color: blue;
 }
+@media all {
+  #afui .default-sprite-button div.uib-sprite {
+    background-image: url(../my/images/intel.png);
+    background-size: cover;
+    background-repeat: no-repeat;
+  }
+}
+@media all {
+  #afui .hover-sprite-button:hover div.uib-sprite {
+    background-image: url(../my/images/intel-invert.png);
+    background-size: cover;
+    background-repeat: no-repeat;
+  }
+}
+@media all {
+  #afui .sprite-sizing {
+    height: 120px !important;
+    width: 135px !important;
+    -webkit-flex: 0 0 auto !important;
+    -moz-flex: 0 0 auto !important;
+    -ms-flex: 0 0 auto !important;
+    -o-flex: 0 0 auto !important;
+    flex: 0 0 auto !important;
+  }
+}
+@media all {
+  #afui .active-sprite-button:active div.uib-sprite {
+    background-image: url(../my/images/intel.png);
+    background-size: cover;
+    background-repeat: no-repeat;
+  }
+}
+@media all {
+  #afui .default-graphic-button {
+    border-radius: 5px;
+    background-color: rgba(0, 0, 0, 0.75);
+  }
+}
+@media all {
+  #afui .hover-graphic-button:hover {
+    border-radius: 5px;
+    background-color: #000000;
+  }
+}
+@media all {
+  #afui .active-graphic-button:active {
+    border-radius: 5px;
+    background-color: #400040;
+  }
+}
+@media all {
+  #afui .default-graphic-text {
+    color: #FFFFFF;
+    text-align: center;
+  }
+}
+@media all {
+  #afui .default-graphic-sizing {
+    min-width: 50px ;
+    max-width: 50px;
+    padding: 5px 5px 5px 5px;
+  }
+}
+.uib_row_8:not(.cright) > .col {
+  padding-right: 20px;
+}
+.uib_row_8.cright > .col {
+  padding-left: 20px;
+}
+@media all {
+  .col-0_12-12 {
+    width: auto;
+    float: none !important;
+  }
+  .urow:not(.cright) > .col-0_12-12 {
+    padding-right: 0px !important;
+  }
+  .urow.cright > .col-0_12-12 {
+    padding-left: 0px !important;
+  }
+}
+@media all and (min-width: 0px) {
+  #afui .row-height-8 > .col > .content-area {
+    min-height: 100px;
+  }
+}
