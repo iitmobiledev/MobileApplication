@@ -1,4 +1,4 @@
-function activeButtonHandling(){    
+function activeButtonHandling() {
     $('#buttonForDay').click(function () {
         $(this).css('border', '1px solid black');
         $('#buttonForWeek').css('border', '');
@@ -22,8 +22,6 @@ function activeButtonHandling(){
    hook up event handlers 
  */
     function getSumDataFromArray(dataArray) {
-        console.log(dataArray.length);
-        console.log(dataArray.length);
         var date, proceeds = 0,
             profit = 0,
             clients = 0,
@@ -51,7 +49,6 @@ function activeButtonHandling(){
     factory('notify', function () {
         return function (startDay, endDay) {
             var manyData = getData();
-            console.log(startDay + "|" + endDay);
             if (startDay == endDay) {
                 manyData = manyData.filter(function (d) {
                     return (d.date.getDate() <= startDay.getDate() && d.date.getDate() >= endDay.getDate());
@@ -77,7 +74,7 @@ function activeButtonHandling(){
             return true;
         };
         $scope.hasFutureData = function () {
-            if ($scope.date.getDate() == new Date().getDate()) {
+            if ($scope.date > new Date().setDate(new Date().getDate() - 1)) {
                 return false;
             } else {
                 return true;
@@ -86,21 +83,17 @@ function activeButtonHandling(){
         $scope.forward = function () {
             $scope.date.setDate($scope.date.getDate() + $scope.step);
             getDataForSelectPeriod();
-            //            $scope.endDay = $scope.date;
-            //            $scope.data = getSumDataFromArray(notify($scope.date, $scope.date));
         };
         $scope.back = function () {
             $scope.date.setDate($scope.date.getDate() - $scope.step);
             getDataForSelectPeriod();
-            //            $scope.endDay = $scope.date;
-            //            $scope.data = getSumDataFromArray(notify($scope.date, $scope.date));
         };
 
         $scope.getTitle = function () {
             if ($scope.date == $scope.endDay)
                 return $scope.date.toDateString();
             else {
-                return $scope.date.toDateString() + " - " + $scope.endDay.toDateString();
+                return $scope.endDay.toDateString() + " - " + $scope.date.toDateString();
             }
         };
 
