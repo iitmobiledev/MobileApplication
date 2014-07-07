@@ -19,7 +19,7 @@
             };
         })
 
-        myApp.controller('statisticController', function ($scope, loader) { //контроллер отвечающий за загрузку 4  плиток 
+        myApp.controller('statisticController', function ($scope, loader, $filter) { //контроллер отвечающий за загрузку 4  плиток 
             //и переключателей между периодами
             activeButtonHandling();
             var isDay = true,
@@ -51,12 +51,20 @@
             };
 
             $scope.getTitle = function () {
-                if ($scope.date == $scope.endDay)
-                    return $scope.date.toDateString();
-                else {
-                    return $scope.endDay.toDateString() + " - " + $scope.date.toDateString();
+                if ($scope.date == $scope.endDay) {
+                    return $filter('date')($scope.date, "dd.MM.yyyy");
+                } else {
+                    return $filter('date')($scope.endDay, "dd.MM.yyyy") + " - " + $filter('date')($scope.date, "dd.MM.yyyy");
                 }
             };
+
+            //            myApp.filter('dateFormat', function myDateFormat($filter) {
+            //                return function (date) {
+            //                    return $filter('date')(date, "dd.MM.yyyy");
+            //                }
+            //            })
+
+
 
             $scope.forDay = dataForDay;
 
