@@ -1,3 +1,21 @@
+function activeButtonHandling(){    
+    $('#buttonForDay').click(function () {
+        $(this).css('border', '1px solid black');
+        $('#buttonForWeek').css('border', '');
+        $('#buttonForMonth').css('border', '');
+    });
+    $('#buttonForWeek').click(function () {
+        $(this).css('border', '1px solid black');
+        $('#buttonForDay').css('border', '');
+        $('#buttonForMonth').css('border', '');
+    });
+    $('#buttonForMonth').click(function () {
+        $(this).css('border', '1px solid black');
+        $('#buttonForWeek').css('border', '');
+        $('#buttonForDay').css('border', '');
+    });
+};
+
 (function () {
     "use strict";
     /*
@@ -29,7 +47,6 @@
         return new Data(date, proceeds, profit, clients, workload, tillMoney, morningMoney, credit, debit);
     }
 
-
     angular.module('myService', []).
     factory('notify', function () {
         return function (startDay, endDay) {
@@ -39,8 +56,7 @@
                 manyData = manyData.filter(function (d) {
                     return (d.date.getDate() <= startDay.getDate() && d.date.getDate() >= endDay.getDate());
                 });
-            } 
-            else {
+            } else {
                 manyData = manyData.filter(function (d) {
                     return (d.date.getDate() <= startDay.getDate() || d.date.getDate() >= endDay.getDate());
                 });
@@ -50,8 +66,13 @@
         };
     }).
     controller('MyController', function ($scope, notify) {
+        activeButtonHandling();
+        var isDay = true,
+            isWeek = false,
+            isMonth = false;
         $scope.date = new Date();
         $scope.endDay = $scope.date;
+        $scope.step = 1;
         $scope.hasPreviousData = function () {
             return true;
         };
@@ -63,41 +84,62 @@
             }
         };
         $scope.forward = function () {
-            $scope.date.setDate($scope.date.getDate() + 1);
-            $scope.endDay = $scope.date;
-            $scope.data = getSumDataFromArray(notify($scope.date, $scope.date));
+            $scope.date.setDate($scope.date.getDate() + $scope.step);
+            getDataForSelectPeriod();
+            //            $scope.endDay = $scope.date;
+            //            $scope.data = getSumDataFromArray(notify($scope.date, $scope.date));
         };
         $scope.back = function () {
-            $scope.date.setDate($scope.date.getDate() - 1);
-            $scope.endDay = $scope.date;
-            $scope.data = getSumDataFromArray(notify($scope.date, $scope.date));
+            $scope.date.setDate($scope.date.getDate() - $scope.step);
+            getDataForSelectPeriod();
+            //            $scope.endDay = $scope.date;
+            //            $scope.data = getSumDataFromArray(notify($scope.date, $scope.date));
         };
 
         $scope.getTitle = function () {
-            if ($scope.date.getDate() == $scope.endDay.getDate())
+            if ($scope.date == $scope.endDay)
                 return $scope.date.toDateString();
             else {
-                return $scope.date.toDateString()+ " - " + $scope.endDay.toDateString();
+                return $scope.date.toDateString() + " - " + $scope.endDay.toDateString();
             }
         };
 
-        $scope.forDay = function () {
+        $scope.forDay = dataForDay;
+
+        $scope.forWeek = dataForWeek;
+
+        $scope.forMonth = dataForMonth;
+
+        function dataForDay() {
+            $scope.step = 1;
             $scope.endDay = $scope.date;
             $scope.data = getSumDataFromArray(notify($scope.date, $scope.endDay));
-        }
+            isDay = true, isWeek = false, isMonth = false;
+        };
 
-        $scope.forWeek = function () {
-            $scope.endDay = new Date($scope.date);
-            $scope.endDay.setDate($scope.endDay.getDate() - 7); //console.log("this date - " + $scope.date);console.log("last week - " + $scope.endDay);
+        function dataForWeek() {
+            $scope.step = 7;
+            $scope.endDay = new Date($scope.date.getFullYear(), $scope.date.getMonth(), $scope.date.getDate() - 7);
             $scope.data = getSumDataFromArray(notify($scope.date, $scope.endDay));
-        }
+            isDay = false, isWeek = true, isMonth = false;
+        };
 
-        $scope.forMonth = function () {
-            $scope.endDay = new Date($scope.date.getFullYear(), $scope.date.getMonth() - 1, $scope.date.getDay());
+        function dataForMonth() {
+            $scope.step = 30;
+            $scope.endDay = new Date($scope.date.getFullYear(), $scope.date.getMonth() - 1, $scope.date.getDate());
             $scope.data = getSumDataFromArray(notify($scope.date, $scope.endDay));
+            isDay = false, isWeek = false, isMonth = true;
+        };
+
+        function getDataForSelectPeriod() {
+            if (isDay)
+                return dataForDay();
+            if (isWeek)
+                return dataForWeek();
+            if (isMonth)
+                return dataForMonth();
         }
 
-        //var dataArray = notify($scope.date, $scope.date);// new Date($scope.date.getDate() - 7));
         $scope.data = getSumDataFromArray(notify($scope.date, $scope.endDay));
 
     });
