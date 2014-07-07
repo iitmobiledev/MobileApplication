@@ -10,8 +10,14 @@ function Data(date, proceeds, profit, clients, workload, tillMoney, morningMoney
     this.debit = debit; //приход
 }
 
-//function getData(startDate, endDate) { //метод возвращающий данные за какой-то период
-//    for (int day = startDate; day <= endDate; day++) {
+//{
+//    tillMoney: 12345
+//}
+//
+//
+//function getData(startDate, endDate, step) { //метод возвращающий данные за какой-то период
+//    
+//    for (int day = startDate; day <= endDate; ) {
 //        var proceeds += day.getProceeds();
 //        var profit += day.getProfit();
 //        var clients += day.getClients();
