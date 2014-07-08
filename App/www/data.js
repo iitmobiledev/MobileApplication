@@ -35,6 +35,14 @@ function Record(client, serviceList, comment)
     this.comment = comment;
 }
 
+function Client(fullName, phoneNumber, balance, discount)
+{
+    this.fullName = fullName;
+    this.phoneNumber = phoneNumber;
+    this.balance = balance;
+    this.discount = discount;
+}
+
 
 
 
