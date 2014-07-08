@@ -25,8 +25,13 @@ function getData() {
     manyData.push(new OperationalStatistics(new Date(2014, 6, 2), 4444, 3500, 10, 45, 900, 3500, 4500, -10000));
     manyData.push(new OperationalStatistics(new Date(2014, 6, 7), 5555, 3500, 10, 45, 900, 3500, 4500, -10000));
     manyData.push(new OperationalStatistics(new Date(2014, 6, 1), 1000, 3500, 10, 45, 900, 3500, 4500, -1000));
-
     return manyData.sort();
+}
+
+
+function getFinanceStatistics()
+{
+    return new FinanceStatistics(13000,1000,5000,-2000);
 }
 
 

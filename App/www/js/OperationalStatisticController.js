@@ -1,5 +1,5 @@
 //контроллер отвечающий за загрузку 4  плиток и переключателей между периодами
-myApp.controller('statisticController', function ($scope, loader, $filter) {
+myApp.controller('OperationalStatisticController', function ($scope, OperationalStatisticLoader, $filter) {
     activeButtonHandling();
     var isDay = true,
         isWeek = false,
@@ -46,21 +46,21 @@ myApp.controller('statisticController', function ($scope, loader, $filter) {
     function dataForDay() {
         $scope.step = 1;
         $scope.endDay = $scope.date;
-        $scope.data = getSumDataFromArray(loader($scope.date, $scope.endDay));
+        $scope.data = getSumDataFromArray(OperationalStatisticLoader($scope.date, $scope.endDay));
         isDay = true, isWeek = false, isMonth = false;
     };
 
     function dataForWeek() {
         $scope.step = 7;
         $scope.endDay = new Date($scope.date.getFullYear(), $scope.date.getMonth(), $scope.date.getDate() - 7);
-        $scope.data = getSumDataFromArray(loader($scope.date, $scope.endDay));
+        $scope.data = getSumDataFromArray(OperationalStatisticLoader($scope.date, $scope.endDay));
         isDay = false, isWeek = true, isMonth = false;
     };
 
     function dataForMonth() {
         $scope.step = 30;
         $scope.endDay = new Date($scope.date.getFullYear(), $scope.date.getMonth() - 1, $scope.date.getDate());
-        $scope.data = getSumDataFromArray(loader($scope.date, $scope.endDay));
+        $scope.data = getSumDataFromArray(OperationalStatisticLoader($scope.date, $scope.endDay));
         isDay = false, isWeek = false, isMonth = true;
     };
 
@@ -73,7 +73,7 @@ myApp.controller('statisticController', function ($scope, loader, $filter) {
             return dataForMonth();
     }
 
-    $scope.data = getSumDataFromArray(loader($scope.date, $scope.endDay));
+    $scope.data = getSumDataFromArray(OperationalStatisticLoader($scope.date, $scope.endDay));
 });
 
 

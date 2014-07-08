@@ -1,4 +1,5 @@
-myApp.factory('loader', function () {
+//сервис для загрузки статистики за период
+myApp.factory('OperationalStatisticLoader', function () {
     return function (startDay, endDay, step) {
         var manyData = getData();
 
@@ -13,5 +14,13 @@ myApp.factory('loader', function () {
             });
         }
         return manyData;
+    };
+})
+
+
+//сервис для загрузки финансовой статистики за сегодня
+myApp.factory('FinanceStatisticsLoader', function () {
+    return function () {
+        return new getFinanceStatistics();
     };
 })
