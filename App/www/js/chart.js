@@ -7,7 +7,7 @@ $(function () {
         var a = [];
         for (var i = 0; i < 365; i++)
         {
-            a.push(getRandom(1000, 50000))
+            a.push(getRandom(1000, 50000));
         }
         $('#container').highcharts({
             chart: {
