@@ -22,22 +22,24 @@ myApp.controller('GraphicController', function ($scope) {
             }
         });
         showChart(getGoodData());
-
-        document.addEventListener("intel.xdk.device.ready", function () {
-            //lock the application in portrait orientation
-            intel.xdk.device.setRotateOrientation("landscape");
-            intel.xdk.device.setAutoRotate(false);
-
-            //hide splash screen
-            intel.xdk.device.hideSplashScreen();
-        }, false);
-
-
-        function register_event_handlers() {}
-        $(document).ready(register_event_handlers);
     });
 
     function showChart(dataList) {
+
+        //        document.addEventListener("intel.xdk.device.ready", function () {
+        //            //lock the application in portrait orientation
+
+            intel.xdk.device.orientation="Landscape";//setRotateOrientation("landscape");
+ 
+        //            intel.xdk.device.setAutoRotate(false);
+
+        //hide splash screen
+        //            intel.xdk.device.hideSplashScreen();
+        //        }, false);
+        //
+        //
+        //        function register_event_handlers() {}
+        //        $(document).ready(register_event_handlers);
         $('#container').highcharts({
             chart: {
                 type: 'spline',

@@ -14,29 +14,23 @@ function FinanceStatistics(tillMoney, morningMoney, credit, debit) {
 }
 
 //Расходы
-function Expenditures(date, costList)
-{
+function Expenditures(date, costList) {
     this.date = date; //дата, за которые получаем расходы
     this.costList = costList; //список расходов
 }
 
 //Статья расходов
-function ExpenditureItem (description, cost)
-{
+function ExpenditureItem(description, cost) {
     this.description = description; //описание статьи расходов
     this.cost = cost; //стоимость
 }
 
 //Запись
-function Record(client, serviceList, comment)
-{
+function Record(client, serviceList, comment) {
     this.client = client;
     this.serviceList = serviceList;
     this.comment = comment;
 }
-
-
-
 
 function getData() {
     var manyData = [];
@@ -52,36 +46,6 @@ function getData() {
 }
 
 
-function getFinanceStatistics()
-{
-    return new FinanceStatistics(13000,1000,5000,-2000);
+function getFinanceStatistics() {
+    return new FinanceStatistics(13000, 1000, 5000, -2000);
 }
-
-
-
-//function getData(startDate, endDate, step) { //метод возвращающий данные за какой-то период
-//    
-//    for (int day = startDate; day <= endDate; ) {
-//        var proceeds += day.getProceeds();
-//        var profit += day.getProfit();
-//        var clients += day.getClients();
-//        var workload += day.getwWorkload();
-//        var tillMoney += day.getTillMoney();
-//        var morningMoney += day.getMorningMoney();
-//        var credit += day.getCredit();
-//        var debit += day.getDebit();
-//    }
-//    return new Data(proceeds, profit, clients, workload, tillMoney, morningMoney, credit, debit); //решить вопрос с датой(массив дат)
-//}
-//
-//function getData(day) {
-//    var proceeds = day.getProceeds();
-//    var profit = day.getProfit();
-//    var clients = day.getClients();
-//    var workload = day.getwWorkload();
-//    var tillMoney = day.getTillMoney();
-//    var morningMoney = day.getMorningMoney();
-//    var credit = day.getCredit();
-//    var debit = day.getDebit();
-//    return new Data(proceeds, profit, clients, workload, tillMoney, morningMoney, credit, debit);
-//}
