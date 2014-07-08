@@ -626,7 +626,6 @@ body:not(#afui) .upage-outer {
 }
 .text {
   text-align: center;
-  color: black;
 }
 .activeButton {
   background-color: blue;
