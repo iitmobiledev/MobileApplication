@@ -486,6 +486,7 @@ body:not(#afui) .upage-outer {
 }
 .cell {
   border: 1px solid gray;
+  text-decoration: none;
 }
 @media all and (min-width: 0px) {
   #afui .row-height-5 > .col > .content-area {
@@ -625,6 +626,7 @@ body:not(#afui) .upage-outer {
 }
 .text {
   text-align: center;
+  color: black;
 }
 .activeButton {
   background-color: blue;

@@ -1,242 +1,206 @@
 <!DOCTYPE html>
 <!--HTML5 doctype-->
 <html ng-app="myApp">
+<!--   
+   You may substitute jQuery for the App Framework selector library.
+   See http://app-framework-software.intel.com/documentation.php#afui/afui_jquery
+  -->
+<!-- content goes here-->
+<!--   
+   You may substitute jQuery for the App Framework selector library.
+   See http://app-framework-software.intel.com/documentation.php#afui/afui_jquery
+  -->
+<!-- content goes here-->
+<!--   
+   You may substitute jQuery for the App Framework selector library.
+   See http://app-framework-software.intel.com/documentation.php#afui/afui_jquery
+  -->
+<!-- content goes here-->
+<!--   
+   You may substitute jQuery for the App Framework selector library.
+   See http://app-framework-software.intel.com/documentation.php#afui/afui_jquery
+  -->
+<!-- content goes here-->
+
+<head>
+    <link rel="stylesheet" type="text/css" href="media_button_bar/css/media_button_bar.css">
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="app_framework/2.1/css/af.ui.min.css">
+    <link rel="stylesheet" type="text/css" href="app_framework/2.1/css/icons.min.css">
+    <link rel="stylesheet" type="text/css" href="css/index_main.less.css" class="main-less">
+    <title>Your New Application</title>
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=0">
+    <style type="text/css">
+        /* Prevent copy paste for all elements except text fields */
+        * {
+            -webkit-user-select: none;
+            -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
+        }
+        input,
+        textarea {
+            -webkit-user-select: text;
+        }
+    </style>
+    <script src="intelxdk.js"></script>
+    <script type="text/javascript">
+        /* Intel native bridge is available */
+        var onDeviceReady = function() {
+            //hide splash screen
+            intel.xdk.device.hideSplashScreen();
+        };
+        document.addEventListener("intel.xdk.device.ready", onDeviceReady, false);
+    </script>
     <!--   
    You may substitute jQuery for the App Framework selector library.
    See http://app-framework-software.intel.com/documentation.php#afui/afui_jquery
   -->
+    <script type="application/javascript" src="app_framework/2.1/appframework.js"></script>
+    <script type="application/javascript" src="app_framework/2.1/appframework.ui.js" data-ver="1"></script>
+    <script src="cordova.js"></script>
+    <script src="angular.js"></script>
+    <script src="data.js"></script>
+    <script type="application/javascript" src="js/jquery.min.js"></script>
+    <script type="application/javascript" src="js/index_user_scripts.js"></script>
+    <script src="js/data_loader.js"></script>
+    <script src="js/statistic_controller.js"></script>
+    <script src="js/today_controller.js"></script>
+
+    <script src="js/highcharts/highcharts.js"></script>
+    <script src="js/highcharts/modules/exporting.js"></script>
+    <script src="js/chart.js"></script>
+</head>
+
+<body id="afui">
+
     <!-- content goes here-->
-    <!--   
-   You may substitute jQuery for the App Framework selector library.
-   See http://app-framework-software.intel.com/documentation.php#afui/afui_jquery
-  -->
-    <!-- content goes here-->
+    <div class="uwrap" id="content">
+        <div class="upage panel" id="home" data-header="af-header-0" data-footer="af-footer-0">
+            <div class="upage-outer">
+                <header class="container-group inner-element uib_w_19" data-uib="app_framework/header" data-ver="1" id="af-header-0">
+                    <h1>Салон красоты</h1>
+                    <div class="widget-container wrapping-col single-centered"></div>
+                    <div class="widget-container content-area horiz-area wrapping-col left"></div>
+                    <div class="widget-container content-area horiz-area wrapping-col right"></div>
+                </header>
 
-    <head>
-        <link rel="stylesheet" type="text/css" href="media_button_bar/css/media_button_bar.css">
-        <meta charset="UTF-8">
-        <link rel="stylesheet" type="text/css" href="app_framework/2.1/css/af.ui.min.css">
-        <link rel="stylesheet" type="text/css" href="app_framework/2.1/css/icons.min.css">
-        <link rel="stylesheet" type="text/css" href="css/index_main.less.css" class="main-less">
-        <title>Your New Application</title>
-        <meta http-equiv="Content-type" content="text/html; charset=utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=0">
-        <style type="text/css">
-            /* Prevent copy paste for all elements except text fields */
-            * {
-                -webkit-user-select: none;
-                -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
-            }
-            input,
-            textarea {
-                -webkit-user-select: text;
-            }
-        </style>
-        <script src="intelxdk.js"></script>
-        <script type="text/javascript">
-            /* Intel native bridge is available */
-            var onDeviceReady = function() {
-                //hide splash screen
-                intel.xdk.device.hideSplashScreen();
-            };
-            document.addEventListener("intel.xdk.device.ready", onDeviceReady, false);
-        </script>
-        <!--   
-   You may substitute jQuery for the App Framework selector library.
-   See http://app-framework-software.intel.com/documentation.php#afui/afui_jquery
-  -->
-        <script type="application/javascript" src="app_framework/2.1/appframework.js"></script>
-        <script type="application/javascript" src="app_framework/2.1/appframework.ui.js" data-ver="1"></script>
-        <script src="cordova.js"></script>
-        <script src="angular.js"></script>
-        <script src="data.js"></script>
-        <script type="application/javascript" src="js/jquery.min.js"></script>
-        <script type="application/javascript" src="js/index_user_scripts.js"></script>
-        <script src="js/data_loader.js"></script>
-        <script src="js/statistic_controller.js"></script>
-        <script src="js/today_controller.js"></script>
-        
-        <script src="js/highcharts/highcharts.js"></script>
-        <script src="js/highcharts/modules/exporting.js"></script>
-        <script src="js/chart.js"></script>
-    </head>
-
-    <body id="afui">
-
-        <!-- content goes here-->
-        <div class="uwrap" id="content">
-            <div class="upage panel" id="home" data-header="af-header-0" data-footer="af-footer-0">
-                <div class="upage-outer">
-                    <header class="container-group inner-element uib_w_19" data-uib="app_framework/header" data-ver="1" id="af-header-0">
-                        <h1>Салон красоты</h1>
-                        <div class="widget-container wrapping-col single-centered"></div>
-                        <div class="widget-container content-area horiz-area wrapping-col left"></div>
-                        <div class="widget-container content-area horiz-area wrapping-col right"></div>
-                    </header>
-
-                    <div class="upage-content" id="mainsub">
-                        <div id="statisticPanel" ng-controller="statisticController">
-                            <div class="grid grid-pad urow uib_row_2 row-height-1" data-uib="layout/row" data-ver="0">
-                                <div class="col uib_col_5 col-0_12-12" data-uib="layout/col" data-ver="0">
-                                    <div class="widget-container content-area vertical-col">
-
-                                        <div class="button-grouped flex widget uib_w_4 d-margins buttonsPeriods" data-uib="app_framework/button_group" data-ver="1">
-                                            <a class="button widget uib_w_5 d-margins gray" style="border : 1px solid black" data-uib="app_framework/button" data-ver="1" ng-click="forDay()" href="#mainpage" id="buttonForDay">За день</a>
-                                            <a class="button widget uib_w_6 d-margins gray" data-uib="app_framework/button" data-ver="1" ng-click="forWeek()" id="buttonForWeek">За неделю</a>
-                                            <a class="button widget uib_w_7 d-margins gray" data-uib="app_framework/button" data-ver="1" ng-click="forMonth()" id="buttonForMonth">За месяц</a>
-                                        </div>
-                                        <span class="uib_shim"></span>
-                                    </div>
-                                </div>
-                                <span class="uib_shim"></span>
-                            </div>
-
-                            <div class="grid urow uib_row_3 row-height-3 daysPadding" data-uib="layout/row" data-ver="0">
-                                <div class="col uib_col_8 col-0_2-12_2-2" data-uib="layout/col" data-ver="0">
-                                    <div class="widget-container content-area vertical-col">
-
-                                        <a class="button widget uib_w_8 smallNavigationButton d-margins icon left" ng-show="hasPreviousData()" data-uib="app_framework/button" data-ver="1" id="PrevDay" ng-click="back()"></a>
-                                        <span class="uib_shim"></span>
-                                    </div>
-                                </div>
-                                <div class="col uib_col_7 col-0_8-12_8-10" data-uib="layout/col" data-ver="0">
-                                    <div class="widget-container content-area vertical-col">
-
-                                        <div class="widget uib_w_10 d-margins header3" data-uib="media/text" data-ver="0">
-                                            <div class="widget-container left-receptacle"></div>
-                                            <div class="widget-container right-receptacle"></div>
-                                            <div>
-                                                <!--                                            <p>{{ date | date:'dd.MM.yyyy'}}</p>-->
-                                                <p>{{ getTitle() }}</p>
-                                            </div>
-                                        </div>
-                                        <span class="uib_shim"></span>
-                                    </div>
-                                </div>
-                                <div class="col uib_col_6 col-0_2-12_2-10" data-uib="layout/col" data-ver="0">
-                                    <div class="widget-container content-area vertical-col">
-
-                                        <a class="button widget uib_w_8 smallNavigationButton d-margins icon right" data-uib="app_framework/button" data-ver="1" id="NextDay" ng-click="forward()" ng-show="hasFutureData()"></a>
-                                        <span class="uib_shim"></span>
-                                    </div>
-                                </div>
-                                <span class="uib_shim"></span>
-                            </div>
-
-                            <form class="grid urow uib_row_4 row-height-4 tablePadding" data-uib="layout/row" data-ver="0">
-
-                                <a href="#Chart" class="col uib_col_9 col-0_6-12 cell" data-uib="layout/col" data-ver="0">
-<!--                                <div class="col uib_col_9 col-0_6-12 cell" data-uib="layout/col" data-ver="0">-->
-                                    
-                                    <div class="widget-container content-area vertical-col">
-
-                                        <div class="widget uib_w_16 d-margins text" data-uib="media/text" data-ver="0" id="clientsText">
-                                            <div class="widget-container left-receptacle"></div>
-                                            <div class="widget-container right-receptacle"></div>
-                                            <div>
-                                                <p>Выручка за день</p>
-                                                <h3>{{data.proceeds}} р.</h3>
-
-                                            </div>
-                                        </div>
-                                        <span class="uib_shim"></span>
-
-                                    </div>
-<!--                                </div>-->
-                                    </a>
-
-                                <div class="col uib_col_10 col-0_6-12 cell" data-uib="layout/col" data-ver="0">
-                                    <div class="widget-container content-area vertical-col">
-                                        <div class="widget uib_w_16 d-margins text" data-uib="media/text" data-ver="0" id="clientsText">
-                                            <div class="widget-container left-receptacle"></div>
-                                            <div class="widget-container right-receptacle"></div>
-                                            <div>
-                                                <p>Прибыль</p>
-                                                <p></p>
-                                                <h3>{{data.profit}} р.</h3>
-                                                <p></p>
-                                            </div>
-                                        </div>
-                                        <span class="uib_shim"></span>
-                                    </div>
-                                </div>
-                                <span class="uib_shim"></span>
-                            </form>
-
-                            <div class="grid urow uib_row_6 tablePadding row-height-4" data-uib="layout/row" data-ver="0">
-                                <div class="col uib_col_12 col-0_6-12 cell" data-uib="layout/col" data-ver="0">
-                                    <div class="widget-container content-area vertical-col">
-
-                                        <div class="widget uib_w_16 d-margins text" data-uib="media/text" data-ver="0" id="clientsText">
-                                            <div class="widget-container left-receptacle"></div>
-                                            <div class="widget-container right-receptacle"></div>
-                                            <div>
-                                                <p>Клиентов</p>
-                                                <p></p>
-                                                <h3>{{data.clients}}</h3>
-                                                <p></p>
-                                            </div>
-                                        </div>
-                                        <span class="uib_shim"></span>
-                                    </div>
-                                </div>
-                                <div class="col uib_col_13 col-0_6-12 cell" data-uib="layout/col" data-ver="0">
-                                    <div class="widget-container content-area vertical-col">
-
-                                        <div class="widget uib_w_17 d-margins text" data-uib="media/text" data-ver="0" id="workLoadText">
-                                            <div class="widget-container left-receptacle"></div>
-                                            <div class="widget-container right-receptacle"></div>
-                                            <div>
-                                                <p>Загруженность</p>
-                                                <p></p>
-                                                <h3>{{data.workload}}%</h3>
-                                                <p></p>
-                                            </div>
-                                        </div>
-                                        <span class="uib_shim"></span>
-                                    </div>
-                                </div>
-                                <span class="uib_shim"></span>
-                            </div>
-
-                        </div>
-
-                        <!--                    -->
-                        <!--                    -->
-                        <!--                    -->
-                        <div class="grid grid-pad urow uib_row_7 row-height-7" data-uib="layout/row" data-ver="0" ng-controller="todayController">
-                            <div class="col uib_col_14 col-0_6-12" data-uib="layout/col" data-ver="0">
+                <div class="upage-content" id="mainsub">
+                    <div id="statisticPanel" ng-controller="statisticController">
+                        <div class="grid grid-pad urow uib_row_2 row-height-1" data-uib="layout/row" data-ver="0">
+                            <div class="col uib_col_5 col-0_12-12" data-uib="layout/col" data-ver="0">
                                 <div class="widget-container content-area vertical-col">
 
-                                    <div class="widget uib_w_11 d-margins header3" data-uib="media/text" data-ver="0" id="cashOnHand">
-                                        <div class="widget-container left-receptacle"></div>
-                                        <div class="widget-container right-receptacle"></div>
-                                        <div>
-                                            <p>Денег в кассе</p>
-                                        </div>
+                                    <div class="button-grouped widget uib_w_4 d-margins flex" data-uib="app_framework/button_group" data-ver="1">
+                                        <a class="button widget uib_w_5 d-margins gray" data-uib="app_framework/button" data-ver="1" ng-click="forDay()" id="buttonForDay" style="border-left-width: 1px; border-left-style: solid; border-left-color: rgb(102, 102, 102); border-top-left-radius: 6px; border-bottom-left-radius: 6px;">За день</a>
+                                        <a class="button widget uib_w_6 d-margins gray" data-uib="app_framework/button" data-ver="1" ng-click="forWeek()" id="buttonForWeek">За неделю</a>
+                                        <a class="button widget uib_w_7 d-margins gray" data-uib="app_framework/button" data-ver="1" ng-click="forMonth()" id="buttonForMonth" style="border-top-right-radius: 6px; border-bottom-right-radius: 6px;">За месяц</a>
                                     </div>
-                                    <div class="widget uib_w_12 d-margins money" data-uib="media/text" data-ver="0" id="cashOnHandValue">
+                                    <span class="uib_shim"></span>
+                                </div>
+                            </div>
+                            <span class="uib_shim"></span>
+                        </div>
+
+                        <div class="grid urow uib_row_3 row-height-3 daysPadding" data-uib="layout/row" data-ver="0">
+                            <div class="col uib_col_8 col-0_2-12_2-2" data-uib="layout/col" data-ver="0">
+                                <div class="widget-container content-area vertical-col">
+
+                                    <a class="button widget uib_w_8 smallNavigationButton d-margins icon left" ng-show="hasPreviousData()" data-uib="app_framework/button" data-ver="1" id="PrevDay" ng-click="back()"></a>
+                                    <span class="uib_shim"></span>
+                                </div>
+                            </div>
+                            <div class="col uib_col_7 col-0_8-12_8-10" data-uib="layout/col" data-ver="0">
+                                <div class="widget-container content-area vertical-col">
+
+                                    <div class="widget uib_w_10 d-margins header3" data-uib="media/text" data-ver="0">
                                         <div class="widget-container left-receptacle"></div>
                                         <div class="widget-container right-receptacle"></div>
                                         <div>
-                                            <p>{{data.tillMoney}} р.</p>
+                                            <!--                                            <p>{{ date | date:'dd.MM.yyyy'}}</p>-->
+                                            <p>{{ getTitle() }}</p>
                                         </div>
                                     </div>
                                     <span class="uib_shim"></span>
                                 </div>
                             </div>
-
-                            <div class="col uib_col_15 col-0_6-12" data-uib="layout/col" data-ver="0">
+                            <div class="col uib_col_6 col-0_2-12_2-10" data-uib="layout/col" data-ver="0">
                                 <div class="widget-container content-area vertical-col">
 
-                                    <div class="widget uib_w_13 d-margins" data-uib="media/text" data-ver="0">
-                                        <div class="widget-container left-receptacle">
-                                        </div>
+                                    <a class="button widget uib_w_8 smallNavigationButton d-margins icon right" data-uib="app_framework/button" data-ver="1" id="NextDay" ng-click="forward()" ng-show="hasFutureData()"></a>
+                                    <span class="uib_shim"></span>
+                                </div>
+                            </div>
+                            <span class="uib_shim"></span>
+                        </div>
+
+                        <form class="grid urow uib_row_4 row-height-4 tablePadding" data-uib="layout/row" data-ver="0">
+
+                            <a href="#Chart" class="col uib_col_9 col-0_6-12 cell" data-uib="layout/col" data-ver="0">
+                                <!--                                <div class="col uib_col_9 col-0_6-12 cell" data-uib="layout/col" data-ver="0">-->
+
+                                <div class="widget-container content-area vertical-col">
+
+                                    <div class="widget uib_w_16 d-margins text" data-uib="media/text" data-ver="0" id="clientsText">
+                                        <div class="widget-container left-receptacle"></div>
                                         <div class="widget-container right-receptacle"></div>
                                         <div>
-                                            <p>Утром: {{data.morningMoney}}р.</p>
-                                            <p>Приход: {{data.credit}} р.</p>
-                                            <p>Расход: {{data.debit}} р.</p>
+                                            <p>Выручка за день</p>
+                                            <h3>{{data.proceeds}} р.</h3>
+
+                                        </div>
+                                    </div>
+                                    <span class="uib_shim"></span>
+
+                                </div>
+                                <!--                                </div>-->
+                            </a>
+
+                            <div class="col uib_col_10 col-0_6-12 cell" data-uib="layout/col" data-ver="0">
+                                <div class="widget-container content-area vertical-col">
+                                    <div class="widget uib_w_16 d-margins text" data-uib="media/text" data-ver="0" id="clientsText">
+                                        <div class="widget-container left-receptacle"></div>
+                                        <div class="widget-container right-receptacle"></div>
+                                        <div>
+                                            <p>Прибыль</p>
+                                            <p></p>
+                                            <h3>{{data.profit}} р.</h3>
+                                            <p></p>
+                                        </div>
+                                    </div>
+                                    <span class="uib_shim"></span>
+                                </div>
+                            </div>
+                            <span class="uib_shim"></span>
+                        </form>
+
+                        <div class="grid urow uib_row_6 tablePadding row-height-4" data-uib="layout/row" data-ver="0">
+                            <div class="col uib_col_12 col-0_6-12 cell" data-uib="layout/col" data-ver="0">
+                                <div class="widget-container content-area vertical-col">
+
+                                    <div class="widget uib_w_16 d-margins text" data-uib="media/text" data-ver="0" id="clientsText">
+                                        <div class="widget-container left-receptacle"></div>
+                                        <div class="widget-container right-receptacle"></div>
+                                        <div>
+                                            <p>Клиентов</p>
+                                            <p></p>
+                                            <h3>{{data.clients}}</h3>
+                                            <p></p>
+                                        </div>
+                                    </div>
+                                    <span class="uib_shim"></span>
+                                </div>
+                            </div>
+                            <div class="col uib_col_13 col-0_6-12 cell" data-uib="layout/col" data-ver="0">
+                                <div class="widget-container content-area vertical-col">
+
+                                    <div class="widget uib_w_17 d-margins text" data-uib="media/text" data-ver="0" id="workLoadText">
+                                        <div class="widget-container left-receptacle"></div>
+                                        <div class="widget-container right-receptacle"></div>
+                                        <div>
+                                            <p>Загруженность</p>
+                                            <p></p>
+                                            <h3>{{data.workload}}%</h3>
+                                            <p></p>
                                         </div>
                                     </div>
                                     <span class="uib_shim"></span>
@@ -244,55 +208,102 @@
                             </div>
                             <span class="uib_shim"></span>
                         </div>
+
                     </div>
-                    <!-- /upage-content -->
 
-                    <footer class="inner-element uib_w_22" data-uib="app_framework/footer" data-ver="1" id="af-footer-0">
-                        <a class="icon calendar" href="#home">Отчетность</a>
-                        <a class="icon clock" href="#visits">Визиты</a>
-                        <a class="icon settings" href="#settings">Настройки</a>
-                    </footer>
-                </div>
-                <!-- /upage-outer -->
+                    <!--                    -->
+                    <!--                    -->
+                    <!--                    -->
+                    <div class="grid grid-pad urow uib_row_7 row-height-7" data-uib="layout/row" data-ver="0" ng-controller="todayController">
+                        <div class="col uib_col_14 col-0_6-12" data-uib="layout/col" data-ver="0">
+                            <div class="widget-container content-area vertical-col">
 
-            </div>
-            <div class="upage panel" id="Chart" data-header="chart-header" data-footer="none">
-                <div class="upage-outer">
-                    <header class="container-group inner-element uib_w_23" data-uib="app_framework/header" data-ver="1" id="chart-header">
-                        <h1>График</h1>
-                        <div class="widget-container wrapping-col single-centered"></div>
-                        <div class="widget-container content-area horiz-area wrapping-col left with-back"><a href="#home" class="button" id="backButton">Назад</a>
+                                <div class="widget uib_w_11 d-margins header3" data-uib="media/text" data-ver="0" id="cashOnHand">
+                                    <div class="widget-container left-receptacle"></div>
+                                    <div class="widget-container right-receptacle"></div>
+                                    <div>
+                                        <p>Денег в кассе</p>
+                                    </div>
+                                </div>
+                                <div class="widget uib_w_12 d-margins money" data-uib="media/text" data-ver="0" id="cashOnHandValue">
+                                    <div class="widget-container left-receptacle"></div>
+                                    <div class="widget-container right-receptacle"></div>
+                                    <div>
+                                        <p>{{data.tillMoney}} р.</p>
+                                    </div>
+                                </div>
+                                <span class="uib_shim"></span>
+                            </div>
                         </div>
-                        <div class="widget-container content-area horiz-area wrapping-col right"></div>
-                    </header>
-                    
-                    <div id="Chartsub" class="upage-content ">
+
+                        <div class="col uib_col_15 col-0_6-12" data-uib="layout/col" data-ver="0">
+                            <div class="widget-container content-area vertical-col">
+
+                                <div class="widget uib_w_13 d-margins" data-uib="media/text" data-ver="0">
+                                    <div class="widget-container left-receptacle">
+                                    </div>
+                                    <div class="widget-container right-receptacle"></div>
+                                    <div>
+                                        <p>Утром: {{data.morningMoney}}р.</p>
+                                        <p>Приход: {{data.credit}} р.</p>
+                                        <p>Расход: {{data.debit}} р.</p>
+                                    </div>
+                                </div>
+                                <span class="uib_shim"></span>
+                            </div>
+                        </div>
+                        <span class="uib_shim"></span>
                     </div>
-                    <div id="container" style="min-width: 320px; height: 400px; margin: 0 auto"></div>
                 </div>
+                <!-- /upage-content -->
+
+                <footer class="inner-element uib_w_22" data-uib="app_framework/footer" data-ver="1" id="af-footer-0">
+                    <a class="icon calendar" href="#home">Отчетность</a>
+                    <a class="icon clock" href="#visits">Визиты</a>
+                    <a class="icon settings" href="#settings">Настройки</a>
+                </footer>
             </div>
-            <div class="upage panel" id="settings" data-header="af-header-0" data-footer="af-footer-0">
-                <div class="upage-outer">
-
-                    <div id="settingssub" class="upage-content ">
-                    </div>
-
-                </div>
-                <!-- /upage-outer -->
-            </div>
-            <div class="upage panel" id="visits" data-header="af-header-0" data-footer="af-footer-0">
-                <div class="upage-outer">
-                    <div id="visitssub" class="upage-content ">
-                    </div>
-
-                </div>
-                <!-- /upage-outer -->
-            </div>
-
-            <!-- /upage -->
+            <!-- /upage-outer -->
 
         </div>
-        <!-- /uwrap -->
-    </body>
+        <div class="upage panel" id="Chart" data-header="chart-header" data-footer="none">
+            <div class="upage-outer">
+                <header class="container-group inner-element uib_w_23" data-uib="app_framework/header" data-ver="1" id="chart-header">
+                    <h1>График</h1>
+                    <div class="widget-container wrapping-col single-centered"></div>
+                    <div class="widget-container content-area horiz-area wrapping-col left with-back">
+                        <a href="#home" class="button" id="backButton">Назад</a>
+                    </div>
+                    <div class="widget-container content-area horiz-area wrapping-col right"></div>
+                </header>
+
+                <div id="Chartsub" class="upage-content ">
+                </div>
+                <div id="container" style="min-width: 320px; height: 400px; margin: 0 auto"></div>
+            </div>
+        </div>
+        <div class="upage panel" id="settings" data-header="af-header-0" data-footer="af-footer-0">
+            <div class="upage-outer">
+
+                <div id="settingssub" class="upage-content ">
+                </div>
+
+            </div>
+            <!-- /upage-outer -->
+        </div>
+        <div class="upage panel" id="visits" data-header="af-header-0" data-footer="af-footer-0">
+            <div class="upage-outer">
+                <div id="visitssub" class="upage-content ">
+                </div>
+
+            </div>
+            <!-- /upage-outer -->
+        </div>
+
+        <!-- /upage -->
+
+    </div>
+    <!-- /uwrap -->
+</body>
 
 </html>
