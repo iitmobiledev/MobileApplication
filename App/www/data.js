@@ -13,6 +13,29 @@ function FinanceStatistics(tillMoney, morningMoney, credit, debit) {
     this.debit = debit; //приход
 }
 
+//Расходы
+function Expenditures(date, costList)
+{
+    this.date = date; //дата, за которые получаем расходы
+    this.costList = costList; //список расходов
+}
+
+//Статья расходов
+function ExpenditureItem (description, cost)
+{
+    this.description = description; //описание статьи расходов
+    this.cost = cost; //стоимость
+}
+
+//Запись
+function Record(client, serviceList, comment)
+{
+    this.client = client;
+    this.serviceList = serviceList;
+    this.comment = comment;
+}
+
+
 
 
 function getData() {
