@@ -44,6 +44,7 @@ function Data(date, proceeds, profit, clients, workload, tillMoney, morningMoney
 
 function getData() {
     var manyData = [];
+    manyData.push(new Data(new Date(2014, 6, 8), 3300, 1000, 5, 40, 5000, 3000, 2500, -300));
     manyData.push(new Data(new Date(2014, 6, 6), 1000, 3000, 12, 70, 5000, 3000, 2500, -500));
     manyData.push(new Data(new Date(2014, 6, 5), 2000, 1000, 5, 15, 7000, 9000, 1500, +5050));
     manyData.push(new Data(new Date(2014, 6, 4), 5000, 7000, 15, 85, 3000, 1000, 500, -5400));
