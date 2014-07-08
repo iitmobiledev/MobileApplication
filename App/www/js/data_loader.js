@@ -1,5 +1,5 @@
 myApp.factory('loader', function () {
-    return function (startDay, endDay) {
+    return function (startDay, endDay, step) {
         var manyData = getData();
 
         if (startDay == endDay) {
@@ -12,7 +12,6 @@ myApp.factory('loader', function () {
 
             });
         }
-
         return manyData;
     };
 })
