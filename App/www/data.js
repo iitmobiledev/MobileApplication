@@ -32,6 +32,14 @@ function Record(client, serviceList, comment) {
     this.comment = comment;
 }
 
+//Клиент
+function Client(fullName, phoneNumber, balance, discount) {
+    this.fullName = fullName;
+    this.phoneNumber = phoneNumber;
+    this.balance = balance;
+    this.discount = discount;
+}
+
 function getData() {
     var manyData = [];
     manyData.push(new OperationalStatistics(new Date(2014, 6, 8), 3300, 1000, 5, 40, 5000, 3000, 2500, -300));
