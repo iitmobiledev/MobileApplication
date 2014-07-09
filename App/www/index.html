@@ -1,6 +1,31 @@
 <!DOCTYPE html>
 <!--HTML5 doctype-->
-<html ng-app="myApp">
+<html>
+<!--   
+   You may substitute jQuery for the App Framework selector library.
+   See http://app-framework-software.intel.com/documentation.php#afui/afui_jquery
+  -->
+<!-- content goes here-->
+<!--   
+   You may substitute jQuery for the App Framework selector library.
+   See http://app-framework-software.intel.com/documentation.php#afui/afui_jquery
+  -->
+<!-- content goes here-->
+<!--   
+   You may substitute jQuery for the App Framework selector library.
+   See http://app-framework-software.intel.com/documentation.php#afui/afui_jquery
+  -->
+<!-- content goes here-->
+<!--   
+   You may substitute jQuery for the App Framework selector library.
+   See http://app-framework-software.intel.com/documentation.php#afui/afui_jquery
+  -->
+<!-- content goes here-->
+<!--   
+   You may substitute jQuery for the App Framework selector library.
+   See http://app-framework-software.intel.com/documentation.php#afui/afui_jquery
+  -->
+<!-- content goes here-->
 <!--   
    You may substitute jQuery for the App Framework selector library.
    See http://app-framework-software.intel.com/documentation.php#afui/afui_jquery
@@ -72,11 +97,11 @@
     <script src="js/FinanceStatisticsController.js"></script>
 
     <script src="js/highcharts/highcharts.js"></script>
-    <script src="js/highcharts/modules/exporting.js"></script>
+    <!--    <script src="js/highcharts/modules/exporting.js"></script>-->
     <script src="js/chart.js"></script>
 </head>
 
-<body id="afui">
+<body id="afui" ng-app="myApp">
 
     <!-- content goes here-->
     <div class="uwrap" id="content">
@@ -276,23 +301,22 @@
                 </header>
 
                 <div id="Chartsub" class="upage-content ">
-                    <div id="container" style="width: auto; height:auto;"></div>
-
+                       <div class="Graphic" items="data"></div>
                 </div>
             </div>
         </div>
-        <div class="upage panel" id="settings" data-header="af-header-0" data-footer="af-footer-0">
-            <div class="upage-outer">
+        <div class=" upage panel " id="settings " data-header="af-header-0 " data-footer="af-footer-0 ">
+            <div class="upage-outer ">
 
-                <div id="settingssub" class="upage-content ">
+                <div id="settingssub " class="upage-content ">
                 </div>
 
             </div>
             <!-- /upage-outer -->
         </div>
-        <div class="upage panel" id="visits" data-header="af-header-0" data-footer="af-footer-0">
-            <div class="upage-outer">
-                <div id="visitssub" class="upage-content ">
+        <div class="upage panel " id="visits " data-header="af-header-0 " data-footer="af-footer-0 ">
+            <div class="upage-outer ">
+                <div id="visitssub " class="upage-content ">
                 </div>
 
             </div>

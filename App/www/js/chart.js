@@ -11,67 +11,70 @@ function getGoodData() {
     return goodData.sort();
 }
 
-
+//контроллер, получающий данные для отрисовки графика
 myApp.controller('GraphicController', function ($scope) {
-    $(function () {
-        Highcharts.setOptions({
-            lang: {
-                months: ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'],
-                shortMonths: ['Янв', 'Фев', 'Мар', 'Апр', 'Май', 'Июн', 'Июл', 'Авг', 'Сен', 'Окт', 'Ноя', 'Дек'],
-                weekdays: ['Воскресенье', 'Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота']
-            }
-        });
-        showChart(getGoodData());
-    });
+    $scope.data = getGoodData();
+});
 
-    function showChart(dataList) {
 
-        //        document.addEventListener("intel.xdk.device.ready", function () {
-        //            //lock the application in portrait orientation
-
-            intel.xdk.device.orientation="Landscape";//setRotateOrientation("landscape");
- 
-        //            intel.xdk.device.setAutoRotate(false);
-
-        //hide splash screen
-        //            intel.xdk.device.hideSplashScreen();
-        //        }, false);
-        //
-        //
-        //        function register_event_handlers() {}
-        //        $(document).ready(register_event_handlers);
-        $('#container').highcharts({
-            chart: {
-                type: 'spline',
-                zoomType: 'x'
-            },
-            title: {
-                text: ''
-            },
-            xAxis: {
-                type: 'datetime',
-                minRange: 3 * 24 * 3600000, // fourteen days
-                dateTimeLabelFormats: { // don't display the dummy year
-
-                    month: '%e %b %y'
+//директива для построения графика
+myApp.directive('Graphic', function () {
+    return {
+        restrict: 'C',
+        replace: true,
+        scope: {
+            items: '='
+        },
+//        controller: function ($scope, $element, $attrs) {
+//           height:100%;width:100%;position:absolute;
+//        },
+        template: '<div id="container" style="height:100%;width:100%;position:absolute;">not working</div>',
+        link: function (scope, element, attrs) {
+            console.log(3);
+//            intel.xdk.device.setRotateOrientation("landscape");
+            var chart = new Highcharts.Chart({
+                chart: {
+                    renderTo: 'container',
+                    type: 'spline',
+                    zoomType: 'x'
                 },
-            },
-            yAxis: {
                 title: {
-                    text: ''
+                    text: 'Browser market shares at a specific website, 2010'
                 },
-            },
-            tooltip: {
-                headerFormat: '',
-                pointFormat: '{point.x:%e. %b}: {point.y:.2f}р.'
-            },
-            legend: {
-                enabled: false
-            },
-            series: [{
-                name: '',
-                data: dataList
+                xAxis: {
+                    type: 'datetime',
+                    minRange: 3 * 24 * 3600000, // fourteen days
+                    dateTimeLabelFormats: { // don't display the dummy year
+
+                        month: '%e %b %y'
+                    },
+                },
+                yAxis: {
+                    title: {
+                        text: ''
+                    },
+                },
+                lang: {
+                    months: ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'],
+                    shortMonths: ['Янв', 'Фев', 'Мар', 'Апр', 'Май', 'Июн', 'Июл', 'Авг', 'Сен', 'Окт', 'Ноя', 'Дек'],
+                    weekdays: ['Воскресенье', 'Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота']
+                },
+                tooltip: {
+                    headerFormat: '',
+                    pointFormat: '{point.x:%e. %b}: {point.y:.2f}р.'
+                },
+                legend: {
+                    enabled: false
+                },
+                series: [{
+                    name: '',
+                    data: scope.data,
             }]
-        });
+
+            });
+            scope.$watch("items", function (newValue) {
+                chart.series[0].setData(newValue, true);
+            }, true);
+        }
     }
 });
