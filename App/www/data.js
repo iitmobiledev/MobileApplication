@@ -1,5 +1,5 @@
 function OperationalStatistics(date, proceeds, profit, clients, workload) {
-    this.date = date; //дата за которую получаем все данные                                          
+    this.date = date; //дата за которую получаем все данные
     this.proceeds = proceeds; //выручка
     this.profit = profit; //прибыль  
     this.clients = clients; //количество клиентов
@@ -26,18 +26,37 @@ function ExpenditureItem(description, cost) {
 }
 
 //Запись
-function Record(client, serviceList, comment) {
-    this.client = client;
-    this.serviceList = serviceList;
-    this.comment = comment;
+function Record(client, serviceList, comment, date) {
+    this.client = client; //клиент
+    this.serviceList = serviceList; //список услуг
+    this.comment = comment; //коментарий
+    this.date = date; //дата оказания услуги
 }
 
 //Клиент
-function Client(fullName, phoneNumber, balance, discount) {
-    this.fullName = fullName;
-    this.phoneNumber = phoneNumber;
-    this.balance = balance;
-    this.discount = discount;
+function Client(firstName, middleName, lastName, phoneNumber, balance, discount) {
+    this.firstName = firstName;//имя
+    this.middleName = middleName;// отчество
+    this.lastName = lastName;//фамилия
+    this.phoneNumber = phoneNumber; //номер телефона
+    this.balance = balance; //баланс
+    this.discount = discount; // скидка
+}
+
+//Услуга
+function Service(description, startTime, endTime, master, cost){
+    this.description = description; //название услуги
+    this.startTime = startTime; //время начала оказания услуги
+    this.endTime = endTime; //время конца оказания услуги
+    this.master = master; //мастера, оказывающий услугу
+    this.cost = cost; //стоимость
+}
+
+//мастер
+function Master(firstName, middleName, lastName){
+    this.firstName = firstName;//имя
+    this.middleName = middleName;// отчество
+    this.lastName = lastName;//фамилия
 }
 
 function getData() {
