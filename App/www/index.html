@@ -51,6 +51,18 @@
    See http://app-framework-software.intel.com/documentation.php#afui/afui_jquery
   -->
 <!-- content goes here-->
+<!--   
+   You may substitute jQuery for the App Framework selector library.
+   See http://app-framework-software.intel.com/documentation.php#afui/afui_jquery
+  -->
+<!--    <script src="js/highcharts/modules/exporting.js"></script>-->
+<!-- content goes here-->
+<!--   
+   You may substitute jQuery for the App Framework selector library.
+   See http://app-framework-software.intel.com/documentation.php#afui/afui_jquery
+  -->
+<!--    <script src="js/highcharts/modules/exporting.js"></script>-->
+<!-- content goes here-->
 
 <head>
     <link rel="stylesheet" type="text/css" href="media_button_bar/css/media_button_bar.css">
@@ -301,7 +313,22 @@
                 </header>
 
                 <div id="Chartsub" class="upage-content ">
-                       <div class="Graphic" items="data"></div>
+
+                    <div class="grid grid-pad urow uib_row_9" data-uib="layout/row" data-ver="0">
+                        <div class="col uib_col_17 col-0_12-12" data-uib="layout/col" data-ver="0">
+                            <div class="widget-container content-area vertical-col">
+
+                                <div class="button-grouped flex widget uib_w_24 d-margins" data-uib="app_framework/button_group" data-ver="1">
+                                    <a class="button widget uib_w_25 d-margins" data-uib="app_framework/button" data-ver="1">3 месяца</a>
+                                    <a class="button widget uib_w_26 d-margins" data-uib="app_framework/button" data-ver="1">6 месяцев</a>
+                                    <a class="button widget uib_w_27 d-margins" data-uib="app_framework/button" data-ver="1">12 месяцев</a>
+                                </div>
+                                <span class="uib_shim"></span>
+                            </div>
+                        </div>
+                        <span class="uib_shim"></span>
+                    </div>
+                    <div class="Graphic" items="data"></div>
                 </div>
             </div>
         </div>

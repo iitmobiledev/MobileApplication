@@ -11,6 +11,12 @@ function getGoodData() {
     return goodData.sort();
 }
 
+//function loadChart() {
+//    var div = document.getElementById("Chartsub");
+//    div.innerHTML = "<div class=\"Graphic\" items=\"data\"></div>";
+//    console.log("work!!!")
+//}
+
 //контроллер, получающий данные для отрисовки графика
 myApp.controller('GraphicController', function ($scope) {
     $scope.data = getGoodData();
@@ -25,13 +31,13 @@ myApp.directive('Graphic', function () {
         scope: {
             items: '='
         },
-//        controller: function ($scope, $element, $attrs) {
-//           height:100%;width:100%;position:absolute;
-//        },
+        //        controller: function ($scope, $element, $attrs) {
+        //           height:100%;width:100%;position:absolute;
+        //        },
         template: '<div id="container" style="height:100%;width:100%;position:absolute;">not working</div>',
         link: function (scope, element, attrs) {
             console.log(3);
-//            intel.xdk.device.setRotateOrientation("landscape");
+            //            intel.xdk.device.setRotateOrientation("landscape");
             var chart = new Highcharts.Chart({
                 chart: {
                     renderTo: 'container',
