@@ -15,7 +15,7 @@ myApp.factory('OperationalStatisticLoader', function () {
         }
         return manyData;
     };
-})
+});
 
 
 //сервис для загрузки финансовой статистики за сегодня
@@ -23,4 +23,15 @@ myApp.factory('FinanceStatisticsLoader', function () {
     return function () {
         return new getFinanceStatistics();
     };
-})
+});
+
+//сервис для загрузки данных о расходах
+myApp.factory('ExpendituresLoader', function () {
+    return function (neededDate) {
+        var getedData = getExpenditures();
+        getedData = getedData.filter(function (d){
+            return (d.date == neededDate);
+        });
+        return getedData;
+    };
+});

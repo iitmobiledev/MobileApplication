@@ -14,9 +14,9 @@ function FinanceStatistics(tillMoney, morningMoney, credit, debit) {
 }
 
 //Расходы
-function Expenditures(date, costList) {
+function Expenditures(date, expenditureList) {
     this.date = date; //дата, за которые получаем расходы
-    this.costList = costList; //список расходов
+    this.expenditureList = expenditureList; //список расходов
 }
 
 //Статья расходов
@@ -75,4 +75,19 @@ function getData() {
 
 function getFinanceStatistics() {
     return new FinanceStatistics(13000, 1000, 5000, -2000);
+}
+
+function getExpenditures()
+{
+    var expList = [];
+    var expItemsList = [];
+    expItemsList.push(new ExpenditureItem("Покупка расходных материалов", -1500));
+    expItemsList.push(new ExpenditureItem("Выплата дворнику", -500));
+    expList.push(new Expenditures(new Date(2014, 6, 9), expItemsList));
+    
+    expItemsList = [];
+    expItemsList.push(new ExpenditureItem("Покупка расходных материалов", -1500));
+    expItemsList.push(new ExpenditureItem("Покупка нового кресла", -5000));
+    expList.push(new Expenditures(new Date(2014, 6, 8), expItemsList));
+    return expList;
 }
