@@ -1,23 +1,27 @@
 //контроллер отвечающий за загрузку 4  плиток и переключателей между периодами
-myApp.controller('OperationalStatisticController', function ($scope, OperationalStatisticLoader, $filter, $routeParams) {
-//    $scope.step = 1;
-//    $scope.date = new Date();
-//    
+myApp.controller('OperationalStatisticController', function ($scope, OperationalStatisticLoader,
+    $routeParams) {
+    var date, step, endDay;
     if ($routeParams.period)
-        $scope.step = $routeParams.period;
+        step = $routeParams.period;
     else
-        $scope.step = 1;
+        step = 1;
 
-    if ($routeParams.day)
-    {        
-        $scope.date = new Date($routeParams.day);
-        $scope.date = new Date($scope.date.getFullYear(), $scope.date.getMonth(),
-                               parseInt($scope.date.getDate(),10) + parseInt($scope.step,10));
-    }
-    else
-        $scope.date = new Date();
+    if ($routeParams.day) {
+        date = new Date($routeParams.day);
+        date = new Date(date.getFullYear(), date.getMonth(),
+            parseInt(date.getDate(), 10) + parseInt(step, 10));
+    } else
+        date = new Date();
     
-    $scope.data = getSumDataFromArray(OperationalStatisticLoader($scope.date, $scope.endDay));
+    if (Math.abs(step) == 1)
+        endDay = date;
+    else
+        endDay = new Date(date.getFullYear(), date.getMonth(), date.getDate() - step);
+    
+    console.log(date);
+    console.log(endDay);
+    $scope.data = getSumDataFromArray(OperationalStatisticLoader(date, endDay));
 });
 
 
