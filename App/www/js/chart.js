@@ -1,27 +1,33 @@
-function getGoodData() {
+function getGoodData(needValue) {
     var manyData = getData();
     var goodData = [];
     for (i = 0; i < manyData.length; i++) {
         var item = [];
         item.push(Date.UTC(manyData[i].date.getFullYear(), manyData[i].date.getMonth(), manyData[i].date.getDate()));
-        item.push(manyData[i].proceeds);
-        console.log(item[0] + "|" + item[1])
+        item.push(manyData[i][needValue]);
         goodData.push(item);
     }
     return goodData.sort();
 }
 
-//function loadChart() {
-//    var div = document.getElementById("Chartsub");
-//    div.innerHTML = "<div class=\"Graphic\" items=\"data\"></div>";
-//    console.log("work!!!")
-//}
-
 //контроллер, получающий данные для отрисовки графика
 myApp.controller('GraphicController', function ($scope, $routeParams) {
-    $scope.data = getGoodData();
-    //console.log($routeParams.step);
-    //$scope.step = $routeParams.step;
+    $scope.type = $routeParams.type;
+    $scope.data = getGoodData($scope.type);
+    $scope.yFormat = ' ';
+    switch ($scope.type) {
+    case 'proceeds':
+        $scope.yFormat = ' р.';
+        break;
+    case 'profit':
+        $scope.yFormat = ' р.';
+        break;
+    case 'workload':
+        $scope.yFormat = '%';
+        break;
+    default:
+        break;
+    }
 });
 
 
@@ -31,15 +37,15 @@ myApp.directive('Graphic', function () {
         restrict: 'C',
         replace: true,
         scope: {
-            items: '='
+            items: "=",
+            dimension: "=",
+            //            yFormat: "="
         },
-        //        controller: function ($scope, $element, $attrs) {
-        //           height:100%;width:100%;position:absolute;
-        //        },
-        template: '<div id="container" style="height:90%;width:100%;position:absolute;">not working</div>',
+        //style="height:100%;width:100%;position:relative;
+        template: '<div id="container">not working</div>',
         link: function (scope, element, attrs) {
-            console.log("i'm graphic!");
             intel.xdk.device.setRotateOrientation("landscape");
+            intel.xdk.device.setAutoRotate(false);
             var chart = new Highcharts.Chart({
                 chart: {
                     renderTo: 'container',
@@ -47,13 +53,12 @@ myApp.directive('Graphic', function () {
                     zoomType: 'x'
                 },
                 title: {
-                    text: 'Browser market shares at a specific website, 2010'
+                    text: ''
                 },
                 xAxis: {
                     type: 'datetime',
                     minRange: 3 * 24 * 3600000, // fourteen days
                     dateTimeLabelFormats: { // don't display the dummy year
-
                         month: '%e %b %y'
                     },
                 },
@@ -67,10 +72,6 @@ myApp.directive('Graphic', function () {
                     shortMonths: ['Янв', 'Фев', 'Мар', 'Апр', 'Май', 'Июн', 'Июл', 'Авг', 'Сен', 'Окт', 'Ноя', 'Дек'],
                     weekdays: ['Воскресенье', 'Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота']
                 },
-                tooltip: {
-                    headerFormat: '',
-                    pointFormat: '{point.x:%e. %b}: {point.y:.2f}р.'
-                },
                 legend: {
                     enabled: false
                 },
@@ -80,9 +81,20 @@ myApp.directive('Graphic', function () {
             }]
 
             });
+
+            //            console.log($("#container").width() + "|" + $("#container").height());
+            //            chart.setSize($("#container").width(), $("#container").height(), true);
+            chart.tooltip.options.formatter = function () {
+                var s = '<b>' + Highcharts.dateFormat('%e %b', this.x) + '</b>' + '<br>' + this.y + scope.yFormat;
+                return s;
+            }
+
+
             scope.$watch("items", function (newValue) {
+                //                console.log(scope.items)
                 chart.series[0].setData(newValue, true);
             }, true);
+
         }
     }
 });
