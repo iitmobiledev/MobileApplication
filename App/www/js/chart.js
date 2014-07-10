@@ -44,7 +44,8 @@ myApp.directive('Graphic', function () {
         //style="height:100%;width:100%;position:relative;
         template: '<div id="container">not working</div>',
         link: function (scope, element, attrs) {
-            //            intel.xdk.device.setRotateOrientation("landscape");
+            intel.xdk.device.setRotateOrientation("landscape");
+            intel.xdk.device.setAutoRotate(false);
             var chart = new Highcharts.Chart({
                 chart: {
                     renderTo: 'container',
@@ -81,8 +82,8 @@ myApp.directive('Graphic', function () {
 
             });
 
-//            console.log($("#container").width() + "|" + $("#container").height());
-//            chart.setSize($("#container").width(), $("#container").height(), true);
+            //            console.log($("#container").width() + "|" + $("#container").height());
+            //            chart.setSize($("#container").width(), $("#container").height(), true);
             chart.tooltip.options.formatter = function () {
                 var s = '<b>' + Highcharts.dateFormat('%e %b', this.x) + '</b>' + '<br>' + this.y + scope.yFormat;
                 return s;
