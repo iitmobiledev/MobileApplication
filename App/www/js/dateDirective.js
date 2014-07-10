@@ -1,10 +1,8 @@
-myApp.directive('dateChanger', function () {
+myApp.directive('dateChanger', function ($routeParams, $scope) {
     return {
          restrict: 'C',
-      // Этот HTML заменит директиву zippy.
-      replace: true,
+      replace: false,
       transclude: true,
-//      scope: { title:'@zippyTitle' },
       template: '<div class="grid urow uib_row_3 row-height-3 daysPadding" data-uib="layout/row" data-ver="0">' +
                                 '<div class="col uib_col_8 col-0_2-12_2-2" data-uib="layout/col" data-ver="0">' +
                                     '<div class="widget-container content-area vertical-col">' +
@@ -20,7 +18,7 @@ myApp.directive('dateChanger', function () {
                                             '<div class="widget-container left-receptacle"></div>'+
                                             '<div class="widget-container right-receptacle"></div>'+
                                             '<div>'+
-                                                '<p>{{ getTitle() }}</p>'+
+                                                '<p ng-model="getTitle()"></p>'+
                                             '</div>'+
                                         '</div>'+
                                         '<span class="uib_shim"></span>'+
@@ -33,6 +31,68 @@ myApp.directive('dateChanger', function () {
                                     '</div>'+
                                 '</div>'+
                                 '<span class="uib_shim"></span>'+
-                            '</div>'
+                            '</div>',
+        
+        link: function(scope, element, attrs) {
+            
+            var date = new Date(attrs.dateChanger);
+            var endDay;
+
+//            getDataForSelectPeriod();
+//            function getDataForSelectPeriod() {
+//                if (Math.abs($scope.step) == 1)
+//                    return dataForDay();
+//                if (Math.abs($scope.step) == 7)
+//                    return dataForWeek();
+//                if (Math.abs($scope.step) == 30)
+//                    return dataForMonth();
+//            }
+//            
+//            $scope.forDay = dataForDay;
+//
+//            $scope.forWeek = dataForWeek;
+//
+//            $scope.forMonth = dataForMonth;
+
+            function dataForDay() {
+                $scope.step = 1;
+                endDay = date;
+                $scope.data = getSumDataFromArray(OperationalStatisticLoader(date, endDay));
+            };
+
+            function dataForWeek() {
+                $scope.step = 7;
+                endDay = new Date(date.getFullYear(), date.getMonth(), date.getDate() - 7);
+                $scope.data = getSumDataFromArray(OperationalStatisticLoader(date, endDay));
+            };
+
+            function dataForMonth() {
+                $scope.step = 30;
+                endDay = new Date(date.getFullYear(), date.getMonth() - 1, date.getDate());
+                $scope.data = getSumDataFromArray(OperationalStatisticLoader(date, endDay));
+            };
+
+            activeButtonHandling();
+
+            $scope.hasPreviousData = function () {
+                return true;
+            };
+
+            $scope.hasFutureData = function () {
+                if (date > new Date().setDate(new Date().getDate() - 1)) {
+                    return false;
+                } else {
+                    return true;
+                }
+            };
+            
+                $scope.getTitle = function () {
+                    if (date == endDay) {
+                        return $filter('date')(date, "dd.MM.yyyy");
+                    } else {
+                        return $filter('date')(endDay, "dd.MM.yyyy") + " - " + $filter('date')(date, "dd.MM.yyyy");
+                    }
+                };
+        }
     }
 })

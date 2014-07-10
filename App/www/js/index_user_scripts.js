@@ -48,8 +48,6 @@ myApp.config(['$routeProvider', function($routeProvider) {
         }]);
 
 
-
-
     (function () {
         "use strict";
 
