@@ -1,0 +1,35 @@
+ <header class="container-group inner-element uib_w_23" data-uib="app_framework/header" data-ver="1" id="chart-header">
+                        <h1>Настройки</h1>
+                    </header>
+
+                    <div id="settingssub" class="upage-content" ng-controller="SettingsController">
+
+                        <div class="grid grid-pad urow uib_row_11 row-height-11" data-uib="layout/row" data-ver="0">
+                            <div class="col uib_col_21 col-0_12-12" data-uib="layout/col" data-ver="0">
+                                <div class="widget-container content-area vertical-col">
+
+                                    <div class="widget uib_w_33 d-margins" data-uib="media/text" data-ver="0">
+                                        <div class="widget-container left-receptacle">
+                                            <p></p>
+                                            <h3>{{user.firstName}}  {{user.middleName}} {{user.lastName}}</h3>
+                                            <p></p>
+                                            <p>{{user.email}}</p>
+                                        </div>
+                                        <div class="widget-container right-receptacle"></div>
+
+                                    </div><span class="uib_shim"></span>
+                                </div>
+                            </div>
+                            <span class="uib_shim"></span>
+                        </div>
+
+                        <div class="grid grid-pad urow uib_row_12 row-height-12" data-uib="layout/row" data-ver="0">
+                            <div class="col uib_col_22 col-0_12-12 toBottom" data-uib="layout/col" data-ver="0">
+                                <div class="widget-container content-area vertical-col">
+
+                                    <a class="button widget uib_w_32 d-margins" data-uib="app_framework/button" data-ver="1" ng-click="exit()">Выход</a><span class="uib_shim"></span>
+                                </div>
+                            </div>
+                            <span class="uib_shim"></span>
+                        </div>
+                    </div>

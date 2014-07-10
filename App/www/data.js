@@ -59,6 +59,14 @@ function Master(firstName, middleName, lastName){
     this.lastName = lastName;//фамилия
 }
 
+//Пользователь
+function User(firstName, middleName, lastName, email){
+    this.firstName = firstName;//имя
+    this.middleName = middleName;// отчество
+    this.lastName = lastName;//фамилия
+    this.email = email;//почта
+}
+
 function getData() {
     var manyData = [];
     manyData.push(new OperationalStatistics(new Date(2014, 6, 8), 3300, 1000, 5, 40, 5000, 3000, 2500, -300));
@@ -90,4 +98,8 @@ function getExpenditures()
     expItemsList.push(new ExpenditureItem("Покупка нового кресла", -5000));
     expList.push(new Expenditures(new Date(2014, 6, 8), expItemsList));
     return expList;
+}
+
+function getCurrentUser(){
+    return new User("Анна", "Петровна", "Касатникова", "kasatnik@gmail.com");
 }

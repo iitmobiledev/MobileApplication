@@ -18,8 +18,10 @@ function getGoodData() {
 //}
 
 //контроллер, получающий данные для отрисовки графика
-myApp.controller('GraphicController', function ($scope) {
+myApp.controller('GraphicController', function ($scope, $routeParams) {
     $scope.data = getGoodData();
+    //console.log($routeParams.step);
+    //$scope.step = $routeParams.step;
 });
 
 
@@ -36,7 +38,7 @@ myApp.directive('Graphic', function () {
         //        },
         template: '<div id="container" style="height:90%;width:100%;position:absolute;">not working</div>',
         link: function (scope, element, attrs) {
-            console.log(3);
+            console.log("i'm graphic!");
             intel.xdk.device.setRotateOrientation("landscape");
             var chart = new Highcharts.Chart({
                 chart: {

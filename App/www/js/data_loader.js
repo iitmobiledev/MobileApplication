@@ -35,3 +35,11 @@ myApp.factory('ExpendituresLoader', function () {
         return getedData;
     };
 });
+
+//сервис для загрузки данных о текущем пользователе
+myApp.factory('UserLoader', function () {
+    return function () {
+        var user = getCurrentUser();
+        return user;
+    };
+});
