@@ -1,6 +1,8 @@
 //контроллер отвечающий за загрузку 4  плиток и переключателей между периодами
 myApp.controller('OperationalStatisticController', function ($scope, OperationalStatisticLoader,
     $routeParams) {
+    intel.xdk.device.setAutoRotate(true);
+    intel.xdk.device.setRotateOrientation("portrait");
     var date, step, endDay;
     if ($routeParams.period)
         step = $routeParams.period;
@@ -13,12 +15,12 @@ myApp.controller('OperationalStatisticController', function ($scope, Operational
             parseInt(date.getDate(), 10) + parseInt(step, 10));
     } else
         date = new Date();
-    
+
     if (Math.abs(step) == 1)
         endDay = date;
     else
         endDay = new Date(date.getFullYear(), date.getMonth(), date.getDate() - step);
-    
+
     console.log(date);
     console.log(endDay);
     $scope.data = getSumDataFromArray(OperationalStatisticLoader(date, endDay));

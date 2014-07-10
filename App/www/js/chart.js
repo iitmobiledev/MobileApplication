@@ -14,6 +14,7 @@ function getGoodData(needValue) {
 myApp.controller('GraphicController', function ($scope, $routeParams) {
     $scope.type = $routeParams.type;
     $scope.data = getGoodData($scope.type);
+    $scope.step
     $scope.yFormat = ' ';
     switch ($scope.type) {
     case 'proceeds':
@@ -42,7 +43,7 @@ myApp.directive('Graphic', function () {
             //            yFormat: "="
         },
         //style="height:100%;width:100%;position:relative;
-        template: '<div id="container">not working</div>',
+        template: '<div id="container" style="height:100%;">not working</div>',
         link: function (scope, element, attrs) {
             intel.xdk.device.setRotateOrientation("landscape");
             intel.xdk.device.setAutoRotate(false);
@@ -50,7 +51,10 @@ myApp.directive('Graphic', function () {
                 chart: {
                     renderTo: 'container',
                     type: 'spline',
-                    zoomType: 'x'
+                    zoomType: 'x',
+                    width: $("#content").width(),
+                    height: $("#content").height()
+
                 },
                 title: {
                     text: ''
@@ -82,9 +86,16 @@ myApp.directive('Graphic', function () {
 
             });
 
-            //            console.log($("#container").width() + "|" + $("#container").height());
-            //            chart.setSize($("#container").width(), $("#container").height(), true);
+
+            //            setTimeout(function(){
+            ////                 console.log($("#container").width() + "|" + $("#container").height());
+            ////                $("#container").css('border','solid 1px green');
+            //                chart.setSize($("#content").width(), $("#content").height(), true);
+            //            },1000)
+            //                        chart.setSize($("#container").width(), $("#container").height(), true);
+
             chart.tooltip.options.formatter = function () {
+                console.log("scope:", JSON.stringify(scope));
                 var s = '<b>' + Highcharts.dateFormat('%e %b', this.x) + '</b>' + '<br>' + this.y + scope.yFormat;
                 return s;
             }
