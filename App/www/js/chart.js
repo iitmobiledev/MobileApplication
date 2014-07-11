@@ -1,16 +1,18 @@
-function getGoodData(needValue) {
-    var manyData = getData();
-    var goodData = [];
-    for (i = 0; i < manyData.length; i++) {
-        var item = [];
-        item.push(Date.UTC(manyData[i].date.getFullYear(), manyData[i].date.getMonth(), manyData[i].date.getDate()));
-        item.push(manyData[i][needValue]);
-        goodData.push(item);
-    }
-    return goodData.sort();
-}
+var format = ' '
 
-//контроллер, получающий данные для отрисовки графика
+    function getGoodData(needValue) {
+        var manyData = getData();
+        var goodData = [];
+        for (i = 0; i < manyData.length; i++) {
+            var item = [];
+            item.push(Date.UTC(manyData[i].date.getFullYear(), manyData[i].date.getMonth(), manyData[i].date.getDate()));
+            item.push(manyData[i][needValue]);
+            goodData.push(item);
+        }
+        return goodData.sort();
+    }
+
+    //контроллер, получающий данные для отрисовки графика
 myApp.controller('GraphicController', function ($scope, $routeParams) {
     $scope.type = $routeParams.type;
     $scope.data = getGoodData($scope.type);
@@ -29,6 +31,11 @@ myApp.controller('GraphicController', function ($scope, $routeParams) {
     default:
         break;
     }
+    $scope.setFormat = function () {
+        format = $scope.yFormat;
+        //        console.log($scope.yFormat);
+    };
+    $scope.setFormat();
 });
 
 
@@ -42,7 +49,6 @@ myApp.directive('Graphic', function () {
             dimension: "=",
             //            yFormat: "="
         },
-        //style="height:100%;width:100%;position:relative;
         template: '<div id="container" style="height:100%;">not working</div>',
         link: function (scope, element, attrs) {
             intel.xdk.device.setRotateOrientation("landscape");
@@ -68,7 +74,7 @@ myApp.directive('Graphic', function () {
                 },
                 yAxis: {
                     title: {
-                        text: ''
+                        text: scope.yFormat,
                     },
                 },
                 lang: {
@@ -86,17 +92,9 @@ myApp.directive('Graphic', function () {
 
             });
 
-
-            //            setTimeout(function(){
-            ////                 console.log($("#container").width() + "|" + $("#container").height());
-            ////                $("#container").css('border','solid 1px green');
-            //                chart.setSize($("#content").width(), $("#content").height(), true);
-            //            },1000)
-            //                        chart.setSize($("#container").width(), $("#container").height(), true);
-
             chart.tooltip.options.formatter = function () {
-                console.log("scope:", JSON.stringify(scope));
-                var s = '<b>' + Highcharts.dateFormat('%e %b', this.x) + '</b>' + '<br>' + this.y + scope.yFormat;
+                //                console.log("scope:" + scope.yFormat);
+                var s = '<b>' + Highcharts.dateFormat('%e %b', this.x) + '</b>' + '<br>' + this.y + format;
                 return s;
             }
 

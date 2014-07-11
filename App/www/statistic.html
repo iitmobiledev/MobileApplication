@@ -1,31 +1,23 @@
+<div class="upage-content" id="mainsub">
+    <div id="statisticPanel">
+        <div class="grid grid-pad urow uib_row_2 row-height-1" data-uib="layout/row" data-ver="0">
+            <div class="col uib_col_5 col-0_12-12" data-uib="layout/col" data-ver="0">
+                <div class="widget-container content-area vertical-col">
 
-        <header class="container-group inner-element uib_w_19" data-uib="app_framework/header" data-ver="1" id="af-header-0">
-            <h1>Салон красоты</h1>
-            <div class="widget-container wrapping-col single-centered"></div>
-            <div class="widget-container content-area horiz-area wrapping-col left"></div>
-            <div class="widget-container content-area horiz-area wrapping-col right"></div>
-        </header>
-
-        <div class="upage-content" id="mainsub">
-            <div id="statisticPanel">
-                <div class="grid grid-pad urow uib_row_2 row-height-1" data-uib="layout/row" data-ver="0">
-                    <div class="col uib_col_5 col-0_12-12" data-uib="layout/col" data-ver="0">
-                        <div class="widget-container content-area vertical-col">
-
-                            <div class="button-grouped widget uib_w_4 d-margins flex" data-uib="app_framework/button_group" data-ver="1">
-                                <a class="button widget uib_w_5 d-margins gray" data-uib="app_framework/button" data-ver="1" ng-click="forDay()" id="buttonForDay" style="border-left-width: 1px; border-left-style: solid; border-left-color: rgb(102, 102, 102); border-top-left-radius: 6px; border-bottom-left-radius: 6px;">За день</a>
-                                <a class="button widget uib_w_6 d-margins gray" data-uib="app_framework/button" data-ver="1" ng-click="forWeek()" id="buttonForWeek">За неделю</a>
-                                <a class="button widget uib_w_7 d-margins gray" data-uib="app_framework/button" data-ver="1" ng-click="forMonth()" id="buttonForMonth" style="border-top-right-radius: 6px; border-bottom-right-radius: 6px;">За месяц</a>
-                            </div>
-                            <span class="uib_shim"></span>
-                        </div>
+                    <div class="button-grouped widget uib_w_4 d-margins flex" data-uib="app_framework/button_group" data-ver="1">
+                        <a class="button widget uib_w_5 d-margins gray" data-uib="app_framework/button" data-ver="1" ng-click="forDay()" id="buttonForDay" style="border-left-width: 1px; border-left-style: solid; border-left-color: rgb(102, 102, 102); border-top-left-radius: 6px; border-bottom-left-radius: 6px;">За день</a>
+                        <a class="button widget uib_w_6 d-margins gray" data-uib="app_framework/button" data-ver="1" ng-click="forWeek()" id="buttonForWeek">За неделю</a>
+                        <a class="button widget uib_w_7 d-margins gray" data-uib="app_framework/button" data-ver="1" ng-click="forMonth()" id="buttonForMonth" style="border-top-right-radius: 6px; border-bottom-right-radius: 6px;">За месяц</a>
                     </div>
                     <span class="uib_shim"></span>
                 </div>
+            </div>
+            <span class="uib_shim"></span>
+        </div>
 
-                <div class="date-changer" step="step"></div>
+        <div class="date-changer" step="step"></div>
 
-                <!--
+        <!--
                             <div class="grid urow uib_row_3 row-height-3 daysPadding" data-uib="layout/row" data-ver="0">
                                 <div class="col uib_col_8 col-0_2-12_2-2" data-uib="layout/col" data-ver="0">
                                     <div class="widget-container content-area vertical-col">
@@ -58,124 +50,124 @@
                                 <span class="uib_shim"></span>
                             </div>-->
 
-                <form class="grid urow uib_row_4 row-height-4 tablePadding" data-uib="layout/row" data-ver="0">
+        <form class="grid urow uib_row_4 row-height-4 tablePadding" data-uib="layout/row" data-ver="0">
 
-                    <a href="#/chart/proceeds/" class="col uib_col_9 col-0_6-12 cell" data-uib="layout/col" data-ver="0">
-                        <div class="widget-container content-area vertical-col">
-                            <div class="widget uib_w_16 d-margins text" data-uib="media/text" data-ver="0" id="clientsText">
-                                <div class="widget-container left-receptacle"></div>
-                                <div class="widget-container right-receptacle"></div>
-                                <div>
-                                    <p>Выручка за день</p>
-                                    <h3>{{data.proceeds}} р.</h3>
-                                </div>
-                            </div>
-                            <span class="uib_shim"></span>
+            <a href="#/chart/proceeds/" class="col uib_col_9 col-0_6-12 cell" data-uib="layout/col" data-ver="0">
+                <div class="widget-container content-area vertical-col">
+                    <div class="widget uib_w_16 d-margins text" data-uib="media/text" data-ver="0" id="clientsText">
+                        <div class="widget-container left-receptacle"></div>
+                        <div class="widget-container right-receptacle"></div>
+                        <div>
+                            <p>Выручка за день</p>
+                            <h3>{{data.proceeds}} р.</h3>
                         </div>
-                    </a>
-
-                    <a href="#/chart/profit" class="col uib_col_10 col-0_6-12 cell" data-uib="layout/col" data-ver="0">
-                        <!--                                <div class="col uib_col_10 col-0_6-12 cell" data-uib="layout/col" data-ver="0">-->
-                        <div class="widget-container content-area vertical-col">
-                            <div class="widget uib_w_16 d-margins text" data-uib="media/text" data-ver="0" id="clientsText">
-                                <div class="widget-container left-receptacle"></div>
-                                <div class="widget-container right-receptacle"></div>
-                                <div>
-                                    <p>Прибыль</p>
-                                    <p></p>
-                                    <h3>{{data.profit}} р.</h3>
-                                    <p></p>
-                                </div>
-                            </div>
-                            <span class="uib_shim"></span>
-                        </div>
-                        <!--                                </div>-->
-                        <span class="uib_shim"></span>
-                    </a>
-                </form>
-
-                <div class="grid urow uib_row_6 tablePadding row-height-4" data-uib="layout/row" data-ver="0">
-                    <a href="#/chart/clients" class="col uib_col_12 col-0_6-12 cell" data-uib="layout/col" data-ver="0">
-                        <div class="widget-container content-area vertical-col">
-                            <div class="widget uib_w_16 d-margins text" data-uib="media/text" data-ver="0" id="clientsText">
-                                <div class="widget-container left-receptacle"></div>
-                                <div class="widget-container right-receptacle"></div>
-                                <div>
-                                    <p>Клиентов</p>
-                                    <p></p>
-                                    <h3>{{data.clients}}</h3>
-                                    <p></p>
-                                </div>
-                            </div>
-                            <span class="uib_shim"></span>
-                        </div>
-                    </a>
-
-                    <!--                            <div class="col uib_col_13 col-0_6-12 cell" data-uib="layout/col" data-ver="0">-->
-                    <a href="#/chart/workload" class="col uib_col_13 col-0_6-12 cell" data-uib="layout/col" data-ver="0">
-                        <div class="widget-container content-area vertical-col">
-                            <div class="widget uib_w_17 d-margins text" data-uib="media/text" data-ver="0" id="workLoadText">
-                                <div class="widget-container left-receptacle"></div>
-                                <div class="widget-container right-receptacle"></div>
-                                <div>
-                                    <p>Загруженность</p>
-                                    <p></p>
-                                    <h3>{{data.workload}}%</h3>
-                                    <p></p>
-                                </div>
-                            </div>
-                            <span class="uib_shim"></span>
-                        </div>
-                    </a>
-                    <!--                            </div>-->
+                    </div>
                     <span class="uib_shim"></span>
                 </div>
+            </a>
 
-            </div>
-
-            <div class="grid grid-pad urow uib_row_7 row-height-7" data-uib="layout/row" data-ver="0" ng-controller="FinanceStatisticsController">
-                <div class="col uib_col_14 col-0_6-12" data-uib="layout/col" data-ver="0">
-                    <div class="widget-container content-area vertical-col">
-
-                        <div class="widget uib_w_11 d-margins header3" data-uib="media/text" data-ver="0" id="cashOnHand">
-                            <div class="widget-container left-receptacle"></div>
-                            <div class="widget-container right-receptacle"></div>
-                            <div>
-                                <p>Денег в кассе</p>
-                            </div>
+            <a href="#/chart/profit" class="col uib_col_10 col-0_6-12 cell" data-uib="layout/col" data-ver="0">
+                <!--                                <div class="col uib_col_10 col-0_6-12 cell" data-uib="layout/col" data-ver="0">-->
+                <div class="widget-container content-area vertical-col">
+                    <div class="widget uib_w_16 d-margins text" data-uib="media/text" data-ver="0" id="clientsText">
+                        <div class="widget-container left-receptacle"></div>
+                        <div class="widget-container right-receptacle"></div>
+                        <div>
+                            <p>Прибыль</p>
+                            <p></p>
+                            <h3>{{data.profit}} р.</h3>
+                            <p></p>
                         </div>
-                        <div class="widget uib_w_12 d-margins money" data-uib="media/text" data-ver="0" id="cashOnHandValue">
-                            <div class="widget-container left-receptacle"></div>
-                            <div class="widget-container right-receptacle"></div>
-                            <div>
-                                <p>{{FinanceStatistics.tillMoney}} р.</p>
-                            </div>
+                    </div>
+                    <span class="uib_shim"></span>
+                </div>
+                <!--                                </div>-->
+                <span class="uib_shim"></span>
+            </a>
+        </form>
+
+        <div class="grid urow uib_row_6 tablePadding row-height-4" data-uib="layout/row" data-ver="0">
+            <a href="#/chart/clients" class="col uib_col_12 col-0_6-12 cell" data-uib="layout/col" data-ver="0">
+                <div class="widget-container content-area vertical-col">
+                    <div class="widget uib_w_16 d-margins text" data-uib="media/text" data-ver="0" id="clientsText">
+                        <div class="widget-container left-receptacle"></div>
+                        <div class="widget-container right-receptacle"></div>
+                        <div>
+                            <p>Клиентов</p>
+                            <p></p>
+                            <h3>{{data.clients}}</h3>
+                            <p></p>
                         </div>
-                        <span class="uib_shim"></span>
+                    </div>
+                    <span class="uib_shim"></span>
+                </div>
+            </a>
+
+            <!--                            <div class="col uib_col_13 col-0_6-12 cell" data-uib="layout/col" data-ver="0">-->
+            <a href="#/chart/workload" class="col uib_col_13 col-0_6-12 cell" data-uib="layout/col" data-ver="0">
+                <div class="widget-container content-area vertical-col">
+                    <div class="widget uib_w_17 d-margins text" data-uib="media/text" data-ver="0" id="workLoadText">
+                        <div class="widget-container left-receptacle"></div>
+                        <div class="widget-container right-receptacle"></div>
+                        <div>
+                            <p>Загруженность</p>
+                            <p></p>
+                            <h3>{{data.workload}}%</h3>
+                            <p></p>
+                        </div>
+                    </div>
+                    <span class="uib_shim"></span>
+                </div>
+            </a>
+            <!--                            </div>-->
+            <span class="uib_shim"></span>
+        </div>
+
+    </div>
+
+    <div class="grid grid-pad urow uib_row_7 row-height-7" data-uib="layout/row" data-ver="0" ng-controller="FinanceStatisticsController">
+        <div class="col uib_col_14 col-0_6-12" data-uib="layout/col" data-ver="0">
+            <div class="widget-container content-area vertical-col">
+
+                <div class="widget uib_w_11 d-margins header3" data-uib="media/text" data-ver="0" id="cashOnHand">
+                    <div class="widget-container left-receptacle"></div>
+                    <div class="widget-container right-receptacle"></div>
+                    <div>
+                        <p>Денег в кассе</p>
                     </div>
                 </div>
-
-                <div class="col uib_col_15 col-0_6-12" data-uib="layout/col" data-ver="0">
-                    <div class="widget-container content-area vertical-col">
-
-                        <div class="widget uib_w_13 d-margins" data-uib="media/text" data-ver="0">
-                            <div class="widget-container left-receptacle">
-                            </div>
-                            <div class="widget-container right-receptacle"></div>
-                            <div>
-                                <p>Утром: {{FinanceStatistics.morningMoney}}р.</p>
-                                <p>Приход: {{FinanceStatistics.credit}} р.</p>
-                                <a href="#Expenditures">
-                                    <p>Расход: {{FinanceStatistics.debit}} р.</p>
-                                </a>
-                            </div>
-                        </div>
-                        <span class="uib_shim"></span>
+                <div class="widget uib_w_12 d-margins money" data-uib="media/text" data-ver="0" id="cashOnHandValue">
+                    <div class="widget-container left-receptacle"></div>
+                    <div class="widget-container right-receptacle"></div>
+                    <div>
+                        <p>{{FinanceStatistics.tillMoney}} р.</p>
                     </div>
                 </div>
                 <span class="uib_shim"></span>
             </div>
         </div>
+
+        <div class="col uib_col_15 col-0_6-12" data-uib="layout/col" data-ver="0">
+            <div class="widget-container content-area vertical-col">
+
+                <div class="widget uib_w_13 d-margins" data-uib="media/text" data-ver="0">
+                    <div class="widget-container left-receptacle">
+                    </div>
+                    <div class="widget-container right-receptacle"></div>
+                    <div>
+                        <p>Утром: {{FinanceStatistics.morningMoney}}р.</p>
+                        <p>Приход: {{FinanceStatistics.credit}} р.</p>
+                        <a href="#Expenditures">
+                            <p>Расход: {{FinanceStatistics.debit}} р.</p>
+                        </a>
+                    </div>
+                </div>
+                <span class="uib_shim"></span>
+            </div>
+        </div>
+        <span class="uib_shim"></span>
+    </div>
+</div>
 
 <!-- /upage-content -->
 <!-- //<div class="footer"></div>-->
