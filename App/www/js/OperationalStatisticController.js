@@ -28,16 +28,19 @@ myApp.controller('OperationalStatisticController', function ($scope, Operational
     });
 
     $scope.forDay = function () {
+        $scope.date = new Date();
         $scope.step = 1;
         getDataForSelectPeriod();
     };
 
     $scope.forWeek = function () {
+        $scope.date = new Date();
         $scope.step = 7;
         getDataForSelectPeriod();
     };
 
     $scope.forMonth = function () {
+        $scope.date = new Date();
         $scope.step = 30;
         getDataForSelectPeriod();
     };

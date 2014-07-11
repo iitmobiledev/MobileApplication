@@ -26,6 +26,10 @@ function dateChangerController($scope, $filter) {
     };
 
     $scope.getDate = function () {
+        return updateDate();
+    };
+
+    function updateDate() {
         if ($scope.date == $scope.endDay) {
             $scope.getTitle = function () {
                 return updateTitle();
@@ -36,7 +40,7 @@ function dateChangerController($scope, $filter) {
             return $filter('date')($scope.endDay, "dd.MM.yyyy") + " - " +
                 $filter('date')($scope.date, "dd.MM.yyyy");
         }
-    };
+    }
 
     function updateTitle() {
         var today = new Date();
@@ -47,6 +51,15 @@ function dateChangerController($scope, $filter) {
             return "За вчера";
     }
 
+    $('#mainsub').on('swipeLeft', function () {
+        alert('Вы провели по странице влево');
+        $scope.setD($scope.date.getDate() - $scope.step);
+    });
+    
+    $('#mainsub').on('swipeRight', function () {
+        alert('Вы провели по странице вправо');
+        $scope.setD($scope.date.getDate() + $scope.step);
+    });
 
 };
 
