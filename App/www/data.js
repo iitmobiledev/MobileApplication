@@ -69,6 +69,8 @@ function User(firstName, middleName, lastName, email){
 
 function getData() {
     var manyData = [];
+    manyData.push(new OperationalStatistics(new Date(2013, 12, 30), 3300, 1000, 5, 80, 5000, 10000, 2500, -300));
+    manyData.push(new OperationalStatistics(new Date(2014, 3, 10), 3300, 1000, 5, 80, 5000, 10000, 2500, -300));
     manyData.push(new OperationalStatistics(new Date(2014, 6, 8), 3300, 1000, 5, 80, 5000, 10000, 2500, -300));
     manyData.push(new OperationalStatistics(new Date(2014, 6, 6), 1000, 3000, 12, 70, 5000, 3000, 2500, -500));
     manyData.push(new OperationalStatistics(new Date(2014, 6, 5), 2000, 1000, 20, 15, 7000, 9000, 1500, +5050));

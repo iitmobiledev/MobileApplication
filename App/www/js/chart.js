@@ -1,13 +1,17 @@
 var format = ' '
 
-    function getGoodData(needValue) {
+    function getGoodData(needValue, period) {
         var manyData = getData();
         var goodData = [];
+        var nowDay = new Date();
+        var endDay = new Date(nowDay.getFullYear(), nowDay.getMonth() - period, nowDay.getDate());
         for (i = 0; i < manyData.length; i++) {
-            var item = [];
-            item.push(Date.UTC(manyData[i].date.getFullYear(), manyData[i].date.getMonth(), manyData[i].date.getDate()));
-            item.push(manyData[i][needValue]);
-            goodData.push(item);
+            if (manyData[i].date > endDay && manyData[i].date < nowDay) {
+                var item = [];
+                item.push(Date.UTC(manyData[i].date.getFullYear(), manyData[i].date.getMonth(), manyData[i].date.getDate()));
+                item.push(manyData[i][needValue]);
+                goodData.push(item);
+            }
         }
         return goodData.sort();
     }
@@ -15,8 +19,9 @@ var format = ' '
     //контроллер, получающий данные для отрисовки графика
 myApp.controller('GraphicController', function ($scope, $routeParams) {
     $scope.type = $routeParams.type;
-    $scope.data = getGoodData($scope.type);
-    $scope.step
+    $scope.period = 3;
+    $scope.data = getGoodData($scope.type, $scope.period);
+    $scope.step;
     $scope.yFormat = ' ';
     switch ($scope.type) {
     case 'proceeds':
@@ -36,6 +41,14 @@ myApp.controller('GraphicController', function ($scope, $routeParams) {
         //        console.log($scope.yFormat);
     };
     $scope.setFormat();
+    
+    $scope.changePeriod = function (p) {
+        $scope.period = p;
+    };
+
+    $scope.$watch('period', function (newValue) {
+        $scope.data = getGoodData($scope.type, $scope.period);
+    });
 });
 
 
@@ -44,11 +57,6 @@ myApp.directive('Graphic', function () {
     return {
         restrict: 'C',
         replace: true,
-        scope: {
-            items: "=",
-            dimension: "=",
-            //            yFormat: "="
-        },
         template: '<div id="container" style="height:100%;">not working</div>',
         link: function (scope, element, attrs) {
             intel.xdk.device.setRotateOrientation("landscape");
@@ -99,8 +107,7 @@ myApp.directive('Graphic', function () {
             }
 
 
-            scope.$watch("items", function (newValue) {
-                //                console.log(scope.items)
+            scope.$watch("data", function (newValue) {
                 chart.series[0].setData(newValue, true);
             }, true);
 
