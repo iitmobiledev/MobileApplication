@@ -1,6 +1,8 @@
 //контроллер отвечающий за загрузку 4  плиток и переключателей между периодами
 myApp.controller('OperationalStatisticController', function ($scope, OperationalStatisticLoader) {
-
+    //     $("#home").attr("data-header","af-header-0");
+    intel.xdk.device.setRotateOrientation("portrait");
+    intel.xdk.device.setAutoRotate(false);
     $scope.date = new Date();
     $scope.step = 1;
     $scope.dateIsChange = false;
@@ -32,14 +34,14 @@ myApp.controller('OperationalStatisticController', function ($scope, Operational
 
     $scope.forWeek = function () {
         $scope.step = 7;
-         getDataForSelectPeriod();
+        getDataForSelectPeriod();
     };
 
     $scope.forMonth = function () {
         $scope.step = 30;
         getDataForSelectPeriod();
     };
-    
+
     getDataForSelectPeriod();
 
     function getDataForSelectPeriod() {
