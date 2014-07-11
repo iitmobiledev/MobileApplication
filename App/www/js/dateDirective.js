@@ -1,44 +1,14 @@
-function forExampleController($scope, $filter, $routeParams) {
-    console.log("dhdrdy");
-    if ($routeParams.period)
-        $scope.step = $routeParams.period;
-    else
-        $scope.step = 1;
-
-    if ($routeParams.day) {
-        $scope.date = new Date($routeParams.day);
-        $scope.date = new Date($scope.date.getFullYear(), $scope.date.getMonth(),
-            parseInt($scope.date.getDate(), 10) + parseInt($scope.step, 10));
-    } else
-        $scope.date = new Date();
-
-    getDataForSelectPeriod();
-
-    function getDataForSelectPeriod() {
-        if (Math.abs($scope.step) == 1)
-            return dataForDay();
-        if (Math.abs($scope.step) == 7)
-            return dataForWeek();
-        if (Math.abs($scope.step) == 30)
-            return dataForMonth();
+function dateChangerController($scope, $filter) {
+    //функция для кнопки вперед
+    //изменяет дату на один день вперед
+    $scope.forward = function () {
+        $scope.setD($scope.date.getDate() + $scope.step);
     };
 
-    function dataForDay() {
-        $scope.step = 1;
-        $scope.endDay = $scope.date;
-        //$scope.data = getSumDataFromArray(OperationalStatisticLoader(date, endDay));
-    };
-
-    function dataForWeek() {
-        $scope.step = 7;
-        $scope.endDay = new Date($scope.date.getFullYear(), $scope.date.getMonth(), $scope.date.getDate() - 7);
-        //$scope.data = getSumDataFromArray(OperationalStatisticLoader(date, endDay));
-    };
-
-    function dataForMonth() {
-        $scope.step = 30;
-        $scope.endDay = new Date($scope.date.getFullYear(), $scope.date.getMonth() - 1, $scope.date.getDate());
-        //$scope.data = getSumDataFromArray(OperationalStatisticLoader(date, endDay));
+    //функция для кнопки назад
+    //изменяет дату на один день назад
+    $scope.back = function () {
+        $scope.setD($scope.date.getDate() - $scope.step);
     };
 
     activeButtonHandling();
@@ -54,18 +24,28 @@ function forExampleController($scope, $filter, $routeParams) {
             return true;
         }
     };
-
-    $scope.getTitle = function () {
+    
+    $scope.getDate = function(){
         if ($scope.date == $scope.endDay) {
             return $filter('date')($scope.date, "dd.MM.yyyy");
-        } else {
-            return $filter('date')($scope.endDay, "dd.MM.yyyy") + " - " + $filter('date')($scope.date,
-                "dd.MM.yyyy");
+        } 
+        else {
+            return $filter('date')($scope.endDay, "dd.MM.yyyy") + " - " +
+                $filter('date')($scope.date, "dd.MM.yyyy");
         }
     };
-}
 
-myApp.directive('dateChanger', function ($routeParams, $filter) {
+    $scope.getTitle = function () {
+        var today = new Date();
+        var yesterday = new Date(today.getFullYear(), today.getMonth(), today.getDate()-1);
+        if ($scope.date.toDateString() == today.toDateString())
+            return "За сегодня";
+        if ($scope.date.toDateString() == yesterday.toDateString())
+            return "За вчера";
+    };
+};
+
+myApp.directive('dateChanger', function ($filter) {
     return {
         restrict: 'C',
         replace: true,
@@ -148,12 +128,12 @@ myApp.directive('dateChanger', function ($routeParams, $filter) {
         //                }
         //            };
         //        },
-        template: '<div ng-controller="forExampleController">' +
+        template: '<div ng-controller="dateChangerController">' +
             '<div class="grid urow uib_row_3 row-height-3 daysPadding" data-uib="layout/row" data-ver="0">' +
             '<div class="col uib_col_8 col-0_2-12_2-2" data-uib="layout/col" data-ver="0">' +
             '<div class="widget-container content-area vertical-col">' +
 
-        '<a href="#/index/{{-step}}/{{date.toString()}}" class="button widget uib_w_8 smallNavigationButton d-margins icon left" ng-show="hasPreviousData()" data-uib="app_framework/button" data-ver="1" id="PrevDay"></a>' +
+        '<a class="button widget uib_w_8 smallNavigationButton d-margins icon left" ng-show="hasPreviousData()" data-uib="app_framework/button" data-ver="1" id="PrevDay" ng-click="back()"></a>' +
             '<span class="uib_shim"></span>' +
             '</div>' +
             '</div>' +
@@ -164,7 +144,8 @@ myApp.directive('dateChanger', function ($routeParams, $filter) {
             '<div class="widget-container left-receptacle"></div>' +
             '<div class="widget-container right-receptacle"></div>' +
             '<div>' +
-            '<p> {{getTitle()}}</p>' +
+            '<p>{{getTitle()}}<p>' +
+            '<p>{{getDate()}}</p>' +
             '</div>' +
             '</div>' +
             '<span class="uib_shim"></span>' +
@@ -172,7 +153,7 @@ myApp.directive('dateChanger', function ($routeParams, $filter) {
             '</div>' +
             '<div class="col uib_col_6 col-0_2-12_2-10" data-uib="layout/col" data-ver="0">' +
             '<div class="widget-container content-area vertical-col">' +
-            '<a href="#/index/{{step}}/{{date.toString()}}" class="button widget uib_w_8 smallNavigationButton d-margins icon right" data-uib="app_framework/button" data-ver="1" id="NextDay" ng-show="hasFutureData()"></a>' +
+            '<a class="button widget uib_w_8 smallNavigationButton d-margins icon right" data-uib="app_framework/button" data-ver="1" id="NextDay" ng-show="hasFutureData()" ng-click="forward()"></a>' +
             '<span class="uib_shim"></span>' +
             '</div>' +
             '</div>' +
