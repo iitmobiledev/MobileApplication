@@ -51,8 +51,6 @@
 
     (function () {
         "use strict";
-        intel.xdk.device.setAutoRotate(true);
-        intel.xdk.device.setRotateOrientation("portrait");
         //        document.addEventListener("intel.xdk.device.ready", function () {
         //            //lock the application in portrait orientation
         //            intel.xdk.device.setRotateOrientation("landscape");

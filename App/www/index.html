@@ -1,93 +1,93 @@
 <!DOCTYPE html>
 <!--HTML5 doctype-->
 <html>
-<!--   
-   You may substitute jQuery for the App Framework selector library.
-   See http://app-framework-software.intel.com/documentation.php#afui/afui_jquery
-  -->
-<!--    <script src="js/highcharts/modules/exporting.js"></script>-->
-<!-- content goes here-->
-<!--   
-   You may substitute jQuery for the App Framework selector library.
-   See http://app-framework-software.intel.com/documentation.php#afui/afui_jquery
-  -->
-<!--    <script src="js/highcharts/modules/exporting.js"></script>-->
-<!-- content goes here-->
-<!--   
-   You may substitute jQuery for the App Framework selector library.
-   See http://app-framework-software.intel.com/documentation.php#afui/afui_jquery
-  -->
-<!--    <script src="js/highcharts/modules/exporting.js"></script>-->
-<!-- content goes here-->
-
-<head>
-    <link rel="stylesheet" type="text/css" href="media_button_bar/css/media_button_bar.css">
-    <meta charset="UTF-8">
-    <link rel="stylesheet" type="text/css" href="app_framework/2.1/css/af.ui.min.css">
-    <link rel="stylesheet" type="text/css" href="app_framework/2.1/css/icons.min.css">
-    <link rel="stylesheet" type="text/css" href="css/index_main.less.css" class="main-less">
-    <title>Your New Application</title>
-    <meta http-equiv="Content-type" content="text/html; charset=utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=0">
-    <style type="text/css">
-        /* Prevent copy paste for all elements except text fields */
-        * {
-            -webkit-user-select: none;
-            -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
-        }
-        input,
-        textarea {
-            -webkit-user-select: text;
-        }
-    </style>
-    <script src="intelxdk.js"></script>
-    <script type="text/javascript">
-        /* Intel native bridge is available */
-        var onDeviceReady = function() {
-            //hide splash screen
-            intel.xdk.device.hideSplashScreen();
-        };
-        document.addEventListener("intel.xdk.device.ready", onDeviceReady, false);
-    </script>
     <!--   
    You may substitute jQuery for the App Framework selector library.
    See http://app-framework-software.intel.com/documentation.php#afui/afui_jquery
   -->
-    <script type="application/javascript" src="app_framework/2.1/appframework.js"></script>
-    <script type="application/javascript" src="app_framework/2.1/appframework.ui.js" data-ver="1"></script>
-    <script src="cordova.js"></script>
-    <script src="angular.js"></script>
-    <script src="data.js"></script>
-    <script type="application/javascript" src="js/jquery.min.js"></script>
-    <script type="application/javascript" src="js/index_user_scripts.js"></script>
-    <script src="js/data_loader.js"></script>
-    <script src="js/OperationalStatisticController.js"></script>
-    <script src="js/FinanceStatisticsController.js"></script>
-    <script src="js/SettingsController.js"></script>
-    <script src="js/highcharts/highcharts.js"></script>
     <!--    <script src="js/highcharts/modules/exporting.js"></script>-->
-    <script src="js/chart.js"></script>
-    <script src="js/angular-route.js"></script>
-    <script src="js/dateDirective.js"></script>
-</head>
-
-<body id="afui" ng-app="myApp">
-
     <!-- content goes here-->
-    <div class="uwrap" id="content">
-        <div class="upage panel" id="home" data-header="af-header-0" data-footer="af-footer-0">
-            <div class="upage-outer">
-                <div ng-view></div>
-                <footer class="inner-element uib_w_22" data-uib="app_framework/footer" data-ver="1" id="af-footer-0">
-                    <a class="icon calendar" href="#/index">Отчетность</a>
-                    <a class="icon clock" href="#/visits">Визиты</a>
-                    <a class="icon settings" href="#/settings">Настройки</a>
-                </footer>
+    <!--   
+   You may substitute jQuery for the App Framework selector library.
+   See http://app-framework-software.intel.com/documentation.php#afui/afui_jquery
+  -->
+    <!--    <script src="js/highcharts/modules/exporting.js"></script>-->
+    <!-- content goes here-->
+    <!--   
+   You may substitute jQuery for the App Framework selector library.
+   See http://app-framework-software.intel.com/documentation.php#afui/afui_jquery
+  -->
+    <!--    <script src="js/highcharts/modules/exporting.js"></script>-->
+    <!-- content goes here-->
+
+    <head>
+        <link rel="stylesheet" type="text/css" href="media_button_bar/css/media_button_bar.css">
+        <meta charset="UTF-8">
+        <link rel="stylesheet" type="text/css" href="app_framework/2.1/css/af.ui.min.css">
+        <link rel="stylesheet" type="text/css" href="app_framework/2.1/css/icons.min.css">
+        <link rel="stylesheet" type="text/css" href="css/index_main.less.css" class="main-less">
+        <title>Your New Application</title>
+        <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=0">
+        <style type="text/css">
+            /* Prevent copy paste for all elements except text fields */
+            * {
+                -webkit-user-select: none;
+                -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
+            }
+            input,
+            textarea {
+                -webkit-user-select: text;
+            }
+        </style>
+        <script src="intelxdk.js"></script>
+        <script type="text/javascript">
+            /* Intel native bridge is available */
+            var onDeviceReady = function() {
+                //hide splash screen
+                intel.xdk.device.hideSplashScreen();
+            };
+            document.addEventListener("intel.xdk.device.ready", onDeviceReady, false);
+        </script>
+        <!--   
+   You may substitute jQuery for the App Framework selector library.
+   See http://app-framework-software.intel.com/documentation.php#afui/afui_jquery
+  -->
+        <script type="application/javascript" src="app_framework/2.1/appframework.js"></script>
+        <script type="application/javascript" src="app_framework/2.1/appframework.ui.js" data-ver="1"></script>
+        <script src="cordova.js"></script>
+        <script src="angular.js"></script>
+        <script src="data.js"></script>
+        <script type="application/javascript" src="js/jquery.min.js"></script>
+        <script type="application/javascript" src="js/index_user_scripts.js"></script>
+        <script src="js/data_loader.js"></script>
+        <script src="js/OperationalStatisticController.js"></script>
+        <script src="js/FinanceStatisticsController.js"></script>
+        <script src="js/SettingsController.js"></script>
+        <script src="js/highcharts/highcharts.js"></script>
+        <!--    <script src="js/highcharts/modules/exporting.js"></script>-->
+        <script src="js/chart.js"></script>
+        <script src="js/angular-route.js"></script>
+        <script src="js/dateDirective.js"></script>
+    </head>
+
+    <body id="afui" ng-app="myApp" >
+
+        <!-- content goes here-->
+        <div class="uwrap" id="content" style="border: solid 3px orange;">
+            <div class="upage panel" id="home" data-header="af-header-0" data-footer="af-footer-0">
+                <div class="upage-outer">
+                    <div ng-view></div>
+                    <footer class="inner-element uib_w_22" data-uib="app_framework/footer" data-ver="1" id="af-footer-0">
+                        <a class="icon calendar" href="#/index">Отчетность</a>
+                        <a class="icon clock" href="#/visits">Визиты</a>
+                        <a class="icon settings" href="#/settings">Настройки</a>
+                    </footer>
+                </div>
+                
             </div>
-
-        </div>
-
-        <!--
+            
+<!--
             <div class="upage panel" id="settings" data-header="af-header-0" data-footer="af-footer-0">
                 <div class="upage-outer">
 
@@ -97,7 +97,7 @@
                  /upage-outer 
             </div>
 -->
-        <!--
+<!--
             <div class="upage panel" id="visits" data-header="af-header-0 " data-footer="af-footer-0 ">
                 <div class="upage-outer ">
                     <div id="visitssub" class="upage-content">
@@ -108,10 +108,10 @@
             </div>
 -->
 
-        <!-- /upage -->
+            <!-- /upage -->
 
-    </div>
-    <!-- /uwrap -->
-</body>
+        </div>
+        <!-- /uwrap -->
+    </body>
 
 </html>
