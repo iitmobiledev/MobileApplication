@@ -3,6 +3,7 @@ myApp.controller('OperationalStatisticController', function ($scope, Operational
     $("#home").prop("data-header", "af-header-0");
     intel.xdk.device.setRotateOrientation("portrait");
     intel.xdk.device.setAutoRotate(false);
+    
     $scope.date = new Date();
     $scope.step = 1;
     $scope.dateIsChange = false;
@@ -23,7 +24,6 @@ myApp.controller('OperationalStatisticController', function ($scope, Operational
 
     $scope.$watch('dateIsChange', function () {
         $scope.dateIsChange = false;
-        console.log("date watcher " + $scope.date);
         getDataForSelectPeriod();
     });
 

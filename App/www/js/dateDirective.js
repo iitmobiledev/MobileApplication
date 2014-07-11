@@ -1,8 +1,8 @@
-function dateChangerController($scope, $filter) {
+function dateChangerController($scope, $filter, $location) {
     //функция для кнопки вперед
     //изменяет дату на один день вперед
     $scope.forward = function () {
-        $scope.setD($scope.date.getDate() + $scope.step);
+    $scope.setD($scope.date.getDate() + $scope.step);
     };
 
     //функция для кнопки назад
@@ -18,7 +18,8 @@ function dateChangerController($scope, $filter) {
     };
 
     $scope.hasFutureData = function () {
-        if ($scope.date > new Date().setDate(new Date().getDate() - 1)) {
+        if ($scope.date.toDateString() == new Date().toDateString())//.setDate(new Date().getDate() - 1))
+        {
             return false;
         } else {
             return true;
@@ -51,14 +52,15 @@ function dateChangerController($scope, $filter) {
             return "За вчера";
     }
 
-    $('#mainsub').on('swipeLeft', function () {
-        alert('Вы провели по странице влево');
-        $scope.setD($scope.date.getDate() - $scope.step);
-    });
     
+     $('#mainsub').on('swipeLeft' , function () {
+         $scope.forward();
+         $scope.$parent.$apply();
+    });
+
     $('#mainsub').on('swipeRight', function () {
-        alert('Вы провели по странице вправо');
-        $scope.setD($scope.date.getDate() + $scope.step);
+         $scope.back();
+        $scope.$parent.$apply();
     });
 
 };
@@ -150,8 +152,7 @@ myApp.directive('dateChanger', function ($filter) {
             '<div class="grid urow uib_row_3 row-height-3 daysPadding" data-uib="layout/row" data-ver="0">' +
             '<div class="col uib_col_8 col-0_2-12_2-2" data-uib="layout/col" data-ver="0">' +
             '<div class="widget-container content-area vertical-col">' +
-
-        '<a class="button widget uib_w_8 smallNavigationButton d-margins icon left" ng-show="hasPreviousData()" data-uib="app_framework/button" data-ver="1" id="PrevDay" ng-click="back()"></a>' +
+            '<a class="button widget uib_w_8 smallNavigationButton d-margins icon left" ng-show="hasPreviousData()" data-uib="app_framework/button" data-ver="1" id="PrevDay" ng-click="back()"></a>' +
             '<span class="uib_shim"></span>' +
             '</div>' +
             '</div>' +
