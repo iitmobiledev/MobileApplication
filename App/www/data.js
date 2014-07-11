@@ -94,7 +94,7 @@ function getData() {
 }
 
 function getRandom(min, max) {
-    return Math.round(Math.random() * (max - min) + min) / 100;
+    return Math.round((Math.random() * (max - min) + min) *100 ) / 100;
 }
 
 
