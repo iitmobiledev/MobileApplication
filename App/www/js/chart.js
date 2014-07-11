@@ -38,10 +38,9 @@ myApp.controller('GraphicController', function ($scope, $routeParams) {
     }
     $scope.setFormat = function () {
         format = $scope.yFormat;
-        //        console.log($scope.yFormat);
     };
     $scope.setFormat();
-    
+
     $scope.changePeriod = function (p) {
         $scope.period = p;
     };
@@ -70,9 +69,6 @@ myApp.directive('Graphic', function () {
                     height: $("#content").height()
 
                 },
-                title: {
-                    text: ''
-                },
                 xAxis: {
                     type: 'datetime',
                     minRange: 3 * 24 * 3600000, // fourteen days
@@ -80,32 +76,47 @@ myApp.directive('Graphic', function () {
                         month: '%e %b %y'
                     },
                 },
-                yAxis: {
-                    title: {
-                        text: scope.yFormat,
-                    },
-                },
-                lang: {
-                    months: ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'],
-                    shortMonths: ['Янв', 'Фев', 'Мар', 'Апр', 'Май', 'Июн', 'Июл', 'Авг', 'Сен', 'Окт', 'Ноя', 'Дек'],
-                    weekdays: ['Воскресенье', 'Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота']
-                },
-                legend: {
-                    enabled: false
-                },
+//                lang: {
+//                    months: ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'],
+//                    shortMonths: ['Янв', 'Фев', 'Мар', 'Апр', 'Май', 'Июн', 'Июл', 'Авг', 'Сен', 'Окт', 'Ноя', 'Дек'],
+//                    weekdays: ['Воскресенье', 'Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота']
+//                },
+//                legend: {
+//                    enabled: false
+//                },
                 series: [{
-                    name: '',
-                    data: scope.data,
+                    name: 'df',
             }]
 
             });
 
             chart.tooltip.options.formatter = function () {
-                //                console.log("scope:" + scope.yFormat);
                 var s = '<b>' + Highcharts.dateFormat('%e %b', this.x) + '</b>' + '<br>' + this.y + format;
                 return s;
             }
 
+            scope.$watch("type", function (newValue) {
+                var title = '';
+                switch (newValue) {
+                case 'proceeds':
+                    title = 'Выручка';
+                    break;
+                case 'profit':
+                    title = 'Прибыль';
+                    break;
+                case 'clients':
+                    title = 'Клиенты';
+                    break;
+                case 'workload':
+                    title = 'Загруженность';
+                    break;
+                default:
+                    break;
+                }
+                chart.setTitle({
+                    text: title
+                }, true);
+            }, true);
 
             scope.$watch("data", function (newValue) {
                 chart.series[0].setData(newValue, true);
