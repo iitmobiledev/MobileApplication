@@ -87,7 +87,7 @@ function getData() {
         manyData.push(new OperationalStatistics(new Date(nowDay.getFullYear(), nowDay.getMonth(), nowDay.getDate() - i),
                 a,
                 a - getRandom(200, 5000),
-                getRandom(3, 50),
+                Math.round(getRandom(3, 50)),
                 getRandom(50, 100)));
     }
     return manyData.sort();
