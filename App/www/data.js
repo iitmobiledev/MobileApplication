@@ -67,34 +67,24 @@ function User(firstName, middleName, lastName, email) {
     this.email = email; //почта
 }
 
-function getData() {
-    var manyData = [];
-    var nowDay = new Date();
-    //    manyData.push(new OperationalStatistics(new Date(2013, 11, 30), 3300, 1000, 5, 80, 5000, 10000, 2500, -300));
-    //    manyData.push(new OperationalStatistics(new Date(2014, 3, 10), 3300, 1000, 5, 80, 5000, 10000, 2500, -300));
-    //    manyData.push(new OperationalStatistics(new Date(2014, 6, 8), 3300, 1000, 5, 80, 5000, 10000, 2500, -300));
-    //    manyData.push(new OperationalStatistics(new Date(2014, 6, 6), 1000, 3000, 12, 70, 5000, 3000, 2500, -500));
-    //    manyData.push(new OperationalStatistics(new Date(2014, 6, 5), 2000, 1000, 20, 15, 7000, 9000, 1500, +5050));
-    //    manyData.push(new OperationalStatistics(new Date(2014, 6, 4), 5000, 7000, 15, 85, 3000, 1000, 500, -5400));
-    //    manyData.push(new OperationalStatistics(new Date(2014, 6, 3), 2500, 500, 13, 60, 6000, 2000, 1700, +2100));
-    //    manyData.push(new OperationalStatistics(new Date(2014, 6, 2), 4444, 3500, 10, 45, 900, 3500, 4500, -10000));
-    //    manyData.push(new OperationalStatistics(new Date(2014, 6, 7), 5555, 3500, 10, 45, 900, 3500, 4500, -10000));
-    //    manyData.push(new OperationalStatistics(new Date(2014, 6, 1), 10000, 3500, 10, 45, 900, 3500, 4500, -1000));
 
-    
-    for (var i = 0; i < 300; i++) {
-        var a = getRandom(1000, 10000);
-        manyData.push(new OperationalStatistics(new Date(nowDay.getFullYear(), nowDay.getMonth(), nowDay.getDate() - i),
-                a,
-                a - getRandom(200, 5000),
-                Math.round(getRandom(3, 50)),
-                getRandom(50, 100)));
-    }
+var manyData = [];
+var nowDay = new Date();
+for (var i = 0; i < 300; i++) {
+    var a = getRandom(1000, 10000);
+    manyData.push(new OperationalStatistics(new Date(nowDay.getFullYear(), nowDay.getMonth(), nowDay.getDate() - i),
+        a,
+        getRandom(-1000, 5000),
+        Math.round(getRandom(3, 50)),
+        getRandom(50, 100)));
+}
+
+function getData() {
     return manyData.sort();
 }
 
 function getRandom(min, max) {
-    return Math.round((Math.random() * (max - min) + min) *100 ) / 100;
+    return Math.round((Math.random() * (max - min) + min) * 100) / 100;
 }
 
 
