@@ -1,45 +1,46 @@
-var format = ' '
-
-    function getGoodData(needValue, period) {
-        var manyData = getData();
-        var goodData = [];
-        var nowDay = new Date();
-        var endDay = new Date(nowDay.getFullYear(), nowDay.getMonth() - period, nowDay.getDate());
-        for (i = 0; i < manyData.length; i++) {
-            if (manyData[i].date > endDay && manyData[i].date < nowDay) {
-                var item = [];
-                item.push(Date.UTC(manyData[i].date.getFullYear(), manyData[i].date.getMonth(), manyData[i].date.getDate()));
-                item.push(manyData[i][needValue]);
-                goodData.push(item);
-            }
+function getGoodData(needValue, period) {
+    var manyData = getData();
+    var goodData = [];
+    var nowDay = new Date();
+    var endDay = new Date(nowDay.getFullYear(), nowDay.getMonth() - period, nowDay.getDate());
+    for (i = 0; i < manyData.length; i++) {
+        if (manyData[i].date > endDay && manyData[i].date < nowDay) {
+            var item = [];
+            item.push(Date.UTC(manyData[i].date.getFullYear(), manyData[i].date.getMonth(), manyData[i].date.getDate()));
+            item.push(manyData[i][needValue]);
+            goodData.push(item);
         }
-        return goodData.sort();
     }
+    return goodData.sort();
+}
 
-    //контроллер, получающий данные для отрисовки графика
+//контроллер, получающий данные для отрисовки графика
 myApp.controller('GraphicController', function ($scope, $routeParams) {
     $scope.type = $routeParams.type;
     $scope.period = 3;
     $scope.data = getGoodData($scope.type, $scope.period);
     $scope.step;
-    $scope.yFormat = ' ';
+    $scope.title = '';
+    $scope.yFormat = '';
     switch ($scope.type) {
     case 'proceeds':
-        $scope.yFormat = ' р.';
+        $scope.yFormat = ' руб.';
+        $scope.title = 'Выручка';
         break;
     case 'profit':
-        $scope.yFormat = ' р.';
+        $scope.yFormat = ' руб.';
+        $scope.title = 'Прибыль';
+        break;
+    case 'clients':
+        $scope.title = 'Клиенты';
         break;
     case 'workload':
         $scope.yFormat = '%';
+        $scope.title = 'Загруженность';
         break;
     default:
         break;
     }
-    $scope.setFormat = function () {
-        format = $scope.yFormat;
-    };
-    $scope.setFormat();
 
     $scope.changePeriod = function (p) {
         $scope.period = p;
@@ -60,6 +61,11 @@ myApp.directive('Graphic', function () {
         link: function (scope, element, attrs) {
             intel.xdk.device.setRotateOrientation("landscape");
             intel.xdk.device.setAutoRotate(false);
+            Highcharts.setOptions({
+                lang: {
+                    shortMonths: ['Янв', 'Фев', 'Мар', 'Апр', 'Май', 'Июн', 'Июл', 'Авг', 'Сен', 'Окт', 'Ноя', 'Дек'],
+                }
+            });
             var chart = new Highcharts.Chart({
                 chart: {
                     renderTo: 'container',
@@ -69,6 +75,9 @@ myApp.directive('Graphic', function () {
                     height: $("#content").height()
 
                 },
+                title: {
+                    text: scope.title,
+                },
                 xAxis: {
                     type: 'datetime',
                     minRange: 3 * 24 * 3600000, // fourteen days
@@ -76,48 +85,23 @@ myApp.directive('Graphic', function () {
                         month: '%e %b %y'
                     },
                 },
-//                lang: {
-//                    months: ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'],
-//                    shortMonths: ['Янв', 'Фев', 'Мар', 'Апр', 'Май', 'Июн', 'Июл', 'Авг', 'Сен', 'Окт', 'Ноя', 'Дек'],
-//                    weekdays: ['Воскресенье', 'Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота']
-//                },
-//                legend: {
-//                    enabled: false
-//                },
+                tooltip: {
+                    formatter: function () {
+                        return '<b>' + Highcharts.dateFormat('%b, %e', this.x) + '</b>' + '<br>' + this.y + scope.yFormat;
+                    }
+                },
+                yAxis: {
+                    title: {
+                        text: scope.yFormat,
+                    },
+                },
+                legend: {
+                    enabled: false,
+                },
                 series: [{
-                    name: 'df',
-            }]
-
+                    name: scope.title
+                }]
             });
-
-            chart.tooltip.options.formatter = function () {
-                var s = '<b>' + Highcharts.dateFormat('%e %b', this.x) + '</b>' + '<br>' + this.y + format;
-                return s;
-            }
-
-            scope.$watch("type", function (newValue) {
-                var title = '';
-                switch (newValue) {
-                case 'proceeds':
-                    title = 'Выручка';
-                    break;
-                case 'profit':
-                    title = 'Прибыль';
-                    break;
-                case 'clients':
-                    title = 'Клиенты';
-                    break;
-                case 'workload':
-                    title = 'Загруженность';
-                    break;
-                default:
-                    break;
-                }
-                chart.setTitle({
-                    text: title
-                }, true);
-            }, true);
-
             scope.$watch("data", function (newValue) {
                 chart.series[0].setData(newValue, true);
             }, true);
