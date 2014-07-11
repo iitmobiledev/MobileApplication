@@ -11,11 +11,7 @@
                 templateUrl: 'chart.html',
                 controller: 'GraphicController'
             }).
-            when('/index/:period/:day', {
-                templateUrl: 'statistic.html',
-                controller: 'OperationalStatisticController'
-            }).
-            when('/expenditures/:day', {
+            when('/expenditures', {
                 templateUrl: 'expenditures.html',
                 controller: 'ExpendituresController'
             }).
@@ -23,15 +19,11 @@
                 templateUrl: 'visits.html',
                 controller: 'VisitsController'
             }).
-            when('/visits/:sortType/:day', {
-                templateUrl: 'visits.html',
-                controller: 'VisitsController'
-            }).
-            when('/visits/visit', {
+            when('/visit', {
                 templateUrl: 'visit.html',
                 controller: 'VisitController'
             }).
-            when('/visits/master/:day', {
+            when('/master', {
                 templateUrl: 'master.html',
                 controller: 'MasterController'
             }).

@@ -24,25 +24,30 @@ function dateChangerController($scope, $filter) {
             return true;
         }
     };
-    
-    $scope.getDate = function(){
+
+    $scope.getDate = function () {
         if ($scope.date == $scope.endDay) {
+            $scope.getTitle = function () {
+                return updateTitle();
+            };
             return $filter('date')($scope.date, "dd.MM.yyyy");
-        } 
-        else {
+        } else {
+            $scope.getTitle = "";
             return $filter('date')($scope.endDay, "dd.MM.yyyy") + " - " +
                 $filter('date')($scope.date, "dd.MM.yyyy");
         }
     };
 
-    $scope.getTitle = function () {
+    function updateTitle() {
         var today = new Date();
-        var yesterday = new Date(today.getFullYear(), today.getMonth(), today.getDate()-1);
+        var yesterday = new Date(today.getFullYear(), today.getMonth(), today.getDate() - 1);
         if ($scope.date.toDateString() == today.toDateString())
             return "За сегодня";
         if ($scope.date.toDateString() == yesterday.toDateString())
             return "За вчера";
-    };
+    }
+
+
 };
 
 myApp.directive('dateChanger', function ($filter) {
