@@ -1,14 +1,24 @@
-function dateChangerController($scope, $filter, $location) {
+/**
+ * Контроллер для директивы dateChanger изменяет текущую дату.
+ * @requires $filter для отображения даты в читабельном виде
+ * @requires $scope для данных из своей и внешней области видимости
+*/
+function dateChangerController($scope, $filter) {
+    if (!$scope.step || !$scope.endDay){
+        $scope.step = 1;
+        $scope.endDay = $scope.date;
+    }
+    
     //функция для кнопки вперед
     //изменяет дату на один день вперед
     $scope.forward = function () {
-    $scope.setD($scope.date.getDate() + $scope.step);
+        $scope.setDate($scope.date.getDate() + $scope.step);
     };
 
     //функция для кнопки назад
     //изменяет дату на один день назад
     $scope.back = function () {
-        $scope.setD($scope.date.getDate() - $scope.step);
+        $scope.setDate($scope.date.getDate() - $scope.step);
     };
 
     activeButtonHandling();
@@ -18,12 +28,10 @@ function dateChangerController($scope, $filter, $location) {
     };
 
     $scope.hasFutureData = function () {
-        if ($scope.date.toDateString() == new Date().toDateString())//.setDate(new Date().getDate() - 1))
-        {
+        if ($scope.date.toDateString() == new Date().toDateString()) //.setDate(new Date().getDate() - 1))
             return false;
-        } else {
+        else
             return true;
-        }
     };
 
     $scope.getDate = function () {
@@ -51,27 +59,47 @@ function dateChangerController($scope, $filter, $location) {
         if ($scope.date.toDateString() == yesterday.toDateString())
             return "За вчера";
     }
-
     
-     $('#mainsub').on('swipeLeft' , function () {
-         $scope.forward();
-         $scope.$parent.$apply();
+    $('#mainsub').on('swipeLeft', function () {
+        $scope.forward();
+        $scope.$parent.$apply();
     });
 
     $('#mainsub').on('swipeRight', function () {
-         $scope.back();
+        $scope.back();
         $scope.$parent.$apply();
     });
 
 };
 
-myApp.directive('dateChanger', function ($filter) {
+/**
+ * Директива в идеале
+ * должна быть независима от внешнего контроллера.
+ * Изменение даты в директиве приводит к изменению
+ * даты во внешнем контроллере.
+*/
+
+
+/**
+ * Директива для изменения и отображения даты использует
+ * контроллер dateChangerController. Для работы этого контроллера
+ * необходимо наличие в области видимости внешнего
+ * контроллера функции setDate, которая изменяет дату, общую для
+ * обоих контроллеров. Если в области видимости внешнего
+ * контроллера находится переменная step, которая показывает
+ * с каким шагом изменяется дата, то дата будет изменяться и
+ * отображаться в виде промежутка равного этому шагу.
+ * Например, step=1, тогда дата изменяется по неделям и 
+ * отображается в виде 11.10.2014 - 18.10.2014.
+ * По умолчанию дата изменяется с шагом=1, т.е. по дням.
+ * @restrict C
+*/
+myApp.directive('dateChanger', function () {
     return {
         restrict: 'C',
         replace: true,
         transclude: true,
         //        link: function (scope, element, attrs) {
-        //            console.log("link");
         //            var step, date;
         //            if ($routeParams.period)
         //                step = $routeParams.period;
@@ -88,7 +116,6 @@ myApp.directive('dateChanger', function ($filter) {
         //            //console.log("step "+step);
         //
         //            getDataForSelectPeriod();
-        //
         //
         //            function getDataForSelectPeriod() {
         //                if (Math.abs(step) == 1)
@@ -138,8 +165,6 @@ myApp.directive('dateChanger', function ($filter) {
         //            };
         //
         //            function getTitle() {
-        //                console.log("jshj");
-        //                console.log(endDay);
         //                if (date == endDay) {
         //                    return $filter('date')(date, "dd.MM.yyyy");
         //                } else {

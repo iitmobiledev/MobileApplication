@@ -9,18 +9,10 @@ myApp.controller('OperationalStatisticController', function ($scope, Operational
     $scope.dateIsChange = false;
     $scope.endDay = $scope.date;
 
-    $scope.setD = function (value) {
+    $scope.setDate = function (value) {
         $scope.date.setDate(value);
         $scope.dateIsChange = true;
     };
-
-    $scope.setStep = function (value) {
-        $scope.step = value;
-    };
-
-    $scope.setEndDay = function (value) {
-        $scope.endDay = value;
-    }
 
     $scope.$watch('dateIsChange', function () {
         $scope.dateIsChange = false;
@@ -115,5 +107,5 @@ function getSumDataFromArray(dataArray) {
         workload += dataArray[i].workload;
     }
     workload = Math.round(workload / dataArray.length);
-    return new OperationalStatistics(date, proceeds, profit, clients, workload);
+    return new OperationalStatistics(date, Math.round(proceeds,2), Math.round(profit), clients, workload);
 }
