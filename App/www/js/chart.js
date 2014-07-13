@@ -16,6 +16,9 @@ function getGoodData(needValue, period) {
 
 //контроллер, получающий данные для отрисовки графика
 myApp.controller('GraphicController', function ($scope, $routeParams) {
+    $("#navbar").hide();
+
+
     $scope.type = $routeParams.type;
     $scope.period = 3;
     $scope.data = getGoodData($scope.type, $scope.period);
@@ -41,6 +44,11 @@ myApp.controller('GraphicController', function ($scope, $routeParams) {
     default:
         break;
     }
+    $("#headerContent").prop("title", "График " + $scope.title);
+    $("#headerContent").prop("show-back-button", "true")
+    $("#header").html($("#headerContent"));
+    $("#header").show();
+    
 
     //    intel.xdk.device.setRotateOrientation("landscape");
     //    intel.xdk.device.setAutoRotate(false);
@@ -60,75 +68,58 @@ myApp.directive('Graphic', function () {
     return {
         restrict: 'C',
         replace: true,
-        template: '<div id="container" style="height:10%;">not working</div>',
+        template: '<div id="container" style="height:100%;">not working</div>',
         link: function (scope, element, attrs) {
-            var chart;
-
-            //            var rotate = funcrion() {
+            $("#navbar").hide();
             intel.xdk.device.setRotateOrientation("landscape");
             intel.xdk.device.setAutoRotate(false);
-            //            }
+            Highcharts.setOptions({
+                lang: {
+                    shortMonths: ['Янв', 'Фев', 'Мар', 'Апр', 'Май', 'Июн', 'Июл', 'Авг', 'Сен', 'Окт', 'Ноя', 'Дек'],
+                }
+            });
+            var chart = new Highcharts.Chart({
+                chart: {
+                    renderTo: 'container',
+                    type: 'spline',
+                    zoomType: 'x',
+                    width: $("#content").width(),
+                    height: $("#content").height()
 
-            //            if (intel.xdk.device.orientation == "90" || intel.xdk.device.orientation == "-90") {
-
-
-            var drawChart = function () {
-                //                alert("test");
-                Highcharts.setOptions({
-                    lang: {
-                        shortMonths: ['Янв', 'Фев', 'Мар', 'Апр', 'Май', 'Июн', 'Июл', 'Авг', 'Сен', 'Окт', 'Ноя', 'Дек'],
+                },
+                title: {
+                    text: scope.title,
+                },
+                xAxis: {
+                    type: 'datetime',
+                    minRange: 3 * 24 * 3600000, // fourteen days
+                    dateTimeLabelFormats: { // don't display the dummy year
+                        month: '%e %b %y'
+                    },
+                },
+                tooltip: {
+                    formatter: function () {
+                        return '<b>' + Highcharts.dateFormat('%b, %e', this.x) + '</b>' + '<br>' + this.y + scope.yFormat;
                     }
-                });
-                chart = new Highcharts.Chart({
-                    chart: {
-                        renderTo: 'container',
-                        type: 'spline',
-                        zoomType: 'x',
-                        width: $("#content").width(),
-                        height: $("#content").height()
-
-                    },
+                },
+                yAxis: {
                     title: {
-                        text: scope.title,
+                        text: scope.yFormat,
                     },
-                    xAxis: {
-                        type: 'datetime',
-                        minRange: 3 * 24 * 3600000, // fourteen days
-                        dateTimeLabelFormats: { // don't display the dummy year
-                            month: '%e %b %y'
-                        },
-                    },
-                    tooltip: {
-                        formatter: function () {
-                            return '<b>' + Highcharts.dateFormat('%b, %e', this.x) + '</b>' + '<br>' + this.y + scope.yFormat;
-                        }
-                    },
-                    yAxis: {
-                        title: {
-                            text: scope.yFormat,
-                        },
-                    },
-                    legend: {
-                        enabled: false,
-                    },
-                    series: [{
-                        name: scope.title,
-                        data: scope.data
-                                         }]
-                });
-                //            }
-                //                alert("высота:" + chart.chartHeight);
-                //                alert("ширина:" + chart.chartWidth);
-            }
-
-
+                },
+                legend: {
+                    enabled: false,
+                },
+                series: [{
+                    name: scope.title
+                }]
+            });
             scope.$watch("data", function (newValue) {
                 chart.series[0].setData(newValue, true);
-                //                chart.setSize($("#content").width(), $("#content").height(), true);
             }, true);
 
 
-            document.addEventListener("intel.xdk.device.orientation.change", drawChart, false);
+            //            document.addEventListener("intel.xdk.device.orientation.change", drawChart, false);
 
 
 

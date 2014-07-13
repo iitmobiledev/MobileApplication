@@ -51,32 +51,35 @@
     <script src="js/chart.js"></script>
     <script src="js/angular-route.js"></script>
     <script src="js/dateDirective.js"></script>
+    <script src="js/HeaderDirective.js"></script>
 </head>
 
 <body id="afui" ng-app="myApp">
-
-
-    <header class="container-group inner-element uib_w_19" data-uib="app_framework/header" data-ver="1" id="af-header-0">
-        <h1>Салон красоты</h1>
-        <div class="widget-container wrapping-col single-centered"></div>
-        <div class="widget-container content-area horiz-area wrapping-col left"></div>
-        <div class="widget-container content-area horiz-area wrapping-col right"></div>
-    </header>
+     <div class="container-group inner-element uib_w_19" data-uib="app_framework/header" data-ver="1" id="header">
+        <div id="headerContent" class="headerContent" title="Салон красоты" show-back-button=true></div>
+    </div>
     <!-- content goes here-->
-    <div class="uwrap" id="content">  
-<!--         style="border: solid 5px green"-->
-        <div class="upage panel" id="home" data-header="none" data-footer="af-footer-0">
+    <div class="uwrap" id="content">
+        <!--         style="border: solid 5px green"-->
+        <div class="upage panel" id="home" data-header="none" data-footer="none">
             <div class="upage-outer">
                 <div ng-view></div>
             </div>
         </div>
 
     </div>
+    <div id="navbar" class="inner-element uib_w_22" data-uib="app_framework/footer" data-ver="1">
+        <a class="icon calendar" href="#/index">Отчетность</a>
+        <a class="icon clock" href="#/visits">Визиты</a>
+        <a class="icon settings" href="#/settings">Настройки</a>
+    </div>
+    <!--
     <footer class="inner-element uib_w_22" data-uib="app_framework/footer" data-ver="1" id="af-footer-0">
         <a class="icon calendar" href="#/index">Отчетность</a>
         <a class="icon clock" href="#/visits">Визиты</a>
         <a class="icon settings" href="#/settings">Настройки</a>
     </footer>
+-->
     <!-- /uwrap -->
 </body>
 
