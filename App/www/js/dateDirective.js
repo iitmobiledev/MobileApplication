@@ -2,13 +2,13 @@
  * Контроллер для директивы dateChanger изменяет текущую дату.
  * @requires $filter для отображения даты в читабельном виде
  * @requires $scope для данных из своей и внешней области видимости
-*/
+ */
 function dateChangerController($scope, $filter) {
-    if (!$scope.step || !$scope.endDay){
+    if (!$scope.step || !$scope.endDay) {
         $scope.step = 1;
         $scope.endDay = $scope.date;
     }
-    
+
     //функция для кнопки вперед
     //изменяет дату на один день вперед
     $scope.forward = function () {
@@ -59,15 +59,19 @@ function dateChangerController($scope, $filter) {
         if ($scope.date.toDateString() == yesterday.toDateString())
             return "За вчера";
     }
-    
+
     $('#mainsub').on('swipeLeft', function () {
-        $scope.forward();
-        $scope.$parent.$apply();
+        if ($scope.hasFutureData) {
+            $scope.forward();
+            $scope.$parent.$apply();
+        }
     });
 
     $('#mainsub').on('swipeRight', function () {
-        $scope.back();
-        $scope.$parent.$apply();
+        if ($scope.hasPreviousData) {
+            $scope.back();
+            $scope.$parent.$apply();
+        }
     });
 
 };
@@ -77,7 +81,7 @@ function dateChangerController($scope, $filter) {
  * должна быть независима от внешнего контроллера.
  * Изменение даты в директиве приводит к изменению
  * даты во внешнем контроллере.
-*/
+ */
 
 
 /**
@@ -89,11 +93,11 @@ function dateChangerController($scope, $filter) {
  * контроллера находится переменная step, которая показывает
  * с каким шагом изменяется дата, то дата будет изменяться и
  * отображаться в виде промежутка равного этому шагу.
- * Например, step=1, тогда дата изменяется по неделям и 
+ * Например, step=1, тогда дата изменяется по неделям и
  * отображается в виде 11.10.2014 - 18.10.2014.
  * По умолчанию дата изменяется с шагом=1, т.е. по дням.
  * @restrict C
-*/
+ */
 myApp.directive('dateChanger', function () {
     return {
         restrict: 'C',

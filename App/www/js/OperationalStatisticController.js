@@ -1,3 +1,5 @@
+//var myApp = angular.module('myApp', ['ngRoute']);
+
 //контроллер отвечающий за загрузку 4  плиток и переключателей между периодами
 myApp.controller('OperationalStatisticController', function ($scope, OperationalStatisticLoader) {
     $("#navbar").show();
