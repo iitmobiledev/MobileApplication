@@ -1,33 +1,22 @@
- myApp.controller('ExpendituresController', function ($scope, ExpendituresLoader) {
-    $scope.date = new Date();
-    $scope.hasPreviousData = function () {
-        return true;
-    };
+ myApp.controller('ExpendituresController', function ($scope, $filter, ExpendituresLoader) {
+     $scope.expenditure = ExpendituresLoader(new Date(2014, 6, 9))[0];
+ });
 
-    $scope.hasFutureData = function () {
-        if ($scope.date > new Date().setDate(new Date().getDate() - 1)) {
-            return false;
-        } else {
-            return true;
-        }
-    };
-
-    $scope.forward = function () {
-        $scope.date.setDate($scope.date.getDate() + $scope.step);
-        getDataForSelectPeriod();
-    };
-
-    $scope.back = function () {
-        $scope.date.setDate($scope.date.getDate() - $scope.step);
-        getDataForSelectPeriod();
-    };
-
-    $scope.getTitle = function () {
-        return $filter('date')($scope.date, "dd.MM.yyyy");
-    };
-    
-     $scope.getExpenditureList = function (){
-         $scope.expenditureList = ExpendituresLoader($scope.date);
+ myApp.directive('expList', function () {
+     return {
+         restrict: 'E',
+         replace: true,
+         transclude: true,
+         link: function (scope, element, attrs) {
+             var expPerDay = scope.expenditure;
+             for (var i = 0; i < expPerDay.expenditureList.length; i++) {
+                 $(element).append("<li><span>" + expPerDay.expenditureList[i].description +"</span><span style='float: right; text-align: right;'>" + expPerDay.expenditureList[i].cost +  "</span></li>");
+             }
+//             var el = $(element).hide().html();
+             
+              
+         },
+         template: '<ul class="list inset">' +
+             '</ul>'
      };
-         
  });
