@@ -44,12 +44,14 @@ function Client(firstName, middleName, lastName, phoneNumber, balance, discount)
 }
 
 //Услуга
-function Service(description, startTime, endTime, master, cost) {
+function Service(id, description, startTime, endTime, master, cost, status) {
+    this.id = id;
     this.description = description; //название услуги
     this.startTime = startTime; //время начала оказания услуги
     this.endTime = endTime; //время конца оказания услуги
     this.master = master; //мастера, оказывающий услугу
     this.cost = cost; //стоимость
+    this.status = status;
 }
 
 //мастер

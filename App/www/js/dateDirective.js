@@ -177,13 +177,13 @@ myApp.directive('dateChanger', function (GetPeriod, $filter) {
                 date.setDate(period.begin.getDate());
             }
 
-//            attrs.$observe('step', function () {
-//                console.log("step change in dir");
-//                var period = GetPeriod(date, step);
-//                date.setYear(period.begin.getFullYear());
-//                date.setMonth(period.begin.getMonth());
-//                date.setDate(period.begin.getDate());
-//            });
+            //            attrs.$observe('step', function () {
+            //                console.log("step change in dir");
+            //                var period = GetPeriod(date, step);
+            //                date.setYear(period.begin.getFullYear());
+            //                date.setMonth(period.begin.getMonth());
+            //                date.setDate(period.begin.getDate());
+            //            });
 
 
             //            scope.$watch('step', function(){
