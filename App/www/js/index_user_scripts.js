@@ -1,4 +1,4 @@
-var myApp = angular.module('myApp', ['ngRoute']);
+var myApp = angular.module('myApp', ['ngRoute', 'ngAnimate']);
 
 myApp.config(['$routeProvider',
     function ($routeProvider) {
@@ -43,6 +43,7 @@ myApp.config(['$routeProvider',
 
 (function () {
     "use strict";
+    $.ui.useInternalRouting = false;
     //        document.addEventListener("intel.xdk.device.ready", function () {
     //            //lock the application in portrait orientation
     //            intel.xdk.device.setRotateOrientation("landscape");

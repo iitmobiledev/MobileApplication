@@ -19,6 +19,7 @@ module.exports = function (config) {
             'data.js',
             'js/index_user_scripts.js',
             'js/OperationalStatisticController.js',
+            'js/chart.js',
             'js/dateDirective.js',
             'js/angular-mocks.js',
             'js/angular-route.js',

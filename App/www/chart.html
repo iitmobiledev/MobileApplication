@@ -1,13 +1,11 @@
+<header-content title="title" show-back-button="true" orientation="'landscape'"></header-content>
+<footer-content show="false"></footer-content>
 <div>
-<!--    style="height:100%;"-->
-<!--
-    <a href="#/index" class="button" id="backButton" style="position:absolute">Назад</a>
-    <div class="button-grouped flex widget uib_w_24 d-margins" data-uib="app_framework/button_group" data-ver="1" style="position:absolute;">
-        <a class="button widget uib_w_25 d-margins" data-uib="app_framework/button" data-ver="1">3 месяца</a>
-        <a class="button widget uib_w_26 d-margins" data-uib="app_framework/button" data-ver="1">6 месяцев</a>
-        <a class="button widget uib_w_27 d-margins" data-uib="app_framework/button" data-ver="1">12 месяцев</a>
+    <div class="button-grouped flex widget uib_w_24 d-margins" data-uib="app_framework/button_group" data-ver="1" style="position:absolute; margin:10px 10% 0 10%;  width:80%;">
+        <a ng-click="changePeriod(3)" class="button widget uib_w_25 d-margins" data-uib="app_framework/button" data-ver="1">3 месяца</a>
+        <a ng-click="changePeriod(6)" class="button widget uib_w_26 d-margins" data-uib="app_framework/button" data-ver="1">6 месяцев</a>
+        <a ng-click="changePeriod(9)" class="button widget uib_w_27 d-margins" data-uib="app_framework/button" data-ver="1">9 месяцев</a>
     </div>
--->
-    <div  class="Graphic" items="data" dimension="type"></div>
-<!--    yFormat="yFormat"-->
+    <div class="Graphic" items="data" dimension="type"></div>
+    <!--    yFormat="yFormat"-->
 </div>

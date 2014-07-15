@@ -1,0 +1,26 @@
+.view-animate {} .view-animate.ng-enter {
+    /*.view-animate.ng-leave {*/
+    -webkit-animation: scaleUp 0.15s both ease-in;
+    -moz-animation: scaleUp 0.15s both ease-in;
+    animation: scaleUp 0.15s both ease-in;
+}
+
+/* scale up */
+@keyframes scaleUp {
+    from {
+        opacity: 0.3;
+        -webkit-transform: scale(0.8);
+    }
+}
+@-moz-keyframes scaleUp {
+    from {
+        opacity: 0.3;
+        -moz-transform: scale(0.8);
+    }
+}
+@-webkit-keyframes scaleUp {
+    from {
+        opacity: 0.3;
+        -webkit-transform: scale(0.8);
+    }
+}
