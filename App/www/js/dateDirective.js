@@ -1,115 +1,7 @@
 /**
- * Контроллер для директивы dateChanger изменяет текущую дату.
- * @requires $filter для отображения даты в читабельном виде
- * @requires $scope для данных из своей и внешней области видимости
- */
-//function DateChangerController($scope, $filter) {
-//    var date = scope[attr.date];
-//    var step = scope[attr.step];
-//    var steps = scope[attr.steps];
-//
-//    //функция для кнопки вперед
-//    //изменяет дату на один день вперед
-//    $scope.forward = function () {
-//        $scope.setDate($scope.date.getDate() + $scope.step);
-//    };
-//
-//    //функция для кнопки назад
-//    //изменяет дату на один день назад
-//    $scope.back = function () {
-//        $scope.setDate($scope.date.getDate() - $scope.step);
-//    };
-//
-//    activeButtonHandling();
-//
-//    $scope.hasPreviousData = function () {
-//        return true;
-//    };
-//
-//    $scope.hasFutureData = function () {
-//        if ($scope.date.toDateString() == new Date().toDateString())
-//            return false;
-//        else
-//            return true;
-//    };
-//
-//    $scope.forDay = function () {
-//        $scope.step = 'day';
-//    };
-//
-//    $scope.forWeek = function () {
-//        $scope.step = 'week';
-//    };
-//
-//    $scope.forMonth = function () {
-//        $scope.step = 'month';
-//    };
-//
-//    $scope.getDate = function () {
-//        return updateDate();
-//    };
-//
-//    function updateDate() {
-//        if ($scope.date == $scope.endDay) {
-//            $scope.getTitle = function () {
-//                return updateTitle();
-//            };
-//            return $filter('date')($scope.date, "dd.MM.yyyy");
-//        } else {
-//            $scope.getTitle = function () {
-//                return "";
-//            };
-//            return $filter('date')($scope.endDay, "dd.MM.yyyy") + " - " +
-//                $filter('date')($scope.date, "dd.MM.yyyy");
-//        }
-//    }
-//
-//    function updateTitle() {
-//        var today = new Date();
-//        var yesterday = new Date(today.getFullYear(), today.getMonth(), today.getDate() - 1);
-//        if ($scope.date.toDateString() == today.toDateString())
-//            return "За сегодня";
-//        if ($scope.date.toDateString() == yesterday.toDateString())
-//            return "За вчера";
-//    }
-//
-//    $('#mainsub').on('swipeLeft', function () {
-//        if ($scope.hasFutureData) {
-//            $scope.forward();
-//            $scope.$parent.$apply();
-//        }
-//    });
-//
-//    $('#mainsub').on('swipeRight', function () {
-//        if ($scope.hasPreviousData) {
-//            $scope.back();
-//            $scope.$parent.$apply();
-//        }
-//    });
-//
-//};
-
-/**
- * Директива в идеале
- * должна быть независима от внешнего контроллера.
- * Изменение даты в директиве приводит к изменению
- * даты во внешнем контроллере.
- */
-
-
-/**
- * Директива для изменения и отображения даты использует
- * контроллер DateChangerController. Для работы этого контроллера
- * необходимо наличие в области видимости внешнего
- * контроллера функции setDate, которая изменяет дату, общую для
- * обоих контроллеров. Если в области видимости внешнего
- * контроллера находится переменная step, которая показывает
- * с каким шагом изменяется дата, то дата будет изменяться и
- * отображаться в виде промежутка равного этому шагу.
- * Например, step=1, тогда дата изменяется по неделям и
- * отображается в виде 11.10.2014 - 18.10.2014.
- * По умолчанию дата изменяется с шагом=1, т.е. по дням.
- * @restrict C
+ * Директива для изменения и отображения даты.
+ * @params {Date} date, {String} step из steps, {Array} steps.
+ * @restrict E
  */
 myApp.directive('dateChanger', function (GetPeriod, $filter) {
     return {
@@ -140,7 +32,6 @@ myApp.directive('dateChanger', function (GetPeriod, $filter) {
             scope.$watch(attrs.steps, updateSteps);
             updateSteps();
 
-
             scope.$watch('step', function () {
                 var period = GetPeriod(date, step);
                 date.setYear(period.begin.getFullYear());
@@ -149,6 +40,8 @@ myApp.directive('dateChanger', function (GetPeriod, $filter) {
                 $('#Date').html(function () {
                     return updateDateString();
                 });
+                updatePrevData();
+                updateFutureData();
             });
 
             var hasPrevData, hasPrevData;
@@ -162,7 +55,6 @@ myApp.directive('dateChanger', function (GetPeriod, $filter) {
             };
 
             var updateFutureData = function () {
-                console.log("date " + date);
                 var period = GetPeriod(date, step);
                 if (period.end > new Date() || period.end.toDateString() == new Date().toDateString())
                     hasFutureData = false;
@@ -283,7 +175,7 @@ myApp.directive('dateChanger', function (GetPeriod, $filter) {
 
             for (var i = 0; i < steps.length; i++) {
                 $("#periodButtons").append(
-                    $("<a/>", {
+                    $("<a>", {
                         "class": "button widget uib_w_6 d-margins gray",
                         "data-uib": "app_framework/button",
                         "data-ver": "1",
@@ -297,34 +189,6 @@ myApp.directive('dateChanger', function (GetPeriod, $filter) {
                     })
                 );
             }
-
-
-            //            '<a class="button widget uib_w_6 d-margins gray" data-uib="app_framework/button" data-ver="1" id="buttonForWeek">step[i]</a>'
-
-
-            //            $("#periodButtons").append('<a class="button widget uib_w_5 d-margins gray" data-uib="app_framework/button" data-ver="1" id="buttonForDay" style="border-left-width: 1px; border-left-style: solid; border-left-color: rgb(102, 102, 102); border-top-left-radius: 6px; border-bottom-left-radius: 6px;"></a>' +
-            //                    '<a class="button widget uib_w_6 d-margins gray" data-uib="app_framework/button" data-ver="1"  id="buttonForWeek"></a>' +
-            //                    '<a class="button widget uib_w_7 d-margins gray" data-uib="app_framework/button" data-ver="1"  id="buttonForMonth" style="border-top-right-radius: 6px; border-bottom-right-radius: 6px;"></a>');
-
-
-
-            //            $('#buttonForDay').html(steps[0]);
-            //            $('#buttonForWeek').html(steps[1]);
-            //            $('#buttonForMonth').html(steps[2]);
-
-
-            //            $('#buttonForDay').click(function () {
-            //                scope[attrs.step] = "day";
-            //                scope.$apply();
-            //            });
-            //            $('#buttonForWeek').click(function () {
-            //                scope[attrs.step] = "week";
-            //                scope.$apply();
-            //            });
-            //            $('#buttonForMonth').click(function () {
-            //                scope[attrs.step] = "month";
-            //                scope.$apply();
-            //            });
         },
         template: '<div>' +
             '<div id="periodChanger" class="grid grid-pad urow uib_row_2 row-height-1" data-uib="layout/row" data-ver="0">' +

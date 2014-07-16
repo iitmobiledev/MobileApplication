@@ -12,6 +12,7 @@ myApp.factory('OperationalStatisticLoader', function (GetPeriod, OperatonalStati
             });
         } else {
             var period = GetPeriod(date, step);
+            console.log("period.begin " + period.begin + " period.end " + period.end);
             allStatistic = allStatistic.filter(function (d) {
                 return (d.date <= period.end && d.date >= period.begin);
             });
@@ -32,9 +33,8 @@ myApp.factory('FinanceStatisticsLoader', function () {
 myApp.factory('ExpendituresLoader', function () {
     return function (neededDate) {
         var getedData = getExpenditures();
-        for (var i = 0; i < getedData.length; i++){
-            if (getedData[i].date.toDateString() == neededDate.toDateString())
-            {
+        for (var i = 0; i < getedData.length; i++) {
+            if (getedData[i].date.toDateString() == neededDate.toDateString()) {
                 return getedData[i].expenditureList;
             }
         }
@@ -83,6 +83,7 @@ myApp.factory('OperatonalStatisticsDataSumming', function () {
  */
 myApp.factory('GetPeriod', function () {
     return function (day, step) {
+        console.log("day in GetPeriod 84 "+day);
         var period = new function () {
                 switch (step) {
                 case 'day':
@@ -93,8 +94,9 @@ myApp.factory('GetPeriod', function () {
                     var weekDay = day.getDay() - 1; // для начала недели с понедельника
                     if (weekDay < 0)
                         weekDay = 6;
+                    console.log("weekDay "+weekDay);
                     this.begin = new Date(day.getFullYear(), day.getMonth(), day.getDate() - weekDay);
-                    this.end = new Date(day.getFullYear(), day.getMonth(), day.getDate() + 6);
+                    this.end = new Date(day.getFullYear(), day.getMonth(), this.begin.getDate() + 6);
                     break;
                 case 'month':
                     var begin = new Date(day.getFullYear(), day.getMonth(), 1);
@@ -105,5 +107,24 @@ myApp.factory('GetPeriod', function () {
                 }
             };
         return period;
+    };
+});
+
+/**
+ * Сервис предназначен для получения того же дня (недели, месяца)
+ * на прошлой неделе (в прошлом месяце, году)
+ * @params day - дата, step - нужный период
+ * @return объект с полями begin - начальная дата и end - конечная дата
+ */
+myApp.factory('GetPrevDate', function () {
+    return function (day, step) {
+        switch (step) {
+        case 'day':
+            return new Date(day.getFullYear(), day.getMonth(), day.getDate() - 7);
+        case 'week':
+            return new Date(day.getFullYear(), day.getMonth()-1, day.getDate());
+        case 'month':
+            return new Date(day.getFullYear()-1, day.getMonth(), day.getDate());
+        }
     };
 });
