@@ -41,16 +41,7 @@ myApp.controller('GraphicController', function ($scope, $routeParams) {
     default:
         break;
     }
-
-    //    $scope.checkLoad= function (){
-    //        if($('#container').loaded){
-    //            return true;
-    //        }
-    //        else{
-    //            return false;
-    //        }
-    //    }
-    //    
+ 
     //функция,изменяющая период для отображения
     $scope.changePeriod = function (p) {
         $scope.period = p;
@@ -76,7 +67,7 @@ myApp.directive('Graphic', function () {
             //                left: left + 'px'
             //            });
             $('#loading-image').center();
-            //            $(window).load(function () {
+            //            $(window).load(function () {   { against: 'parent' }
             //                $(".loader").fadeOut("slow");
             //                alert("loader");
             //            })
@@ -102,8 +93,8 @@ myApp.directive('Graphic', function () {
                             load: function (event) {
                                 setTimeout(function () {
                                     $("#loading-image").fadeOut("slow");
-                                    $("#container").show();
-                                }, 5000);
+//                                    $("#container").show();
+                                }, 30000);
                             }
                         },
                     },
