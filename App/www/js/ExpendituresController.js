@@ -29,6 +29,9 @@
                          $(element).append("<li><span>" + scope.expList[i].description + "</span><span style='float: right; text-align: right;'>" + scope.expList[i].cost + "</span></li>");
                      }
                  }
+                 else{
+                     $(element).html("<li style='text-align: center; font-size: 14pt'>Нет расходов</li>");
+                 }
              }
 
 
