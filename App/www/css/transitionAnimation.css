@@ -1,11 +1,11 @@
+/*Android Scale style*/
 .view-animate {} .view-animate.ng-enter {
-    /*.view-animate.ng-leave {*/
-    -webkit-animation: scaleUp 0.15s both ease-in;
-    -moz-animation: scaleUp 0.15s both ease-in;
-    animation: scaleUp 0.15s both ease-in;
+/*    .view-animate.ng-leave {*/
+    -webkit-animation: scaleUp 0.1s both ease-in;
+    -moz-animation: scaleUp 0.1s both ease-in;
+    animation: scaleUp 0.1s both ease-in;
 }
 
-/* scale up */
 @keyframes scaleUp {
     from {
         opacity: 0.3;
@@ -23,4 +23,53 @@
         opacity: 0.3;
         -webkit-transform: scale(0.8);
     }
+}
+
+/*IOS Flip style*/
+
+.flip {
+    -webkit-transform-style: preserve-3d;
+    -webkit-backface-visibility: hidden;
+    -webkit-transition: all 1s ease-in-out;
+}
+.flip.ng-enter {
+    -webkit-transform: rotateY(-180deg);
+}
+.flip.ng-enter-active {
+    -webkit-transform: rotateY(0deg);
+}
+.flip.ng-leave {
+    -webkit-transform: rotateY(0deg);
+}
+.flip.ng-leave-active {
+    -webkit-transform: rotateY(180deg);
+}
+
+/*IOS Fade style*/
+.fade {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 100%;
+    opacity: 1;
+}
+.fade.ng-enter,
+.fade.ng-leave {
+    -webkit-transition: all 0.7s ease;
+    -moz-transition: all 0.7s ease;
+    -o-transition: all 0.7s ease;
+    transition: all 0.7s ease;
+}
+.fade.ng-enter {
+    opacity: 0;
+}
+.fade.ng-enter-active {
+    opacity: 1;
+}
+.fade.ng-leave {
+    opacity: 1;
+}
+.fade.ng-leave-active {
+    opacity: 0;
 }

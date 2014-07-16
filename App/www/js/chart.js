@@ -41,6 +41,16 @@ myApp.controller('GraphicController', function ($scope, $routeParams) {
     default:
         break;
     }
+
+    //    $scope.checkLoad= function (){
+    //        if($('#container').loaded){
+    //            return true;
+    //        }
+    //        else{
+    //            return false;
+    //        }
+    //    }
+    //    
     //функция,изменяющая период для отображения
     $scope.changePeriod = function (p) {
         $scope.period = p;
@@ -60,6 +70,12 @@ myApp.directive('Graphic', function () {
         template: '<div id="container"></div>',
         link: function (scope, element, attrs) {
 
+
+            //            $(window).load(function () {
+            //                $(".loader").fadeOut("slow");
+            //                alert("loader");
+            //            })
+
             //функция, рисующая график
             var drawChart = function () {
                 Highcharts.setOptions({
@@ -73,9 +89,20 @@ myApp.directive('Graphic', function () {
                         type: 'spline',
                         zoomType: 'x',
                         width: $("#content").width(),
-                        height: $("#content").height()
+                        height: $("#content").height(),
+                        animation: true,
+                        events: {
+                            load: function (event) {
+                                $("#loading").hide();
+                            }
+                        },
+                        loading: 'Загрузка данных...',
                     },
                     title: "",
+                    loading: {
+                        hideDuration: 3000,
+                        showDuration: 3000
+                    },
                     xAxis: {
                         type: 'datetime',
                         minRange: 3 * 24 * 3600000,
@@ -104,7 +131,9 @@ myApp.directive('Graphic', function () {
                 });
             }
 
+
             window.addEventListener("resize", drawChart);
+
 
             //watch, смотрящий за изменением данных для графика
             scope.$watch("data", function (newValue) {
@@ -114,7 +143,9 @@ myApp.directive('Graphic', function () {
                     chart.series[0].update({
                         data: newValue
                     });
+                    //                    setTimeout(function () {
                     chart.hideLoading();
+                    //                    }, 2000);
                 }
             }, true);
 

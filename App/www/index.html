@@ -35,7 +35,10 @@
             //hide splash screen
             intel.xdk.device.hideSplashScreen();
             intel.xdk.device.hideStatusBar();
-//            document.location.href = "#/index";
+            $(window).load(function() {
+                alert("stop loading!");
+            });
+            //            document.location.href = "#/index";
         };
         document.addEventListener("intel.xdk.device.ready", onDeviceReady, false);
     </script>
@@ -70,7 +73,7 @@
         <!--         style="border: solid 5px green"-->
         <div class="upage panel" id="home" data-header="none" data-footer="none">
             <div class="upage-outer">
-                <div ng-view class="view-animate"></div>
+                <div ng-view class="fade"></div>
             </div>
         </div>
 
