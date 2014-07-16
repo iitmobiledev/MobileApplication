@@ -1,8 +1,6 @@
 //контроллер отвечающий за загрузку 4  плиток и переключателей между периодами
 myApp.controller('OperationalStatisticController', function ($scope, OperationalStatisticLoader,
     GetPeriod, GetPrevDate) {
-//    $('#statisticPanel').append("<date-changer step='step' date='date' steps=['day', 'week', 'month']></date-changer>");
-    
     $scope.date = new Date();
     $scope.step = "day";
 

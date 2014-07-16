@@ -12,7 +12,6 @@ myApp.factory('OperationalStatisticLoader', function (GetPeriod, OperatonalStati
             });
         } else {
             var period = GetPeriod(date, step);
-            console.log("period.begin " + period.begin + " period.end " + period.end);
             allStatistic = allStatistic.filter(function (d) {
                 return (d.date <= period.end && d.date >= period.begin);
             });
@@ -83,7 +82,6 @@ myApp.factory('OperatonalStatisticsDataSumming', function () {
  */
 myApp.factory('GetPeriod', function () {
     return function (day, step) {
-        console.log("day in GetPeriod 84 "+day);
         var period = new function () {
                 switch (step) {
                 case 'day':
@@ -94,7 +92,6 @@ myApp.factory('GetPeriod', function () {
                     var weekDay = day.getDay() - 1; // для начала недели с понедельника
                     if (weekDay < 0)
                         weekDay = 6;
-                    console.log("weekDay "+weekDay);
                     this.begin = new Date(day.getFullYear(), day.getMonth(), day.getDate() - weekDay);
                     this.end = new Date(day.getFullYear(), day.getMonth(), this.begin.getDate() + 6);
                     break;

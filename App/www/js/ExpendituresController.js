@@ -1,7 +1,6 @@
- myApp.controller('ExpendituresController', function ($scope, $filter, ExpendituresLoader) {
+myApp.controller('ExpendituresController', function ($scope, $filter, ExpendituresLoader) {
      $scope.date = new Date();
      $scope.step = 'day';
-     $scope.steps = ['day'];
      $scope.expList = ExpendituresLoader($scope.date);
 
      $scope.$watch('date.toDateString()', function () {
@@ -30,7 +29,7 @@
                      }
                  }
                  else{
-                     $(element).html("<li style='text-align: center; font-size: 14pt'>Нет расходов</li>");
+                     $(element).html("<li style='text-align: center; font-size: 14pt'>��� ��������</li>");
                  }
              }
 
