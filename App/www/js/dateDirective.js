@@ -116,98 +116,129 @@ myApp.directive('dateChanger', function (GetPeriod, $filter) {
         restrict: 'E',
         replace: true,
         link: function (scope, element, attrs) {
-            var date = scope.$eval(attrs.date);
-            var step = scope.$eval(attrs.step);
-            var steps = scope.$eval(attrs.steps);
+            var date, step, steps;
 
-            scope.forward = function () {
-                getNewDate(1);
+            var updateDate = function () {
+                date = scope.$eval(attrs.date);
+            };
+            scope.$watch(attrs.date, updateDate);
+            updateDate();
+
+            var updateStep = function () {
+                step = scope.$eval(attrs.step);
+            };
+            scope.$watch(attrs.step, updateStep);
+            updateStep();
+
+            var updateSteps = function () {
+                steps = scope.$eval(attrs.steps);
+                if (steps.length > 1)
+                    $('#periodChanger').show();
+                else
+                    $('#periodChanger').hide();
+            };
+            scope.$watch(attrs.steps, updateSteps);
+            updateSteps();
+
+
+            scope.$watch('step', function () {
+                var period = GetPeriod(date, step);
+                date.setYear(period.begin.getFullYear());
+                date.setMonth(period.begin.getMonth());
+                date.setDate(period.begin.getDate());
+                $('#Date').html(function () {
+                    return updateDateString();
+                });
+            });
+
+            var hasPrevData, hasPrevData;
+
+            var updatePrevData = function () {
+                hasPrevData = true;
+                if (hasPrevData)
+                    $('#PrevDay').show();
+                else
+                    $('#PrevDay').hide();
             };
 
-            scope.back = function () {
+            var updateFutureData = function () {
+                console.log("date " + date);
+                var period = GetPeriod(date, step);
+                if (period.end > new Date() || period.end.toDateString() == new Date().toDateString())
+                    hasFutureData = false;
+                else
+                    hasFutureData = true;
+
+                if (hasFutureData)
+                    $('#NextDay').show();
+                else
+                    $('#NextDay').hide();
+            };
+
+            scope.$watch('hasPrevData', updatePrevData);
+            updatePrevData();
+
+            scope.$watch('hasFutureData', updateFutureData);
+            updateFutureData();
+
+
+            $('#PrevDay').click(function () {
                 getNewDate(-1);
-            };
+                $('#Date').html(function () {
+                    return updateDateString();
+                });
+                updatePrevData();
+                updateFutureData();
+            });
+
+            $('#NextDay').click(function () {
+                getNewDate(1);
+                $('#Date').html(function () {
+                    return updateDateString();
+                });
+                updatePrevData();
+                updateFutureData();
+            });
 
             function getNewDate(sign) {
                 if (step == 'day') {
-                    date.setDate(date.getDate() + sign * 1);
+                    scope[attrs.date] = new Date(date.getFullYear(), date.getMonth(),
+                        date.getDate() + sign * 1);
+                    scope.$apply();
                 }
                 if (step == 'week') {
-                    date.setDate(date.getDate() + sign * 7);
+                    scope[attrs.date] = new Date(date.getFullYear(), date.getMonth(),
+                        date.getDate() + sign * 7);
+                    scope.$apply();
                 }
                 if (step == 'month') {
-                    date.setMonth(date.getMonth() + sign * 1);
+                    scope[attrs.date] = new Date(date.getFullYear(), date.getMonth() + sign * 1,
+                        date.getDate());
+                    scope.$apply();
                 }
             }
 
             activeButtonHandling();
 
-            scope.hasPreviousData = function () {
-                return true;
-            };
-
-            scope.hasFutureData = function () {
-                var period = GetPeriod(date, step);
-                if (period.end > new Date() || period.end.toDateString() == new Date().toDateString())
-                    return false;
-                else
-                    return true;
-            };
-
-            scope.forDay = function () {
-                step = 'day';
-                changeDate();
-            };
-
-            scope.forWeek = function () {
-                step = 'week';
-                changeDate();
-            };
-
-            scope.forMonth = function () {
-                step = 'month';
-                changeDate();
-            };
-
-            function changeDate() {
-                console.log("step" + step)
-                var period = GetPeriod(date, step);
-                date.setYear(period.begin.getFullYear());
-                date.setMonth(period.begin.getMonth());
-                date.setDate(period.begin.getDate());
-            }
-
-            //            attrs.$observe('step', function () {
-            //                console.log("step change in dir");
-            //                var period = GetPeriod(date, step);
-            //                date.setYear(period.begin.getFullYear());
-            //                date.setMonth(period.begin.getMonth());
-            //                date.setDate(period.begin.getDate());
-            //            });
-
-
-            //            scope.$watch('step', function(){
-            //                console.log("step change");
-            //                var period = GetPeriod(date, step);
-            //                date = new Date(period.begin.getFullYear(), period.begin.getMonth(),
-            //                                period.begin.getDate());
-            //            });
-
-            scope.getDateString = function () {
+            function updateDateString() {
                 if (step == 'day') {
-                    scope.getTitle = function () {
+                    $('#Title').html(function () {
                         return updateTitle();
-                    };
+                    });
                     return $filter('date')(date, "dd.MM.yyyy");
                 } else {
-                    scope.getTitle = function () {
+                    $('#Title').html(function () {
                         return "";
-                    };
+                    });
                     var period = GetPeriod(date, step);
                     return $filter('date')(period.begin, "dd.MM.yyyy") + " - " +
                         $filter('date')(period.end, "dd.MM.yyyy");
                 }
-            };
+            }
+
+            $('#Date').html(function () {
+                return updateDateString();
+            });
 
             function updateTitle() {
                 var today = new Date();
@@ -216,39 +247,94 @@ myApp.directive('dateChanger', function (GetPeriod, $filter) {
                     return "За сегодня";
                 if (date.toDateString() == yesterday.toDateString())
                     return "За вчера";
+                return "";
             }
 
             $('#mainsub').on('swipeLeft', function () {
-                if (scope.hasFutureData()) {
-                    scope.forward();
-                    scope.$parent.$apply();
+                if (hasFutureData) {
+                    getNewDate(1);
+                    $('#Date').html(function () {
+                        return updateDateString();
+                    });
+                    updatePrevData();
+                    updateFutureData();
                 }
             });
 
             $('#mainsub').on('swipeRight', function () {
-                if (scope.hasPreviousData()) {
-                    scope.back();
-                    scope.$parent.$apply();
+                if (hasPrevData) {
+                    getNewDate(-1);
+                    $('#Date').html(function () {
+                        return updateDateString();
+                    });
+                    updatePrevData();
+                    updateFutureData();
                 }
             });
+
+            $("#periodChanger").append('<div class="col uib_col_5 col-0_12-12" data-uib="layout/col" data-ver="0">' +
+                '<div class="widget-container content-area vertical-col">' +
+                '<div id="periodButtons" class="button-grouped widget uib_w_4 d-margins flex" data-uib="app_framework/button_group" data-ver="1">' +
+
+                '</div><span class="uib_shim"></span>' +
+                '</div>' +
+                '</div>' +
+                '<span class="uib_shim"></span>');
+
+            for (var i = 0; i < steps.length; i++) {
+                $("#periodButtons").append(
+                    $("<a/>", {
+                        "class": "button widget uib_w_6 d-margins gray",
+                        "data-uib": "app_framework/button",
+                        "data-ver": "1",
+                        text: steps[i],
+                        "id": "" + steps[i],
+                        click: function () {
+                            console.log(this.id + "");
+                            scope[attrs.step] = this.id;
+                            scope.$apply();
+                        }
+                    })
+                );
+            }
+
+
+            //            '<a class="button widget uib_w_6 d-margins gray" data-uib="app_framework/button" data-ver="1" id="buttonForWeek">step[i]</a>'
+
+
+            //            $("#periodButtons").append('<a class="button widget uib_w_5 d-margins gray" data-uib="app_framework/button" data-ver="1" id="buttonForDay" style="border-left-width: 1px; border-left-style: solid; border-left-color: rgb(102, 102, 102); border-top-left-radius: 6px; border-bottom-left-radius: 6px;"></a>' +
+            //                    '<a class="button widget uib_w_6 d-margins gray" data-uib="app_framework/button" data-ver="1"  id="buttonForWeek"></a>' +
+            //                    '<a class="button widget uib_w_7 d-margins gray" data-uib="app_framework/button" data-ver="1"  id="buttonForMonth" style="border-top-right-radius: 6px; border-bottom-right-radius: 6px;"></a>');
+
+
+
+            //            $('#buttonForDay').html(steps[0]);
+            //            $('#buttonForWeek').html(steps[1]);
+            //            $('#buttonForMonth').html(steps[2]);
+
+
+            //            $('#buttonForDay').click(function () {
+            //                scope[attrs.step] = "day";
+            //                scope.$apply();
+            //            });
+            //            $('#buttonForWeek').click(function () {
+            //                scope[attrs.step] = "week";
+            //                scope.$apply();
+            //            });
+            //            $('#buttonForMonth').click(function () {
+            //                scope[attrs.step] = "month";
+            //                scope.$apply();
+            //            });
         },
         template: '<div>' +
-            '<div class="grid grid-pad urow uib_row_2 row-height-1" data-uib="layout/row" data-ver="0">' +
-            '<div class="col uib_col_5 col-0_12-12" data-uib="layout/col" data-ver="0">' +
-            '<div class="widget-container content-area vertical-col">' +
-            '<div class="button-grouped widget uib_w_4 d-margins flex" data-uib="app_framework/button_group" data-ver="1">' +
-            '<a class="button widget uib_w_5 d-margins gray" data-uib="app_framework/button" data-ver="1" ng-click="forDay()" id="buttonForDay" style="border-left-width: 1px; border-left-style: solid; border-left-color: rgb(102, 102, 102); border-top-left-radius: 6px; border-bottom-left-radius: 6px;">За день</a>' +
-            '<a class="button widget uib_w_6 d-margins gray" data-uib="app_framework/button" data-ver="1" ng-click="forWeek()" id="buttonForWeek">За неделю</a>' +
-            '<a class="button widget uib_w_7 d-margins gray" data-uib="app_framework/button" data-ver="1" ng-click="forMonth()" id="buttonForMonth" style="border-top-right-radius: 6px; border-bottom-right-radius: 6px;">За месяц</a>' +
-            '</div><span class="uib_shim"></span></div>' +
-            '</div>' +
-            '<span class="uib_shim"></span>' +
-            '</div>' +
+            '<div id="periodChanger" class="grid grid-pad urow uib_row_2 row-height-1" data-uib="layout/row" data-ver="0">' +
+
+        '</div>' +
 
         '<div class="grid urow uib_row_3 row-height-3 daysPadding" data-uib="layout/row" data-ver="0">' +
             '<div class="col uib_col_8 col-0_2-12_2-2" data-uib="layout/col" data-ver="0">' +
             '<div class="widget-container content-area vertical-col">' +
-            '<a class="button widget uib_w_8 smallNavigationButton d-margins icon left" ng-show="hasPreviousData()" data-uib="app_framework/button" data-ver="1" id="PrevDay" ng-click="back()"></a>' +
+            '<a class="button widget uib_w_8 smallNavigationButton d-margins icon left" data-uib="app_framework/button" data-ver="1" id="PrevDay"></a>' +
             '<span class="uib_shim"></span>' +
             '</div>' +
             '</div>' +
@@ -259,8 +345,8 @@ myApp.directive('dateChanger', function (GetPeriod, $filter) {
             '<div class="widget-container left-receptacle"></div>' +
             '<div class="widget-container right-receptacle"></div>' +
             '<div>' +
-            '<p>{{getTitle()}}<p>' +
-            '<p>{{getDateString()}}</p>' +
+            '<p id="Title"><p>' +
+            '<p id="Date"></p>' +
             '</div>' +
             '</div>' +
             '<span class="uib_shim"></span>' +
@@ -268,7 +354,7 @@ myApp.directive('dateChanger', function (GetPeriod, $filter) {
             '</div>' +
             '<div class="col uib_col_6 col-0_2-12_2-10" data-uib="layout/col" data-ver="0">' +
             '<div class="widget-container content-area vertical-col">' +
-            '<a class="button widget uib_w_8 smallNavigationButton d-margins icon right" data-uib="app_framework/button" data-ver="1" id="NextDay" ng-show="hasFutureData()" ng-click="forward()"></a>' +
+            '<a class="button widget uib_w_8 smallNavigationButton d-margins icon right" data-uib="app_framework/button" data-ver="1" id="NextDay"></a>' +
             '<span class="uib_shim"></span>' +
             '</div>' +
             '</div>' +
