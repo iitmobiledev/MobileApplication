@@ -4,11 +4,6 @@ myApp.directive('headerContent', function () {
         replace: true,
         transclude: false,
         link: function (scope, element, attrs) {
-
-            //переворот экрана, возможно стоит сделать отдельную директиву
-            var orientation = scope.$eval(attrs.orientation) || "any";
-            intel.xdk.device.setRotateOrientation(orientation);
-
             var showBut = scope.$eval(attrs.showBackButton);
             setTitle();
             setBackButton();
