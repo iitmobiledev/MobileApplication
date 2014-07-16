@@ -4,17 +4,10 @@ myApp.directive('headerContent', function () {
         replace: true,
         transclude: false,
         link: function (scope, element, attrs) {
-            
+
             //переворот экрана, возможно стоит сделать отдельную директиву
-            var orientation = scope.$eval(attrs.orientation);
-            console.log(orientation);
-            if (orientation == "portrait") {
-                intel.xdk.device.setRotateOrientation("portrait");
-            } else if (orientation == "landscape") {
-                intel.xdk.device.setRotateOrientation("landscape");
-            } else {
-                intel.xdk.device.setRotateOrientation("any");
-            }
+            var orientation = scope.$eval(attrs.orientation) || "any";
+            intel.xdk.device.setRotateOrientation(orientation);
 
             var showBut = scope.$eval(attrs.showBackButton);
             setTitle();

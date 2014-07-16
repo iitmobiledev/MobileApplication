@@ -1,5 +1,16 @@
  myApp.controller('ExpendituresController', function ($scope, $filter, ExpendituresLoader) {
-     $scope.expenditure = ExpendituresLoader(new Date(2014, 6, 9))[0];
+     $scope.date = new Date();
+     $scope.step = 'day';
+     $scope.steps = ['day'];
+     $scope.expList = ExpendituresLoader($scope.date);
+
+     $scope.$watch('date.toDateString()', function () {
+         $scope.expList = ExpendituresLoader($scope.date);
+     });
+
+     $scope.$watch('step', function () {
+         $scope.expList = ExpendituresLoader($scope.date);
+     });
  });
 
  myApp.directive('expList', function () {
@@ -8,13 +19,19 @@
          replace: true,
          transclude: true,
          link: function (scope, element, attrs) {
-             var expPerDay = scope.expenditure;
-             for (var i = 0; i < expPerDay.expenditureList.length; i++) {
-                 $(element).append("<li><span>" + expPerDay.expenditureList[i].description +"</span><span style='float: right; text-align: right;'>" + expPerDay.expenditureList[i].cost +  "</span></li>");
-             }
-//             var el = $(element).hide().html();
+             showExp();
+             scope.$watch('expList', showExp);
              
-              
+             function showExp() {
+                 $(element).html("");
+                 if (scope.expList != null) {
+                     for (var i = 0; i < scope.expList.length; i++) {
+                         $(element).append("<li><span>" + scope.expList[i].description + "</span><span style='float: right; text-align: right;'>" + scope.expList[i].cost + "</span></li>");
+                     }
+                 }
+             }
+
+
          },
          template: '<ul class="list inset">' +
              '</ul>'

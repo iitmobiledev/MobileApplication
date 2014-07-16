@@ -32,11 +32,13 @@ myApp.factory('FinanceStatisticsLoader', function () {
 myApp.factory('ExpendituresLoader', function () {
     return function (neededDate) {
         var getedData = getExpenditures();
-        var filteredData = getedData.filter(function (d){
-            return (d.date.valueOf() == neededDate.valueOf());
-        });
-        console.log("filt " + filteredData);
-        return filteredData;
+        for (var i = 0; i < getedData.length; i++){
+            if (getedData[i].date.toDateString() == neededDate.toDateString())
+            {
+                return getedData[i].expenditureList;
+            }
+        }
+        return null;
     };
 });
 

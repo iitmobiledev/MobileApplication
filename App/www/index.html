@@ -35,9 +35,11 @@
             //hide splash screen
             intel.xdk.device.hideSplashScreen();
             intel.xdk.device.hideStatusBar();
+//            document.location.href = "#/index";
         };
         document.addEventListener("intel.xdk.device.ready", onDeviceReady, false);
     </script>
+
     <script type="application/javascript" src="app_framework/2.1/appframework.ui.js" data-ver="1"></script>
     <script src="cordova.js"></script>
     <script src="data.js"></script>
@@ -56,6 +58,7 @@
     <script src="js/FooterDirective.js"></script>
     <script src="js/activePeriodButtonHandling.js"></script>
     <script src="tests/ctrl_test.js"></script>
+
     <!--    <script src="tests/launch.js"></script>-->
 </head>
 
