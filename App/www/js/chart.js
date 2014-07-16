@@ -69,8 +69,13 @@ myApp.directive('Graphic', function () {
         replace: true,
         template: '<div id="container"></div>',
         link: function (scope, element, attrs) {
-
-
+            //            var left = ($("#content").width() - $("#loading-image").width()) / 2;
+            //            var top = ($("#content").height() - $("#loading-image").height()) / 2;
+            //            $("#loading-image").position({
+            //                top: top + 'px',
+            //                left: left + 'px'
+            //            });
+            $('#loading-image').center();
             //            $(window).load(function () {
             //                $(".loader").fadeOut("slow");
             //                alert("loader");
