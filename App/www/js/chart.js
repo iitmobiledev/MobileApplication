@@ -83,6 +83,8 @@ myApp.directive('Graphic', function () {
                         shortMonths: ['Янв', 'Фев', 'Мар', 'Апр', 'Май', 'Июн', 'Июл', 'Авг', 'Сен', 'Окт', 'Ноя', 'Дек'],
                     }
                 });
+
+                $("#container").hide();
                 var chart = new Highcharts.Chart({
                     chart: {
                         renderTo: 'container',
@@ -93,10 +95,12 @@ myApp.directive('Graphic', function () {
                         animation: true,
                         events: {
                             load: function (event) {
-                                $("#loading").hide();
+                                setTimeout(function () {
+                                    $("#loading-image").fadeOut("slow");
+                                    $("#container").show();
+                                }, 5000);
                             }
                         },
-                        loading: 'Загрузка данных...',
                     },
                     title: "",
                     loading: {
@@ -138,14 +142,14 @@ myApp.directive('Graphic', function () {
             //watch, смотрящий за изменением данных для графика
             scope.$watch("data", function (newValue) {
                 var chart = $('#container').highcharts();
+                $("#container").hide();
+                $("#loading-image").fadeIn("slow");
                 if (chart) {
-                    chart.showLoading('Загрузка данных...');
                     chart.series[0].update({
                         data: newValue
                     });
-                    //                    setTimeout(function () {
-                    chart.hideLoading();
-                    //                    }, 2000);
+                    $("#loading-image").fadeOut("slow");
+                    $("#container").show();
                 }
             }, true);
 

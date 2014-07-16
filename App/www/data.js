@@ -72,7 +72,7 @@ function User(firstName, middleName, lastName, email) {
 
 var manyData = [];
 var nowDay = new Date();
-for (var i = 0; i < 300; i++) {
+for (var i = 0; i < 3650; i++) {
     var a = getRandom(1000, 10000);
     manyData.push(new OperationalStatistics(new Date(nowDay.getFullYear(), nowDay.getMonth(), nowDay.getDate() - i),
         a,
