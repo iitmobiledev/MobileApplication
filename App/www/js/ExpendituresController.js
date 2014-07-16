@@ -29,7 +29,7 @@ myApp.controller('ExpendituresController', function ($scope, $filter, Expenditur
                      }
                  }
                  else{
-                     $(element).html("<li style='text-align: center; font-size: 14pt'>��� ��������</li>");
+                     $(element).html("<li style='text-align: center; font-size: 14pt'>Нет расходов</li>");
                  }
              }
 
