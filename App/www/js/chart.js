@@ -41,7 +41,7 @@ myApp.controller('GraphicController', function ($scope, $routeParams) {
     default:
         break;
     }
- 
+
     //функция,изменяющая период для отображения
     $scope.changePeriod = function (p) {
         $scope.period = p;
@@ -60,18 +60,15 @@ myApp.directive('Graphic', function () {
         replace: true,
         template: '<div id="container"></div>',
         link: function (scope, element, attrs) {
-            //            var left = ($("#content").width() - $("#loading-image").width()) / 2;
-            //            var top = ($("#content").height() - $("#loading-image").height()) / 2;
-            //            $("#loading-image").position({
-            //                top: top + 'px',
-            //                left: left + 'px'
-            //            });
-            $('#loading-image').center();
-            //            $(window).load(function () {   { against: 'parent' }
-            //                $(".loader").fadeOut("slow");
-            //                alert("loader");
-            //            })
 
+            //отцентровываем анимацию загрузки
+            $("#loading-image").load(function () {
+                var left = ($(window).width() - $("#loading-image").width()) / 2;
+                var top = ($(window).height() - $("#loading-image").height()) / 2;
+                $("#loading-image").css("left", left + "px");
+                $("#loading-image").css("top", top + "px");
+                $("#loading-image").css("position", "fixed");
+            });
             //функция, рисующая график
             var drawChart = function () {
                 Highcharts.setOptions({
@@ -91,10 +88,10 @@ myApp.directive('Graphic', function () {
                         animation: true,
                         events: {
                             load: function (event) {
-                                setTimeout(function () {
-                                    $("#loading-image").fadeOut("slow");
-//                                    $("#container").show();
-                                }, 30000);
+                                //                                setTimeout(function () {
+                                $("#loading-image").fadeOut("slow");
+                                $("#container").show();
+                                //                                }, 7000);
                             }
                         },
                     },
@@ -134,19 +131,24 @@ myApp.directive('Graphic', function () {
 
             window.addEventListener("resize", drawChart);
 
+            function updateChartData(newData, callback) {
+                var chart = $('#container').highcharts();
+                $("#container").hide();
+                $("#loading-image").fadeIn("fast");
+                if (chart) {
+                    chart.series[0].update({
+                        data: newData
+                    });
+                }
+                callback();
+            }
 
             //watch, смотрящий за изменением данных для графика
             scope.$watch("data", function (newValue) {
-                var chart = $('#container').highcharts();
-                $("#container").hide();
-                $("#loading-image").fadeIn("slow");
-                if (chart) {
-                    chart.series[0].update({
-                        data: newValue
-                    });
+                updateChartData(newValue, function () {
                     $("#loading-image").fadeOut("slow");
                     $("#container").show();
-                }
+                });
             }, true);
 
         }
