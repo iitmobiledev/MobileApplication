@@ -18,14 +18,17 @@ myApp.controller('OperationalStatisticController', function ($scope, Operational
 
     $scope.$watch('date.toDateString()', function () {
         $scope.data = OperationalStatisticLoader($scope.date, $scope.step);
-        $scope.prevData = OperationalStatisticLoader(DateHelper.getPrev($scope.date, $scope.step), $scope.step);
+        $scope.prevData = OperationalStatisticLoader(DateHelper.getPrev($scope.date, $scope.step),
+                                                     $scope.step);
     });
 
     $scope.$watch('step', function () {
         $scope.data = OperationalStatisticLoader($scope.date, $scope.step);
-        $scope.prevData = OperationalStatisticLoader(DateHelper.getPrev($scope.date, $scope.step), $scope.step);
+        $scope.prevData = OperationalStatisticLoader(DateHelper.getPrev($scope.date, $scope.step),
+                                                     $scope.step);
     });
 
-    $scope.data = OperationalStatisticLoader($scope.date, $scope.step);
-    $scope.prevData = OperationalStatisticLoader(DateHelper.getPrev($scope.date, $scope.step), $scope.step);
+//    $scope.data = OperationalStatisticLoader($scope.date, $scope.step);
+//    $scope.prevData = OperationalStatisticLoader(DateHelper.getPrev($scope.date, $scope.step),
+//                                                 $scope.step);
 });

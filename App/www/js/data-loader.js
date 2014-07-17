@@ -135,21 +135,28 @@ myApp.factory('DateHelper', function () {
         WEEK: "week",
         MONTH: "month"
     }
-    
-    function getPrev (date, step) {
-        switch (step) {
-        case steps.DAY:
-            return new Date(date.getFullYear(), date.getMonth(), date.getDate() - 7);
-        case steps.WEEK:
-            return new Date(date.getFullYear(), date.getMonth(), date.getDate() - 7);
-        case steps.MONTH:
-            return new Date(date.getFullYear(), date.getMonth() - 1, date.getDate());
-        default:
-            return null;
-        }
-    };
 
-    function getPeriod (date, step) {
+/**
+ * Метод предназначен для получения того же дня на прошлой неделе
+ * или прошлой недели, или прошлого месяца.
+ * необходимое указывается в параметре step
+ * @params day - дата, step - нужный период
+ * @return {Date} дату за прошлый этап периода
+ */
+        function getPrev(date, step) {
+            switch (step) {
+            case steps.DAY:
+                return new Date(date.getFullYear(), date.getMonth(), date.getDate() - 7);
+            case steps.WEEK:
+                return new Date(date.getFullYear(), date.getMonth(), date.getDate() - 7);
+            case steps.MONTH:
+                return new Date(date.getFullYear(), date.getMonth() - 1, date.getDate());
+            default:
+                return null;
+            }
+        };
+
+    function getPeriod(date, step) {
         var period = new function () {
                 switch (step) {
                 case steps.DAY:
