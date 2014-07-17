@@ -26,7 +26,7 @@
     <script type="application/javascript" src="js/lib/jquery-1.11.0.min.js"></script>
     <script type="application/javascript" src="js/lib/jq.appframework.js"></script>
     <script type="application/javascript" src="js/lib/jquery.center.js"></script>
-    
+
     <script src="js/lib/angular.js"></script>
     <script type="application/javascript" src="js/lib/angular-animate.min.js"></script>
     <script src="js/lib/angular-route.js"></script>
@@ -56,11 +56,12 @@
     <script src="js/controllers/visits-controller.js"></script>
     <script src="js/controllers/expenditures-controller.js"></script>
     <script src="js/lib/highcharts/highcharts.js"></script>
-    <script src="js/chart.js"></script>
+    <script src="js/controllers/chart-controller.js"></script>
     <script src="js/directives/date-directive.js"></script>
     <script src="js/directives/header-directive.js"></script>
     <script src="js/directives/footer-directive.js"></script>
-    <script src="js/directives/orientation-directive.js"></script>    
+    <script src="js/directives/orientation-directive.js"></script>
+    <script src="js/directives/chart-directive.js"></script>
     <script src="js/active-period-button-handling.js"></script>
     <script src="tests/ctrl-test.js"></script>
 
@@ -71,7 +72,6 @@
     </div>
     <!-- content goes here-->
     <div class="uwrap" id="content">
-        <!--         style="border: solid 5px green"-->
         <div class="upage panel" id="home" data-header="none" data-footer="none">
             <div class="upage-outer">
                 <div ng-view class="fade"></div>

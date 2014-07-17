@@ -43,7 +43,7 @@ myApp.config(['$routeProvider',
 
 (function () {
     "use strict";
-    //$.ui.useInternalRouting = false;
+    $.ui.useInternalRouting = false;
     //        document.addEventListener("intel.xdk.device.ready", function () {
     //            //lock the application in portrait orientation
     //            intel.xdk.device.setRotateOrientation("landscape");
