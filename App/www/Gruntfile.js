@@ -3,7 +3,7 @@ module.exports = function (grunt) {
         clean: ['doc'],
         jsdoc: {
             basic: {
-                src: ['js/*.js'],
+                src: ['js/*.js', 'js/directives/*.js', 'js/controllers/*.js'],
                 options: {
                     destination: 'doc'
                 }
@@ -27,9 +27,9 @@ module.exports = function (grunt) {
 
     });
 
-    grunt.loadNpmTasks('grunt-contrib-jshint');
+    //    grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('grunt-jsdoc');
     grunt.loadNpmTasks('grunt-contrib-clean');
 
-    grunt.registerTask('default', ['jshint', 'clean', 'jsdoc']);
+    grunt.registerTask('default', ['clean', 'jsdoc']);
 };

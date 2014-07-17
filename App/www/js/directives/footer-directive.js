@@ -1,3 +1,9 @@
+/**
+ * Директива для футера
+ * @ngdoc directive
+ * @name footerContent
+ * @restrict E
+ */
 myApp.directive('footerContent', function () {
     return {
         restrict: 'E',
