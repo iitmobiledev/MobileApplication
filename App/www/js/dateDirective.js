@@ -5,7 +5,7 @@
  * @param {Array} steps.
  * @restrict E
  */
-myApp.directive('dateChanger', function (GetPeriod, $filter) {
+myApp.directive('dateChanger', function (DateHelper, $filter) {
     return {
         restrict: 'E',
         replace: true,
@@ -41,7 +41,7 @@ myApp.directive('dateChanger', function (GetPeriod, $filter) {
 //            updateTitleSteps();
 
             scope.$watch('step', function () {
-                var period = GetPeriod(date, step);
+                var period = DateHelper.getPeriod(date, step);
                 scope[attrs.date] = new Date(period.begin.getFullYear(), period.begin.getMonth(),
                     period.begin.getDate());
                 scope.$apply();
@@ -59,7 +59,7 @@ myApp.directive('dateChanger', function (GetPeriod, $filter) {
             };
 
             var hasFutureData = function () {
-                var period = GetPeriod(date, step);
+                var period = DateHelper.getPeriod(date, step);
                 if (period.end > new Date() || period.end.toDateString() == new Date().toDateString()) {
                     element.find('#NextDay').hide();
                     return false;
@@ -117,7 +117,7 @@ myApp.directive('dateChanger', function (GetPeriod, $filter) {
                     return $filter('date')(date, "dd.MM.yyyy");
                 } else {
                     element.find('#Title').html("");
-                    var period = GetPeriod(date, step);
+                    var period = DateHelper.getPeriod(date, step);
                     return $filter('date')(period.begin, "dd.MM.yyyy") + " - " +
                         $filter('date')(period.end, "dd.MM.yyyy");
                 }
