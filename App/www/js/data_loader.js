@@ -77,7 +77,8 @@ myApp.factory('OperatonalStatisticsDataSumming', function () {
 
 /**
  * Сервис предназначен для получения периода
- * @params day - дата, step - нужный период
+ * @param {Date} day - дата,
+ * @param {String} step - нужный период, допустимые значения: "day", "week", "month"
  * @return объект с полями begin - начальная дата и end - конечная дата
  */
 myApp.factory('GetPeriod', function () {
@@ -108,10 +109,11 @@ myApp.factory('GetPeriod', function () {
 });
 
 /**
- * Сервис предназначен для получения того же дня (недели, месяца)
- * на прошлой неделе (в прошлом месяце, году)
+ * Сервис предназначен для получения того же дня на прошлой неделе
+ * или прошлой недели, или прошлого месяца.
+ * необходимое указывается в параметре step
  * @params day - дата, step - нужный период
- * @return объект с полями begin - начальная дата и end - конечная дата
+ * @return {Date} дату за прошлый этап периода
  */
 myApp.factory('GetPrevDate', function () {
     return function (day, step) {
@@ -119,9 +121,23 @@ myApp.factory('GetPrevDate', function () {
         case 'day':
             return new Date(day.getFullYear(), day.getMonth(), day.getDate() - 7);
         case 'week':
-            return new Date(day.getFullYear(), day.getMonth()-1, day.getDate());
+            return new Date(day.getFullYear(), day.getMonth(), day.getDate()-7);
         case 'month':
-            return new Date(day.getFullYear()-1, day.getMonth(), day.getDate());
+            return new Date(day.getFullYear(), day.getMonth()-1, day.getDate());
         }
     };
 });
+
+/**
+DateHelper.steps = {
+  DAY: "day"
+  WEEK: "week"
+}
+
+DateHelper.getNext(date, step) -> date
+DateHelper.getStart(date, step) -> date
+getPrev
+getEnd
+
+
+*/
