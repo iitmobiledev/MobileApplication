@@ -15,16 +15,18 @@ module.exports = function (config) {
 
         // list of files / patterns to load in the browser
         files: [
-            'angular.js',
-            'data.js',
-            'js/index_user_scripts.js',
-            'js/OperationalStatisticController.js',
-            'js/angular-mocks.js',
-            'js/angular-route.js',
-            'js/angular-animate.js',
-            'js/angular-animate.min.js',
-            'js/data_loader.js',
-            'js/jquery.min.js',
+            'js/lib/angular.js',
+            'js/data.js',
+            'js/routes.js',
+            'js/controllers/operational-statistic-controller.js',
+            'js/lib/angular.js',
+            'js/lib/angular-mocks.js',
+            'js/lib/angular-route.js',
+            'js/lib/angular-animate.js',
+            'js/lib/jquery-1.11.0.min.js',
+            'js/lib/jquery.min.js',
+            'js/lib/angular.js',
+            'js/data-loader.js',
             'tests/ctrls-tests.js'
         ],
 
