@@ -2,7 +2,11 @@
 myApp.controller('GraphicController', function ($scope, $routeParams) {
     $scope.type = $routeParams.type;
     $scope.period = 3;
-    $scope.data = getGoodData($scope.type, $scope.period);
+    getGoodData($scope.type, $scope.period, function (data) {
+        $scope.loading = false;
+        $scope.data = data;
+        $scope.$apply();
+    });
     $scope.step;
     $scope.title = '';
     $scope.yFormat = '';
@@ -32,11 +36,16 @@ myApp.controller('GraphicController', function ($scope, $routeParams) {
     };
     //watch, следящий за изменением период, в случае изменения подгружает новые данные
     $scope.$watch('period', function (newValue) {
-        $scope.data = getGoodData($scope.type, $scope.period);
+        $scope.loading = true;
+        getGoodData($scope.type, $scope.period, function (data) {
+            $scope.loading = false;
+            $scope.data = data;
+            $scope.$apply();
+        });
     });
 });
 
-function getGoodData(needValue, period) {
+function getGoodData(needValue, period, callback) {
     var manyData = getData();
     var goodData = [];
     var nowDay = new Date();
@@ -49,5 +58,8 @@ function getGoodData(needValue, period) {
             goodData.push(item);
         }
     }
-    return goodData.sort();
+    goodData = goodData.sort();
+    setTimeout(function () {
+        callback(goodData);
+    }, 5000);
 }

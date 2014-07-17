@@ -27,7 +27,7 @@ myApp.directive('chart', function () {
                     }
                 });
 
-                $("#container").hide();
+                //                $("#container").hide();
                 var chart = new Highcharts.Chart({
                     chart: {
                         renderTo: 'container',
@@ -39,8 +39,8 @@ myApp.directive('chart', function () {
                         events: {
                             load: function (event) {
                                 //                                setTimeout(function () {
-                                $("#loading-image").fadeOut("slow");
-                                $("#container").show();
+                                //                                $("#loading-image").fadeOut("slow");
+                                //                                $("#container").show();
                                 //                                }, 7000);
                             }
                         },
@@ -81,29 +81,16 @@ myApp.directive('chart', function () {
 
             window.addEventListener("resize", drawChart);
 
-            /**
-             *
-             */
-            function updateChartData(newData, callback) {
-                //                setTimeout(function () {
-                var chart = $('#container').highcharts();
-                $("#container").hide();
-                $("#loading-image").fadeIn("fast");
-                if (chart) {
-                    chart.series[0].update({
-                        data: newData
-                    });
-                }
-                callback();
-                //                }, 10000);
-            }
-
+            //            drawChart();
             //watch, смотрящий за изменением данных для графика
             scope.$watch("data", function (newValue) {
-                updateChartData(newValue, function () {
-                    $("#loading-image").fadeOut("slow");
-                    $("#container").show();
-                });
+                var chart = $('#container').highcharts();
+                if (chart) {
+                    console.log("call", newValue);
+                    chart.series[0].update({
+                        data: newValue
+                    });
+                }
             }, true);
 
         }
