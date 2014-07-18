@@ -1,8 +1,16 @@
 /**
- * @description Контроллер, отвечающий за загрузку статистических
- * данных.
  * @ngdoc controller
  * @name myApp.controller:OperationalStatisticController
+ * @description <p> Контроллер, отвечающий за загрузку статистических
+ * данных. </p>
+ * <p>Переменные в scope:<br>
+ * {Date} date текущая дата,<br>
+ * {String} step текущий шаг периода, должен быть определен в DateHelper.steps
+ * <br>
+ * {Boolean} hasPrevData показывает, есть ли данные за предыдущий период,
+ * <br>
+ * {Boolean} hasFutureData показывает, есть ли за следующий период.
+ * </p>
  */
 myApp.controller('OperationalStatisticController', function ($scope, OperationalStatisticLoader,
     DateHelper) {

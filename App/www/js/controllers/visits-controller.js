@@ -1,7 +1,12 @@
-//контроллер  страницы визитов
+/**
+ * @ngdoc controller
+ * @name myApp.controller:VisitsController
+ * @description <p> Контроллер, отвечающий за загрузку данных о визитах,
+ * т.е. записей с указанием времени, мастера и клиента.</p>
+ */
 myApp.controller('VisitsController', function ($scope, DateHelper) {
     $scope.date = new Date();
-    $scope.step = 'day';
+    $scope.step = DateHelper.steps.DAY;
     
     $scope.hasPrevData = function () {
         return true;
