@@ -28,7 +28,7 @@ NG_DOCS={
       "type": "controller",
       "moduleName": "myApp",
       "shortDescription": " Контроллер, отвечающий за загрузку статистических",
-      "keywords": "api controller datehelper hasfuturedata hasprevdata myapp scope step steps"
+      "keywords": "$scope api controller datehelper hasfuturedata hasprevdata myapp service step steps"
     },
     {
       "section": "api",
@@ -37,7 +37,7 @@ NG_DOCS={
       "type": "controller",
       "moduleName": "myApp",
       "shortDescription": " Контроллер, отвечающий за загрузку данных о текущем",
-      "keywords": "api controller exit myapp scope user"
+      "keywords": "$scope api controller exit myapp service user"
     },
     {
       "section": "api",
