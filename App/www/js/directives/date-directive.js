@@ -78,7 +78,6 @@ myApp.directive('dateChanger', function (DateHelper, $filter) {
                 var period = DateHelper.getPeriod(date, step);
                 scope[attrs.date] = new Date(period.begin.getFullYear(), period.begin.getMonth(),
                     period.begin.getDate());
-                scope.$apply();
             });
 
             scope.$watch('date', function () {
