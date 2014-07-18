@@ -1,7 +1,7 @@
 /**
  * @description Директива для изменения и отображения даты и периода.
  * Для обработки свайпа на странице подключения директивы
- * необходимо иметь тег с классом 'upage-content'.
+ * необходимо иметь тег с классом `upage-content`.
  * @ngdoc directive
  * @name myApp.directive:dateChanger
  * @restrict E

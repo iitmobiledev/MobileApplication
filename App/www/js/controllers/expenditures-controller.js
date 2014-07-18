@@ -24,6 +24,13 @@ myApp.controller('ExpendituresController', function ($scope, $filter, Expenditur
     });
 });
 
+/**
+ * @description Директива добавляет на страницу приложения
+ * список, отображающий расходы салона за день. Текущий день указывается в `scope` контроллера `ExpendituresController`
+ * @ngdoc directive
+ * @name myApp.directive:expList
+ * @restrict E
+ */
 myApp.directive('expList', function () {
     return {
         restrict: 'E',

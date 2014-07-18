@@ -1,3 +1,13 @@
+/**
+ * @description Директива задает ориентацию экрана устройства
+ * @ngdoc directive
+ * @name myApp.directive:orient
+ * @restrict E
+ * @param {String} orientation принимает следующие значения:
+ * 'landscape' - ландшафтная ориентация экрана, 
+ * 'portrait' - портретная ориентация экрана, 
+ * 'any' - автоматическое определения ориентации экрана устройством
+ */
 myApp.directive('orient', function () {
     return {
         restrict: 'E',

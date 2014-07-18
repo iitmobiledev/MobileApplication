@@ -14,39 +14,57 @@ NG_DOCS={
     },
     {
       "section": "api",
-      "id": "dateChanger",
-      "shortName": "dateChanger",
-      "type": "directive",
-      "moduleName": "dateChanger",
-      "shortDescription": "Директива для изменения и отображения даты и периода.",
-      "keywords": "api datechanger directive"
-    },
-    {
-      "section": "api",
-      "id": "footerContent",
-      "shortName": "footerContent",
-      "type": "directive",
-      "moduleName": "footerContent",
-      "shortDescription": "Директива для футера",
-      "keywords": "api directive footercontent"
-    },
-    {
-      "section": "api",
-      "id": "headerContent",
-      "shortName": "headerContent",
-      "type": "directive",
-      "moduleName": "headerContent",
-      "shortDescription": "Директива для хедера",
-      "keywords": "api directive headercontent show-back-button title"
-    },
-    {
-      "section": "api",
       "id": "loadBar",
       "shortName": "loadBar",
       "type": "directive",
       "moduleName": "loadBar",
       "shortDescription": "Директива для отображения анимации загрузки",
       "keywords": "api directive loadbar"
+    },
+    {
+      "section": "api",
+      "id": "myApp.directive:dateChanger",
+      "shortName": "dateChanger",
+      "type": "directive",
+      "moduleName": "myApp",
+      "shortDescription": "Директива для изменения и отображения даты и периода.",
+      "keywords": "api datehelper directive hasfuturedata hasprevdata myapp step steps titles upage-content"
+    },
+    {
+      "section": "api",
+      "id": "myApp.directive:expList",
+      "shortName": "expList",
+      "type": "directive",
+      "moduleName": "myApp",
+      "shortDescription": "Директива добавляет на страницу приложения",
+      "keywords": "api directive expenditurescontroller myapp scope"
+    },
+    {
+      "section": "api",
+      "id": "myApp.directive:footerContent",
+      "shortName": "footerContent",
+      "type": "directive",
+      "moduleName": "myApp",
+      "shortDescription": "Директива добавляет на страницу приложения",
+      "keywords": "api directive myapp true"
+    },
+    {
+      "section": "api",
+      "id": "myApp.directive:headerContent",
+      "shortName": "headerContent",
+      "type": "directive",
+      "moduleName": "myApp",
+      "shortDescription": "Директива добавляет на страницу приложения хедер,",
+      "keywords": "api directive myapp show-back-button title"
+    },
+    {
+      "section": "api",
+      "id": "myApp.directive:orient",
+      "shortName": "orient",
+      "type": "directive",
+      "moduleName": "myApp",
+      "shortDescription": "Директива задает ориентацию экрана устройства",
+      "keywords": "api directive landscape myapp orientation portrait"
     }
   ],
   "apis": {

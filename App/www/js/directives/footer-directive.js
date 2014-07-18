@@ -1,8 +1,10 @@
 /**
- * @description Директива для футера
+ * @description Директива добавляет на страницу приложения
+ * навигационную панель (футер), содержащую кнопки переходов на страницы отчетности, визитов и настроек
  * @ngdoc directive
- * @name footerContent
+ * @name myApp.directive:footerContent
  * @restrict E
+ * @param {Boolean} show если true - показывает навигационную панель(футер), иначе - скрывает
  */
 myApp.directive('footerContent', function () {
     return {
