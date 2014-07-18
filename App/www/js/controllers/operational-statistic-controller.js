@@ -3,14 +3,14 @@
  * @name myApp.controller:OperationalStatisticController
  * @description <p> Контроллер, отвечающий за загрузку статистических
  * данных. </p>
- * <p>Переменные в scope:<br>
- * {Date} date текущая дата,<br>
- * {String} step текущий шаг периода, должен быть определен в DateHelper.steps
- * <br>
- * {Boolean} hasPrevData показывает, есть ли данные за предыдущий период,
- * <br>
- * {Boolean} hasFutureData показывает, есть ли за следующий период.
- * </p>
+ * <p>`$scope` содержит следующие поля:</p>
+ *
+ * - `date` - текущая дата,
+ * - `step` - текущий шаг периода, должен быть определен в DateHelper.steps,
+ * - `hasPrevData` - показывает, есть ли данные за предыдущий период,
+ * - `hasFutureData` - показывает, есть ли за следующий период.
+ * @requires myApp.service:OperationalStatisticLoader
+ * @requires myApp.service:DateHelper
  */
 myApp.controller('OperationalStatisticController', function ($scope, OperationalStatisticLoader,
     DateHelper) {
