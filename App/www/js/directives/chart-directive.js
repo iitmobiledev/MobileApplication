@@ -13,21 +13,11 @@ myApp.directive('chart', function () {
 
             //функция, рисующая график
             var drawChart = function () {
-                //отцентровываем анимацию загрузки
-                $("#loading-image").load(function () {
-                    var left = ($(window).width() - $("#loading-image").width()) / 2;
-                    var top = ($(window).height() - $("#loading-image").height()) / 2;
-                    $("#loading-image").css("left", left + "px");
-                    $("#loading-image").css("top", top + "px");
-                    $("#loading-image").css("position", "fixed");
-                });
                 Highcharts.setOptions({
                     lang: {
                         shortMonths: ['Янв', 'Фев', 'Мар', 'Апр', 'Май', 'Июн', 'Июл', 'Авг', 'Сен', 'Окт', 'Ноя', 'Дек'],
                     }
                 });
-
-                //                $("#container").hide();
                 var chart = new Highcharts.Chart({
                     chart: {
                         renderTo: 'container',
@@ -70,15 +60,12 @@ myApp.directive('chart', function () {
                 });
             }
 
-
             window.addEventListener("resize", drawChart);
 
-            //            drawChart();
             //watch, смотрящий за изменением данных для графика
             scope.$watch("data", function (newValue) {
                 var chart = $('#container').highcharts();
                 if (chart) {
-                    console.log("call", newValue);
                     chart.series[0].update({
                         data: newValue
                     });

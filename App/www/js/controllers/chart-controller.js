@@ -61,5 +61,5 @@ function getGoodData(needValue, period, callback) {
     goodData = goodData.sort();
     setTimeout(function () {
         callback(goodData);
-    }, 5000);
+    }, 8000);
 }

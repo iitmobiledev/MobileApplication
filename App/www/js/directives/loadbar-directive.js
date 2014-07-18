@@ -9,24 +9,9 @@ myApp.directive('loadBar', function () {
     return {
         restrict: 'C',
         replace: true,
-        template: '<img id="loading-image" src="images/loading2.gif/" ng-show="loading">',
+        template: '<table valign="middle"><tr><td align="center"><img id="loading-image" src="images/loading2.gif/"></td></tr></table>',
+        //         ng-show="loading" style="border:solid 3px green;" 
         link: function (scope, element, attrs) {
-
-
-            /**Функция, отображающая анимацию загрузки*/
-            function showLoading() {
-                //отцентровываем анимацию загрузки
-                $("#loading-image").load(function () {
-                    var left = ($(window).width() - $("#loading-image").width()) / 2;
-                    var top = ($(window).height() - $("#loading-image").height()) / 2;
-                    $("#loading-image").css("left", left + "px");
-                    $("#loading-image").css("top", top + "px");
-                    $("#loading-image").css("position", "fixed");
-                });
-            }
-
-            window.addEventListener("resize", showLoading);
-
             /**wath, следящий за изменением параметра loading в контроллере*/
             scope.$watch("loading", function (newValue) {
                 if (newValue) {
