@@ -3,7 +3,7 @@
  * Для обработки свайпа на странице подключения директивы
  * необходимо иметь тег с классом 'upage-content'.
  * @ngdoc directive
- * @name @name myApp.directive:dateChanger
+ * @name myApp.directive:dateChanger
  * @restrict E
  * @param {Date} date начальная дата для отображения и изменения
  * @param {Array} steps все возможные этапы периода, должны быть прописаны
@@ -83,28 +83,7 @@ myApp.directive('dateChanger', function (DateHelper, $filter) {
 
             scope.$watch('date', function () {
                 element.find('#Date').html(getDateString());
-//                hasPrevData();
-//                hasFutureData();
             });
-
-//            var hasPrevData = function () {
-//                element.find('#PrevDay').show();
-//                return true;
-//            };
-//
-//            var hasFutureData = function () {
-//                var period = DateHelper.getPeriod(date, step);
-//                if (period.end > new Date() || period.end.toDateString() == new Date().toDateString()) {
-//                    element.find('#NextDay').hide();
-//                    return false;
-//                } else {
-//                    element.find('#NextDay').show();
-//                    return true;
-//                }
-//            };
-//
-//            hasPrevData();
-//            hasFutureData();
 
             element.find("#PrevDay").bind('click', function () {
                 getNewDate(-1);
@@ -191,9 +170,7 @@ myApp.directive('dateChanger', function (DateHelper, $filter) {
                     getNewDate(-1);
                 }
             });
-
-            //titleSteps = ['За день', 'За неделю', 'За месяц'];
-
+            
             for (var i = 0; i < steps.length; i++) {
                 element.find("#periodButtons").append(
                     $("<a>", {
