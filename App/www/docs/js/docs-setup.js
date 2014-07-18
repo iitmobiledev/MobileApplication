@@ -27,7 +27,25 @@ NG_DOCS={
       "shortName": "OperationalStatisticController",
       "type": "controller",
       "moduleName": "myApp",
-      "shortDescription": "Контроллер, отвечающий за загрузку статистических",
+      "shortDescription": " Контроллер, отвечающий за загрузку статистических",
+      "keywords": "api controller datehelper hasfuturedata hasprevdata myapp scope step steps"
+    },
+    {
+      "section": "api",
+      "id": "myApp.controller:SettingsController",
+      "shortName": "SettingsController",
+      "type": "controller",
+      "moduleName": "myApp",
+      "shortDescription": " Контроллер, отвечающий за загрузку данных о текущем",
+      "keywords": "api controller exit myapp scope user"
+    },
+    {
+      "section": "api",
+      "id": "myApp.controller:VisitsController",
+      "shortName": "VisitsController",
+      "type": "controller",
+      "moduleName": "myApp",
+      "shortDescription": " Контроллер, отвечающий за загрузку данных о визитах,",
       "keywords": "api controller myapp"
     },
     {

@@ -7,6 +7,7 @@
  * - `expList` - список расходов, состоит из объектов `ExpenditureItem`
  * - `hasPrevData` и `hasFutureData` - проверка необходимости, перехода на предыдущую или следующую дату, необходимо для для `date-directive`
  * @requires myApp.directive:expList
+ * @requires myApp.directive:dateChanger
  * @ngdoc controller
  * @name myApp.controller:ExpendituresController
  */
