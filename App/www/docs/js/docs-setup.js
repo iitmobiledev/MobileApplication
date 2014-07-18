@@ -5,12 +5,30 @@ NG_DOCS={
   "pages": [
     {
       "section": "api",
+      "id": "myApp.controller:ExpendituresController",
+      "shortName": "ExpendituresController",
+      "type": "controller",
+      "moduleName": "myApp",
+      "shortDescription": "Контроллер, получающий данные для отображения расходов за день.",
+      "keywords": "$scope api controller date-directive directive expenditureitem explist hasfuturedata hasprevdata myapp step"
+    },
+    {
+      "section": "api",
       "id": "myApp.controller:GraphicController",
       "shortName": "GraphicController",
       "type": "controller",
       "moduleName": "myApp",
       "shortDescription": "Контроллер, получающий данные для отрисовки графика",
       "keywords": "api controller data myapp period type"
+    },
+    {
+      "section": "api",
+      "id": "myApp.controller:OperationalStatisticController",
+      "shortName": "OperationalStatisticController",
+      "type": "controller",
+      "moduleName": "myApp",
+      "shortDescription": "Контроллер, отвечающий за загрузку статистических",
+      "keywords": "api controller myapp"
     },
     {
       "section": "api",

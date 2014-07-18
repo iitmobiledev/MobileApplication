@@ -1,3 +1,15 @@
+/**
+ * @description <p>Контроллер, получающий данные для отображения расходов за день.</p>
+ * <p>`$scope` содержит следующие поля:</p>
+ *
+ * - `date` - начальная дата, за которую должны отображаться расходы
+ * - `step` - период за который отображаются расход
+ * - `expList` - список расходов, состоит из объектов `ExpenditureItem`
+ * - `hasPrevData` и `hasFutureData` - проверка необходимости, перехода на предыдущую или следующую дату, необходимо для для `date-directive`
+ * @requires myApp.directive:expList
+ * @ngdoc controller
+ * @name myApp.controller:ExpendituresController
+ */
 myApp.controller('ExpendituresController', function ($scope, $filter, ExpendituresLoader, DateHelper) {
     $scope.date = new Date();
     $scope.step = 'day';
