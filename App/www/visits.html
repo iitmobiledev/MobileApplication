@@ -1,24 +1,25 @@
 <header-content title="'Визиты'" show-back-button="false"></header-content>
-
-<div class="button-grouped flex widget uib_w_24 d-margins" data-uib="app_framework/button_group" data-ver="1">
-    <a ng-click="onTime()" class="button widget uib_w_25 d-margins" data-uib="app_framework/button" data-ver="1">По времени</a>
-    <a ng-click="onMasters()" class="button widget uib_w_26 d-margins" data-uib="app_framework/button" data-ver="1">По мастерам</a>
-</div>
-
-<date-changer step='step' date='date' steps='["day"]'></date-changer>
-
-<div class="grid grid-pad urow uib_row_1 row-height-1" data-uib="layout/row" data-ver="0">
-    <div class="col uib_col_1 col-0_12-12" data-uib="layout/col" data-ver="0">
-        <div class="widget-container content-area vertical-col">
-
-            <ul class="list widget uib_w_1 d-margins" data-uib="app_framework/listview" data-ver="1">
-                <li class="widget uib_w_2" data-uib="app_framework/listitem" data-ver="1" ng-repeat="visit in visits">
-                    <a class="icon user">{{visit}}</a>
-                </li>
-            </ul>
-            <span class="uib_shim"></span>
-        </div>
+<div id="mainsub">
+    <div class="button-grouped flex widget uib_w_24 d-margins" data-uib="app_framework/button_group" data-ver="1">
+        <a ng-click="onTime()" class="button widget uib_w_25 d-margins" data-uib="app_framework/button" data-ver="1">По времени</a>
+        <a ng-click="onMasters()" class="button widget uib_w_26 d-margins" data-uib="app_framework/button" data-ver="1">По мастерам</a>
     </div>
-    <span class="uib_shim"></span>
+
+    <date-changer step='step' date='date' steps='["day"]'></date-changer>
+
+    <div class="grid grid-pad urow uib_row_1 row-height-1" data-uib="layout/row" data-ver="0">
+        <div class="col uib_col_1 col-0_12-12" data-uib="layout/col" data-ver="0">
+            <div class="widget-container content-area vertical-col">
+
+                <ul class="list widget uib_w_1 d-margins" data-uib="app_framework/listview" data-ver="1">
+                    <li class="widget uib_w_2" data-uib="app_framework/listitem" data-ver="1" ng-repeat="visit in visits">
+                        <a class="icon user">{{visit}}</a>
+                    </li>
+                </ul>
+                <span class="uib_shim"></span>
+            </div>
+        </div>
+        <span class="uib_shim"></span>
+    </div>
 </div>
 <footer-content show="true"></footer-content>

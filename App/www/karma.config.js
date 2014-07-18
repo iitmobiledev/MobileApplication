@@ -27,7 +27,7 @@ module.exports = function (config) {
             'js/lib/jquery.min.js',
             'js/lib/angular.js',
             'js/data-loader.js',
-            'tests/ctrls-tests.js'
+            'tests/statistic-controller-test.js'
         ],
 
 

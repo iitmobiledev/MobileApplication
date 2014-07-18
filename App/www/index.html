@@ -40,6 +40,7 @@
             $(window).load(function() {
                 alert("stop loading!");
             });
+            $.ui.useInternalRouting = false;
             //            document.location.href = "#/index";
         };
         document.addEventListener("intel.xdk.device.ready", onDeviceReady, false);
