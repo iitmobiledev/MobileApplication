@@ -1,8 +1,22 @@
 /**
  * @description Директива для изменения и отображения даты и периода.
+ * Для обработки свайпа на странице подключения директивы
+ * необходимо иметь тег с классом 'upage-content'.
  * @ngdoc directive
- * @name dateChanger
+ * @name @name myApp.directive:dateChanger
  * @restrict E
+ * @param {Date} date начальная дата для отображения и изменения
+ * @param {Array} steps все возможные этапы периода, должны быть прописаны
+ * в DateHelper.steps
+ * @param {String} step начальный период для отображения даты, должен
+ * быть равен одному из элементов steps
+ * @param {Array} titles названия этапов периода, которые будет видеть
+ * пользователь, например ["За день", "За неделю", "За месяц"],
+ * должны быть равны по размеру steps
+ * @param {Boolean} hasFutureData переменная показывает есть ли данные за
+ * следующий период.
+ * @param {Boolean} hasPrevData переменная показывает есть ли данные за
+ * прошлый период.
  */
 myApp.directive('dateChanger', function (DateHelper, $filter) {
     return {
@@ -10,7 +24,7 @@ myApp.directive('dateChanger', function (DateHelper, $filter) {
         replace: true,
         link:
         function (scope, element, attrs) {
-            var date, step, steps, titleSteps;
+            var date, step, steps, titleSteps, hasFutureData, hasPrevData;
 
             var updateDate = function () {
                 date = scope.$eval(attrs.date);
@@ -34,11 +48,31 @@ myApp.directive('dateChanger', function (DateHelper, $filter) {
             scope.$watch(attrs.steps, updateSteps);
             updateSteps();
 
-            //            var updateTitleSteps = function () {
-            //                titleSteps = scope.$eval(attrs.titleSteps);
-            //            };
-            //            scope.$watch(attrs.titleSteps, updateTitleSteps);
-            //            updateTitleSteps();
+            var updateTitleSteps = function () {
+                titleSteps = scope.$eval(attrs.titles);
+            };
+            scope.$watch(attrs.titleSteps, updateTitleSteps);
+            updateTitleSteps();
+            
+            var updateHasFutureData = function () {
+                hasFutureData = scope.$eval(attrs.hasFutureData);
+                if (hasFutureData)
+                    element.find('#NextDay').show();
+                else
+                    element.find('#NextDay').hide();
+            };
+            scope.$watch(attrs.hasFutureData, updateHasFutureData);
+            updateHasFutureData();
+            
+            var updateHasPrevData = function () {
+                hasPrevData = scope.$eval(attrs.hasPrevData);
+                if (hasPrevData)
+                    element.find('#PrevDay').show();
+                else
+                    element.find('#PrevDay').hide();
+            };
+            scope.$watch(attrs.hasPrevData, updateHasPrevData);
+            updateHasPrevData();
 
             scope.$watch('step', function () {
                 var period = DateHelper.getPeriod(date, step);
@@ -49,28 +83,28 @@ myApp.directive('dateChanger', function (DateHelper, $filter) {
 
             scope.$watch('date', function () {
                 element.find('#Date').html(getDateString());
-                hasPrevData();
-                hasFutureData();
+//                hasPrevData();
+//                hasFutureData();
             });
 
-            var hasPrevData = function () {
-                element.find('#PrevDay').show();
-                return true;
-            };
-
-            var hasFutureData = function () {
-                var period = DateHelper.getPeriod(date, step);
-                if (period.end > new Date() || period.end.toDateString() == new Date().toDateString()) {
-                    element.find('#NextDay').hide();
-                    return false;
-                } else {
-                    element.find('#NextDay').show();
-                    return true;
-                }
-            };
-
-            hasPrevData();
-            hasFutureData();
+//            var hasPrevData = function () {
+//                element.find('#PrevDay').show();
+//                return true;
+//            };
+//
+//            var hasFutureData = function () {
+//                var period = DateHelper.getPeriod(date, step);
+//                if (period.end > new Date() || period.end.toDateString() == new Date().toDateString()) {
+//                    element.find('#NextDay').hide();
+//                    return false;
+//                } else {
+//                    element.find('#NextDay').show();
+//                    return true;
+//                }
+//            };
+//
+//            hasPrevData();
+//            hasFutureData();
 
             element.find("#PrevDay").bind('click', function () {
                 getNewDate(-1);
@@ -144,7 +178,7 @@ myApp.directive('dateChanger', function (DateHelper, $filter) {
              * Обработка левого свайпа - увеличение текущей даты
              */
             $(".upage-content").on('swipeLeft', function () {
-                if (hasFutureData()) {
+                if (hasFutureData) {
                     getNewDate(1);
                 }
             });
@@ -153,12 +187,12 @@ myApp.directive('dateChanger', function (DateHelper, $filter) {
              * Обработка правого свайпа - уменьшение текущей даты
              */
             $(".upage-content").on('swipeRight', function () {
-                if (hasPrevData()) {
+                if (hasPrevData) {
                     getNewDate(-1);
                 }
             });
 
-            titleSteps = ['За день', 'За неделю', 'За месяц'];
+            //titleSteps = ['За день', 'За неделю', 'За месяц'];
 
             for (var i = 0; i < steps.length; i++) {
                 element.find("#periodButtons").append(

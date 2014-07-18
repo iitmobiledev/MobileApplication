@@ -6,7 +6,7 @@
 myApp.factory('OperationalStatisticLoader', function (DateHelper, OperatonalStatisticsDataSumming) {
     return function (date, step) {
         var allStatistic = getData();
-        if (step == 'day') {
+        if (step == DateHelper.steps.DAY) {
             allStatistic = allStatistic.filter(function (stats) {
                 return (stats.date.toDateString() == date.toDateString());
             });

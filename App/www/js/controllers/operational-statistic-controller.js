@@ -20,12 +20,16 @@ myApp.controller('OperationalStatisticController', function ($scope, Operational
         $scope.data = OperationalStatisticLoader($scope.date, $scope.step);
         $scope.prevData = OperationalStatisticLoader(DateHelper.getPrev($scope.date, $scope.step),
                                                      $scope.step);
+        $scope.hasPrevData();
+        $scope.hasFutureData();
     });
 
     $scope.$watch('step', function () {
         $scope.data = OperationalStatisticLoader($scope.date, $scope.step);
         $scope.prevData = OperationalStatisticLoader(DateHelper.getPrev($scope.date, $scope.step),
                                                      $scope.step);
+        $scope.hasPrevData();
+        $scope.hasFutureData();
     });
 
 //    $scope.data = OperationalStatisticLoader($scope.date, $scope.step);
