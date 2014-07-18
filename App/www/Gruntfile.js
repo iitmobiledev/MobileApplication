@@ -7,7 +7,7 @@ module.exports = function (grunt) {
                 html5Mode: false
             },
             api: {
-                src: ['js/**.js', 'js/directives/*.js', 'js/controllers/*.js'],
+                src: ['js/*.js', 'js/directives/*.js', 'js/controllers/*.js'],
                 title: 'API Documentation'
             }
         }
@@ -17,5 +17,5 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-ngdocs');
     grunt.loadNpmTasks('grunt-contrib-clean');
 
-    grunt.registerTask('default', ['ngdocs']);
+    grunt.registerTask('default', ['clean', 'ngdocs']);
 };

@@ -5,21 +5,21 @@ NG_DOCS={
   "pages": [
     {
       "section": "api",
-      "id": "chart",
-      "shortName": "chart",
-      "type": "directive",
-      "moduleName": "chart",
-      "shortDescription": "Директива для отрисовки графика",
-      "keywords": "api chart directive"
+      "id": "myApp.controller:GraphicController",
+      "shortName": "GraphicController",
+      "type": "controller",
+      "moduleName": "myApp",
+      "shortDescription": "Контроллер, получающий данные для отрисовки графика",
+      "keywords": "api controller data myapp period type"
     },
     {
       "section": "api",
-      "id": "loadBar",
-      "shortName": "loadBar",
+      "id": "myApp.directive:chart",
+      "shortName": "chart",
       "type": "directive",
-      "moduleName": "loadBar",
-      "shortDescription": "Директива для отображения анимации загрузки",
-      "keywords": "api directive loadbar"
+      "moduleName": "myApp",
+      "shortDescription": "Директива добавляет на страницу приложения график",
+      "keywords": "api dimension directive items myapp oy"
     },
     {
       "section": "api",
@@ -59,12 +59,57 @@ NG_DOCS={
     },
     {
       "section": "api",
+      "id": "myApp.directive:loadBar",
+      "shortName": "loadBar",
+      "type": "directive",
+      "moduleName": "myApp",
+      "shortDescription": "Директива добавляет на страницу приложения анимацию загрузки(loaderBar)",
+      "keywords": "api directive myapp"
+    },
+    {
+      "section": "api",
       "id": "myApp.directive:orient",
       "shortName": "orient",
       "type": "directive",
       "moduleName": "myApp",
       "shortDescription": "Директива задает ориентацию экрана устройства",
       "keywords": "api directive landscape myapp orientation portrait"
+    },
+    {
+      "section": "api",
+      "id": "myApp.service:DateHelper",
+      "shortName": "DateHelper",
+      "type": "service",
+      "moduleName": "myApp",
+      "shortDescription": "Сервис для работы с датами. Позволяет получить",
+      "keywords": "api getperiod getprev myapp service steps"
+    },
+    {
+      "section": "api",
+      "id": "myApp.service:OperationalStatisticLoader",
+      "shortName": "OperationalStatisticLoader",
+      "type": "service",
+      "moduleName": "myApp",
+      "shortDescription": "Сервис для загрузки статистики за период.",
+      "keywords": "api datehelper day myapp service step steps"
+    },
+    {
+      "section": "api",
+      "id": "myApp.service:OperatonalStatisticsDataSumming",
+      "shortName": "OperatonalStatisticsDataSumming",
+      "type": "service",
+      "moduleName": "myApp",
+      "shortDescription": "Сервис для суммирования статистических данных за",
+      "keywords": "api myapp operationalstatistics service statisticforperiod"
+    },
+    {
+      "section": "api",
+      "id": "myApp.service:UserLoader",
+      "shortName": "UserLoader",
+      "type": "service",
+      "moduleName": "myApp",
+      "shortDescription": "Сервис для получения текущего пользователя.",
+      "keywords": "api myapp service"
     }
   ],
   "apis": {
