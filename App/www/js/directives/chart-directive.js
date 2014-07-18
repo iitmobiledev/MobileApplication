@@ -1,9 +1,12 @@
 /**
- * @description Директива для отрисовки графика
+ * @description Директива добавляет на страницу приложения график
  * @ngdoc directive
- * @name chart
+ * @name myApp.directive:chart
  * @restrict C
+ * @param {Array} items данные для отображения графика
+ * @param {String}  dimension размерность по оси OY
  */
+
 myApp.directive('chart', function () {
     return {
         restrict: 'C',
@@ -11,7 +14,9 @@ myApp.directive('chart', function () {
         template: '<div id="container"></div>',
         link: function (scope, element, attrs) {
 
-            //функция, рисующая график
+            /*
+             *функция, рисующая график
+             */
             var drawChart = function () {
                 Highcharts.setOptions({
                     lang: {
@@ -62,7 +67,9 @@ myApp.directive('chart', function () {
 
             window.addEventListener("resize", drawChart);
 
-            //watch, смотрящий за изменением данных для графика
+            /*
+             *watch, смотрящий за изменением данных для графика
+             */
             scope.$watch("data", function (newValue) {
                 var chart = $('#container').highcharts();
                 if (chart) {

@@ -1,4 +1,13 @@
-//контроллер, получающий данные для отрисовки графика
+/**
+ * @description Контроллер, получающий данные для отрисовки графика
+ * @ngdoc controller
+ * @name myApp.controller:GraphicController
+ * @restrict C
+ * @param {String} type тип графика(что отображает график)
+ * @param {Number} period период в месяцах, за который должен быть отрисован график
+ * @param {Array} data данные для отображения графика
+ */
+
 myApp.controller('GraphicController', function ($scope, $routeParams) {
     $scope.type = $routeParams.type;
     $scope.period = 3;
@@ -30,11 +39,15 @@ myApp.controller('GraphicController', function ($scope, $routeParams) {
         break;
     }
 
-    /**функция, изменяющая период для отображения*/
+    /*
+     *функция, изменяющая период для отображения
+     */
     $scope.changePeriod = function (p) {
         $scope.period = p;
     };
-    /**watch, следящий за изменением период, в случае изменения подгружает новые данные*/
+    /*
+     *watch, следящий за изменением период, в случае изменения подгружает новые данные
+     */
     $scope.$watch('period', function (newValue) {
         $scope.loading = true;
         getGoodData($scope.type, $scope.period, function (data) {
