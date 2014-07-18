@@ -1,5 +1,5 @@
 /**
- * Директива для отрисовки графика
+ * @description Директива для отрисовки графика
  * @ngdoc directive
  * @name chart
  * @restrict C

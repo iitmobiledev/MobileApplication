@@ -1,14 +1,11 @@
 /**
- * Директива для хедера
+ * @description Директива для хедера
  * @ngdoc directive
  * @name headerContent
  * @restrict E
  * @scope
- * @param {string} ngInclude|src angular expression evaluating to URL. If the source is a string constant,
- *                 make sure you wrap it in **single** quotes, e.g. `src="'myPartialTemplate.html'"`.
- * @param {string=} onload Expression to evaluate when a new partial is loaded.
- *
- * @param {string=} autoscroll Whether `ngInclude` should call {@link ng.$anchorScroll
+ * @param {String} title Заголовок окна, отображаемый в хедере
+ * @param {Boolean} show-back-button Указание необходимости отображения кнопки "Назад"
  */
 
 myApp.directive('headerContent', function () {

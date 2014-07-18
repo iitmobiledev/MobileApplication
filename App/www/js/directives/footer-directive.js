@@ -1,5 +1,5 @@
 /**
- * Директива для футера
+ * @description Директива для футера
  * @ngdoc directive
  * @name footerContent
  * @restrict E
