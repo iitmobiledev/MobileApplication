@@ -2,7 +2,6 @@
  * @description Контроллер, получающий данные для отрисовки графика
  * @ngdoc controller
  * @name myApp.controller:GraphicController
- * @restrict C
  * @param {String} type тип графика(что отображает график)
  * @param {Number} period период в месяцах, за который должен быть отрисован график
  * @param {Array} data данные для отображения графика

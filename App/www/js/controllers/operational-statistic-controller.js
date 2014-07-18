@@ -1,8 +1,13 @@
-//контроллер отвечающий за загрузку 4  плиток и переключателей между периодами
+/**
+ * @description Контроллер, отвечающий за загрузку статистических
+ * данных.
+ * @ngdoc controller
+ * @name myApp.controller:OperationalStatisticController
+ */
 myApp.controller('OperationalStatisticController', function ($scope, OperationalStatisticLoader,
     DateHelper) {
     $scope.date = new Date();
-    $scope.step = "day";
+    $scope.step = DateHelper.steps.DAY;
 
     $scope.hasPrevData = function () {
         return true;
@@ -19,7 +24,7 @@ myApp.controller('OperationalStatisticController', function ($scope, Operational
     $scope.$watch('date.toDateString()', function () {
         $scope.data = OperationalStatisticLoader($scope.date, $scope.step);
         $scope.prevData = OperationalStatisticLoader(DateHelper.getPrev($scope.date, $scope.step),
-                                                     $scope.step);
+            $scope.step);
         $scope.hasPrevData();
         $scope.hasFutureData();
     });
@@ -27,12 +32,8 @@ myApp.controller('OperationalStatisticController', function ($scope, Operational
     $scope.$watch('step', function () {
         $scope.data = OperationalStatisticLoader($scope.date, $scope.step);
         $scope.prevData = OperationalStatisticLoader(DateHelper.getPrev($scope.date, $scope.step),
-                                                     $scope.step);
+            $scope.step);
         $scope.hasPrevData();
         $scope.hasFutureData();
     });
-
-//    $scope.data = OperationalStatisticLoader($scope.date, $scope.step);
-//    $scope.prevData = OperationalStatisticLoader(DateHelper.getPrev($scope.date, $scope.step),
-//                                                 $scope.step);
 });
