@@ -1,5 +1,5 @@
 /**
- * Директива для изменения и отображения даты.
+ * Директива для отрисовки графика
  * @ngdoc directive
  * @name chart
  * @restrict C
@@ -36,14 +36,6 @@ myApp.directive('chart', function () {
                         width: $("#content").width(),
                         height: $("#content").height(),
                         animation: true,
-                        events: {
-                            load: function (event) {
-                                //                                setTimeout(function () {
-                                //                                $("#loading-image").fadeOut("slow");
-                                //                                $("#container").show();
-                                //                                }, 7000);
-                            }
-                        },
                     },
                     title: "",
                     loading: {

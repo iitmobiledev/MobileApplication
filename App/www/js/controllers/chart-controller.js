@@ -30,11 +30,11 @@ myApp.controller('GraphicController', function ($scope, $routeParams) {
         break;
     }
 
-    //функция,изменяющая период для отображения
+    /**функция, изменяющая период для отображения*/
     $scope.changePeriod = function (p) {
         $scope.period = p;
     };
-    //watch, следящий за изменением период, в случае изменения подгружает новые данные
+    /**watch, следящий за изменением период, в случае изменения подгружает новые данные*/
     $scope.$watch('period', function (newValue) {
         $scope.loading = true;
         getGoodData($scope.type, $scope.period, function (data) {
