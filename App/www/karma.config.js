@@ -1,6 +1,7 @@
 // Karma configuration
 // karma start karma.config.js
-
+//            'js/controllers/operational-statistic-controller.js',
+//            'js/controllers/chart-controller.js',
 module.exports = function (config) {
     config.set({
 
@@ -18,8 +19,7 @@ module.exports = function (config) {
             'js/lib/angular.js',
             'js/data.js',
             'js/routes.js',
-            'js/controllers/operational-statistic-controller.js',
-            'js/controllers/chart-controller.js',
+            'js/directives/loadbar-directive.js',
             'js/lib/angular.js',
             'js/lib/angular-mocks.js',
             'js/lib/angular-route.js',
@@ -28,8 +28,8 @@ module.exports = function (config) {
             'js/lib/jquery.min.js',
             'js/lib/angular.js',
             'js/data-loader.js',
-            'tests/statistic-controller-test.js',
-            'tests/chart-controller-test.js'
+ //            'tests/statistic-controller-test.js',
+             'tests/chart-controller-test.js'
         ],
 
 
