@@ -1,17 +1,16 @@
 <header-content title="title" show-back-button="true"></header-content>
 <orient orientation="'landscape'"></orient>
 <footer-content show="false"></footer-content>
+<!--position:absolute;-->
 
-<div class="button-grouped flex widget uib_w_24 d-margins" data-uib="app_framework/button_group" data-ver="1" style="position:absolute; margin:10px 10% 0 10%;  width:80%;">
-    <a ng-click="changePeriod(3)" class="button widget uib_w_25 d-margins" data-uib="app_framework/button" data-ver="1">3 месяца</a>
-    <a ng-click="changePeriod(6)" class="button widget uib_w_26 d-margins" data-uib="app_framework/button" data-ver="1">6 месяцев</a>
-    <a ng-click="changePeriod(50)" class="button widget uib_w_27 d-margins" data-uib="app_framework/button" data-ver="1">9 месяцев</a>
+<div id="chart" style="position:absolute; width:100%; height:100%">
+    <div class="button-grouped flex widget uib_w_24 d-margins" data-uib="app_framework/button_group" data-ver="1" style="position:absolute;margin:10px 10% 0 10%;  width:80%;">
+        <a ng-click="changePeriod(3)" class="button widget uib_w_25 d-margins" data-uib="app_framework/button" data-ver="1">3 месяца</a>
+        <a ng-click="changePeriod(6)" class="button widget uib_w_26 d-margins" data-uib="app_framework/button" data-ver="1">6 месяцев</a>
+        <a ng-click="changePeriod(50)" class="button widget uib_w_27 d-margins" data-uib="app_framework/button" data-ver="1">9 месяцев</a>
+    </div>
+
+    <div class="chart" items="data" dimension="type" style="position:absolute"></div>
+    <div class="loadBar"></div>
 </div>
-
-
-<div class="chart" items="data" dimension="type" style="position:absolute">
-
-</div>
-<div class="loadBar" style="height:100%;width:100%; position:absolute"></div>
-<!--border: solid 3px red;-->
 
