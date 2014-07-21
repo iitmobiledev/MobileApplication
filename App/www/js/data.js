@@ -62,11 +62,13 @@ function Master(firstName, middleName, lastName) {
 }
 
 //Пользователь
-function User(firstName, middleName, lastName, email) {
+function User(firstName, middleName, lastName, email, login, password) {
     this.firstName = firstName; //имя
     this.middleName = middleName; // отчество
     this.lastName = lastName; //фамилия
     this.email = email; //почта
+    this.login = login;
+    this.password = password;
 }
 
 
@@ -108,6 +110,18 @@ function getExpenditures() {
     return expList;
 }
 
+function getUsers(){
+    var users = [];
+    users.push(new User("Анна", "Петровна", "Касатникова", "kasatnik@gmail.com", "kasatnik", "12345"));
+    users.push(new User("Елена", "Анатольевна", "Звонкова",
+                        "zvonkova@gmail.com", "zvonok", "11111"));
+    users.push(new User("Татьяна", "Леонидовна", "Цветкова",
+                        "flower@gmail.com", "flower", "22222"));
+    users.push(new User("Анастасия", "Борисовна", "Ельникова", "yelnikova@gmail.com", "Ель", "33333"));
+    users.push(new User("Ольга", "Юрьевна", "Рычкова", "richkova@gmail.com", "Рычкова", "44444"));
+    return users;
+}
+
 function getCurrentUser() {
-    return new User("Анна", "Петровна", "Касатникова", "kasatnik@gmail.com");
+    return new User("Анна", "Петровна", "Касатникова", "kasatnik@gmail.com", "kasatnik", "12345");
 }

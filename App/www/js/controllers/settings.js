@@ -10,10 +10,9 @@
  * страницу авторизации.
  * @requires myApp.service:UserLoader
  */
-myApp.controller('SettingsController', function ($scope, UserLoader) {
-     $scope.user = UserLoader();
+myApp.controller('SettingsController', function ($scope, UserLoader, $location) {
+     //$scope.user = UserLoader();
      $scope.exit = function(){
-         // log out
-         //переход на страницу авторизации
+         $location.path('authorization');
      };
  });

@@ -1,5 +1,24 @@
 /**
  * @ngdoc service
+ * @description Сервис для авторизации пользователя.
+ * @name myApp.service:UserAuthorization
+ * @param {String} login логин пользователя.
+ * @param {String} password пароль пользователя.
+ * @returns {User}
+ */
+myApp.factory('UserAuthorization', function () {
+    return function (login, password) {
+        var users = getUsers();
+        for (var i=0; i < users.length; i++){
+            if (users[i].login == login && users[i].password == password)
+                return users[i];
+        }
+        return null;
+    };
+});
+
+/**
+ * @ngdoc service
  * @description Сервис для загрузки статистики за период.
  * @name myApp.service:OperationalStatisticLoader
  * @param {Date} date дата, за которую будут подгружаться данные.
@@ -100,18 +119,18 @@ myApp.factory('DateHelper', function () {
     }
 
 
-//    /**
-//     * @ngdoc method
-//     * @name myApp#service:getPrev
-//     * @param {Date} date дата, для которой будет вычислена предыдущая
-//     * дата.
-//     * @param {String} step шаг, показывающий за какой период
-//     * необходимо вычислить предыдущую дату.
-//     * @returns {Date} предыдущая дата.
-//     * @description Метод предназначен для получения того же дня на
-//     * прошлой неделе или прошлой недели, или прошлого месяца.
-//     * Необходимое указывается параметром step.
-//     */
+    //    /**
+    //     * @ngdoc method
+    //     * @name myApp#service:getPrev
+    //     * @param {Date} date дата, для которой будет вычислена предыдущая
+    //     * дата.
+    //     * @param {String} step шаг, показывающий за какой период
+    //     * необходимо вычислить предыдущую дату.
+    //     * @returns {Date} предыдущая дата.
+    //     * @description Метод предназначен для получения того же дня на
+    //     * прошлой неделе или прошлой недели, или прошлого месяца.
+    //     * Необходимое указывается параметром step.
+    //     */
         function getPrev(date, step) {
             switch (step) {
             case steps.DAY:
@@ -124,18 +143,18 @@ myApp.factory('DateHelper', function () {
                 return null;
             }
         };
-    
-//    /**
-//     * @ngdoc method
-//     * @name myApp#service:getPeriod
-//     * @param {Date} date дата, по которой будет определяться период.
-//     * @param {String} step шаг, показывающий какой период необходимо
-//     * вернуть, должен быть определен в DateHelper.steps.
-//     * @returns {Period} объект с полями {Date} begin и {Date} end, обозначающими
-//     * начальную и конечную даты периода.
-//     * @description Метод предназначен для получения периода, т.е.
-//     * начальной даты и конечной даты.
-//     */
+
+    //    /**
+    //     * @ngdoc method
+    //     * @name myApp#service:getPeriod
+    //     * @param {Date} date дата, по которой будет определяться период.
+    //     * @param {String} step шаг, показывающий какой период необходимо
+    //     * вернуть, должен быть определен в DateHelper.steps.
+    //     * @returns {Period} объект с полями {Date} begin и {Date} end, обозначающими
+    //     * начальную и конечную даты периода.
+    //     * @description Метод предназначен для получения периода, т.е.
+    //     * начальной даты и конечной даты.
+    //     */
     function getPeriod(date, step) {
         var period = new function () {
                 switch (step) {
