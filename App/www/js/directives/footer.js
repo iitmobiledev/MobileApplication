@@ -12,13 +12,19 @@ myApp.directive('footerContent', function () {
         transclude: false,
         link: function (scope, element, attrs) {
             var show = scope.$eval(attrs.show);
-            console.log("show" + show)
-            if (show) {
-                $(element).hide().html();
-                $("#navbar").show();
-            } else {
-                $(element).hide().html();
-                $("#navbar").hide();
+            showFooter();
+            function showFooter() {
+                if (intel.xdk && intel.xdk.device) {
+                    if (show) {
+                        $(element).hide().html();
+                        $("#navbar").show();
+                    } else {
+                        $(element).hide().html();
+                        $("#navbar").hide();
+                    }
+                } else {
+                    setTimeout(showFooter, 100);
+                }
             }
 
             scope.$watch(attrs.show, function () {

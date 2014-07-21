@@ -18,9 +18,19 @@ myApp.directive('headerContent', function () {
             var showBut = scope.$eval(attrs.showBackButton);
             setTitle();
             setBackButton();
-            var hC = $(element).hide().html();
-            $("#header").html(hC);
-            $("#header").show();
+
+            show();
+
+            function show() {
+                if (intel.xdk && intel.xdk.device) {
+                    var hC = $(element).hide().html();
+                    $("#header").html(hC);
+                    $("#header").show();
+                } else {
+                    setTimeout(show, 100);
+                }
+            }
+
 
             scope.$watch(attrs.title, function () {
                 setTitle();

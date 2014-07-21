@@ -37,12 +37,8 @@
         var onDeviceReady = function() {
             //hide splash screen
             intel.xdk.device.hideSplashScreen();
-            intel.xdk.device.hideStatusBar();
-            $(window).load(function() {
-                alert("stop loading!");
-            });
+            //     intel.xdk.device.hideStatusBar();            
             $.ui.useInternalRouting = false;
-            //            document.location.href = "#/index";
         };
         document.addEventListener("intel.xdk.device.ready", onDeviceReady, false);
     </script>
