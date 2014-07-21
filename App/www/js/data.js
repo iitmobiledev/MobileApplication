@@ -25,8 +25,8 @@ function ExpenditureItem(description, cost) {
     this.cost = cost; //стоимость
 }
 
-///Запись
-function Record(id, client, serviceList, comment, date) {
+///Запись(Визит)
+function Visit(id, client, serviceList, comment, date) {
     this.id = id;
     this.client = client; //клиент
     this.serviceList = serviceList; //список услуг

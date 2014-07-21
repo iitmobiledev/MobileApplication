@@ -21,5 +21,6 @@ myApp.directive('visitPageContent', function () {
         transclude: false,
         link: function (scope, element, attrs) {
             
+            
         },
-        templateUrl:  
+        template: '<div></div>'
