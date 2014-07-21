@@ -9,7 +9,7 @@
 myApp.factory('UserAuthorization', function () {
     return function (login, password) {
         var users = getUsers();
-        for (var i=0; i < users.length; i++){
+        for (var i = 0; i < users.length; i++) {
             if (users[i].login == login && users[i].password == password)
                 return users[i];
         }
@@ -52,6 +52,19 @@ myApp.factory('ExpendituresLoader', function () {
         for (var i = 0; i < getedData.length; i++) {
             if (getedData[i].date.toDateString() == neededDate.toDateString()) {
                 return getedData[i].expenditureList;
+            }
+        }
+        return null;
+    };
+});
+
+//сервис для загрузки данных о визитах
+myApp.factory('VisitsLoader', function () {
+    return function (neededDate) {
+        var getedData = getVisits();
+        for (var i = 0; i < getedData.length; i++) {
+            if (getedData[i].date.toDateString() == neededDate.toDateString()) {
+                return getedData[i];
             }
         }
         return null;

@@ -25,8 +25,9 @@ function ExpenditureItem(description, cost) {
     this.cost = cost; //стоимость
 }
 
-//Запись
-function Record(client, serviceList, comment, date) {
+///Запись
+function Record(id, client, serviceList, comment, date) {
+    this.id = id;
     this.client = client; //клиент
     this.serviceList = serviceList; //список услуг
     this.comment = comment; //коментарий
@@ -44,8 +45,7 @@ function Client(firstName, middleName, lastName, phoneNumber, balance, discount)
 }
 
 //Услуга
-function Service(id, description, startTime, endTime, master, cost, status) {
-    this.id = id;
+function Service(description, startTime, endTime, master, cost, status) {
     this.description = description; //название услуги
     this.startTime = startTime; //время начала оказания услуги
     this.endTime = endTime; //время конца оказания услуги
@@ -110,6 +110,28 @@ function getExpenditures() {
     return expList;
 }
 
+
+function getVisits() {
+    var visList = [];
+    var client = new Client("Иван", "Сергеевич", "Иванов", "8-952-607-20-50", 5000, 0);
+    var master = new Master("Петр", "Михайлович", "Васюков");
+    var serviceList = [];
+    var service = new Service("Стрижка модная", new Date(2014, 6, 20, 10, 00), new Date(2014, 6, 20, 11, 00), master, 2500, "Клиент пришел");
+    serviceList.push(service);
+    serviceList.push(new Service("Мелирование", new Date(2014, 6, 20, 11, 10), new Date(2014, 6, 20, 12, 10), master, 1000, "Клиент пришел"));
+    visit = new Record(1, client, serviceList, "Очень длинные волосы", new Date(2014, 6, 20));
+    visList.push(visit);
+    //2 visit
+    serviceList = [];
+    client = new Client("Екатерина", "Андреевна", "Иванова", "8-922-706-20-50", 2000, 0);
+    master = new Master("Петр", "Михайлович", "Васюков");
+    service = new Service("Мелирование", new Date(2014, 6, 21, 10, 00), new Date(2014, 6, 21, 12, 00), master, 2000, "Клиент пришел");
+    serviceList.push(service);
+    visit = new Record(1, client, serviceList, "Очень плохие волосы", new Date(2014, 6, 21));
+    visList.push(visit);
+    return visList;
+}
+
 function getUsers(){
     var users = [];
     users.push(new User("Анна", "Петровна", "Касатникова", "kasatnik@gmail.com", "kasatnik", "12345"));
@@ -119,6 +141,7 @@ function getUsers(){
                         "flower@gmail.com", "flower", "22222"));
     users.push(new User("Анастасия", "Борисовна", "Ельникова", "yelnikova@gmail.com", "Ель", "33333"));
     users.push(new User("Ольга", "Юрьевна", "Рычкова", "richkova@gmail.com", "Рычкова", "44444"));
+    users.push(new User("admin", "", "", "yelnikova@gmail.com", "", ""));
     return users;
 }
 
