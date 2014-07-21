@@ -119,7 +119,7 @@ function getVisits() {
     var service = new Service("Стрижка модная", new Date(2014, 6, 20, 10, 00), new Date(2014, 6, 20, 11, 00), master, 2500, "Клиент пришел");
     serviceList.push(service);
     serviceList.push(new Service("Мелирование", new Date(2014, 6, 20, 11, 10), new Date(2014, 6, 20, 12, 10), master, 1000, "Клиент пришел"));
-    visit = new Record(1, client, serviceList, "Очень длинные волосы", new Date(2014, 6, 20));
+    visit = new Visit(1, client, serviceList, "Очень длинные волосы", new Date(2014, 6, 20));
     visList.push(visit);
     //2 visit
     serviceList = [];
@@ -127,7 +127,7 @@ function getVisits() {
     master = new Master("Петр", "Михайлович", "Васюков");
     service = new Service("Мелирование", new Date(2014, 6, 21, 10, 00), new Date(2014, 6, 21, 12, 00), master, 2000, "Клиент пришел");
     serviceList.push(service);
-    visit = new Record(1, client, serviceList, "Очень плохие волосы", new Date(2014, 6, 21));
+    visit = new Visit(1, client, serviceList, "Очень плохие волосы", new Date(2014, 6, 21));
     visList.push(visit);
     return visList;
 }

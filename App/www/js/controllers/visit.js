@@ -5,7 +5,10 @@
  * @param {Visit} visit Визит
  */
 myApp.controller('VisitController', function ($scope, $route, $routeParams) { 
-    $scope.visit = $routeParams.visit;
+    $scope.client = $routeParams.visit.client; //клиент
+    $scope.serviceList = $routeParams.visit.serviceList; //список услуг
+    $scope.comment = $routeParams.visit.comment; //коментарий
+    $scope.date = $routeParams.visit.date; //дата оказания услуги
  });
 
 /**
@@ -20,7 +23,6 @@ myApp.directive('visitPageContent', function () {
         replace: true,
         transclude: false,
         link: function (scope, element, attrs) {
-            
-            
+            $(element).append('<div style="text-align: /"center/"">Запись на ' + scope.date.getHours() + ":" + scope.date.getMinutes() +'</div>')
         },
         template: '<div></div>'
