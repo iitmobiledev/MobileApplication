@@ -52,7 +52,7 @@ myApp.directive('visitsList', function ($filter) {
                 if (scope.VisitsPerDay != null) {
                     for (var i = 0; i < scope.VisitsPerDay.serviceList.length; i++) {
                         if (scope.type = "time") {
-                            $(element).append("<li><span>" + scope.VisitsPerDay.serviceList[i].status + "<br>" + scope.VisitsPerDay.client.lastName + '  ' + scope.VisitsPerDay.client.firstName + "</span><span style='float: right; text-align: center;'>" + $filter('date')(scope.VisitsPerDay.serviceList[i].startTime, "HH:mm") + '-' + $filter('date')(scope.VisitsPerDay.serviceList[i].endTime, "HH:mm") + "</span>" + '<br>' + scope.VisitsPerDay.serviceList[i].description + '<br>' + scope.VisitsPerDay.serviceList[i].master.lastName + '  ' + scope.VisitsPerDay.serviceList[i].master.firstName + "</span><span style='float: right; text-align: center;'>" + scope.VisitsPerDay.serviceList[i].cost + "</span></li>");
+                            $(element).append("<li ng-click=''><span>" + scope.VisitsPerDay.serviceList[i].status + "<br>" + scope.VisitsPerDay.client.lastName + '  ' + scope.VisitsPerDay.client.firstName + "</span><span style='float: right; text-align: center;'>" + $filter('date')(scope.VisitsPerDay.serviceList[i].startTime, "HH:mm") + '-' + $filter('date')(scope.VisitsPerDay.serviceList[i].endTime, "HH:mm") + "</span>" + '<br>' + scope.VisitsPerDay.serviceList[i].description + '<br>' + scope.VisitsPerDay.serviceList[i].master.lastName + '  ' + scope.VisitsPerDay.serviceList[i].master.firstName + "</span><span style='float: right; text-align: center;'>" + scope.VisitsPerDay.serviceList[i].cost + "</span></li>");
                         }
                         else{
                             

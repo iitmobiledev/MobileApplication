@@ -77,7 +77,6 @@
 /*IOS Fade style*/
 
 .fade {
-    position: absolute;
     top: 0;
     left: 0;
     right: 0;
@@ -86,20 +85,25 @@
 }
 .fade.ng-enter,
 .fade.ng-leave {
+    position: absolute;
     -webkit-transition: all 0.7s ease;
     -moz-transition: all 0.7s ease;
     -o-transition: all 0.7s ease;
     transition: all 0.7s ease;
 }
 .fade.ng-enter {
+    position: absolute;
     opacity: 0;
 }
 .fade.ng-enter-active {
+    position: absolute;
     opacity: 1;
 }
 .fade.ng-leave {
+    position: absolute;
     opacity: 1;
 }
 .fade.ng-leave-active {
+    position: absolute;
     opacity: 0;
 }
