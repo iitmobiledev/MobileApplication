@@ -155,7 +155,7 @@ myApp.directive('dateChanger', function (DateHelper, $filter) {
             /**
              * Обработка левого свайпа - увеличение текущей даты
              */
-            $(".upage-content").on('swipeLeft', function () {
+            $(".panel").on('swipeLeft', function () {
                 if (hasFutureData) {
                     getNewDate(1);
                 }
@@ -164,7 +164,7 @@ myApp.directive('dateChanger', function (DateHelper, $filter) {
             /**
              * Обработка правого свайпа - уменьшение текущей даты
              */
-            $(".upage-content").on('swipeRight', function () {
+            $(".panel").on('swipeRight', function () {
                 if (hasPrevData) {
                     getNewDate(-1);
                 }
@@ -181,7 +181,8 @@ myApp.directive('dateChanger', function (DateHelper, $filter) {
                         click: function () {
                             scope[attrs.step] = this.id;
                             scope.$apply();
-                        }
+                        },
+                        "style": "border: 1px solid gray"
                     })
                 );
             }
