@@ -62,12 +62,10 @@ myApp.factory('ExpendituresLoader', function () {
 myApp.factory('VisitsLoader', function () {
     return function (neededDate) {
         var getedData = getVisits();
-        for (var i = 0; i < getedData.length; i++) {
-            if (getedData[i].date.toDateString() == neededDate.toDateString()) {
-                return getedData[i];
-            }
-        }
-        return null;
+        getedData = getedData.filter(function (visit) {
+            return (visit.date.toDateString() == neededDate.toDateString());
+        });
+        return getedData.sort();
     };
 });
 

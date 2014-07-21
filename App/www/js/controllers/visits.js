@@ -49,19 +49,34 @@ myApp.directive('visitsList', function ($filter) {
 
             function showVisits() {
                 $(element).html("");
-                if (scope.VisitsPerDay != null) {
-                    for (var i = 0; i < scope.VisitsPerDay.serviceList.length; i++) {
-                        if (scope.type = "time") {
-                            $(element).append("<li ng-click=''><span>" + scope.VisitsPerDay.serviceList[i].status + "<br>" + scope.VisitsPerDay.client.lastName + '  ' + scope.VisitsPerDay.client.firstName + "</span><span style='float: right; text-align: center;'>" + $filter('date')(scope.VisitsPerDay.serviceList[i].startTime, "HH:mm") + '-' + $filter('date')(scope.VisitsPerDay.serviceList[i].endTime, "HH:mm") + "</span>" + '<br>' + scope.VisitsPerDay.serviceList[i].description + '<br>' + scope.VisitsPerDay.serviceList[i].master.lastName + '  ' + scope.VisitsPerDay.serviceList[i].master.firstName + "</span><span style='float: right; text-align: center;'>" + scope.VisitsPerDay.serviceList[i].cost + "</span></li>");
+                if (scope.VisitsPerDay) {
+                    for (var i = 0; i < scope.VisitsPerDay.length; i++) {
+                        var services = "";
+                        var masters="";
+                        var coast = 0;
+                        for (var j = 0; j < scope.VisitsPerDay[i].serviceList.length; j++) {
+                            services += scope.VisitsPerDay[i].serviceList[j].description + ", ";
+                            masters+= scope.VisitsPerDay[i].serviceList[j].master.lastName+", ";
+                            coast += scope.VisitsPerDay[i].serviceList[j].cost
                         }
-                        else{
-                            
-                        }
+                        $(element).append("<li>" +"<span style='max-width:80%; text-wrap:ellipsis; white-space:nowrap; '>"
+                                          +scope.VisitsPerDay[i].status + "<br>"
+                                          +"Клиент: "+scope.VisitsPerDay[i].client.lastName + '  ' + scope.VisitsPerDay[i].client.firstName + "<br>"
+                                          +masters+"<br>"
+                                          + services + " " 
+                                          +"</span>"
+                                          + coast 
+                                          + "</li>");
                     }
                 } else {
                     $(element).html("<li style='text-align: center; font-size: 14pt'>Нет визитов</li>");
                 }
             }
+
+
+            //             $(element).append("<li ng-click=''><span>" + scope.VisitsPerDay.serviceList[i].status + "<br>" + scope.VisitsPerDay.client.lastName + '  ' + scope.VisitsPerDay.client.firstName + "</span><span style='float: right; text-align: center;'>" + $filter('date')(scope.VisitsPerDay.serviceList[i].startTime, "HH:mm") + '-' + $filter('date')(scope.VisitsPerDay.serviceList[i].endTime, "HH:mm") + "</span>" + '<br>' + scope.VisitsPerDay.serviceList[i].description + '<br>' + scope.VisitsPerDay.serviceList[i].master.lastName + '  ' + scope.VisitsPerDay.serviceList[i].master.firstName + "</span><span style='float: right; text-align: center;'>" + scope.VisitsPerDay.serviceList[i].cost + "</span></li>");
+
+
 
             //            scope.$watch('type', function () {
             //                showVisits();
