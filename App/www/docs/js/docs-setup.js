@@ -5,6 +5,15 @@ NG_DOCS={
   "pages": [
     {
       "section": "api",
+      "id": "myApp.controller:AuthorizationController",
+      "shortName": "AuthorizationController",
+      "type": "controller",
+      "moduleName": "myApp",
+      "shortDescription": " Контроллер, отвечающий за авторизацию",
+      "keywords": "api controller myapp"
+    },
+    {
+      "section": "api",
       "id": "myApp.controller:ExpendituresController",
       "shortName": "ExpendituresController",
       "type": "controller",
@@ -20,6 +29,15 @@ NG_DOCS={
       "moduleName": "myApp",
       "shortDescription": "Контроллер, получающий данные для отрисовки графика",
       "keywords": "api controller data myapp period type"
+    },
+    {
+      "section": "api",
+      "id": "myApp.controller:IndexController",
+      "shortName": "IndexController",
+      "type": "controller",
+      "moduleName": "myApp",
+      "shortDescription": " Контроллер, отвечающий за хранение глобальных",
+      "keywords": "api controller myapp"
     },
     {
       "section": "api",
@@ -41,11 +59,20 @@ NG_DOCS={
     },
     {
       "section": "api",
+      "id": "myApp.controller:VisitController",
+      "shortName": "VisitController",
+      "type": "controller",
+      "moduleName": "myApp",
+      "shortDescription": "Контроллер, содержащий данные о визите. Получает данные из пути к странице",
+      "keywords": "api controller myapp visit"
+    },
+    {
+      "section": "api",
       "id": "myApp.controller:VisitsController",
       "shortName": "VisitsController",
       "type": "controller",
       "moduleName": "myApp",
-      "shortDescription": " Контроллер, отвечающий за загрузку данных о визитах,",
+      "shortDescription": "Контроллер, отвечающий за загрузку данных о визитах,",
       "keywords": "api controller myapp"
     },
     {
@@ -113,6 +140,24 @@ NG_DOCS={
     },
     {
       "section": "api",
+      "id": "myApp.directive:visitPageContent",
+      "shortName": "visitPageContent",
+      "type": "directive",
+      "moduleName": "myApp",
+      "shortDescription": "Директива добавляет на страницу информацию о визите",
+      "keywords": "api directive myapp"
+    },
+    {
+      "section": "api",
+      "id": "myApp.directive:VisitsPerDay",
+      "shortName": "VisitsPerDay",
+      "type": "directive",
+      "moduleName": "myApp",
+      "shortDescription": "Директива добавляет на страницу приложения список, отображающий визиты",
+      "keywords": "api directive myapp"
+    },
+    {
+      "section": "api",
       "id": "myApp.service:DateHelper",
       "shortName": "DateHelper",
       "type": "service",
@@ -137,6 +182,15 @@ NG_DOCS={
       "moduleName": "myApp",
       "shortDescription": "Сервис для суммирования статистических данных за",
       "keywords": "api myapp operationalstatistics service statisticforperiod"
+    },
+    {
+      "section": "api",
+      "id": "myApp.service:UserAuthorization",
+      "shortName": "UserAuthorization",
+      "type": "service",
+      "moduleName": "myApp",
+      "shortDescription": "Сервис для авторизации пользователя.",
+      "keywords": "api login myapp password service"
     },
     {
       "section": "api",
