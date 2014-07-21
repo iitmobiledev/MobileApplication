@@ -49,7 +49,7 @@ myApp.directive('dateChanger', function (DateHelper, $filter) {
             updateSteps();
 
             var updateTitleSteps = function () {
-                titleSteps = scope.$eval(attrs.titles);
+                titleSteps = scope.$eval(attrs.titles) || "";
             };
             scope.$watch(attrs.titleSteps, updateTitleSteps);
             updateTitleSteps();
