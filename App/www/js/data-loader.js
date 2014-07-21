@@ -4,7 +4,7 @@
  * @name myApp.service:UserAuthorization
  * @param {String} login логин пользователя.
  * @param {String} password пароль пользователя.
- * @returns {User} пользоыватель
+ * @returns {User}
  */
 myApp.factory('UserAuthorization', function () {
     return function (login, password) {

@@ -5,5 +5,5 @@
  * данных (авторизованного пользователя).</p>
  */
 myApp.controller('IndexController', function ($scope) {
-    $scope.user=null;
+    //$scope.user=null;
 });

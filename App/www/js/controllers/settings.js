@@ -12,7 +12,9 @@
  */
 myApp.controller('SettingsController', function ($scope, UserLoader, $location) {
      //$scope.user = UserLoader();
+    $scope.user = sessvars.user;
      $scope.exit = function(){
+         sessvars.$.clearMem();
          $location.path('authorization');
      };
  });

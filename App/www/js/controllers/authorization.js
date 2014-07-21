@@ -5,11 +5,14 @@
  * пользователя. </p>
  */
 myApp.controller('AuthorizationController', function ($scope, $location, UserAuthorization) {
+    //console.log('sessvars.user ' + sessvars.user);
+    if (sessvars.user)
+            $location.path('index');
     $scope.enter = function () {
         var login = document.getElementById('login').value;
         var password = document.getElementById('password').value;
-        $scope.$parent.user = UserAuthorization(login, password);
-        if ($scope.user)
+        sessvars.user = UserAuthorization(login, password);
+        if (sessvars.user)
             $location.path('index');
         else
             alert("Такой пользователь незарегистрирован");

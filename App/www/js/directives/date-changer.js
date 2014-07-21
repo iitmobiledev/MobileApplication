@@ -181,8 +181,7 @@ myApp.directive('dateChanger', function (DateHelper, $filter) {
                         click: function () {
                             scope[attrs.step] = this.id;
                             scope.$apply();
-                        },
-                        "style": "border: 1px solid gray"
+                        }
                     })
                 );
             }
