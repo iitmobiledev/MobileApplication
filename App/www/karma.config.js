@@ -19,7 +19,8 @@ module.exports = function (config) {
             'js/lib/angular.js',
             'js/data.js',
             'js/routes.js',
-            'js/directives/loadbar-directive.js',
+            'js/directives/loadbar.js',
+            'js/directives/date-changer.js',
             'js/lib/angular.js',
             'js/lib/angular-mocks.js',
             'js/lib/angular-route.js',
@@ -28,8 +29,8 @@ module.exports = function (config) {
             'js/lib/jquery.min.js',
             'js/lib/angular.js',
             'js/data-loader.js',
- //            'tests/statistic-controller-test.js',
-             'tests/chart-controller-test.js'
+            'tests/date-directive.js',
+            'date-navigation.html'
         ],
 
 
@@ -40,7 +41,11 @@ module.exports = function (config) {
 
         // preprocess matching files before serving them to the browser
         // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
-        preprocessors: {},
+
+        // generate js files from html templates
+        preprocessors: {
+            'date-navigation.html': ['ng-html2js']
+        },
 
 
         // test results reporter to use
@@ -69,6 +74,23 @@ module.exports = function (config) {
         // start these browsers
         // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
         browsers: ['Chrome'],
+
+
+        ngHtml2JsPreprocessor: {
+            //            // strip this from the file path
+            //            stripPrefix: 'public/',
+            //            // prepend this to the
+            //            prependPrefix: 'served/',
+            //
+            //            // or define a custom transform function
+            //            cacheIdFromPath: function (filepath) {
+            //                return cacheId;
+            //            },
+
+            // setting this option will create only a single module that contains templates
+            // from all the files, so you can load them all with module('foo')
+            //moduleName: 'tmplts'
+        },
 
 
         // Continuous Integration mode

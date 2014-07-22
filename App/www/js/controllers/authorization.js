@@ -5,7 +5,6 @@
  * пользователя. </p>
  */
 myApp.controller('AuthorizationController', function ($scope, $location, UserAuthorization) {
-    //console.log('sessvars.user ' + sessvars.user);
     if (sessvars.user)
             $location.path('index');
     $scope.enter = function () {

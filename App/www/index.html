@@ -39,6 +39,7 @@
             intel.xdk.device.hideSplashScreen();
             //     intel.xdk.device.hideStatusBar();            
             $.ui.useInternalRouting = false;
+            //$('#Statistics').addClass('pressed');
         };
         document.addEventListener("intel.xdk.device.ready", onDeviceReady, false);
     </script>
@@ -82,9 +83,9 @@
 
     </div>
     <div id="navbar" class="inner-element uib_w_22" data-uib="app_framework/footer" data-ver="1">
-        <a class="icon calendar" href="#/index">Отчетность</a>
-        <a class="icon clock" href="#/visits">Визиты</a>
-        <a class="icon settings" href="#/settings">Настройки</a>
+        <a class="icon calendar" href="#/index" id="StatisticsFooter">Отчетность</a>
+        <a class="icon clock" href="#/visits" id="VisitsFooter">Визиты</a>
+        <a class="icon settings" href="#/settings" id="SettingsFooter">Настройки</a>
     </div>
     <!-- /uwrap -->
 </body>

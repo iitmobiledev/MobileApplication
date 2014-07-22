@@ -22,8 +22,7 @@ myApp.directive('dateChanger', function (DateHelper, $filter) {
     return {
         restrict: 'E',
         replace: true,
-        link:
-        function (scope, element, attrs) {
+        link: function (scope, element, attrs) {
             var date, step, steps, titleSteps, hasFutureData, hasPrevData;
 
             var updateDate = function () {
@@ -41,9 +40,9 @@ myApp.directive('dateChanger', function (DateHelper, $filter) {
             var updateSteps = function () {
                 steps = scope.$eval(attrs.steps);
                 if (steps.length > 1)
-                    element.find('#periodChanger').show();
+                    element.find('#periodChanger').css('display', 'block');
                 else
-                    element.find('#periodChanger').hide();
+                    element.find('#periodChanger').css('display', 'none');
             };
             scope.$watch(attrs.steps, updateSteps);
             updateSteps();
@@ -53,23 +52,23 @@ myApp.directive('dateChanger', function (DateHelper, $filter) {
             };
             scope.$watch(attrs.titleSteps, updateTitleSteps);
             updateTitleSteps();
-            
+
             var updateHasFutureData = function () {
                 hasFutureData = scope.$eval(attrs.hasFutureData);
                 if (hasFutureData)
-                    element.find('#NextDay').show();
+                    element.find("#NextDay").css('display', 'block');
                 else
-                    element.find('#NextDay').hide();
+                    element.find("#NextDay").css('display', 'none');
             };
             scope.$watch(attrs.hasFutureData, updateHasFutureData);
             updateHasFutureData();
-            
+
             var updateHasPrevData = function () {
                 hasPrevData = scope.$eval(attrs.hasPrevData);
                 if (hasPrevData)
-                    element.find('#PrevDay').show();
+                    element.find("#PrevDay").css('display', 'block');
                 else
-                    element.find('#PrevDay').hide();
+                    element.find("#PrevDay").css('display', 'none');
             };
             scope.$watch(attrs.hasPrevData, updateHasPrevData);
             updateHasPrevData();
@@ -115,8 +114,6 @@ myApp.directive('dateChanger', function (DateHelper, $filter) {
                     scope.$apply();
                 }
             }
-
-            activeButtonHandling();
 
             /**
              * Функция для получения текущей даты в читабельном виде
