@@ -58,42 +58,36 @@ myApp.directive('visitPageContent', function ($filter) {
                 .html("Скидка: " + scope.client.discount + "%")
                 .css("margin-left", "20%");
 
-            for (var i = 0; i<scope.serviceList.length; i++) {
+            var sum = 0;
+            for (var i = 0; i < scope.serviceList.length; i++) {
+                sum += scope.serviceList[i].cost;
                 $(element).find('#servList')
-                .append('<li>'+
-                        '<div>'+
+                    .append('<li>' +
+                        '<div>' +
                         '<span>' + scope.serviceList[i].description + '</span>' +
-                        '<span style="font-weight:bold; float: right; text-align: right;">' + scope.serviceList[i].cost + '</span>' +
+                        '<span style="font-weight:bold; float: right; text-align: right;">' +
+                        scope.serviceList[i].cost + '</span>' +
                         '</div>' +
-                        '<div>'+
-                        $filter('date')(scope.serviceList[i].startTime, "H:mm") + " - " 
-                        +  $filter('date')(scope.serviceList[i].endTime, "H:mm") +
+                        '<div>' +
+                        $filter('date')(scope.serviceList[i].startTime, "H:mm") + " - " +
+                        $filter('date')(scope.serviceList[i].endTime, "H:mm") +
                         '</div>' +
-                        '<div>'+
-                        'Мастер: ' + scope.serviceList[i].master.lastName + " " + scope.serviceList[i].master.firstName[0] +
+                        '<div>' +
+                        'Мастер: ' + scope.serviceList[i].master.lastName + " " +
+                        scope.serviceList[i].master.firstName[0] +
                         '.</div>' +
                         '</li>'
-                       );
+                );
             }
 
-            //            var balanceColor;
-            //            var balance = scope.client.balance;
-            //            if(balance >= 0)
-            //                balanceColor = "red";
-            //            else
-            //                balanceColor = "green";
-            //                
-            //            $(element).append('<div>' + scope.client.lastName + " " + scope.client.firstName + " " + scope.client.middleName +
-            //                              '<br>' + 
-            //                              '<a style="text-decoration: none;" href="tel:' + 
-            //                              scope.client.phoneNumber + '">' + scope.client.phoneNumber + '</a>' +
-            //                              '<br>' +
-            //                              '<span style="color: ' + balanceColor + ';">Баланс: ' + balance + '</span>' + 
-            //                              '   Скидка: ' + scope.client.discount + '%' +
-            //                              '</div>');
-            //            
-            //            
-            //            $(element).append('<div>Услуги</div>')
+            $(element).find('#servList')
+                .append('<li><span style="font-weight:bold; font-size: 14pt">Итого:</span>' +
+                    '<span style="font-weight:bold; float: right; text-align: right;" id="sum">' +
+                    sum + '</span>' +
+                    '</li>');
+
+            $(element).find('#comment')
+                .html(scope.comment);
         },
 
         templateUrl: "visit-page-content.html"
