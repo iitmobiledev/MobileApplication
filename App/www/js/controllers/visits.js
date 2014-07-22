@@ -42,7 +42,7 @@ myApp.directive('visitsList', function ($filter) {
         restrict: 'E',
         replace: true,
         transclude: true,
-        template: '<ul class="list inset">' + '</ul>',
+        template: '<ul class="list inset"></ul>',
         link: function (scope, element, attrs) {
 
             scope.$watch('VisitsPerDay', showVisits);
@@ -64,9 +64,31 @@ myApp.directive('visitsList', function ($filter) {
                             endTimes.push(scope.VisitsPerDay[i].serviceList[j].endTime);
                         }
                         masters = $.unique(masters);
-                        $(element).append("<li><a href='#/visit/" + scope.VisitsPerDay[i].id + "'>" + "<div style='max-width:50%; text-wrap:ellipsis; white-space:nowrap;'>" + scope.VisitsPerDay[i].status + "<br>" + "<span style='left:60%; text-align: right; position:absolute;font-size: 16pt'>" + coast + " руб." + "</span>" + "<span style='left:80%; text-align: right; position:absolute;font-size: 14pt'>" + $filter('date')(new Date(Math.min.apply(null, startTimes)), "HH:mm") + '-' + $filter('date')(new Date(Math.max.apply(null, endTimes)), "HH:mm") + "</span>" + "Клиент: " + scope.VisitsPerDay[i].client.lastName + '  ' + scope.VisitsPerDay[i].client.firstName + "<br>" + masters.join(",") + "<br>" + services.join(",") + " " + "</div>"
-
-                            + "</a></li>");
+                        $(element).append(
+                            '<li>' +
+                            '<a href="#/visit/' + scope.VisitsPerDay[i].id + '">' +
+                                '<div>' +
+                                    '<div>' + scope.VisitsPerDay[i].status + '</div>' +
+                                    '<div style="font-weight:bold;">' +
+                                        '<span style="float:left; text-align:left; max-width:65%;white-space:nowrap;text-overflow:ellipsis;overflow: hidden;">' +
+                                        scope.VisitsPerDay[i].client.lastName + ' ' + scope.VisitsPerDay[i].client.firstName +
+                                        '</span>' +
+                                        '<span style="float:right; text-align:right; max-width:35%;white-space:nowrap;text-overflow:ellipsis">' +
+                                        $filter('date')(new Date(Math.min.apply(null, startTimes)), "HH:mm") + '-' +
+                                        $filter('date')(new Date(Math.max.apply(null, endTimes)), "HH:mm") +
+                                        '</span>' +
+                                    '</div>' +
+                                    '<div>' +
+                                        '<span style="float:left; text-align:left; max-width:65%;white-space:nowrap;text-overflow:ellipsis;overflow: hidden;">' +
+                                        masters.join(",") + ', ' + services.join(",") +
+                                        '</span>' +
+                                        '<span style="float:right; text-align:right; max-width:35%;white-space:nowrap;text-overflow:ellipsis">' +
+                                        coast + ' р.' +
+                                        '</span>' +
+                                    '</div>' +
+                                '</div>' +
+                            '</a>' +
+                            '</li>');
                     }
                 } else {
                     $(element).html("<li style='text-align: center; font-size: 14pt'>Нет визитов</li>");
