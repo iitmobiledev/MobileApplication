@@ -70,19 +70,19 @@ myApp.directive('visitsList', function ($filter) {
                                 '<div>' +
                                     '<div>' + scope.VisitsPerDay[i].status + '</div>' +
                                     '<div style="font-weight:bold;">' +
-                                        '<span style=" text-align:left; max-width:65%;white-space:nowrap;text-overflow:ellipsis;overflow: hidden;">' +
+                                        '<span style="float:left;  width:65%;white-space:nowrap;text-overflow:ellipsis;overflow: hidden;">' +
                                         scope.VisitsPerDay[i].client.lastName + ' ' + scope.VisitsPerDay[i].client.firstName +
                                         '</span>' +
-                                        '<span style="float:right; text-align:right; max-width:35%;white-space:nowrap;text-overflow:ellipsis">' +
+                                        '<span style=" text-align:right; width:35%;white-space:nowrap;text-overflow:ellipsis">' +
                                         $filter('date')(new Date(Math.min.apply(null, startTimes)), "HH:mm") + '-' +
                                         $filter('date')(new Date(Math.max.apply(null, endTimes)), "HH:mm") +
                                         '</span>' +
                                     '</div>' +
                                     '<div>' +
-                                        '<span style=" text-align:left; max-width:65%;white-space:nowrap;text-overflow:ellipsis;overflow: hidden;">' +
-                                        masters.join(",") + ', ' + services.join(",") +
+                                        '<span style="float:left;  width:65%;white-space:nowrap;text-overflow:ellipsis;overflow: hidden;">' +
+                                        masters.join(",") + ': ' + services.join(",") +
                                         '</span>' +
-                                        '<span style="float:right; text-align:right; max-width:35%;white-space:nowrap;text-overflow:ellipsis">' +
+                                        '<span style=" text-align:right; width:35%;white-space:nowrap;text-overflow:ellipsis">' +
                                         coast + ' р.' +
                                         '</span>' +
                                     '</div>' +
