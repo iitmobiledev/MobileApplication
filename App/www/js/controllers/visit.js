@@ -4,12 +4,23 @@
  * @name myApp.controller:VisitController
  * @param {Visit} visit Визит
  */
-myApp.controller('VisitController', function ($scope, $route, $routeParams) { 
-//    $scope.client = $routeParams.visit.client; //клиент
-//    $scope.serviceList = $routeParams.visit.serviceList; //список услуг
-//    $scope.comment = $routeParams.visit.comment; //коментарий
-//    $scope.date = $routeParams.visit.date; //дата оказания услуги
- });
+myApp.controller('VisitController', function ($scope, $route, $routeParams, VisitLoader) {
+    $scope.id = $routeParams.id;
+    getVisitById($scope.id);
+
+    function getVisitById(id) {
+        var visit = VisitLoader(id);
+        if (visit !== null) {
+            $scope.status = visit.status;
+            $scope.date = visit.date;
+            $scope.client = visit.client;
+            $scope.serviceList = visit.serviceList;
+            $scope.comment = visit.comment;
+        }
+
+
+    }
+});
 
 /**
  * @description Директива добавляет на страницу информацию о визите
@@ -23,29 +34,70 @@ myApp.directive('visitPageContent', function ($filter) {
         replace: true,
         transclude: false,
         link: function (scope, element, attrs) {
-            $(element).append('<div style="text-align: center; background-color: yellow;">' + 
-                              'Запись на ' +
-                              $filter('date')(date, "H:mm dd.MM.yyyy") +'</div>');
-            
-            var balanceColor;
-            var balance = scope.client.balance;
-            if(balance >= 0)
-                balanceColor = "red";
+            $(element).find('#datetime')
+                .html('Визит в ' + $filter('date')(scope.date, "H:mm dd.MM.yyyy"))
+                .css("font-size", "14pt")
+                .css("background-color", "yellow");
+
+            $(element).find('#clientName')
+                .html(scope.client.lastName + " " + scope.client.firstName + " " + scope.client.middleName)
+                .css("font-size", "14pt");
+            $(element).find('#phone').html('<a style="text-decoration: none" href="tel:"' + scope.client.phoneNumber + '">' + scope.client.phoneNumber + '</a>')
+                .css("font-size", "13pt");
+
+            var balColor;
+            if (scope.client.balance >= 0)
+                balColor = "green";
             else
-                balanceColor = "green";
-                
-            $(element).append('<div>' + scope.client.lastName + " " + scope.client.firstName + " " + scope.client.middleName +
-                              '<br>' + 
-                              '<a style="text-decoration: none;" href="tel:' + 
-                              scope.client.phoneNumber + '">' + scope.client.phoneNumber + '</a>' +
-                              '<br>' +
-                              '<span style="color: ' + balanceColor + ';">Баланс: ' + balance + '</span>' + 
-                              '   Скидка: ' + scope.client.discount + '%' +
-                              '</div>');
-            
-            
-            $(element).append('<div>Услуги</div>')
-            
-        }
-    }
+                balColor = "red";
+            $(element).find('#balance')
+                .html("Баланс: " + scope.client.balance)
+                .css("color", balColor);
+
+            $(element).find('#discount')
+                .html("Скидка: " + scope.client.discount + "%")
+                .css("margin-left", "20%");
+
+            for (var i = 0; i<scope.serviceList.length; i++) {
+                $(element).find('#servList')
+                .append('<li>'+
+                        '<div>'+
+                        '<span>' + scope.serviceList[i].description + '</span>' +
+                        '<span style="font-weight:bold; float: right; text-align: right;">' + scope.serviceList[i].cost + '</span>' +
+                        '</div>' +
+                        '<div>'+
+                        $filter('date')(scope.serviceList[i].startTime, "H:mm") + " - " 
+                        +  $filter('date')(scope.serviceList[i].endTime, "H:mm") +
+                        '</div>' +
+                        '<div>'+
+                        'Мастер: ' + scope.serviceList[i].master.lastName + " " + scope.serviceList[i].master.firstName[0] +
+                        '.</div>' +
+                        '</li>'
+                       );
+            }
+
+            //            var balanceColor;
+            //            var balance = scope.client.balance;
+            //            if(balance >= 0)
+            //                balanceColor = "red";
+            //            else
+            //                balanceColor = "green";
+            //                
+            //            $(element).append('<div>' + scope.client.lastName + " " + scope.client.firstName + " " + scope.client.middleName +
+            //                              '<br>' + 
+            //                              '<a style="text-decoration: none;" href="tel:' + 
+            //                              scope.client.phoneNumber + '">' + scope.client.phoneNumber + '</a>' +
+            //                              '<br>' +
+            //                              '<span style="color: ' + balanceColor + ';">Баланс: ' + balance + '</span>' + 
+            //                              '   Скидка: ' + scope.client.discount + '%' +
+            //                              '</div>');
+            //            
+            //            
+            //            $(element).append('<div>Услуги</div>')
+        },
+
+        templateUrl: "visit-page-content.html"
+
+
+    };
 });

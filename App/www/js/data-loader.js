@@ -82,6 +82,25 @@ myApp.factory('VisitsLoader', function () {
 
 /**
  * @ngdoc service
+ * @description Сервис для получения визита по указанному id
+ * @name myApp.service:VisitLoader
+ * @returns {Visit} объект "Визит"
+ */
+myApp.factory('VisitLoader', function () {
+    return function (neededID) {
+        var getedData = getVisits();
+        getedData = getedData.filter(function (visit) {
+            return (visit.id == neededID);
+        });
+        if (getedData.length == 1)
+            return getedData[0];
+        else
+            return null;
+    };
+});
+
+/**
+ * @ngdoc service
  * @description Сервис для получения текущего пользователя.
  * @name myApp.service:UserLoader
  * @returns {User} объект пользователя
