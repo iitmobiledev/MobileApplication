@@ -58,14 +58,25 @@ myApp.factory('ExpendituresLoader', function () {
     };
 });
 
-//сервис для загрузки данных о визитах
+/**
+ * @ngdoc service
+ * @description Сервис для получения данных о визитах
+ * @name myApp.service:VisitsLoader
+ * @param {date} neededDate дата, за которую нужно получить список визитов
+ * @returns {Array} список визитов за нужную дату
+ */
 myApp.factory('VisitsLoader', function () {
     return function (neededDate) {
         var getedData = getVisits();
         getedData = getedData.filter(function (visit) {
             return (visit.date.toDateString() == neededDate.toDateString());
         });
-        return getedData.sort();
+        if (getedData.length != 0) {
+            return getedData.sort(function (a, b) {
+                return new Date(a.date).getTime() - new Date(b.date).getTime()
+            });
+        }
+        return null;
     };
 });
 

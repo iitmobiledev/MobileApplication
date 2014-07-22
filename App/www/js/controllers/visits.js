@@ -4,17 +4,12 @@
  * @ngdoc controller
  * @name myApp.controller:VisitsController
  */
-myApp.controller('VisitsController', function ($scope, $filter, VisitsLoader, DateHelper,$location) {
+myApp.controller('VisitsController', function ($scope, $filter, VisitsLoader, DateHelper, $location) {
     $scope.date = new Date();
     $scope.step = 'day';
     $scope.type = 'time';
     $scope.VisitsPerDay = VisitsLoader($scope.date);
 
-    $scope.push=function()
-    {
-        alert("fdf");
-        $location.path('visit')
-    }
     $scope.hasPrevData = function () {
         return true;
     };
@@ -54,33 +49,29 @@ myApp.directive('visitsList', function ($filter) {
 
             function showVisits() {
                 $(element).html("");
-                if (scope.VisitsPerDay) {
+                if (scope.VisitsPerDay != null) {
                     for (var i = 0; i < scope.VisitsPerDay.length; i++) {
-                        var services = "";
-                        var masters=[];
+                        var services = [];
+                        var masters = [];
+                        var startTimes = [];
+                        var endTimes = [];
                         var coast = 0;
                         for (var j = 0; j < scope.VisitsPerDay[i].serviceList.length; j++) {
-                            services += scope.VisitsPerDay[i].serviceList[j].description + ", ";
+                            services.push(scope.VisitsPerDay[i].serviceList[j].description);
                             masters.push(scope.VisitsPerDay[i].serviceList[j].master.lastName);
                             coast += scope.VisitsPerDay[i].serviceList[j].cost
+                            startTimes.push(scope.VisitsPerDay[i].serviceList[j].startTime);
+                            endTimes.push(scope.VisitsPerDay[i].serviceList[j].endTime);
                         }
-                        masters=$.unique(masters);
-                        $(element).append("<li><a href='#/visit/"+scope.VisitsPerDay[i].id+"'>" +"<span style='max-width:80%; text-wrap:ellipsis; white-space:nowrap; '>"
-                                          +scope.VisitsPerDay[i].status + "<br>"
-                                          +"Клиент: "+scope.VisitsPerDay[i].client.lastName + '  ' + scope.VisitsPerDay[i].client.firstName + "<br>"
-                                          +masters.join(",")+"<br>"
-                                          + services + " " 
-                                          +"</span>"
-                                          + coast 
-                                          + "</a></li>");
+                        masters = $.unique(masters);
+                        $(element).append("<li><a href='#/visit/" + scope.VisitsPerDay[i].id + "'>" + "<div style='max-width:50%; text-wrap:ellipsis; white-space:nowrap;'>" + scope.VisitsPerDay[i].status + "<br>" + "<span style='left:60%; text-align: right; position:absolute;font-size: 16pt'>" + coast + " руб." + "</span>" + "<span style='left:80%; text-align: right; position:absolute;font-size: 14pt'>" + $filter('date')(new Date(Math.min.apply(null, startTimes)), "HH:mm") + '-' + $filter('date')(new Date(Math.max.apply(null, endTimes)), "HH:mm") + "</span>" + "Клиент: " + scope.VisitsPerDay[i].client.lastName + '  ' + scope.VisitsPerDay[i].client.firstName + "<br>" + masters.join(",") + "<br>" + services.join(",") + " " + "</div>"
+
+                            + "</a></li>");
                     }
                 } else {
                     $(element).html("<li style='text-align: center; font-size: 14pt'>Нет визитов</li>");
                 }
             }
-
-
-            //             $(element).append("<li ng-click=''><span>" + scope.VisitsPerDay.serviceList[i].status + "<br>" + scope.VisitsPerDay.client.lastName + '  ' + scope.VisitsPerDay.client.firstName + "</span><span style='float: right; text-align: center;'>" + $filter('date')(scope.VisitsPerDay.serviceList[i].startTime, "HH:mm") + '-' + $filter('date')(scope.VisitsPerDay.serviceList[i].endTime, "HH:mm") + "</span>" + '<br>' + scope.VisitsPerDay.serviceList[i].description + '<br>' + scope.VisitsPerDay.serviceList[i].master.lastName + '  ' + scope.VisitsPerDay.serviceList[i].master.firstName + "</span><span style='float: right; text-align: center;'>" + scope.VisitsPerDay.serviceList[i].cost + "</span></li>");
 
 
 
