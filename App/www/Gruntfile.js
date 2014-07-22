@@ -1,6 +1,6 @@
 module.exports = function (grunt) {
     grunt.initConfig({
-        clean: ['doc'],
+        clean: ['docs'],
         ngdocs: {
             options: {
                 dest: 'docs',

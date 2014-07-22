@@ -200,6 +200,24 @@ NG_DOCS={
       "moduleName": "myApp",
       "shortDescription": "Сервис для получения текущего пользователя.",
       "keywords": "api myapp service"
+    },
+    {
+      "section": "api",
+      "id": "myApp.service:VisitLoader",
+      "shortName": "VisitLoader",
+      "type": "service",
+      "moduleName": "myApp",
+      "shortDescription": "Сервис для получения визита по указанному id",
+      "keywords": "api myapp service"
+    },
+    {
+      "section": "api",
+      "id": "myApp.service:VisitsLoader",
+      "shortName": "VisitsLoader",
+      "type": "service",
+      "moduleName": "myApp",
+      "shortDescription": "Сервис для получения данных о визитах",
+      "keywords": "api myapp neededdate service"
     }
   ],
   "apis": {
