@@ -4,12 +4,17 @@
  * @ngdoc controller
  * @name myApp.controller:VisitsController
  */
-myApp.controller('VisitsController', function ($scope, $filter, VisitsLoader, DateHelper) {
+myApp.controller('VisitsController', function ($scope, $filter, VisitsLoader, DateHelper,$location) {
     $scope.date = new Date();
     $scope.step = 'day';
     $scope.type = 'time';
     $scope.VisitsPerDay = VisitsLoader($scope.date);
 
+    $scope.push=function()
+    {
+        alert("fdf");
+        $location.path('visit')
+    }
     $scope.hasPrevData = function () {
         return true;
     };
@@ -52,21 +57,22 @@ myApp.directive('visitsList', function ($filter) {
                 if (scope.VisitsPerDay) {
                     for (var i = 0; i < scope.VisitsPerDay.length; i++) {
                         var services = "";
-                        var masters="";
+                        var masters=[];
                         var coast = 0;
                         for (var j = 0; j < scope.VisitsPerDay[i].serviceList.length; j++) {
                             services += scope.VisitsPerDay[i].serviceList[j].description + ", ";
-                            masters+= scope.VisitsPerDay[i].serviceList[j].master.lastName+", ";
+                            masters.push(scope.VisitsPerDay[i].serviceList[j].master.lastName);
                             coast += scope.VisitsPerDay[i].serviceList[j].cost
                         }
-                        $(element).append("<li>" +"<span style='max-width:80%; text-wrap:ellipsis; white-space:nowrap; '>"
+                        masters=$.unique(masters);
+                        $(element).append("<li><a href='#/visit/"+scope.VisitsPerDay[i].id+"'>" +"<span style='max-width:80%; text-wrap:ellipsis; white-space:nowrap; '>"
                                           +scope.VisitsPerDay[i].status + "<br>"
                                           +"Клиент: "+scope.VisitsPerDay[i].client.lastName + '  ' + scope.VisitsPerDay[i].client.firstName + "<br>"
-                                          +masters+"<br>"
+                                          +masters.join(",")+"<br>"
                                           + services + " " 
                                           +"</span>"
                                           + coast 
-                                          + "</li>");
+                                          + "</a></li>");
                     }
                 } else {
                     $(element).html("<li style='text-align: center; font-size: 14pt'>Нет визитов</li>");

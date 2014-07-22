@@ -19,7 +19,7 @@ myApp.config(['$routeProvider',
             templateUrl: 'visits.html',
             controller: 'VisitsController'
         }).
-        when('/visit', {
+        when('/visit/:id', {
             templateUrl: 'visit.html',
             controller: 'VisitController'
         }).
