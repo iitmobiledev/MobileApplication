@@ -6,8 +6,32 @@
  * @param {String} password пароль пользователя.
  * @returns {User} пользователь
  */
-myApp.factory('UserAuthorization', function () {
+myApp.factory('UserAuthorization', function ($http) {
     return function (login, password) {
+        $http({
+            method: 'POST',
+            url: 'http://auth.test.arnica.pro/rest/login',
+            params: {
+                email: login,
+                password: password
+            }
+        }).
+        success(function (data, status, headers, config) {
+            //            $http({
+            //                method: 'POST',
+            //                url: 'http://auth.test.arnica.pro/rest/getUserInfo',
+            //                params: {token: data}
+            //            }).
+            //            success(function (data, status, headers, config) {
+            //                alert('good2 ' + data.email);
+            //            }).
+            //            error(function(){
+            //                alert('bad getUserInfo');
+            //            });
+            alert('good ' + data.validationErrors.password);
+        });
+
+
         var users = getUsers();
         for (var i = 0; i < users.length; i++) {
             if (users[i].login == login && users[i].password == password)
@@ -220,10 +244,48 @@ myApp.factory('DateHelper', function () {
             };
         return period;
     };
+
+
+    //Функция для получения названия месяца по его номеру
+    //@param {Number} monthNumber номер месяца, начиная с 0
+    //@returns {String} название месяца
+    function getMonthTitle(monthNumber) {
+        console.log(monthNumber);
+        switch (monthNumber+'') {
+        case '0':
+            return 'Январь';
+        case '1':
+            return 'Февраль';
+        case '2':
+            return 'Март';
+        case '3':
+            return 'Апрель';
+        case '4':
+            return 'Май';
+        case '5':
+            return 'Июнь';
+        case '6':
+            return 'Июль';
+        case '7':
+            return 'Август';
+        case '8':
+            return 'Сентябрь';
+        case '9':
+            return 'Октябрь';
+        case '10':
+            return 'Ноябрь';
+        case '11':
+            return 'Декабрь';
+        default:
+            return '';
+        }
+    };
+
     return {
         steps: steps,
         getPrev: getPrev,
-        getPeriod: getPeriod
+        getPeriod: getPeriod,
+        getMonthTitle: getMonthTitle
     };
 });
 

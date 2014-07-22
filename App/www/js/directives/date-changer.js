@@ -121,15 +121,16 @@ myApp.directive('dateChanger', function (DateHelper, $filter) {
              * @require $filter для форматирования даты
              */
             function getDateString() {
-                if (step == 'day') {
-                    element.find('#Title').html(updateTitle());
+                element.find('#Title').html(updateTitle());
+                if (step == DateHelper.steps.DAY) {
                     return $filter('date')(date, "dd.MM.yyyy");
-                } else {
-                    element.find('#Title').html("");
+                }
+                if (step == DateHelper.steps.WEEK) {
                     var period = DateHelper.getPeriod(date, step);
                     return $filter('date')(period.begin, "dd.MM.yyyy") + " - " +
                         $filter('date')(period.end, "dd.MM.yyyy");
                 }
+                return "";
             }
 
             element.find('#Date').html(getDateString());
@@ -140,12 +141,17 @@ myApp.directive('dateChanger', function (DateHelper, $filter) {
              * @return {String} "", или "За сегодня", или "За завтра".
              */
             function updateTitle() {
-                var today = new Date();
-                var yesterday = new Date(today.getFullYear(), today.getMonth(), today.getDate() - 1);
-                if (date.toDateString() == today.toDateString())
-                    return "За сегодня";
-                if (date.toDateString() == yesterday.toDateString())
-                    return "За вчера";
+                if (step == DateHelper.steps.DAY) {
+                    var today = new Date();
+                    var yesterday = new Date(today.getFullYear(), today.getMonth(), today.getDate() - 1);
+                    if (date.toDateString() == today.toDateString())
+                        return "За сегодня";
+                    if (date.toDateString() == yesterday.toDateString())
+                        return "За вчера";
+                }
+                if (step == DateHelper.steps.MONTH) {
+                    return DateHelper.getMonthTitle(date.getMonth()) + ' ' + date.getFullYear();
+                }
                 return "";
             }
 
@@ -166,7 +172,7 @@ myApp.directive('dateChanger', function (DateHelper, $filter) {
                     getNewDate(-1);
                 }
             });
-            
+
             for (var i = 0; i < steps.length; i++) {
                 element.find("#periodButtons").append(
                     $("<a>", {
