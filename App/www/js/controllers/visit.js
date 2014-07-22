@@ -65,12 +65,12 @@ myApp.directive('visitPageContent', function ($filter) {
                     .append('<li>' +
                         '<div>' +
                         '<span>' + scope.serviceList[i].description + '</span>' +
-                        '<span style="font-weight:bold; float: right; text-align: right;">' +
-                        scope.serviceList[i].cost + '</span>' +
                         '</div>' +
                         '<div>' +
                         $filter('date')(scope.serviceList[i].startTime, "H:mm") + " - " +
                         $filter('date')(scope.serviceList[i].endTime, "H:mm") +
+                        '<span style="font-weight:bold; font-size: 13pt; float: right; text-align: right;">' +
+                        scope.serviceList[i].cost + '</span>' +
                         '</div>' +
                         '<div>' +
                         'Мастер: ' + scope.serviceList[i].master.lastName + " " +
@@ -82,7 +82,7 @@ myApp.directive('visitPageContent', function ($filter) {
 
             $(element).find('#servList')
                 .append('<li><span style="font-weight:bold; font-size: 14pt">Итого:</span>' +
-                    '<span style="font-weight:bold; float: right; text-align: right;" id="sum">' +
+                    '<span style=" font-size: 14pt; font-weight:bold; float: right; text-align: right;" id="sum">' +
                     sum + '</span>' +
                     '</li>');
 
