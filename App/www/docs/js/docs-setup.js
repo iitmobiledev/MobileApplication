@@ -208,7 +208,7 @@ NG_DOCS={
       "type": "service",
       "moduleName": "myApp",
       "shortDescription": "Сервис для получения визита по указанному id",
-      "keywords": "api myapp service"
+      "keywords": "api myapp neededid service"
     },
     {
       "section": "api",

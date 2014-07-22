@@ -40,5 +40,5 @@ module.exports = function (grunt) {
 
     grunt.loadNpmTasks('grunt-html2js');
 
-    grunt.registerTask('default', ['clean', 'ngdocs']);
+    grunt.registerTask('default', ['ngdocs']);
 };

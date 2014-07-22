@@ -86,7 +86,7 @@ myApp.factory('ExpendituresLoader', function () {
  * @ngdoc service
  * @description Сервис для получения данных о визитах
  * @name myApp.service:VisitsLoader
- * @param {date} neededDate дата, за которую нужно получить список визитов
+ * @param {Date} neededDate дата, за которую нужно получить список визитов
  * @returns {Array} список визитов за нужную дату
  */
 myApp.factory('VisitsLoader', function () {
@@ -108,6 +108,7 @@ myApp.factory('VisitsLoader', function () {
  * @ngdoc service
  * @description Сервис для получения визита по указанному id
  * @name myApp.service:VisitLoader
+ * @param {Number} neededID id визита
  * @returns {Visit} объект "Визит"
  */
 myApp.factory('VisitLoader', function () {
