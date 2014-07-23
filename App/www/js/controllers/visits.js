@@ -29,6 +29,54 @@ myApp.controller('VisitsController', function ($scope, $filter, VisitsLoader, Da
     $scope.$watch('step', function () {
         $scope.VisitsPerDay = VisitsLoader($scope.date);
     });
+
+
+    /*
+     *функция, проверяющая, есть ли мастер в списке мастеров
+     *если есть, то возвращает индекс в списке
+     *если нет, то возвращает null
+     */
+    $scope.checkMasterInList = function (master, masters) {
+        for (var i = 0; i < masters.length; i++) {
+            if (master === masters[i].master) {
+                return i;
+            }
+        }
+        return null;
+    }
+
+    $scope.perMaster = function (master, visit) {
+        this.master = master;
+        this.visList = [];
+        if (visit) {
+            this.visList.push(visit);
+        }
+    }
+
+    /*
+     *функция, возвращающая список отсортированных по фамилии мастера объектов perMaster
+     */
+    $scope.getAllMastersPerDay = function () {
+        var masters = [];
+        for (var i = 0; i < $scope.VisitsPerDay.length; i++) {
+            for (var j = 0; j < $scope.VisitsPerDay[i].serviceList.length; j++) {
+                var usl = $scope.checkMasterInList($scope.VisitsPerDay[i].serviceList[j].master, masters);
+                if (usl !== null) {
+                    masters[usl].visList.push($scope.VisitsPerDay[i]);
+                } else {
+                    masters.push(new $scope.perMaster($scope.VisitsPerDay[i].serviceList[j].master, $scope.VisitsPerDay[i]));
+                }
+            }
+        }
+        masters = masters.sort(function (a, b) {
+            if (a.master.lastName.toLowerCase() < b.master.lastName.toLowerCase())
+                return -1;
+            if (nameA = a.master.lastName.toLowerCase() > b.master.lastName.toLowerCase())
+                return 1;
+            return 0;
+        });
+        return masters;
+    }
 });
 
 /**
@@ -92,15 +140,13 @@ myApp.directive('visitsList', function ($filter) {
                                 '</li>');
                         }
                     } else { //по мастерам
-                        var masters = getAllMastersPerDay();
+                        var masters = scope.getAllMastersPerDay();
                         for (var i = 0; i < masters.length; i++) {
                             $(element).append(
-                                '<div style="background-color: #DEDEDE">' +
+                                '<div style="background-color: #6666FF">' +
                                 ' <h2 style="margin: 2px;">' + masters[i].master.lastName + ' ' + masters[i].master.firstName + '</h2>' +
                                 '</div>'
                             );
-                            console.log("master:", masters.length);
-                            console.log("vislist:", masters[i].visList.length);
                             for (var k = 0; k < masters[i].visList.length; k++) {
                                 var services = [];
                                 var startTimes = [];
@@ -139,65 +185,10 @@ myApp.directive('visitsList', function ($filter) {
                                     '</li>');
                             }
                         }
-
-
-
                     }
                 } else {
                     $(element).html("<li style='text-align: center; font-size: 14pt'>Нет визитов</li>");
                 }
-            }
-
-            /*
-             *функция, проверяющая, есть ли мастер в списке мастеров
-             *если есть, то возвращает индекс в списке
-             *если нет, то возвращает null
-             */
-            function checkMasterInList(master, masters) {
-                for (var i = 0; i < masters.length; i++) {
-                    if (master === masters[i].master) {
-                        return i;
-                    }
-                }
-                return null;
-            }
-
-            function perMaster(master, visit) {
-                this.master = master;
-                this.visList = [];
-                if (visit) {
-                    this.visList.push(visit);
-                }
-            }
-
-            /*
-             *функция, возвращающая список отсортированных по фамилии мастера объектов perMaster
-             */
-            function getAllMastersPerDay() {
-                var masters = [];
-                for (var i = 0; i < scope.VisitsPerDay.length; i++) {
-                    for (var j = 0; j < scope.VisitsPerDay[i].serviceList.length; j++) {
-                        var usl = checkMasterInList(scope.VisitsPerDay[i].serviceList[j].master, masters);
-                        if (usl !== null) {
-                            console.log(masters[usl].master.lastName);
-                            masters[usl].visList.push(scope.VisitsPerDay[i]);
-                        } else {
-                            masters.push(new perMaster(scope.VisitsPerDay[i].serviceList[j].master, scope.VisitsPerDay[i]));
-                        }
-                    }
-                }
-                masters = masters.sort(function (a, b) {
-                    if (a.master.lastName.toLowerCase() < b.master.lastName.toLowerCase())
-                        return -1;
-                    if (nameA = a.master.lastName.toLowerCase() > b.master.lastName.toLowerCase())
-                        return 1;
-                    return 0;
-                });
-
-                for (var j = 0; j < masters.length; j++) {
-                    console.log(masters[j].master.lastName);
-                }
-                return masters;
             }
 
             scope.$watch('type', function () {
