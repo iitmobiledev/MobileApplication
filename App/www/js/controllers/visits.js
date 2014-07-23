@@ -4,7 +4,7 @@
  * @ngdoc controller
  * @name myApp.controller:VisitsController
  */
-myApp.controller('VisitsController', function ($scope, $filter, VisitsLoader, DateHelper, $location) {
+myApp.controller('VisitsController', function ($scope, $filter, VisitsLoader, DateHelper) {
     $scope.date = new Date();
     $scope.step = 'day';
     $scope.type = 'time';
@@ -50,57 +50,161 @@ myApp.directive('visitsList', function ($filter) {
             function showVisits() {
                 $(element).html("");
                 if (scope.VisitsPerDay != null) {
-                    for (var i = 0; i < scope.VisitsPerDay.length; i++) {
-                        var services = [];
-                        var masters = [];
-                        var startTimes = [];
-                        var endTimes = [];
-                        var coast = 0;
-                        for (var j = 0; j < scope.VisitsPerDay[i].serviceList.length; j++) {
-                            services.push(scope.VisitsPerDay[i].serviceList[j].description);
-                            masters.push(scope.VisitsPerDay[i].serviceList[j].master.lastName);
-                            coast += scope.VisitsPerDay[i].serviceList[j].cost
-                            startTimes.push(scope.VisitsPerDay[i].serviceList[j].startTime);
-                            endTimes.push(scope.VisitsPerDay[i].serviceList[j].endTime);
-                        }
-                        masters = $.unique(masters);
-                        $(element).append(
-                            '<li>' +
-                            '<a href="#/visit/' + scope.VisitsPerDay[i].id + '">' +
+                    if (scope.type == "time") {
+                        for (var i = 0; i < scope.VisitsPerDay.length; i++) {
+                            var services = [];
+                            var masters = [];
+                            var startTimes = [];
+                            var endTimes = [];
+                            var coast = 0;
+                            for (var j = 0; j < scope.VisitsPerDay[i].serviceList.length; j++) {
+                                services.push(scope.VisitsPerDay[i].serviceList[j].description);
+                                masters.push(scope.VisitsPerDay[i].serviceList[j].master.lastName);
+                                coast += scope.VisitsPerDay[i].serviceList[j].cost
+                                startTimes.push(scope.VisitsPerDay[i].serviceList[j].startTime);
+                                endTimes.push(scope.VisitsPerDay[i].serviceList[j].endTime);
+                            }
+                            masters = $.unique(masters);
+                            $(element).append(
+                                '<li>' +
+                                '<a href="#/visit/' + scope.VisitsPerDay[i].id + '">' +
                                 '<div>' +
-                                    '<div>' + scope.VisitsPerDay[i].status + '</div>' +
+                                '<div>' + scope.VisitsPerDay[i].status + '</div>' +
+                                '<div style="font-weight:bold;">' +
+                                '<span style="float:left;  width:65%;white-space:nowrap;text-overflow:ellipsis;overflow: hidden;">' +
+                                scope.VisitsPerDay[i].client.lastName + ' ' + scope.VisitsPerDay[i].client.firstName +
+                                '</span>' +
+                                '<span style=" text-align:right; width:35%;white-space:nowrap;text-overflow:ellipsis">' +
+                                $filter('date')(new Date(Math.min.apply(null, startTimes)), "HH:mm") + '-' +
+                                $filter('date')(new Date(Math.max.apply(null, endTimes)), "HH:mm") +
+                                '</span>' +
+                                '</div>' +
+                                '<div>' +
+                                '<span style="float:left;  width:65%;white-space:nowrap;text-overflow:ellipsis;overflow: hidden;">' +
+                                masters.join(",") + ': ' + services.join(",") +
+                                '</span>' +
+                                '<span style=" text-align:right; width:35%;white-space:nowrap;text-overflow:ellipsis">' +
+                                coast + ' р.' +
+                                '</span>' +
+                                '</div>' +
+                                '</div>' +
+                                '</a>' +
+                                '</li>');
+                        }
+                    } else { //по мастерам
+                        var masters = getAllMastersPerDay();
+                        for (var i = 0; i < masters.length; i++) {
+                            $(element).append(
+                                '<div style="background-color: #DEDEDE">' +
+                                ' <h2 style="margin: 2px;">' + masters[i].master.lastName + ' ' + masters[i].master.firstName + '</h2>' +
+                                '</div>'
+                            );
+                            console.log("master:", masters.length);
+                            console.log("vislist:", masters[i].visList.length);
+                            for (var k = 0; k < masters[i].visList.length; k++) {
+                                var services = [];
+                                var startTimes = [];
+                                var endTimes = [];
+                                var coast = 0;
+                                for (var j = 0; j < scope.VisitsPerDay[k].serviceList.length; j++) {
+                                    services.push(scope.VisitsPerDay[k].serviceList[j].description);
+                                    coast += scope.VisitsPerDay[k].serviceList[j].cost
+                                    startTimes.push(scope.VisitsPerDay[k].serviceList[j].startTime);
+                                    endTimes.push(scope.VisitsPerDay[k].serviceList[j].endTime);
+                                }
+                                $(element).append(
+                                    '<li>' +
+                                    '<a href="#/visit/' + scope.VisitsPerDay[k].id + '">' +
+                                    '<div>' +
+                                    '<div>' + scope.VisitsPerDay[k].status + '</div>' +
                                     '<div style="font-weight:bold;">' +
-                                        '<span style="float:left;  width:65%;white-space:nowrap;text-overflow:ellipsis;overflow: hidden;">' +
-                                        scope.VisitsPerDay[i].client.lastName + ' ' + scope.VisitsPerDay[i].client.firstName +
-                                        '</span>' +
-                                        '<span style=" text-align:right; width:35%;white-space:nowrap;text-overflow:ellipsis">' +
-                                        $filter('date')(new Date(Math.min.apply(null, startTimes)), "HH:mm") + '-' +
-                                        $filter('date')(new Date(Math.max.apply(null, endTimes)), "HH:mm") +
-                                        '</span>' +
+                                    '<span style="float:left;  width:65%;white-space:nowrap;text-overflow:ellipsis;overflow: hidden;">' +
+                                    scope.VisitsPerDay[k].client.lastName + ' ' + scope.VisitsPerDay[k].client.firstName +
+                                    '</span>' +
+                                    '<span style=" text-align:right; width:35%;white-space:nowrap;text-overflow:ellipsis">' +
+                                    $filter('date')(new Date(Math.min.apply(null, startTimes)), "HH:mm") + '-' +
+                                    $filter('date')(new Date(Math.max.apply(null, endTimes)), "HH:mm") +
+                                    '</span>' +
                                     '</div>' +
                                     '<div>' +
-                                        '<span style="float:left;  width:65%;white-space:nowrap;text-overflow:ellipsis;overflow: hidden;">' +
-                                        masters.join(",") + ': ' + services.join(",") +
-                                        '</span>' +
-                                        '<span style=" text-align:right; width:35%;white-space:nowrap;text-overflow:ellipsis">' +
-                                        coast + ' р.' +
-                                        '</span>' +
+                                    '<span style="float:left;  width:65%;white-space:nowrap;text-overflow:ellipsis;overflow: hidden;">' +
+                                    services.join(",") +
+                                    '</span>' +
+                                    '<span style=" text-align:right; width:35%;white-space:nowrap;text-overflow:ellipsis">' +
+                                    coast + ' р.' +
+                                    '</span>' +
                                     '</div>' +
-                                '</div>' +
-                            '</a>' +
-                            '</li>');
+                                    '</div>' +
+                                    '</a>' +
+                                    '</li>');
+                            }
+                        }
+
+
+
                     }
                 } else {
                     $(element).html("<li style='text-align: center; font-size: 14pt'>Нет визитов</li>");
                 }
             }
 
+            /*
+             *функция, проверяющая, есть ли мастер в списке мастеров
+             *если есть, то возвращает индекс в списке
+             *если нет, то возвращает null
+             */
+            function checkMasterInList(master, masters) {
+                for (var i = 0; i < masters.length; i++) {
+                    if (master === masters[i].master) {
+                        return i;
+                    }
+                }
+                return null;
+            }
 
+            function perMaster(master, visit) {
+                this.master = master;
+                this.visList = [];
+                if (visit) {
+                    this.visList.push(visit);
+                }
+            }
 
-            //            scope.$watch('type', function () {
-            //                showVisits();
-            //            });
+            /*
+             *функция, возвращающая список отсортированных по фамилии мастера объектов perMaster
+             */
+            function getAllMastersPerDay() {
+                var masters = [];
+                for (var i = 0; i < scope.VisitsPerDay.length; i++) {
+                    for (var j = 0; j < scope.VisitsPerDay[i].serviceList.length; j++) {
+                        var usl = checkMasterInList(scope.VisitsPerDay[i].serviceList[j].master, masters);
+                        if (usl !== null) {
+                            console.log(masters[usl].master.lastName);
+                            masters[usl].visList.push(scope.VisitsPerDay[i]);
+                        } else {
+                            masters.push(new perMaster(scope.VisitsPerDay[i].serviceList[j].master, scope.VisitsPerDay[i]));
+                        }
+                    }
+                }
+                masters = masters.sort(function (a, b) {
+                    if (a.master.lastName.toLowerCase() < b.master.lastName.toLowerCase())
+                        return -1;
+                    if (nameA = a.master.lastName.toLowerCase() > b.master.lastName.toLowerCase())
+                        return 1;
+                    return 0;
+                });
+
+                for (var j = 0; j < masters.length; j++) {
+                    console.log(masters[j].master.lastName);
+                }
+                return masters;
+            }
+
+            scope.$watch('type', function () {
+                showVisits();
+            });
         },
 
     };
 });
+7410

@@ -114,12 +114,13 @@ function getExpenditures() {
 function getVisits() {
     var visList = [];
     var client;
-    var master = new Master("Петр", "Михайлович", "Васюков");
+    var master = new Master("Петр", "Михайлович", "Яковлев");
     var serviceList = [];
     client = new Client("Екатерина", "Андреевна", "Иванова", "89227062050", 2000, 0);
     serviceList.push(new Service("Мелирование", new Date(2014, 6, 20, 15, 00), new Date(2014, 6, 20, 16, 00), master, 2000));
     visit = new Visit(2, client, serviceList, "Очень плохие волосы", new Date(2014, 6, 20, 16, 00), "Клиент опаздывает");
     visList.push(visit);
+    //2 visit
     serviceList = [];
     client = new Client("Иван", "Сергеевич", "Иванов", "89526072050", 5000, 0);
     serviceList.push(new Service("Стрижка модная", new Date(2014, 6, 20, 10, 00), new Date(2014, 6, 20, 11, 00), master, 2500));

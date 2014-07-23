@@ -2,8 +2,8 @@
 <orient orientation="'portrait'"></orient>
 <div class="upage-content">
     <div class="button-grouped flex widget uib_w_24 d-margins" data-uib="app_framework/button_group" data-ver="1">
-        <a ng-click="onTime()" class="button widget uib_w_25 d-margins" data-uib="app_framework/button" data-ver="1">По времени</a>
-        <a ng-click="onMasters()" class="button widget uib_w_26 d-margins" data-uib="app_framework/button" data-ver="1">По мастерам</a>
+        <a ng-click="type='time'" class="button widget uib_w_25 d-margins" data-uib="app_framework/button" data-ver="1">По времени</a>
+        <a ng-click="type='master'" class="button widget uib_w_26 d-margins" data-uib="app_framework/button" data-ver="1">По мастерам</a>
     </div>
 
     <date-changer step='step' date='date' steps='["day"]' has-future-data='hasFutureData()' has-prev-data='hasPrevData()'></date-changer>
