@@ -153,10 +153,12 @@ myApp.directive('visitsList', function ($filter) {
                                 var endTimes = [];
                                 var coast = 0;
                                 for (var j = 0; j < scope.VisitsPerDay[k].serviceList.length; j++) {
-                                    services.push(scope.VisitsPerDay[k].serviceList[j].description);
-                                    coast += scope.VisitsPerDay[k].serviceList[j].cost
-                                    startTimes.push(scope.VisitsPerDay[k].serviceList[j].startTime);
-                                    endTimes.push(scope.VisitsPerDay[k].serviceList[j].endTime);
+                                    if (scope.VisitsPerDay[k].serviceList[j].master === masters[i].master) {
+                                        services.push(scope.VisitsPerDay[k].serviceList[j].description);
+                                        coast += scope.VisitsPerDay[k].serviceList[j].cost
+                                        startTimes.push(scope.VisitsPerDay[k].serviceList[j].startTime);
+                                        endTimes.push(scope.VisitsPerDay[k].serviceList[j].endTime);
+                                    }
                                 }
                                 $(element).append(
                                     '<li>' +
