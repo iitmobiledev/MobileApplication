@@ -4,42 +4,73 @@
  * @name myApp.service:UserAuthorization
  * @param {String} login логин пользователя.
  * @param {String} password пароль пользователя.
- * @returns {User} пользователь
+ * @returns {Token} токен
  */
 myApp.factory('UserAuthorization', function ($http) {
-    return function (login, password) {
+    return function (login, password, callback) {
         $http({
             method: 'POST',
             url: 'http://auth.test.arnica.pro/rest/login',
-            params: {
+            data: {
+                v: '1.0',
+                appID: 'test',
+                rand: '11',
+                sign: hex_md5(hex_md5('appidtestrand11v1.0test')
+                              +'login'+'WatchThatStupidLeech'),
                 email: login,
                 password: password
-            }
+            },
+            responseType: 'json'
         }).
         success(function (data, status, headers, config) {
-            //            $http({
-            //                method: 'POST',
-            //                url: 'http://auth.test.arnica.pro/rest/getUserInfo',
-            //                params: {token: data}
-            //            }).
-            //            success(function (data, status, headers, config) {
-            //                alert('good2 ' + data.email);
-            //            }).
-            //            error(function(){
-            //                alert('bad getUserInfo');
-            //            });
-            alert('good ' + data.validationErrors.password);
+            console.log('http data ', data);
+            callback(data);
         });
 
 
-        var users = getUsers();
-        for (var i = 0; i < users.length; i++) {
-            if (users[i].login == login && users[i].password == password)
-                return users[i];
-        }
-        return null;
+
+//        $http({
+//            method: 'POST',
+//            url: 'http://auth.test.arnica.pro/rest/login',
+//            params: {
+//                email: login,
+//                password: password
+//            }
+//        }).
+//        success(function (data, status, headers, config) {
+//            console.log('http data.error ' + data.validationErrors.password);
+//            callback(data);
+//        }).
+//        error(function (data, status, headers, config) {
+//            console.log('http data ' + data);
+//            return null; //token
+//        });
+
+        //        var users = getUsers();
+        //        for (var i = 0; i < users.length; i++) {
+        //            if (users[i].login == login && users[i].password == password)
+        //                return users[i];
+        //        }
+        //        return null;
     };
 });
+
+
+myApp.factory('UserLogout', function ($http) {
+    return function (token) {
+        $http({
+            method: 'POST',
+            url: 'http://auth.test.arnica.pro/rest/logout',
+            params: {
+                token: token
+            }
+        }).
+        success(function (data, status, headers, config) {
+            console.log("Пользователь разлогинен.");
+        });
+    }
+});
+
 
 /**
  * @ngdoc service
@@ -128,12 +159,26 @@ myApp.factory('VisitLoader', function () {
  * @ngdoc service
  * @description Сервис для получения текущего пользователя.
  * @name myApp.service:UserLoader
- * @returns {User} объект пользователя
+ * @returns {UserInfo} объект пользователя
  */
-myApp.factory('UserLoader', function () {
-    return function () {
-        var user = getCurrentUser();
-        return user;
+myApp.factory('UserLoader', function ($http) {
+    return function (token) {
+        $http({
+            method: 'POST',
+            url: 'http://auth.test.arnica.pro/rest/getUserInfo',
+            params: {
+                token: token
+            }
+        }).
+        success(function (data, status, headers, config) {
+            return data;
+        }).
+        error(function () {
+            return null;
+        });
+
+        //        var user = getCurrentUser();
+        //        return user;
     };
 });
 
@@ -252,7 +297,7 @@ myApp.factory('DateHelper', function () {
     //@returns {String} название месяца
     function getMonthTitle(monthNumber) {
         console.log(monthNumber);
-        switch (monthNumber+'') {
+        switch (monthNumber + '') {
         case '0':
             return 'Январь';
         case '1':

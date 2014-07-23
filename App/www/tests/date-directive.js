@@ -19,7 +19,8 @@ describe('test of dateChanger directive', function () {
         scope.step = 'day';
         scope.future = true;
         scope.prev = true;
-        elm = angular.element("<date-changer step='step' date='date' steps='steps' titles='titles' has-future-data='future' has-prev-data='prev'></date-changer>");
+        elm = jQuery("<date-changer step='step' date='date' steps='steps' titles='titles' has-future-data='future' has-prev-data='prev'></date-changer>");
+        jQuery("body").append(elm);
         elm = $compile(elm)(scope);
         scope.$apply();
     }));
@@ -27,12 +28,17 @@ describe('test of dateChanger directive', function () {
     describe('', function () {
         it('должен создать группу кнопок для переключения периода',
             function () {
-                //var periodButtons = elm.find('#periodButtons')
+                
                 //console.log(elm[0].getElementsByTagName('div'));
 //                for (var el in elm[0].getElementsByTagName('p'))
 //                    console.log(el);
                 
-                console.log(elm[0].getElementsByTagName('p')['Date']);
+                console.log(elm);
+                //console.log(elm[0].getElementsByTagName('p')['Date']);
+                
+                var periodButtons = elm.find('.uib_shim');
+                console.log('period ', periodButtons);
+                
                 //expect(periodButtons.length).toBe(3);
 //                expect(periodButtons.eq(0).text()).toBe('За день');
 //                expect(periodButtons.eq(1).text()).toBe('За неделю');

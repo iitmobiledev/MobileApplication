@@ -6,14 +6,16 @@
  */
 myApp.controller('AuthorizationController', function ($scope, $location, UserAuthorization) {
     if (sessvars.user)
-            $location.path('index');
+        $location.path('index');
     $scope.enter = function () {
         var login = document.getElementById('login').value;
         var password = document.getElementById('password').value;
-        sessvars.user = UserAuthorization(login, password);
-        if (sessvars.user)
-            $location.path('index');
-        else
-            alert("Такой пользователь незарегистрирован");
+        UserAuthorization(login, password, function (token) {
+            sessvars.token = token;
+            if (sessvars.token)
+                $location.path('index');
+            else
+                alert("Такой пользователь незарегистрирован");
+        });
     };
 });
