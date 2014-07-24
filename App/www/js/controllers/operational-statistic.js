@@ -14,8 +14,8 @@
  */
 myApp.controller('OperationalStatisticController', function ($scope, OperationalStatisticLoader,
     DateHelper) {
-    $('#StatisticsFooter').addClass('pressed');
-    $('#SettingsFooter').removeClass('pressed');
+//    $('#StatisticsFooter').addClass('pressed');
+//    $('#SettingsFooter').removeClass('pressed');
     
     $scope.date = new Date();
     $scope.step = DateHelper.steps.DAY;
