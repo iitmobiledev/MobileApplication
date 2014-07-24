@@ -55,7 +55,8 @@ function Service(description, startTime, endTime, master, cost) {
 }
 
 //мастер
-function Master(firstName, middleName, lastName) {
+function Master(id, firstName, middleName, lastName) {
+    this.id = id;
     this.firstName = firstName; //имя
     this.middleName = middleName; // отчество
     this.lastName = lastName; //фамилия
@@ -114,7 +115,7 @@ function getExpenditures() {
 function getVisits() {
     var visList = [];
     var client;
-    var master = new Master("Петр", "Михайлович", "Яковлев");
+    var master = new Master(1, "Петр", "Михайлович", "Яковлев");
     var serviceList = [];
     client = new Client("Екатерина", "Андреевна", "Иванова", "+79227062050", 2000, 0);
     serviceList.push(new Service("Мелирование", new Date(2014, 6, 20, 15, 00), new Date(2014, 6, 20, 16, 00), master, 2000));
@@ -124,13 +125,13 @@ function getVisits() {
     serviceList = [];
     client = new Client("Иван", "Сергеевич", "Иванов", "+79526072050", 5000, 0);
     serviceList.push(new Service("Стрижка модная", new Date(2014, 6, 20, 10, 00), new Date(2014, 6, 20, 11, 00), master, 2500));
-    serviceList.push(new Service("Мелирование", new Date(2014, 6, 20, 11, 10), new Date(2014, 6, 20, 12, 10), new Master("Владимир", "Михайлович", "Путин"), 1000));
+    serviceList.push(new Service("Мелирование", new Date(2014, 6, 20, 11, 10), new Date(2014, 6, 20, 12, 10), new Master(2, "Владимир", "Михайлович", "Путин"), 1000));
     visit = new Visit(1, client, serviceList, "Очень длинные волосы", new Date(2014, 6, 20, 10, 00), "Клиент пришел");
     visList.push(visit);
     //3 visit
     serviceList = [];
     client = new Client("Светлана", "Андреевна", "Бравилова", "+79021565814", 50000, 0);
-    serviceList.push(new Service("Мелирование", new Date(2014, 6, 22, 20, 10), new Date(2014, 6, 22, 23, 10), new Master("Владимир", "Михайлович", "Путин"), 6000));
+    serviceList.push(new Service("Мелирование", new Date(2014, 6, 22, 20, 10), new Date(2014, 6, 22, 23, 10), new Master(3, "Владимир", "Петрович", "Петров"), 6000));
     visit = new Visit(3, client, serviceList, "Очень густые волосы", new Date(2014, 6, 22, 20, 00), "Подтверждено");
     visList.push(visit);
     return visList;

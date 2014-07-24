@@ -15,8 +15,7 @@ myApp.factory('UserAuthorization', function ($http) {
                 v: '1.0',
                 appID: 'test',
                 rand: '11',
-                sign: hex_md5(hex_md5('appidtestrand11v1.0test')
-                              +'login'+'WatchThatStupidLeech'),
+                sign: hex_md5(hex_md5('appidtestrand11v1.0test') + 'login' + 'WatchThatStupidLeech'),
                 email: login,
                 password: password
             },
@@ -29,22 +28,22 @@ myApp.factory('UserAuthorization', function ($http) {
 
 
 
-//        $http({
-//            method: 'POST',
-//            url: 'http://auth.test.arnica.pro/rest/login',
-//            params: {
-//                email: login,
-//                password: password
-//            }
-//        }).
-//        success(function (data, status, headers, config) {
-//            console.log('http data.error ' + data.validationErrors.password);
-//            callback(data);
-//        }).
-//        error(function (data, status, headers, config) {
-//            console.log('http data ' + data);
-//            return null; //token
-//        });
+        //        $http({
+        //            method: 'POST',
+        //            url: 'http://auth.test.arnica.pro/rest/login',
+        //            params: {
+        //                email: login,
+        //                password: password
+        //            }
+        //        }).
+        //        success(function (data, status, headers, config) {
+        //            console.log('http data.error ' + data.validationErrors.password);
+        //            callback(data);
+        //        }).
+        //        error(function (data, status, headers, config) {
+        //            console.log('http data ' + data);
+        //            return null; //token
+        //        });
 
         //        var users = getUsers();
         //        for (var i = 0; i < users.length; i++) {
@@ -134,6 +133,74 @@ myApp.factory('VisitsLoader', function () {
         return null;
     };
 });
+
+
+
+/**
+ * @ngdoc service
+ * @description Сервис для получения данных о визитах
+ * @name myApp.service:VisitsLoader
+ * @param {Date} neededDate дата, за которую нужно получить список визитов
+ * @returns {Array} список визитов за нужную дату
+ */
+myApp.factory('MastersPerDayLoader', function () {
+
+    /*
+     *функция, проверяющая, есть ли мастер в списке мастеров
+     *если есть, то возвращает индекс в списке
+     *если нет, то возвращает null
+     */
+    function checkMasterInList(master, masters) {
+        for (var i = 0; i < masters.length; i++) {
+            if (master === masters[i].master) {
+                return i;
+            }
+        }
+        return null;
+    }
+
+    function perMaster(master, visit) {
+        this.master = master;
+        this.visList = [];
+        if (visit) {
+            this.visList.push(visit);
+        }
+    }
+
+    /*
+     *функция, возвращающая список отсортированных по фамилии мастера объектов perMaster
+     */
+    function getAllMastersPerDay(neededDate, VisitsLoader) {
+        var getedData = VisitsLoader(neededDate);
+        var allMasters = [];
+        for (var i = 0; i < getedData.length; i++) {
+            for (var j = 0; j < getedData[i].serviceList.length; j++) {
+                var usl = checkMasterInList(getedData[i].serviceList[j].master, allMasters);
+                if (usl !== null) {
+                    allMasters[usl].visList.push(getedData[i]);
+                } else {
+                    allMasters.push(new perMaster(getedData[i].serviceList[j].master, getedData[i]));
+                }
+            }
+        }
+
+        allMasters = allMasters.sort(function (a, b) {
+            if (a.master.lastName.toLowerCase() < b.master.lastName.toLowerCase())
+                return -1;
+            if (nameA = a.master.lastName.toLowerCase() > b.master.lastName.toLowerCase())
+                return 1;
+            return 0;
+        });
+        return allMasters;
+    }
+
+    return {
+        getAllMastersPerDay: getAllMastersPerDay
+    };
+});
+
+
+
 
 /**
  * @ngdoc service

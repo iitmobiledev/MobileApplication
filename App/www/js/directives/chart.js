@@ -3,8 +3,8 @@
  * @ngdoc directive
  * @name myApp.directive:chart
  * @restrict C
- * @param {Array} items данные для отображения графика
- * @param {String}  dimension размерность по оси OY
+ * @param {Array} items данные для отображения графика: массив из списков, где 1 элемент-объект {Data}, 2 элемент-величина в зависимости от типа графика
+ * @param {String}  dimension размерность по оси OY (в зависимости от типа графика)
  */
 
 myApp.directive('chart', function () {

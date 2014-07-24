@@ -6,23 +6,22 @@
  */
 myApp.controller('VisitController', function ($scope, $filter, $routeParams, VisitLoader) {
     $scope.visit = VisitLoader($routeParams.id);
-
     /*
      *функция, отображающая всю информацию о визите
      */
     $scope.showVisit = function () {
         if ($scope.visit !== null) {
-            $scope.status = visit.status;
-            $scope.date = visit.date;
-            $scope.clientName = visit.client.lastName + " " + visit.client.firstName + " " + visit.client.middleName;
-            $scope.clientPhoneNumber = visit.client.phoneNumber;
-            $scope.comment = visit.comment;
+            $scope.status = $scope.visit.status;
+            $scope.date = $scope.visit.date;
+            $scope.clientName = $scope.visit.client.lastName + " " + $scope.visit.client.firstName + " " + $scope.visit.client.middleName;
+            $scope.clientPhoneNumber = $scope.visit.client.phoneNumber;
+            $scope.comment = $scope.visit.comment;
             $scope.balColor = "red";
             if (visit.client.balance >= 0) {
                 $scope.balColor = "green";
             }
             $scope.clientBalance = visit.client.balance;
-            $scope.clientDiscount = "Скидка: " + visit.client.discount + "%"
+            $scope.clientDiscount = "Скидка: " + $scope.visit.client.discount + "%"
 
             $scope.servList = [];
             $scope.sum = 0;
@@ -36,7 +35,7 @@ myApp.controller('VisitController', function ($scope, $filter, $routeParams, Vis
                 serviceItem.master = 'Мастер: ' + service.master.lastName + " " + service.master.firstName[0];
                 $scope.servList.push(serviceItem);
             }
-            $scope.comment = visit.comment;
+            $scope.comment = $scope.visit.comment;
         }
     }
 

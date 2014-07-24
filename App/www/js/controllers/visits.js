@@ -4,7 +4,7 @@
  * @ngdoc controller
  * @name myApp.controller:VisitsController
  */
-myApp.controller('VisitsController', function ($scope, $filter, VisitsLoader, DateHelper) {
+myApp.controller('VisitsController', function ($scope, $filter, VisitsLoader, DateHelper, MastersPerDayLoader) {
     $scope.date = new Date();
     $scope.step = 'day';
     $scope.type = 'time';
@@ -37,52 +37,6 @@ myApp.controller('VisitsController', function ($scope, $filter, VisitsLoader, Da
         }
         return false;
     }
-    /*
-     *функция, проверяющая, есть ли мастер в списке мастеров
-     *если есть, то возвращает индекс в списке
-     *если нет, то возвращает null
-     */
-    $scope.checkMasterInList = function (master, masters) {
-        for (var i = 0; i < masters.length; i++) {
-            if (master === masters[i].master) {
-                return i;
-            }
-        }
-        return null;
-    }
-
-    $scope.perMaster = function (master, visit) {
-        this.master = master;
-        this.visList = [];
-        if (visit) {
-            this.visList.push(visit);
-        }
-    }
-
-    /*
-     *функция, возвращающая список отсортированных по фамилии мастера объектов perMaster
-     */
-    $scope.getAllMastersPerDay = function () {
-        var masters = [];
-        for (var i = 0; i < $scope.VisitsPerDay.length; i++) {
-            for (var j = 0; j < $scope.VisitsPerDay[i].serviceList.length; j++) {
-                var usl = $scope.checkMasterInList($scope.VisitsPerDay[i].serviceList[j].master, masters);
-                if (usl !== null) {
-                    masters[usl].visList.push($scope.VisitsPerDay[i]);
-                } else {
-                    masters.push(new $scope.perMaster($scope.VisitsPerDay[i].serviceList[j].master, $scope.VisitsPerDay[i]));
-                }
-            }
-        }
-        masters = masters.sort(function (a, b) {
-            if (a.master.lastName.toLowerCase() < b.master.lastName.toLowerCase())
-                return -1;
-            if (nameA = a.master.lastName.toLowerCase() > b.master.lastName.toLowerCase())
-                return 1;
-            return 0;
-        });
-        return masters;
-    }
 
     $scope.isPerTime = function () {
         return $scope.type == 'time' && $scope.hasVisitsList();
@@ -91,7 +45,6 @@ myApp.controller('VisitsController', function ($scope, $filter, VisitsLoader, Da
     $scope.isPerMasters = function () {
         return $scope.type == 'masters' && $scope.hasVisitsList();
     };
-
 
     $scope.showVisits = function () {
         $scope.itemsPerTime = [];
@@ -114,7 +67,6 @@ myApp.controller('VisitsController', function ($scope, $filter, VisitsLoader, Da
                         endTimes.push(service.endTime);
                     }
                     masters = $.unique(masters);
-
                     var itemPerTime = {};
                     itemPerTime.id = visit.id;
                     itemPerTime.status = visit.status;
@@ -127,7 +79,7 @@ myApp.controller('VisitsController', function ($scope, $filter, VisitsLoader, Da
                     $scope.itemsPerTime.push(itemPerTime);
                 }
             } else {
-                var masters = $scope.getAllMastersPerDay();
+                var masters = MastersPerDayLoader.getAllMastersPerDay($scope.date, VisitsLoader);
                 for (var i = 0; i < masters.length; i++) {
                     var itemPerMaster = {};
                     itemPerMaster.visits = [];
@@ -141,7 +93,8 @@ myApp.controller('VisitsController', function ($scope, $filter, VisitsLoader, Da
                         var visits = $scope.VisitsPerDay[k];
                         for (var j = 0; j < visits.serviceList.length; j++) {
                             var service = visits.serviceList[j];
-                            if (visits.serviceList[j].master === masters[i].master) {
+                            if (visits.serviceList[j].master.id === masters[i].master.id) {
+                                console.log(service.description);
                                 services.push(service.description);
                                 coast += service.cost
                                 startTimes.push(service.startTime);
@@ -154,7 +107,6 @@ myApp.controller('VisitsController', function ($scope, $filter, VisitsLoader, Da
                         visitItem.time = $filter('date')(Math.min.apply(null, startTimes), "HH:mm") + '-' +
                             $filter('date')(Math.max.apply(null, endTimes), "HH:mm");
                         visitItem.service = services.join(",");
-                        console.log(visitItem.service);
                         visitItem.cost = coast + ' р.';
                         itemPerMaster.visits.push(visitItem);
                     }
@@ -163,6 +115,7 @@ myApp.controller('VisitsController', function ($scope, $filter, VisitsLoader, Da
             }
         }
     };
+
 
     $scope.$watch('VisitsPerDay', function () {
         $scope.showVisits();
