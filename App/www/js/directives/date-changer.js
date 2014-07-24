@@ -182,6 +182,7 @@ myApp.directive('dateChanger', function (DateHelper, $filter) {
                         text: titleSteps[i],
                         "id": "" + steps[i],
                         click: function () {
+                            $(this).addClass('pressed');
                             scope[attrs.step] = this.id;
                             scope.$apply();
                         }

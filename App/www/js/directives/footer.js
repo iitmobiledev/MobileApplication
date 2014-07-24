@@ -23,7 +23,6 @@ myApp.directive('footerContent', function () {
                         $(element).hide().html();
                         $("#navbar").show();
                         
-                        console.log('activePage '+ activePage);
                         $('#' + activePage).addClass('pressed');
                         for (var i = 0; i < inactivePages.length; i++) {
                             $('#' + inactivePages[i]).removeClass('pressed');
