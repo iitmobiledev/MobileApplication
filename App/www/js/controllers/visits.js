@@ -26,11 +26,6 @@ myApp.controller('VisitsController', function ($scope, $filter, VisitsLoader, Da
         $scope.VisitsPerDay = VisitsLoader($scope.date);
     });
 
-    $scope.$watch('step', function () {
-        $scope.VisitsPerDay = VisitsLoader($scope.date);
-    });
-
-
     $scope.hasVisitsList = function () {
         if ($scope.VisitsPerDay != null) {
             return true;
@@ -90,7 +85,7 @@ myApp.controller('VisitsController', function ($scope, $filter, VisitsLoader, Da
                             startTimes = [],
                             endTimes = [],
                             coast = 0;
-                        var visits = $scope.VisitsPerDay[k];
+                        var visits = masters[i].visList[k];
                         for (var j = 0; j < visits.serviceList.length; j++) {
                             var service = visits.serviceList[j];
                             if (visits.serviceList[j].master.id === masters[i].master.id) {
