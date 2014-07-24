@@ -14,7 +14,7 @@ myApp.directive('footerContent', function () {
         link: function (scope, element, attrs) {
             var show = scope.$eval(attrs.show);
             var activePage = attrs.activePage;
-            var inactivePages = scope.$eval(attrs.inactivePages);
+            var inactivePages = scope.$eval(attrs.inactivePages) || [];
             showFooter();
 
             function showFooter() {
