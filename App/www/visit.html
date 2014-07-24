@@ -2,5 +2,53 @@
 <footer-content show="true"></footer-content>
 
 <div class="upage-content" id="mainsub">
-    <visit-page-content></visit-page-content>
+    <div>
+        <div id="datetime" style="text-align: center; line-height: 40px; height: 40px; font-size:14pt; background-color:yellow">Визит в {{date| date : "H:mm dd.MM.yyyy"}}</div>
+        <div id=" clientInfo ">
+            <div id="clientName" style="margin: 3px;font-size:14pt ">{{clientName}}</div>
+
+            <div id="phone " style="margin: 3px; ">
+                <a style="text-decoration: none; font-size:13pt" href="tel:{{clientPhoneNumber}}">{{clientPhoneNumber}}</a>
+            </div>
+
+            <div style="margin: 3px; ">
+                <span id="balance" style="color:{{balColor}}">Баланс: {{clientBalance}}</span>
+                <span id="discount" style="margin-left:20%">{{clientDiscount}}</span>
+            </div>
+
+
+        </div>
+
+        <div id="services">
+            <div id="serviceTitle" style="background-color: #DEDEDE">
+                <h2 style="margin: 3px;">Услуги</h2>
+            </div>
+            <ul class="list inset">
+                <li ng-repeat="item in servList">
+                    <div>
+                        <span>{{item.description}}</span>
+                    </div>
+                    <div>{{item.time}}
+                        <span style="font-weight:bold; font-size: 13pt; float: right; text-align: right;">{{item.cost}}</span>
+                    </div>
+                    <div>{{item.master}}
+                    </div>
+                </li>
+
+                <li>
+                    <span style="font-weight:bold; font-size: 14pt">Итого:</span>
+                    <span style=" font-size: 14pt; font-weight:bold; float: right; text-align: right;" id="sum">{{sum}}</span>
+                </li>
+            </ul>
+        </div>
+        <div>
+            <div id="comentTitle " style="background-color: #DEDEDE; font-size: 12pt ">
+                <h2 style="margin: 3px; ">Коментарии</h2>
+            </div>
+            <div>{{comment}}</div>
+        </div>
+
+
+
+    </div>
 </div>
