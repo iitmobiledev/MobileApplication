@@ -101,12 +101,12 @@ function getExpenditures() {
     var expItemsList = [];
     expItemsList.push(new ExpenditureItem("Покупка расходных материалов", -1500));
     expItemsList.push(new ExpenditureItem("Выплата дворнику", -500));
-    expList.push(new Expenditures(new Date(2014, 6, 9), expItemsList));
+    expList.push(new Expenditures(new Date(2014, 6, 22), expItemsList));
 
     expItemsList = [];
     expItemsList.push(new ExpenditureItem("Покупка расходных материалов", -1500));
     expItemsList.push(new ExpenditureItem("Покупка нового кресла", -5000));
-    expList.push(new Expenditures(new Date(2014, 6, 8), expItemsList));
+    expList.push(new Expenditures(new Date(2014, 6, 24), expItemsList));
     return expList;
 }
 

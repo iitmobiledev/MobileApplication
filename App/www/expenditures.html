@@ -3,5 +3,13 @@
 <footer-content show="true"></footer-content>
 <div class="upage-content" id="mainsub">
     <date-changer step='step' date='date' steps='["day"]' has-future-data='hasFutureData()' has-prev-data='hasPrevData()'></date-changer>
-    <exp-list></exp-list>
+    <ul class="list inset" ng-repeat="item in expenList">
+        <li ng-show="hasExpenditures()" style="font-size: 11pt;">
+            <span style="float:left;  width:85%;white-space:nowrap;text-overflow:ellipsis;overflow: hidden;">{{item.description}}</span>
+            <span style='text-align: right;'>{{item.cost}}</span>
+        </li>
+    </ul>
+    <ul class="list inset" ng-hide="hasExpenditures()">
+        <li style='text-align: center; font-size: 14pt'>Нет расходов</li>
+    </ul>
 </div>

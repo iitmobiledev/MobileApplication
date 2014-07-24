@@ -35,38 +35,25 @@ myApp.controller('ExpendituresController', function ($scope, $filter, Expenditur
     $scope.$watch('step', function () {
         $scope.expList = ExpendituresLoader($scope.date);
     });
-});
 
-/**
- * @description Директива добавляет на страницу приложения
- * список, отображающий расходы салона за день. Текущий день указывается в `scope` контроллера `ExpendituresController`
- * @ngdoc directive
- * @name myApp.directive:expList
- * @restrict E
- */
-myApp.directive('expList', function () {
-    return {
-        restrict: 'E',
-        replace: true,
-        transclude: true,
-        link: function (scope, element, attrs) {
-            showExp();
-            scope.$watch('expList', showExp);
 
-            function showExp() {
-                $(element).html("");
-                if (scope.expList != null) {
-                    for (var i = 0; i < scope.expList.length; i++) {
-                        $(element).append("<li><span>" + scope.expList[i].description + "</span><span style='float: right; text-align: right;'>" + scope.expList[i].cost + "</span></li>");
-                    }
-                } else {
-                    $(element).html("<li style='text-align: center; font-size: 14pt'>Нет расходов</li>");
-                }
+    $scope.hasExpenditures = function () {
+        return $scope.expList != null;
+    }
+
+    /*
+     *функция, отображающая список расходов салона за день. Текущий день указывается в `scope`
+     */
+    $scope.showExp = function () {
+        $scope.expenList = [];
+        if ($scope.expList != null) {
+            for (var i = 0; i < $scope.expList.length; i++) {
+                var expItem = {};
+                expItem.description = $scope.expList[i].description;
+                expItem.cost = $scope.expList[i].cost;
+                $scope.expenList.push(expItem);
             }
-
-
-        },
-        template: '<ul class="list inset">' +
-            '</ul>'
-    };
+        }
+    }
+    $scope.$watch('expList', $scope.showExp);
 });
