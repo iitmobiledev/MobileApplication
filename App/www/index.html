@@ -4,7 +4,6 @@
 
 
 <head>
-    <link rel="stylesheet" type="text/css" href="media_button_bar/css/media_button_bar.css">
     <meta charset="UTF-8">
     <link rel="stylesheet" type="text/css" href="app_framework/2.1/css/af.ui.min.css">
     <link rel="stylesheet" type="text/css" href="app_framework/2.1/css/icons.min.css">
@@ -80,34 +79,35 @@
 
 <body id="afui" ng-app="myApp">
     <script type="text/javascript">
-    /* Intel native bridge is available */
-    function show() {
-        if (intel.xdk && intel.xdk.device) {
-            $.ui.useOSThemes = false;
-        } else {
-            setTimeout(show, 100);
+        /* Intel native bridge is available */
+        function show() {
+            if (intel.xdk && intel.xdk.device) {
+                $.ui.useOSThemes = false;
+            } else {
+                setTimeout(show, 100);
+            }
         }
-    }
-    show();
-</script>
-    <div id="afui" class="ios7"><!-- ios7 --->
-    <div id="header" class="container-group inner-element uib_w_19" data-uib="app_framework/header" data-ver="1">
-    </div>
-    <!-- content goes here-->
-    <div class="uwrap" id="content">
-        <div class="upage panel" id="home" data-header="none" data-footer="none">
-            <!--            <div class="upage-outer">-->
-            <div ng-view class="fade"></div>
-            <!--            </div>-->
+        show();
+    </script>
+    <div id="afui" class="ios7">
+        <!-- ios7 --->
+        <div id="header" class="container-group inner-element uib_w_19" data-uib="app_framework/header" data-ver="1">
         </div>
+        <!-- content goes here-->
+        <div class="uwrap" id="content">
+            <div class="upage panel" id="home" data-header="none" data-footer="none">
+                <!--            <div class="upage-outer">-->
+                <div ng-view class="fade"></div>
+                <!--            </div>-->
+            </div>
 
+        </div>
+        <div id="navbar" class="inner-element uib_w_22" data-uib="app_framework/footer" data-ver="1">
+            <a class="icon calendar" href="#/index" id="StatisticsFooter">Отчетность</a>
+            <a class="icon clock" href="#/visits" id="VisitsFooter">Визиты</a>
+            <a class="icon settings" href="#/settings" id="SettingsFooter">Настройки</a>
+        </div>
     </div>
-    <div id="navbar" class="inner-element uib_w_22" data-uib="app_framework/footer" data-ver="1">
-        <a class="icon calendar" href="#/index" id="StatisticsFooter">Отчетность</a>
-        <a class="icon clock" href="#/visits" id="VisitsFooter">Визиты</a>
-        <a class="icon settings" href="#/settings" id="SettingsFooter">Настройки</a>
-    </div>
-        </div>  
     <!-- /uwrap -->
 </body>
 
