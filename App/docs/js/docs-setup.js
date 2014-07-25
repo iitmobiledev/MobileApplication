@@ -86,6 +86,15 @@ NG_DOCS={
     },
     {
       "section": "api",
+      "id": "myApp.controller:VisitsMasterController",
+      "shortName": "VisitsMasterController",
+      "type": "controller",
+      "moduleName": "myApp",
+      "shortDescription": "Контроллер, отвечающий за загрузку данных о визитах,",
+      "keywords": "api controller myapp"
+    },
+    {
+      "section": "api",
       "id": "myApp.directive:chart",
       "shortName": "chart",
       "type": "directive",

@@ -7,7 +7,7 @@ module.exports = function (grunt) {
                 html5Mode: false
             },
             api: {
-                src: ['js/*.js', 'js/directives/*.js', 'js/controllers/*.js'],
+                src: ['www/js/*.js', 'www/js/directives/*.js', 'www/js/controllers/*.js'],
                 title: 'API Documentation'
             }
         },
@@ -17,21 +17,21 @@ module.exports = function (grunt) {
                 options: {
                     base: 'src'
                 },
-                src: ['date-navigation.html'],
+                src: ['www/date-navigation.html'],
                 dest: 'tpl/templates.js'
             }
         }
 
-//        html2js: {
-//            options: {
-//                base: 'src'
-//                // custom options, see below
-//            },
-//            main: {
-//                src: ['date-navigation.html'],
-//                dest: 'tpl/templates.js'
-//            }
-//        }
+        //        html2js: {
+        //            options: {
+        //                base: 'src'
+        //                // custom options, see below
+        //            },
+        //            main: {
+        //                src: ['date-navigation.html'],
+        //                dest: 'tpl/templates.js'
+        //            }
+        //        }
 
     });
 
