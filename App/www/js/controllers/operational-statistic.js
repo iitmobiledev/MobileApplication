@@ -12,14 +12,11 @@
  * @requires myApp.service:OperationalStatisticLoader
  * @requires myApp.service:DateHelper
  */
-myApp.controller('OperationalStatisticController', function ($scope, OperationalStatisticLoader,
-    DateHelper) {
-    
-    if (!$scope.date)
+myApp.controller('OperationalStatisticController', function ($scope, $location, OperationalStatisticLoader, DateHelper) {
+
         $scope.date = new Date();
 
     $scope.step = DateHelper.steps.DAY;
-
 
     $scope.prevdate = new Date($scope.date.getFullYear(), $scope.date.getMonth(), $scope.date.getDate() - 1);
     $scope.nextdate = new Date($scope.date.getFullYear(), $scope.date.getMonth(), $scope.date.getDate() + 1);
@@ -32,20 +29,10 @@ myApp.controller('OperationalStatisticController', function ($scope, Operational
 
     $scope.hasFutureData = function () {
         var period = DateHelper.getPeriod($scope.date, $scope.step);
-        if (period.end > new Date() || period.end.toDateString() == new Date().toDateString()) {
-            //$scope.pages.pop();
-            return false;
-        } else {
-            //                if ($scope.pages.length == 2) {
-            //                    $scope.nextdate = new Date($scope.date.getFullYear(), $scope.date.getMonth(), $scope.date.getDate() + 1);
-            //                    $scope.pages.push(OperationalStatisticLoader($scope.nextdate, $scope.step));
-            //            }
-            return true;
-        }
+        return !(period.end > new Date() || period.end.toDateString() == new Date().toDateString());
     };
 
     $scope.$watch('date.toDateString()', function () {
-        console.log("index " + $scope.pageIndex);
         $scope.data = OperationalStatisticLoader($scope.date, $scope.step);
         $scope.prevData = OperationalStatisticLoader(DateHelper.getPrev($scope.date, $scope.step),
             $scope.step);
@@ -69,21 +56,6 @@ myApp.controller('OperationalStatisticController', function ($scope, Operational
         $scope.pageIndex = 1;
     });
 
-    //    $scope.$watch('pageIndex', function () {
-    //        if ($scope.pageIndex !== 1) {
-    //            switch ($scope.pageIndex) {
-    //            case 2:
-    //                $scope.date = new Date($scope.date.getFullYear(), $scope.date.getMonth(), $scope.date.getDate() + 1);
-    //                break;
-    //                1
-    //            case 0:
-    //                $scope.date = new Date($scope.date.getFullYear(), $scope.date.getMonth(), $scope.date.getDate() - 1);
-    //                break;
-    //            }
-    //        }
-    //
-    //    });
-
     $scope.$watch('step', function () {
         $scope.data = OperationalStatisticLoader($scope.date, $scope.step);
         $scope.prevData = OperationalStatisticLoader(DateHelper.getPrev($scope.date, $scope.step),
@@ -91,4 +63,9 @@ myApp.controller('OperationalStatisticController', function ($scope, Operational
         $scope.hasPrevData();
         $scope.hasFutureData();
     });
+
+    $scope.toChart = function (statField) {
+        console.log(statField);
+        $location.path('chart/' + statField);
+    }
 });

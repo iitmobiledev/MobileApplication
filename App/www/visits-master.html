@@ -3,7 +3,7 @@
 <div class="upage-content">
     <div class="button-grouped flex widget uib_w_24 d-margins" data-uib="app_framework/button_group" data-ver="1">
         <a ng-click="onTime()" class="button widget uib_w_25 d-margins" data-uib="app_framework/button" data-ver="1">По времени</a>
-        <a class="button widget uib_w_26 d-margins" data-uib="app_framework/button" data-ver="1">По мастерам</a>
+        <a id="mastersButton" class="button widget uib_w_26 d-margins" data-uib="app_framework/button" data-ver="1">По мастерам</a>
     </div>
 
     <date-changer step='step' date='date' steps='["day"]' has-future-data='hasFutureData()' has-prev-data='hasPrevData()' index='pageIndex'></date-changer>
@@ -11,12 +11,9 @@
         <li ng-repeat="page in pages">
             <ul>
                 <li ng-repeat="masterVis in page" id="visitsPerMasters">
-
-                    <a href="#/master/{{masterVis.master.id}}">
                         <div id="master" style="background-color: #6666FF">
-                            <h2 style="margin: 2px;">{{getMasterInfo(masterVis.master)}}</h2>
+                            <h2 ng-click="toMaster(masterVis.master.id)" style="margin: 2px;">{{getMasterInfo(masterVis.master)}}</h2>
                         </div>
-                    </a>
                     <ul class="list inset">
                         <li ng-repeat="visit in masterVis.visList">
                             {{getVisitByMasterInfo(visit)}}

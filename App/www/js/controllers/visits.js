@@ -5,6 +5,8 @@
  * @name myApp.controller:VisitsController
  */
 myApp.controller('VisitsController', function ($scope, $filter, $location, VisitsLoader, DateHelper, MastersPerDayLoader) {
+     $('#timeButton').addClass('pressed');
+    
     $scope.date = new Date();
     $scope.step = 'day';
 

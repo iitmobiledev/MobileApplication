@@ -9,6 +9,7 @@
 
 myApp.controller('GraphicController', function ($scope, $routeParams) {
     $scope.type = $routeParams.type;
+    console.log('type ', $scope.type);
     $scope.period = 3;
     getGoodData($scope.type, $scope.period, function (data) {
         $scope.loading = false;
