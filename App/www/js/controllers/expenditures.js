@@ -45,10 +45,8 @@ myApp.controller('ExpendituresController', function ($scope, $filter, Expenditur
         $scope.pageIndex = 1;
     });
 
-
-
-    $scope.hasExpenditures = function () {
-        return $scope.expList != [];
+    $scope.hasExpenditures = function (expendit) {
+        return expendit.length != 0;
     }
 
     /*
