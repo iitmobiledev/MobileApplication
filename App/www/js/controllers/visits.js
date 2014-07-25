@@ -32,7 +32,6 @@ myApp.controller('VisitsController', function ($scope, $filter, $location, Visit
         $scope.nextdate = new Date($scope.date.getFullYear(), $scope.date.getMonth(),
             $scope.date.getDate() + 1);
         $scope.pages = [VisitsLoader($scope.prevdate), VisitsLoader($scope.date), VisitsLoader($scope.nextdate)];
-        console.log("page ",  $scope.pages);
 
         $scope.pageIndex = 1;
     });

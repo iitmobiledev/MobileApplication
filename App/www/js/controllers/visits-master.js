@@ -67,7 +67,6 @@ myApp.controller('VisitsMasterController', function ($scope, $filter, $location,
             endTimes.push(service.endTime);
         }
 
-        console.log("id", visit.id);
         $scope.masterVisitInfo.id = visit.id;
         $scope.masterVisitInfo.status = visit.status;
         $scope.masterVisitInfo.client = visit.client.lastName + ' ' + visit.client.firstName;
