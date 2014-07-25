@@ -23,10 +23,11 @@ myApp.controller('MasterController', function ($scope, $routeParams, VisitsLoade
         return true;
     };
 
-    function getNeededMaster(masters) {
-        for (var i = 0; i < masters.length; i++) {
-            if (masters[i].master.id == $scope.id) {
-                return masters[i];
+    function getNeededVisits(masterAndVisits) {
+        for (var i = 0; i < masterAndVisits.length; i++) {
+            if (masterAndVisits[i].master.id == $scope.id) {
+                $scope.master = masterAndVisits[i].master;
+                return masterAndVisits[i].visList;
             }
         }
         return [];
@@ -56,40 +57,6 @@ myApp.controller('MasterController', function ($scope, $routeParams, VisitsLoade
         $scope.masterVisitInfo.cost = coast + ' р.';
     }
 
-    /**
-     *
-     * @ngdoc method
-     * @name myApp.controller:MasterController#showMaster
-     * @methodOf myApp.controller:MasterController
-     * @description Отображает всю информацию о мастере(занятость мастера за день)
-     */
-//    $scope.showMaster = function (masterAndVisits) {
-//        if (masterAndVisits != []) {
-//            $scope.masterInfo = masterAndVisits.master.lastName + ' ' + masterAndVisits.master.firstName;
-//            console.log('name ', masterAndVisits.master.firstName);
-//
-//            //            var master = $scope.neededMaster;
-//            //        for (var i = 0; i < master.visList.length; i++) {
-//            //            var visit = master.visList[i];
-//            //            var services
-//            //            var visitItem = {};
-//            //            visitItem.id = visit.id;
-//            //            visitItem.status = visit.status;
-//            //            visitItem.clientInfo = visit.client.lastName + " " + visit.client.firstName[0];
-//            //            for (var j = 0; j < visit.serviceList.length; j++) {
-//            //                var service = visit.serviceList[j];
-//            //                if (service.master.id === master.id) {
-//            //                    services.push(service.description);
-//            //                    coast += service.cost
-//            //                    startTimes.push(service.startTime);
-//            //                    endTimes.push(service.endTime);
-//            //                }
-//            //            }
-//            //
-//            //
-//            //        }
-//        }
-//    }
 
     function updatePages() {
         var prevdate = new Date($scope.date.getFullYear(), $scope.date.getMonth(), $scope.date.getDate() - 1);
@@ -99,7 +66,7 @@ myApp.controller('MasterController', function ($scope, $routeParams, VisitsLoade
         var prevMasters = MastersPerDayLoader.getAllMastersPerDay(prevdate, VisitsLoader);
         var nextMasters = MastersPerDayLoader.getAllMastersPerDay(nextdate, VisitsLoader);
 
-        $scope.pages = [getNeededMaster(prevMasters), getNeededMaster(masters), getNeededMaster(nextMasters)];
+        $scope.pages = [getNeededVisits(prevMasters), getNeededVisits(masters), getNeededVisits(nextMasters)];
 
         $scope.pageIndex = 1;
     }
