@@ -40,8 +40,10 @@
             intel.xdk.device.hideSplashScreen();
             //     intel.xdk.device.hideStatusBar();            
             $.ui.useInternalRouting = false;
+
             //$('#Statistics').addClass('pressed');
         };
+
         document.addEventListener("intel.xdk.device.ready", onDeviceReady, false);
     </script>
 
@@ -77,6 +79,18 @@
 </head>
 
 <body id="afui" ng-app="myApp">
+    <script type="text/javascript">
+    /* Intel native bridge is available */
+    function show() {
+        if (intel.xdk && intel.xdk.device) {
+            $.ui.useOSThemes = false;
+        } else {
+            setTimeout(show, 100);
+        }
+    }
+    show();
+</script>
+    <div id="afui" class="ios7"><!-- ios7 --->
     <div id="header" class="container-group inner-element uib_w_19" data-uib="app_framework/header" data-ver="1">
     </div>
     <!-- content goes here-->
@@ -93,6 +107,7 @@
         <a class="icon clock" href="#/visits" id="VisitsFooter">Визиты</a>
         <a class="icon settings" href="#/settings" id="SettingsFooter">Настройки</a>
     </div>
+        </div>  
     <!-- /uwrap -->
 </body>
 
