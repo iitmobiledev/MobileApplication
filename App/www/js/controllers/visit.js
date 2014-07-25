@@ -7,6 +7,7 @@
  */
 myApp.controller('VisitController', function ($scope, $filter, $routeParams, VisitLoader) {
     $scope.visit = VisitLoader($routeParams.id);
+    $scope.id = $routeParams.id;
 
     /**
      *
