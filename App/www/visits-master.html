@@ -1,0 +1,59 @@
+<header-content title="'Визиты'" show-back-button="false"></header-content>
+<orient orientation="'portrait'"></orient>
+<div class="upage-content">
+    <div class="button-grouped flex widget uib_w_24 d-margins" data-uib="app_framework/button_group" data-ver="1">
+        <a ng-click="onTime()" class="button widget uib_w_25 d-margins" data-uib="app_framework/button" data-ver="1">По времени</a>
+        <a class="button widget uib_w_26 d-margins" data-uib="app_framework/button" data-ver="1">По мастерам</a>
+    </div>
+
+    <date-changer step='step' date='date' steps='["day"]' has-future-data='hasFutureData()' has-prev-data='hasPrevData()' index='pageIndex'></date-changer>
+    <ul id='carousel' rn-carousel rn-carousel-index="pageIndex" style="height: 100%">
+        <li ng-repeat="page in pages">
+            <ul>
+                <li ng-repeat="masterVis in page" id="visitsPerMasters">
+
+                    <a href="#/master/{{masterVis.master.id}}">
+                        <div id="master" style="background-color: #6666FF">
+                            <h2 style="margin: 2px;">{{getMasterInfo(masterVis.master)}}</h2>
+                        </div>
+                    </a>
+                    <ul class="list inset">
+                        <li ng-repeat="visit in masterVis.visList">
+                            {{getVisitByMasterInfo(visit)}}
+                            <a href="#/visit/{{visit.id}}">
+                                <div>
+                                    <div>{{masterVisitInfo.status}}</div>
+                                    <div style="font-weight:bold;">
+                                        <span style="float:left;  width:65%;white-space:nowrap;text-overflow:ellipsis;overflow: hidden;">
+                                            {{masterVisitInfo.client}}
+                                        </span>
+                                        <span style=" text-align:right; width:35%;white-space:nowrap;text-overflow:ellipsis">
+                                            {{masterVisitInfo.time}}
+                                        </span>
+                                    </div>
+                                    <div>
+                                        <span style="float:left;  width:65%;white-space:nowrap;text-overflow:ellipsis;overflow: hidden;">
+                                            {{masterVisitInfo.service}}
+                                        </span>
+                                        <span style=" text-align:right; width:35%;white-space:nowrap;text-overflow:ellipsis">
+                                            {{masterVisitInfo.cost}}
+                                        </span>
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+
+                    </ul>
+                </li>
+                <ul class="list inset">
+                    <li id="noVisitMessage" style='text-align: center; font-size: 14pt;'>Нет визитов</li>
+                </ul>
+            </ul>
+        </li>
+    </ul>
+
+
+
+
+</div>
+<footer-content show="true"></footer-content>

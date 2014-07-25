@@ -19,6 +19,10 @@ myApp.config(['$routeProvider',
             templateUrl: 'visits.html',
             controller: 'VisitsController'
         }).
+        when('/visits-master', {
+            templateUrl: 'visits-master.html',
+            controller: 'VisitsMasterController'
+        }).
         when('/visit/:id', {
             templateUrl: 'visit.html',
             controller: 'VisitController'
@@ -40,7 +44,7 @@ myApp.config(['$routeProvider',
             controller: 'AuthorizationController'
         }).
         otherwise({
-            redirectTo: '/authorization'
+            redirectTo: '/index'
         });
     }]);
 

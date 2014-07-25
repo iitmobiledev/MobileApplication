@@ -2,16 +2,16 @@
 <orient orientation="'portrait'"></orient>
 <div class="upage-content">
     <div class="button-grouped flex widget uib_w_24 d-margins" data-uib="app_framework/button_group" data-ver="1">
-        <a ng-click="type='time'" class="button widget uib_w_25 d-margins" data-uib="app_framework/button" data-ver="1">По времени</a>
-        <a ng-click="type='masters'" class="button widget uib_w_26 d-margins" data-uib="app_framework/button" data-ver="1">По мастерам</a>
+        <a class="button widget uib_w_25 d-margins" data-uib="app_framework/button" data-ver="1">По времени</a>
+        <a ng-click="onMasters()" class="button widget uib_w_26 d-margins" data-uib="app_framework/button" data-ver="1">По мастерам</a>
     </div>
 
     <date-changer step='step' date='date' steps='["day"]' has-future-data='hasFutureData()' has-prev-data='hasPrevData()' index='pageIndex'></date-changer>
     <ul id='carousel' rn-carousel rn-carousel-index="pageIndex" style="height: 100%">
-        <li ng-repeat="page in pages" >
+        <li ng-repeat="page in pages">
 
 
-            <ul class="list inset" >
+            <ul class="list inset">
                 <li ng-repeat="visit in page" id="visitsPerTime">
                     {{getVisitInfo(visit)}}
                     <a href="#/visit/{{visitInfo.id}}">
@@ -20,7 +20,7 @@
                             <div style="font-weight:bold;">
                                 <span style="float:left;  width:65%;white-space:nowrap;text-overflow:ellipsis;overflow: hidden;">
                                     {{visitInfo.client}}
-<!--                                    {{visit.client.lastName}} {{visit.client.firstName[0]}}. {{visit.client.middleName[0]}}.-->
+                                    <!--                                    {{visit.client.lastName}} {{visit.client.firstName[0]}}. {{visit.client.middleName[0]}}.-->
                                 </span>
                                 <span style=" text-align:right; width:35%;white-space:nowrap;text-overflow:ellipsis">
                                     {{visitInfo.time}}
@@ -37,47 +37,9 @@
                         </div>
                     </a>
                 </li>
+                <li id="noVisitMessage" style='text-align: center; font-size: 14pt;'>Нет визитов</li>
             </ul>
 
-
-           
-
-
-            <ul>
-                <li ng-repeat="item in itemsPerMasters" id="visitsPerMasters" ng-show="isPerMasters()">
-                    <div style="background-color: #6666FF">
-                        <h2 style="margin: 2px;">{{item.master}}</h2>
-                    </div>
-                    <ul class="list inset">
-
-                        <li ng-repeat="visit in item.visits">
-                            <a href="#/visit/{{visit.id}}">
-
-                                <div>
-                                    <div>{{visit.status}}</div>
-                                    <div style="font-weight:bold;">
-                                        <span style="float:left;  width:65%;white-space:nowrap;text-overflow:ellipsis;overflow: hidden;">
-                                            {{visit.client}}
-                                        </span>
-                                        <span style=" text-align:right; width:35%;white-space:nowrap;text-overflow:ellipsis">
-                                            {{visit.time}}
-                                        </span>
-                                    </div>
-                                    <div>
-                                        <span style="float:left;  width:65%;white-space:nowrap;text-overflow:ellipsis;overflow: hidden;">
-                                            {{visit.service}}
-                                        </span>
-                                        <span style=" text-align:right; width:35%;white-space:nowrap;text-overflow:ellipsis">
-                                            {{visit.cost}}
-                                        </span>
-                                    </div>
-                                </div>
-
-                            </a>
-                        </li>
-                    </ul>
-                </li>
-            </ul>
         </li>
     </ul>
 
