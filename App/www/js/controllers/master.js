@@ -14,13 +14,11 @@ myApp.controller('MasterController', function ($scope, $routeParams, VisitsLoade
     $scope.date = new Date();
     $scope.step = 'day';
     $scope.masters = MastersPerDayLoader.getAllMastersPerDay($scope.date, VisitsLoader);
-    //    var sss = MastersPerDayLoader.getAllMastersPerDay($scope.date, VisitsLoader);
-    alert("mastersLength:", MastersPerDayLoader.getAllMastersPerDay($scope.date, VisitsLoader).length);
+
     //    $scope.prevdate = new Date($scope.date.getFullYear(), $scope.date.getMonth(), $scope.date.getDate() - 1);
     //    $scope.nextdate = new Date($scope.date.getFullYear(), $scope.date.getMonth(), $scope.date.getDate() + 1);
     //    $scope.pages = [MastersPerDayLoader.getAllMastersPerDay($scope.prevdate, VisitsLoader), MastersPerDayLoader.getAllMastersPerDay($scope.date, VisitsLoader), MastersPerDayLoader.getAllMastersPerDay($scope.nextdate, VisitsLoader)];
     //
-    $scope.pages = []
     //    $scope.pageIndex = 1;
 
     $scope.hasPrevData = function () {
@@ -33,11 +31,9 @@ myApp.controller('MasterController', function ($scope, $routeParams, VisitsLoade
 
 
     $scope.getNeededMaster = function () {
-        //        alert("mastersLength:", $scope.masters.length);
-        for (var i = 0; i <= $scope.masters.length; i++) {
-            //            alert($scope.masters[i].master.id);
+        for (var i = 0; i < $scope.masters.length; i++) {
             if ($scope.masters[i].master.id == $scope.id) {
-                return master[i];
+                return $scope.masters[i];
             }
         }
         return null;
@@ -51,12 +47,11 @@ myApp.controller('MasterController', function ($scope, $routeParams, VisitsLoade
      * @description Отображает всю информацию о мастере(занятость мастера за день)
      */
     $scope.showMaster = function () {
-        //        alert("mastersLength:", $scope.masters.length);
         $scope.neededMaster = $scope.getNeededMaster();
         if ($scope.neededMaster != null) {
             $scope.masterInfo = $scope.neededMaster.master.lastName + ' ' + $scope.neededMaster.master.firstName;
             console.log($scope.masterInfo);
-            var master = $scope.neededMaster;
+            //            var master = $scope.neededMaster;
             //        for (var i = 0; i < master.visList.length; i++) {
             //            var visit = master.visList[i];
             //            var services

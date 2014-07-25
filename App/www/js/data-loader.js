@@ -206,7 +206,6 @@ myApp.factory('MastersPerDayLoader', function () {
                 return 1;
             return 0;
         });
-        console.log("allMasterPerday:", allMasters.length);
         return allMasters;
     }
 
