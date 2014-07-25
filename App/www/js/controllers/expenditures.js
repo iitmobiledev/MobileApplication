@@ -13,11 +13,12 @@
  */
 myApp.controller('ExpendituresController', function ($scope, $filter, ExpendituresLoader, DateHelper) {
     $scope.date = new Date();
-    $scope.expList = ExpendituresLoader($scope.date);
+    //    $scope.expList = ExpendituresLoader($scope.date);
 
     var prevdate = new Date($scope.date.getFullYear(), $scope.date.getMonth(), $scope.date.getDate() - 1);
     var nextdate = new Date($scope.date.getFullYear(), $scope.date.getMonth(), $scope.date.getDate() + 1);
     $scope.pages = [ExpendituresLoader(prevdate), ExpendituresLoader($scope.date), ExpendituresLoader(nextdate)];
+    console.log($scope.pages);
     $scope.pageIndex = 1;
 
     $scope.hasPrevData = function () {
@@ -35,7 +36,12 @@ myApp.controller('ExpendituresController', function ($scope, $filter, Expenditur
     $scope.$watch('date.toDateString()', function () {
         var prevdate = new Date($scope.date.getFullYear(), $scope.date.getMonth(), $scope.date.getDate() - 1);
         var nextdate = new Date($scope.date.getFullYear(), $scope.date.getMonth(), $scope.date.getDate() + 1);
-        $scope.pages = [ExpendituresLoader(prevdate), ExpendituresLoader($scope.date), ExpendituresLoader(nextdate)];
+        if ($scope.hasFutureData()) {
+            $scope.pages = [ExpendituresLoader(prevdate), ExpendituresLoader($scope.date), ExpendituresLoader(nextdate)];
+        } else {
+            $scope.pages = [ExpendituresLoader(prevdate), ExpendituresLoader($scope.date)];
+        }
+
         $scope.pageIndex = 1;
     });
 
@@ -48,16 +54,14 @@ myApp.controller('ExpendituresController', function ($scope, $filter, Expenditur
     /*
      *функция, отображающая список расходов салона за день. Текущий день указывается в `scope`
      */
-    $scope.showExp = function () {
-        $scope.expenList = [];
-        if ($scope.expList != null) {
-            for (var i = 0; i < $scope.expList.length; i++) {
-                var expItem = {};
-                expItem.description = $scope.expList[i].description;
-                expItem.cost = $scope.expList[i].cost;
-                $scope.expenList.push(expItem);
-            }
-        }
-    }
-    $scope.$watch('expList', $scope.showExp);
+    //    $scope.showExp = function () {
+    //        $scope.expenList = [];
+    //        for (var i = 0; i < $scope.expList.length; i++) {
+    //            var expItem = {};
+    //            expItem.description = $scope.expList[i].description;
+    //            expItem.cost = $scope.expList[i].cost;
+    //            $scope.expenList.push(expItem);
+    //        }
+    //    }
+    //    $scope.$watch('expList', $scope.showExp);
 });
