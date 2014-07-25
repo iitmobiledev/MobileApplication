@@ -29,7 +29,7 @@ myApp.controller('VisitsMasterController', function ($scope, $filter, $location,
     }
     
      $scope.toMaster = function (id) {
-        $location.path('master/'+id);
+        $location.path('master/'+id+"/"+$scope.date);
     }
     
     $scope.hasVisits = function(visit){

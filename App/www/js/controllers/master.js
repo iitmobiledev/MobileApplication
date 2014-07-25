@@ -11,13 +11,9 @@
  */
 myApp.controller('MasterController', function ($scope, $routeParams, VisitsLoader, $filter, MastersPerDayLoader) {
     $scope.id = $routeParams.id;
+    $scope.date = new Date($routeParams.date);
 
-    $scope.date = new Date(); // $routeParams.date;
     updatePages();
-
-    //    $scope.pages = [MastersPerDayLoader.getAllMastersPerDay(prevdate, VisitsLoader), MastersPerDayLoader.getAllMastersPerDay($scope.date, VisitsLoader), MastersPerDayLoader.getAllMastersPerDay(nextdate, VisitsLoader)];
-
-    $scope.pageIndex = 1;
 
     $scope.hasPrevData = function () {
         return true;
@@ -26,7 +22,6 @@ myApp.controller('MasterController', function ($scope, $routeParams, VisitsLoade
     $scope.hasFutureData = function () {
         return true;
     };
-
 
     function getNeededMaster(masters) {
         for (var i = 0; i < masters.length; i++) {
@@ -37,6 +32,30 @@ myApp.controller('MasterController', function ($scope, $routeParams, VisitsLoade
         return [];
     };
 
+
+    $scope.getVisitByMasterInfo = function (visit) {
+        $scope.masterVisitInfo = {};
+        var services = [],
+            startTimes = [],
+            endTimes = [],
+            coast = 0;
+        for (var j = 0; j < visit.serviceList.length; j++) {
+            var service = visit.serviceList[j];
+            services.push(service.description);
+            coast += service.cost
+            startTimes.push(service.startTime);
+            endTimes.push(service.endTime);
+        }
+
+        $scope.masterVisitInfo.id = visit.id;
+        $scope.masterVisitInfo.status = visit.status;
+        $scope.masterVisitInfo.client = visit.client.lastName + ' ' + visit.client.firstName;
+        $scope.masterVisitInfo.time = $filter('date')(Math.min.apply(null, startTimes), "HH:mm") + '-' +
+            $filter('date')(Math.max.apply(null, endTimes), "HH:mm");
+        $scope.masterVisitInfo.service = services.join(",");
+        $scope.masterVisitInfo.cost = coast + ' р.';
+    }
+
     /**
      *
      * @ngdoc method
@@ -44,33 +63,33 @@ myApp.controller('MasterController', function ($scope, $routeParams, VisitsLoade
      * @methodOf myApp.controller:MasterController
      * @description Отображает всю информацию о мастере(занятость мастера за день)
      */
-    $scope.showMaster = function (masterAndVisits) {
-        //$scope.neededMaster = $scope.getNeededMaster();
-        if (masterAndVisits != []) {
-            $scope.masterInfo = masterAndVisits.master.lastName + ' ' + masterAndVisits.master.firstName;
-            console.log($scope.masterInfo);
-            //            var master = $scope.neededMaster;
-            //        for (var i = 0; i < master.visList.length; i++) {
-            //            var visit = master.visList[i];
-            //            var services
-            //            var visitItem = {};
-            //            visitItem.id = visit.id;
-            //            visitItem.status = visit.status;
-            //            visitItem.clientInfo = visit.client.lastName + " " + visit.client.firstName[0];
-            //            for (var j = 0; j < visit.serviceList.length; j++) {
-            //                var service = visit.serviceList[j];
-            //                if (service.master.id === master.id) {
-            //                    services.push(service.description);
-            //                    coast += service.cost
-            //                    startTimes.push(service.startTime);
-            //                    endTimes.push(service.endTime);
-            //                }
-            //            }
-            //
-            //
-            //        }
-        }
-    }
+//    $scope.showMaster = function (masterAndVisits) {
+//        if (masterAndVisits != []) {
+//            $scope.masterInfo = masterAndVisits.master.lastName + ' ' + masterAndVisits.master.firstName;
+//            console.log('name ', masterAndVisits.master.firstName);
+//
+//            //            var master = $scope.neededMaster;
+//            //        for (var i = 0; i < master.visList.length; i++) {
+//            //            var visit = master.visList[i];
+//            //            var services
+//            //            var visitItem = {};
+//            //            visitItem.id = visit.id;
+//            //            visitItem.status = visit.status;
+//            //            visitItem.clientInfo = visit.client.lastName + " " + visit.client.firstName[0];
+//            //            for (var j = 0; j < visit.serviceList.length; j++) {
+//            //                var service = visit.serviceList[j];
+//            //                if (service.master.id === master.id) {
+//            //                    services.push(service.description);
+//            //                    coast += service.cost
+//            //                    startTimes.push(service.startTime);
+//            //                    endTimes.push(service.endTime);
+//            //                }
+//            //            }
+//            //
+//            //
+//            //        }
+//        }
+//    }
 
     function updatePages() {
         var prevdate = new Date($scope.date.getFullYear(), $scope.date.getMonth(), $scope.date.getDate() - 1);
