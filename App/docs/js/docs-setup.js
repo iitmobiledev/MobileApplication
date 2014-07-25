@@ -28,7 +28,7 @@ NG_DOCS={
       "type": "controller",
       "moduleName": "myApp",
       "shortDescription": "Контроллер, получающий данные для отрисовки графика",
-      "keywords": "api changeperiod controller data method myapp period type"
+      "keywords": "api changeperiod controller method myapp"
     },
     {
       "section": "api",
@@ -46,7 +46,7 @@ NG_DOCS={
       "type": "controller",
       "moduleName": "myApp",
       "shortDescription": "Контроллер, содержащий данные о визите. Получает данные из пути к странице",
-      "keywords": "api controller datechanger masters method myapp service showmaster step"
+      "keywords": "api controller getneededvisits getvisitbymasterinfo hasfuturedata hasprevdata masterandvisits method myapp service true updatepages visit"
     },
     {
       "section": "api",
@@ -73,7 +73,7 @@ NG_DOCS={
       "type": "controller",
       "moduleName": "myApp",
       "shortDescription": "Контроллер, содержащий данные о визите. Получает данные из пути к странице",
-      "keywords": "api controller method myapp service showvisit visit"
+      "keywords": "api controller method myapp service showvisit"
     },
     {
       "section": "api",
@@ -82,7 +82,7 @@ NG_DOCS={
       "type": "controller",
       "moduleName": "myApp",
       "shortDescription": "Контроллер, отвечающий за загрузку данных о визитах,",
-      "keywords": "api controller myapp"
+      "keywords": "api controller getvisitinfo hasfuturedata hasprevdata hasvisits method myapp service true visit"
     },
     {
       "section": "api",
@@ -91,7 +91,7 @@ NG_DOCS={
       "type": "controller",
       "moduleName": "myApp",
       "shortDescription": "Контроллер, отвечающий за загрузку данных о визитах,",
-      "keywords": "api controller myapp"
+      "keywords": "api controller getmasterinfo getvisitbymasterinfo hasfuturedata hasprevdata hasvisits master masterinfo method myapp service true visit"
     },
     {
       "section": "api",

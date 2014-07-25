@@ -3,6 +3,9 @@
  * т.е. записей с указанием времени, мастера и клиента.</p>
  * @ngdoc controller
  * @name myApp.controller:VisitsController
+ * @requires myApp.service:VisitsLoader
+ * @requires myApp.service:DateHelper
+ * @requires myApp.service:MastersPerDayLoader
  */
 myApp.controller('VisitsController', function ($scope, $filter, $location, VisitsLoader, DateHelper, MastersPerDayLoader) {
     $('#timeButton').addClass('pressed');
@@ -14,11 +17,26 @@ myApp.controller('VisitsController', function ($scope, $filter, $location, Visit
     $scope.nextdate = new Date($scope.date.getFullYear(), $scope.date.getMonth(), $scope.date.getDate() + 1);
     $scope.pages = [VisitsLoader($scope.prevdate), VisitsLoader($scope.date), VisitsLoader($scope.nextdate)];
     $scope.pageIndex = 1;
-
+    
+    /**
+     *
+     * @ngdoc method
+     * @name myApp.controller:VisitsController#hasPrevData
+     * @methodOf myApp.controller:VisitsController
+     * @returns {Boleean} Возвращает true
+     * @description Метод для проверки существования данных за прошлое
+     */
     $scope.hasPrevData = function () {
         return true;
     };
-
+    /**
+     *
+     * @ngdoc method
+     * @name myApp.controller:VisitsController#hasFutureData
+     * @methodOf myApp.controller:VisitsController
+     * @returns {Boleean} Возвращает true
+     * @description Метод для проверки существования данных за будущее
+     */
     $scope.hasFutureData = function () {
         return true;
     };
@@ -26,8 +44,16 @@ myApp.controller('VisitsController', function ($scope, $filter, $location, Visit
     $scope.onMasters = function () {
         $location.path('visits-master');
     }
-    
-    $scope.hasVisits = function(visit){
+    /**
+     *
+     * @ngdoc method
+     * @name myApp.controller:VisitsController#hasVisits
+     * @methodOf myApp.controller:VisitsController
+     * @param {Object} visit Объект визит
+     * @returns {Boleean} Возвращает true, если визит есть
+     * @description Метод для проверки существования визита
+     */
+    $scope.hasVisits = function (visit) {
         return visit.length != 0;
     }
 
@@ -41,6 +67,14 @@ myApp.controller('VisitsController', function ($scope, $filter, $location, Visit
         $scope.pageIndex = 1;
     });
 
+    /**
+     *
+     * @ngdoc method
+     * @name myApp.controller:VisitsController#getVisitInfo
+     * @methodOf myApp.controller:VisitsController
+     * @param {Object} visit Объект визит
+     * @description Метод, формирующий данные в виде, нужном для отображения визитов по времени
+     */
     $scope.getVisitInfo = function (visit) {
         var services = [],
             masters = [],

@@ -12,16 +12,30 @@
 <li><code ng:non-bindable=""><a href="#/api/myApp.service:MastersPerDayLoader">MastersPerDayLoader</a></code>
 </li>
 </ul>
-<h2 id="usage">Usage</h2>
-<div class="usage"><pre class="prettyprint linenums">MasterController(id, date, step, masters);</pre>
-<h4 id="usage_parameters">Parameters</h4><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>id</td><td><a href="" class="label type-hint type-hint-number">Number</a></td><td><div class="myapp-controller-page myapp-controller-mastercontroller-page"><p>ID Мастера</p>
-</div></td></tr><tr><td>date</td><td><a href="" class="label type-hint type-hint-date">Date</a></td><td><div class="myapp-controller-page myapp-controller-mastercontroller-page"><p>Текущая дата</p>
-</div></td></tr><tr><td>step</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="myapp-controller-page myapp-controller-mastercontroller-page"><p>Шаг для директивы DateChanger</p>
-</div></td></tr><tr><td>masters</td><td><a href="" class="label type-hint type-hint-array">Array</a></td><td><div class="myapp-controller-page myapp-controller-mastercontroller-page"><p>Списов мастеров с их визитами</p>
-</div></td></tr></tbody></table></div>
 <div class="member method"><h2 id="methods">Methods</h2>
-<ul class="methods"><li><h3 id="methods_showmaster">showMaster()</h3>
-<div class="showmaster"><div class="myapp-controller-page myapp-controller-mastercontroller-showmaster-page"><p>Отображает всю информацию о мастере(занятость мастера за день)</p>
+<ul class="methods"><li><h3 id="methods_getneededvisits">getNeededVisits(masterAndVisits)</h3>
+<div class="getneededvisits"><div class="myapp-controller-page myapp-controller-mastercontroller-getneededvisits-page"><p>Метод для получения списка визитов для конкретного мастера</p>
+</div><h5 id="methods_getneededvisits_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>masterAndVisits</td><td><a href="" class="label type-hint type-hint-array">Array</a></td><td><div class="myapp-controller-page myapp-controller-mastercontroller-getneededvisits-page"><p>Массив с мастерами и из визитами. Каждыйэлемент массива объект, где 1 поле-мастер,2 -список его визитов за определенную дату</p>
+</div></td></tr></tbody></table><h5 id="methods_getneededvisits_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-array">Array</a></td><td><div class="myapp-controller-page myapp-controller-mastercontroller-getneededvisits-page"><p>Возвращает массив визитов для нужного мастера</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_getvisitbymasterinfo">getVisitByMasterInfo(visit)</h3>
+<div class="getvisitbymasterinfo"><div class="myapp-controller-page myapp-controller-mastercontroller-getvisitbymasterinfo-page"><p>Метод, формирующий данные в виде, нужном для отображения мастера и списки визитов к нему</p>
+</div><h5 id="methods_getvisitbymasterinfo_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>visit</td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="myapp-controller-page myapp-controller-mastercontroller-getvisitbymasterinfo-page"><p>Объект визит</p>
+</div></td></tr></tbody></table></div>
+</li>
+<li><h3 id="methods_hasfuturedata">hasFutureData()</h3>
+<div class="hasfuturedata"><div class="myapp-controller-page myapp-controller-mastercontroller-hasfuturedata-page"><p>Метод для проверки существования данных за будущее</p>
+</div><h5 id="methods_hasfuturedata_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-boleean">Boleean</a></td><td><div class="myapp-controller-page myapp-controller-mastercontroller-hasfuturedata-page"><p>Возвращает true</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_hasprevdata">hasPrevData()</h3>
+<div class="hasprevdata"><div class="myapp-controller-page myapp-controller-mastercontroller-hasprevdata-page"><p>Метод для проверки существования данных за прошлое</p>
+</div><h5 id="methods_hasprevdata_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-boleean">Boleean</a></td><td><div class="myapp-controller-page myapp-controller-mastercontroller-hasprevdata-page"><p>Возвращает true</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_updatepages">updatePages()</h3>
+<div class="updatepages"><div class="myapp-controller-page myapp-controller-mastercontroller-updatepages-page"><p>Метод, обновляющий массив данных нужных для анимации</p>
 </div></div>
 </li>
 </ul>

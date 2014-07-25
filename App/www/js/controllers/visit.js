@@ -2,7 +2,6 @@
  * @description Контроллер, содержащий данные о визите. Получает данные из пути к странице
  * @ngdoc controller
  * @name myApp.controller:VisitController
- * @param {Visit} visit Визит
  * @requires myApp.service:VisitLoader
  */
 myApp.controller('VisitController', function ($scope, $filter, $routeParams, VisitLoader) {

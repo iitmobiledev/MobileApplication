@@ -3,10 +3,13 @@
  * т.е. записей с указанием времени, мастера и клиента.</p>
  * @ngdoc controller
  * @name myApp.controller:VisitsMasterController
+ * @requires myApp.service:VisitsLoader
+ * @requires myApp.service:DateHelper
+ * @requires myApp.service:MastersPerDayLoader
  */
 myApp.controller('VisitsMasterController', function ($scope, $filter, $location, VisitsLoader, DateHelper, MastersPerDayLoader) {
     $('#mastersButton').addClass('pressed');
-    
+
     $scope.date = new Date();
     $scope.step = 'day';
 
@@ -16,10 +19,26 @@ myApp.controller('VisitsMasterController', function ($scope, $filter, $location,
 
     $scope.pageIndex = 1;
 
+    /**
+     *
+     * @ngdoc method
+     * @name myApp.controller:VisitsMasterController#hasPrevData
+     * @methodOf myApp.controller:VisitsMasterController
+     * @returns {Boleean} Возвращает true
+     * @description Метод для проверки существования данных за прошлое
+     */
     $scope.hasPrevData = function () {
         return true;
     };
 
+    /**
+     *
+     * @ngdoc method
+     * @name myApp.controller:VisitsMasterController#hasFutureData
+     * @methodOf myApp.controller:VisitsMasterController
+     * @returns {Boleean} Возвращает true
+     * @description Метод для проверки существования данных за будущее
+     */
     $scope.hasFutureData = function () {
         return true;
     };
@@ -27,12 +46,21 @@ myApp.controller('VisitsMasterController', function ($scope, $filter, $location,
     $scope.onTime = function () {
         $location.path('visits');
     }
-    
-     $scope.toMaster = function (id) {
-        $location.path('master/'+id+"/"+$scope.date);
+
+    $scope.toMaster = function (id) {
+        $location.path('master/' + id + "/" + $scope.date);
     }
-    
-    $scope.hasVisits = function(visit){
+
+    /**
+     *
+     * @ngdoc method
+     * @name myApp.controller:VisitsMasterController#hasVisits
+     * @methodOf myApp.controller:VisitsMasterController
+     * @param {Object} visit Объект визит
+     * @returns {Boleean} Возвращает true, если визит есть
+     * @description Метод для проверки существования визита
+     */
+    $scope.hasVisits = function (visit) {
         return visit.length != 0;
     }
 
@@ -41,16 +69,32 @@ myApp.controller('VisitsMasterController', function ($scope, $filter, $location,
             $scope.date.getDate() - 1);
         $scope.nextdate = new Date($scope.date.getFullYear(), $scope.date.getMonth(),
             $scope.date.getDate() + 1);
-
         $scope.pages = [MastersPerDayLoader.getAllMastersPerDay($scope.prevdate, VisitsLoader), MastersPerDayLoader.getAllMastersPerDay($scope.date, VisitsLoader), MastersPerDayLoader.getAllMastersPerDay($scope.nextdate, VisitsLoader)];
-
         $scope.pageIndex = 1;
     });
-    
-    $scope.getMasterInfo = function(master){
+
+
+    /**
+     *
+     * @ngdoc method
+     * @name myApp.controller:VisitsMasterController#getMasterInfo
+     * @methodOf myApp.controller:VisitsMasterController
+     * @param {Object} master Объект мастер
+     * @returns {String} masterInfo Фамилия и имя мастера одной строкой
+     * @description Метод, формирующий данные в виде, нужном для отображения визитов отсортированных по мастерам
+     */
+    $scope.getMasterInfo = function (master) {
         return master.lastName + " " + master.firstName;
     }
 
+    /**
+     *
+     * @ngdoc method
+     * @name myApp.controller:VisitsMasterController#getVisitByMasterInfo
+     * @methodOf myApp.controller:VisitsMasterController
+     * @param {Object} visit Объект визит
+     * @description Метод, формирующий данные в виде, нужном для отображения визитов отсортированных по мастерам
+     */
     $scope.getVisitByMasterInfo = function (visit) {
         $scope.masterVisitInfo = {};
         var services = [],

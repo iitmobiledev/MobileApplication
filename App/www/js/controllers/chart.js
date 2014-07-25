@@ -2,12 +2,14 @@
  * @description Контроллер, получающий данные для отрисовки графика
  * @ngdoc controller
  * @name myApp.controller:GraphicController
- * @param {String} type тип графика(что отображает график)
- * @param {Number} period период в месяцах, за который должен быть отрисован график
- * @param {Array} data данные для отображения графика:массив из списков, где 1 элемент-объект {Data}, 2 элемент-величина в зависимости от типа графика
  */
 
 myApp.controller('GraphicController', function ($scope, $routeParams) {
+    /**
+     * @param {String} type тип графика(что отображает график)
+     * @param {Number} period период в месяцах, за который должен быть отрисован график
+     * @param {Array} data данные для отображения графика:массив из списков, где 1 элемент-объект {Data}, 2 элемент-величина в зависимости от типа графика
+     */
     $scope.type = $routeParams.type;
     console.log('type ', $scope.type);
     $scope.period = 3;
