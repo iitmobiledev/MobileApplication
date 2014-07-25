@@ -3,11 +3,17 @@
  * @ngdoc controller
  * @name myApp.controller:VisitController
  * @param {Visit} visit Визит
+ * @requires myApp.service:VisitLoader
  */
 myApp.controller('VisitController', function ($scope, $filter, $routeParams, VisitLoader) {
     $scope.visit = VisitLoader($routeParams.id);
-    /*
-     *функция, отображающая всю информацию о визите
+
+    /**
+     *
+     * @ngdoc method
+     * @name myApp.controller:VisitController#showVisit
+     * @methodOf myApp.controller:VisitController
+     * @description Отображает всю информацию о визите
      */
     $scope.showVisit = function () {
         if ($scope.visit !== null) {

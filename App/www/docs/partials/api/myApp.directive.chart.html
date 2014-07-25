@@ -7,10 +7,16 @@
 <div class="description"><div class="myapp-directive-page myapp-directive-chart-page"><p>Директива добавляет на страницу приложения график</p>
 </div></div>
 <h2 id="usage">Usage</h2>
-<div class="usage">as class<pre class="prettyprint linenums">&lt;ANY class="chart items: {Array}; dimension: {String};"&gt;
-   ...
-&lt;/ANY&gt;</pre>
-<h4 id="usage_parameters">Parameters</h4><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>items</td><td><a href="" class="label type-hint type-hint-array">Array</a></td><td><div class="myapp-directive-page myapp-directive-chart-page"><p>данные для отображения графика</p>
-</div></td></tr><tr><td>dimension</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="myapp-directive-page myapp-directive-chart-page"><p>размерность по оси OY</p>
+<div class="usage">as element:<pre class="prettyprint linenums">&lt;chart
+       chart-data="{String}"&gt;
+&lt;/chart&gt;</pre>
+<h4 id="usage_parameters">Parameters</h4><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>chart-data</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="myapp-directive-page myapp-directive-chart-page"><p>имя параметра со списком данных для отображения графика: массив из списков, где 1 элемент-объект {Data}, 2 элемент-величина в зависимости от типа графика</p>
 </div></td></tr></tbody></table></div>
+<div class="member method"><h2 id="methods">Methods</h2>
+<ul class="methods"><li><h3 id="methods_drawchart">drawChart()</h3>
+<div class="drawchart"><div class="myapp-directive-page myapp-directive-chart-drawchart-page"><p>Метод, рисующий график</p>
+</div></div>
+</li>
+</ul>
+</div>
 </div>

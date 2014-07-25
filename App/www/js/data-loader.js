@@ -138,18 +138,25 @@ myApp.factory('VisitsLoader', function () {
 
 /**
  * @ngdoc service
- * @description Сервис для получения данных о визитах
- * @name myApp.service:VisitsLoader
- * @param {Date} neededDate дата, за которую нужно получить список визитов
- * @returns {Array} список визитов за нужную дату
+ * @description Сервис для получения списка мастеров с их визитами за нужную дату
+ * @name myApp.service:MastersPerDayLoader
+ * @param {Date} neededDate Дата, за которую нужно получить список мастеров с их визитами
+ * @param {Service} VisitsLoader Сервис для загрузки списка визитов
+ * @returns {method}  getAllMastersPerDay Метод для получения  списка отсортированных по фамилии мастера объектов perMaster
  */
 myApp.factory('MastersPerDayLoader', function () {
 
-    /*
-     *функция, проверяющая, есть ли мастер в списке мастеров
-     *если есть, то возвращает индекс в списке
-     *если нет, то возвращает null
+    /**
+     *
+     * @ngdoc method
+     * @name myApp.service:MastersPerDayLoader#checkMasterInList
+     * @methodOf myApp.service:MastersPerDayLoader
+     * @description Проверяет есть ли мастер в списке мастеров
+     * @param {String} master Объект мастер
+     * @param {Array}  masters Список мастеров
+     * @returns {Null or Number}  Индекс мастера, если он есть в списке; null если нет.
      */
+
     function checkMasterInList(master, masters) {
         for (var i = 0; i < masters.length; i++) {
             if (master === masters[i].master) {
@@ -167,8 +174,16 @@ myApp.factory('MastersPerDayLoader', function () {
         }
     }
 
-    /*
-     *функция, возвращающая список отсортированных по фамилии мастера объектов perMaster
+
+    /**
+     *
+     * @ngdoc method
+     * @name myApp.service:MastersPerDayLoader#getAllMastersPerDay
+     * @methodOf myApp.service:MastersPerDayLoader
+     * @description Метод для получения списка отсортированных по фамилии мастера объектов perMaster
+     * @param {Date} neededData  Дата, за которую требуется получить список объектов
+     * @param {Service} VisitsLoader  Сервис для загрузки списка визитов
+     * @returns {Array} allMasters Список отсортированных по фамилии мастера объектов perMaster
      */
     function getAllMastersPerDay(neededDate, VisitsLoader) {
         var getedData = VisitsLoader(neededDate);
@@ -296,19 +311,20 @@ myApp.factory('DateHelper', function () {
         MONTH: "month"
     }
 
-
-    //    /**
-    //     * @ngdoc method
-    //     * @name myApp#service:getPrev
-    //     * @param {Date} date дата, для которой будет вычислена предыдущая
-    //     * дата.
-    //     * @param {String} step шаг, показывающий за какой период
-    //     * необходимо вычислить предыдущую дату.
-    //     * @returns {Date} предыдущая дата.
-    //     * @description Метод предназначен для получения того же дня на
-    //     * прошлой неделе или прошлой недели, или прошлого месяца.
-    //     * Необходимое указывается параметром step.
-    //     */
+    /**
+     *
+     * @ngdoc method
+     * @name myApp.serviceDateHelper#getPrev
+     * @methodOf myApp.service:DateHelper
+     * @param {Date} date дата, для которой будет вычислена предыдущая
+     * дата.
+     * @param {String} step шаг, показывающий за какой период
+     * необходимо вычислить предыдущую дату.
+     * @returns {Date} предыдущая дата.
+     * @description Метод предназначен для получения того же дня на
+     * прошлой неделе или прошлой недели, или прошлого месяца.
+     * Необходимое указывается параметром step.
+     */
         function getPrev(date, step) {
             switch (step) {
             case steps.DAY:
@@ -322,17 +338,19 @@ myApp.factory('DateHelper', function () {
             }
         };
 
-    //    /**
-    //     * @ngdoc method
-    //     * @name myApp#service:getPeriod
-    //     * @param {Date} date дата, по которой будет определяться период.
-    //     * @param {String} step шаг, показывающий какой период необходимо
-    //     * вернуть, должен быть определен в DateHelper.steps.
-    //     * @returns {Period} объект с полями {Date} begin и {Date} end, обозначающими
-    //     * начальную и конечную даты периода.
-    //     * @description Метод предназначен для получения периода, т.е.
-    //     * начальной даты и конечной даты.
-    //     */
+    /**
+     *
+     * @ngdoc method
+     * @name myApp.serviceDateHelper#getPeriod
+     * @methodOf myApp.service:DateHelper
+     * @param {Date} date дата, по которой будет определяться период.
+     * @param {String} step шаг, показывающий какой период необходимо
+     * вернуть, должен быть определен в DateHelper.steps.
+     * @returns {Period} объект с полями {Date} begin и {Date} end, обозначающими
+     * начальную и конечную даты периода.
+     * @description Метод предназначен для получения периода, т.е.
+     * начальной даты и конечной даты.
+     */
     function getPeriod(date, step) {
         var period = new function () {
                 switch (step) {
@@ -358,10 +376,15 @@ myApp.factory('DateHelper', function () {
         return period;
     };
 
-
-    //Функция для получения названия месяца по его номеру
-    //@param {Number} monthNumber номер месяца, начиная с 0
-    //@returns {String} название месяца
+    /**
+     *
+     * @ngdoc method
+     * @name myApp.serviceDateHelper#getMonthTitle
+     * @methodOf myApp.service:DateHelper
+     * @param {Number} monthNumber номер месяца, начиная с 0
+     * @returns {String} название месяца
+     * @description Метод для получения названия месяца по его номеру
+     */
     function getMonthTitle(monthNumber) {
         console.log(monthNumber);
         switch (monthNumber + '') {

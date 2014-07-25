@@ -1,0 +1,32 @@
+<h1><code ng:non-bindable="">MastersPerDayLoader</code>
+<div><span class="hint">service in module <code ng:non-bindable="">myApp</code>
+</span>
+</div>
+</h1>
+<div><h2 id="description">Description</h2>
+<div class="description"><div class="myapp-service-page myapp-service-mastersperdayloader-page"><p>Сервис для получения списка мастеров с их визитами за нужную дату</p>
+</div></div>
+<h2 id="usage">Usage</h2>
+<div class="usage"><pre class="prettyprint linenums">MastersPerDayLoader(neededDate, VisitsLoader);</pre>
+<h4 id="usage_parameters">Parameters</h4><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>neededDate</td><td><a href="" class="label type-hint type-hint-date">Date</a></td><td><div class="myapp-service-page myapp-service-mastersperdayloader-page"><p>Дата, за которую нужно получить список мастеров с их визитами</p>
+</div></td></tr><tr><td>VisitsLoader</td><td><a href="" class="label type-hint type-hint-service">Service</a></td><td><div class="myapp-service-page myapp-service-mastersperdayloader-page"><p>Сервис для загрузки списка визитов</p>
+</div></td></tr></tbody></table><h4 id="usage_returns">Returns</h4><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-method">method</a></td><td><div class="myapp-service-page myapp-service-mastersperdayloader-page"><p>getAllMastersPerDay Метод для получения  списка отсортированных по фамилии мастера объектов perMaster</p>
+</div></td></tr></table></div>
+<div class="member method"><h2 id="methods">Methods</h2>
+<ul class="methods"><li><h3 id="methods_checkmasterinlist">checkMasterInList(master, masters)</h3>
+<div class="checkmasterinlist"><div class="myapp-service-page myapp-service-mastersperdayloader-checkmasterinlist-page"><p>Проверяет есть ли мастер в списке мастеров</p>
+</div><h5 id="methods_checkmasterinlist_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>master</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="myapp-service-page myapp-service-mastersperdayloader-checkmasterinlist-page"><p>Объект мастер</p>
+</div></td></tr><tr><td>masters</td><td><a href="" class="label type-hint type-hint-array">Array</a></td><td><div class="myapp-service-page myapp-service-mastersperdayloader-checkmasterinlist-page"><p>Список мастеров</p>
+</div></td></tr></tbody></table><h5 id="methods_checkmasterinlist_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-null">Null or Number</a></td><td><div class="myapp-service-page myapp-service-mastersperdayloader-checkmasterinlist-page"><p>Индекс мастера, если он есть в списке; null если нет.</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_getallmastersperday">getAllMastersPerDay(neededData, VisitsLoader)</h3>
+<div class="getallmastersperday"><div class="myapp-service-page myapp-service-mastersperdayloader-getallmastersperday-page"><p>Метод для получения списка отсортированных по фамилии мастера объектов perMaster</p>
+</div><h5 id="methods_getallmastersperday_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>neededData</td><td><a href="" class="label type-hint type-hint-date">Date</a></td><td><div class="myapp-service-page myapp-service-mastersperdayloader-getallmastersperday-page"><p>Дата, за которую требуется получить список объектов</p>
+</div></td></tr><tr><td>VisitsLoader</td><td><a href="" class="label type-hint type-hint-service">Service</a></td><td><div class="myapp-service-page myapp-service-mastersperdayloader-getallmastersperday-page"><p>Сервис для загрузки списка визитов</p>
+</div></td></tr></tbody></table><h5 id="methods_getallmastersperday_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-array">Array</a></td><td><div class="myapp-service-page myapp-service-mastersperdayloader-getallmastersperday-page"><p>allMasters Список отсортированных по фамилии мастера объектов perMaster</p>
+</div></td></tr></table></div>
+</li>
+</ul>
+</div>
+</div>

@@ -28,7 +28,7 @@ NG_DOCS={
       "type": "controller",
       "moduleName": "myApp",
       "shortDescription": "Контроллер, получающий данные для отрисовки графика",
-      "keywords": "api controller data myapp period type"
+      "keywords": "api changeperiod controller data method myapp period type"
     },
     {
       "section": "api",
@@ -38,6 +38,15 @@ NG_DOCS={
       "moduleName": "myApp",
       "shortDescription": " Контроллер, отвечающий за хранение глобальных",
       "keywords": "api controller myapp"
+    },
+    {
+      "section": "api",
+      "id": "myApp.controller:MasterController",
+      "shortName": "MasterController",
+      "type": "controller",
+      "moduleName": "myApp",
+      "shortDescription": "Контроллер, содержащий данные о визите. Получает данные из пути к странице",
+      "keywords": "api controller datechanger masters method myapp service showmaster step"
     },
     {
       "section": "api",
@@ -64,7 +73,7 @@ NG_DOCS={
       "type": "controller",
       "moduleName": "myApp",
       "shortDescription": "Контроллер, содержащий данные о визите. Получает данные из пути к странице",
-      "keywords": "api controller myapp visit"
+      "keywords": "api controller method myapp service showvisit visit"
     },
     {
       "section": "api",
@@ -82,7 +91,7 @@ NG_DOCS={
       "type": "directive",
       "moduleName": "myApp",
       "shortDescription": "Директива добавляет на страницу приложения график",
-      "keywords": "api dimension directive items myapp oy"
+      "keywords": "api chart-data directive drawchart method myapp"
     },
     {
       "section": "api",
@@ -92,15 +101,6 @@ NG_DOCS={
       "moduleName": "myApp",
       "shortDescription": "Директива для изменения и отображения даты и периода.",
       "keywords": "api datehelper directive hasfuturedata hasprevdata myapp step steps titles upage-content"
-    },
-    {
-      "section": "api",
-      "id": "myApp.directive:expList",
-      "shortName": "expList",
-      "type": "directive",
-      "moduleName": "myApp",
-      "shortDescription": "Директива добавляет на страницу приложения",
-      "keywords": "api directive expenditurescontroller myapp scope"
     },
     {
       "section": "api",
@@ -127,7 +127,7 @@ NG_DOCS={
       "type": "directive",
       "moduleName": "myApp",
       "shortDescription": "Директива добавляет на страницу приложения анимацию загрузки(loaderBar)",
-      "keywords": "api directive myapp"
+      "keywords": "api directive myapp paramname"
     },
     {
       "section": "api",
@@ -140,30 +140,21 @@ NG_DOCS={
     },
     {
       "section": "api",
-      "id": "myApp.directive:visitPageContent",
-      "shortName": "visitPageContent",
-      "type": "directive",
-      "moduleName": "myApp",
-      "shortDescription": "Директива добавляет на страницу информацию о визите",
-      "keywords": "api directive myapp"
-    },
-    {
-      "section": "api",
-      "id": "myApp.directive:VisitsPerDay",
-      "shortName": "VisitsPerDay",
-      "type": "directive",
-      "moduleName": "myApp",
-      "shortDescription": "Директива добавляет на страницу приложения список, отображающий визиты",
-      "keywords": "api directive myapp"
-    },
-    {
-      "section": "api",
       "id": "myApp.service:DateHelper",
       "shortName": "DateHelper",
       "type": "service",
       "moduleName": "myApp",
       "shortDescription": "Сервис для работы с датами. Позволяет получить",
-      "keywords": "api getperiod getprev myapp service steps"
+      "keywords": "api datehelper getmonthtitle getperiod getprev method monthnumber myapp service servicedatehelper step steps"
+    },
+    {
+      "section": "api",
+      "id": "myApp.service:MastersPerDayLoader",
+      "shortName": "MastersPerDayLoader",
+      "type": "service",
+      "moduleName": "myApp",
+      "shortDescription": "Сервис для получения списка мастеров с их визитами за нужную дату",
+      "keywords": "allmasters api checkmasterinlist getallmastersperday master masters method myapp neededdata neededdate null number permaster service visitsloader"
     },
     {
       "section": "api",

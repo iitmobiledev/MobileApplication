@@ -13,8 +13,12 @@ myApp.directive('chart', function () {
         template: '<div id="container"></div>',
         link: function (scope, element, attrs) {
 
-            /*
-             *функция, рисующая график
+            /**
+             *
+             * @ngdoc method
+             * @name myApp.directive:chart#drawChart
+             * @methodOf myApp.directive:chart
+             * @description Метод, рисующий график
              */
             var drawChart = function () {
                 Highcharts.setOptions({

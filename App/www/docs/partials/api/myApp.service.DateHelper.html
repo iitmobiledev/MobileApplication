@@ -8,4 +8,34 @@
 предыдущую дату с помощью метода <code>getPrev</code>, получить период методом
 <code>getPeriod</code>, получить возможные шаги полем <code>steps</code>.</p>
 </div></div>
+<div class="member method"><h2 id="methods">Methods</h2>
+<ul class="methods"><li><h3 id="methods_getmonthtitle">getMonthTitle(monthNumber)</h3>
+<div class="getmonthtitle"><div class="myapp-servicedatehelper-getmonthtitle-page"><p>Метод для получения названия месяца по его номеру</p>
+</div><h5 id="methods_getmonthtitle_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>monthNumber</td><td><a href="" class="label type-hint type-hint-number">Number</a></td><td><div class="myapp-servicedatehelper-getmonthtitle-page"><p>номер месяца, начиная с 0</p>
+</div></td></tr></tbody></table><h5 id="methods_getmonthtitle_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="myapp-servicedatehelper-getmonthtitle-page"><p>название месяца</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_getperiod">getPeriod(date, step)</h3>
+<div class="getperiod"><div class="myapp-servicedatehelper-getperiod-page"><p>Метод предназначен для получения периода, т.е.
+начальной даты и конечной даты.</p>
+</div><h5 id="methods_getperiod_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>date</td><td><a href="" class="label type-hint type-hint-date">Date</a></td><td><div class="myapp-servicedatehelper-getperiod-page"><p>дата, по которой будет определяться период.</p>
+</div></td></tr><tr><td>step</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="myapp-servicedatehelper-getperiod-page"><p>шаг, показывающий какой период необходимо
+вернуть, должен быть определен в DateHelper.steps.</p>
+</div></td></tr></tbody></table><h5 id="methods_getperiod_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-period">Period</a></td><td><div class="myapp-servicedatehelper-getperiod-page"><p>объект с полями {Date} begin и {Date} end, обозначающими
+начальную и конечную даты периода.</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_getprev">getPrev(date, step)</h3>
+<div class="getprev"><div class="myapp-servicedatehelper-getprev-page"><p>Метод предназначен для получения того же дня на
+прошлой неделе или прошлой недели, или прошлого месяца.
+Необходимое указывается параметром step.</p>
+</div><h5 id="methods_getprev_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>date</td><td><a href="" class="label type-hint type-hint-date">Date</a></td><td><div class="myapp-servicedatehelper-getprev-page"><p>дата, для которой будет вычислена предыдущая
+дата.</p>
+</div></td></tr><tr><td>step</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="myapp-servicedatehelper-getprev-page"><p>шаг, показывающий за какой период
+необходимо вычислить предыдущую дату.</p>
+</div></td></tr></tbody></table><h5 id="methods_getprev_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-date">Date</a></td><td><div class="myapp-servicedatehelper-getprev-page"><p>предыдущая дата.</p>
+</div></td></tr></table></div>
+</li>
+</ul>
+</div>
 </div>

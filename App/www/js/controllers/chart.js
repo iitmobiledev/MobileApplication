@@ -4,7 +4,7 @@
  * @name myApp.controller:GraphicController
  * @param {String} type тип графика(что отображает график)
  * @param {Number} period период в месяцах, за который должен быть отрисован график
- * @param {Array} data данные для отображения графика
+ * @param {Array} data данные для отображения графика:массив из списков, где 1 элемент-объект {Data}, 2 элемент-величина в зависимости от типа графика
  */
 
 myApp.controller('GraphicController', function ($scope, $routeParams) {
@@ -38,8 +38,14 @@ myApp.controller('GraphicController', function ($scope, $routeParams) {
         break;
     }
 
-    /*
-     *функция, изменяющая период для отображения
+
+    /**
+     *
+     * @ngdoc method
+     * @name myApp.controller:GraphicController#changePeriod
+     * @methodOf myApp.controller:GraphicController
+     * @param {Number} p Период, на который нужно изменить в месяцах
+     * @description Метод изменяющий период для отображения
      */
     $scope.changePeriod = function (p) {
         $scope.period = p;
