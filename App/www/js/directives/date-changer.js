@@ -23,7 +23,24 @@ myApp.directive('dateChanger', function (DateHelper, $filter) {
         restrict: 'E',
         replace: true,
         link: function (scope, element, attrs) {
-            var date, step, steps, titleSteps, hasFutureData, hasPrevData;
+            var date, step, steps, titleSteps, hasFutureData, hasPrevData, index;
+
+
+            var updateIndex = function () {
+                index = scope.$eval(attrs.index);
+                if (index !== 1) {
+                    switch (index) {
+                    case 2:
+                        getNewDate(1);
+                        break;
+                    case 0:
+                        getNewDate(-1);
+                        break;
+                    }
+                }
+            };
+            scope.$watch(attrs.index, updateIndex);
+            updateIndex();
 
             var updateDate = function () {
                 date = scope.$eval(attrs.date);
@@ -55,10 +72,11 @@ myApp.directive('dateChanger', function (DateHelper, $filter) {
 
             var updateHasFutureData = function () {
                 hasFutureData = scope.$eval(attrs.hasFutureData);
-                if (hasFutureData)
+                if (hasFutureData) {
                     element.find("#NextDay").css('display', 'block');
-                else
+                } else {
                     element.find("#NextDay").css('display', 'none');
+                }
             };
             scope.$watch(attrs.hasFutureData, updateHasFutureData);
             updateHasFutureData();
@@ -84,11 +102,15 @@ myApp.directive('dateChanger', function (DateHelper, $filter) {
             });
 
             element.find("#PrevDay").bind('click', function () {
-                getNewDate(-1);
+                scope[attrs.index] = 0;
+                scope.$apply();
+                //getNewDate(-1);
             });
 
             element.find("#NextDay").bind('click', function () {
-                getNewDate(1);
+                scope[attrs.index] = 2;
+                scope.$apply();
+                //getNewDate(1);
             });
 
             /**
@@ -101,17 +123,20 @@ myApp.directive('dateChanger', function (DateHelper, $filter) {
                 if (step == 'day') {
                     scope[attrs.date] = new Date(date.getFullYear(), date.getMonth(),
                         date.getDate() + sign * 1);
-                    scope.$apply();
+                    //scope[attrs.index] = 1;
+                    //scope.$apply();
                 }
                 if (step == 'week') {
                     scope[attrs.date] = new Date(date.getFullYear(), date.getMonth(),
                         date.getDate() + sign * 7);
-                    scope.$apply();
+                    //scope[attrs.index] = 1;
+                    //scope.$apply();
                 }
                 if (step == 'month') {
                     scope[attrs.date] = new Date(date.getFullYear(), date.getMonth() + sign * 1,
                         date.getDate());
-                    scope.$apply();
+                    //scope[attrs.index] = 1;
+                    //scope.$apply();
                 }
             }
 
@@ -158,20 +183,20 @@ myApp.directive('dateChanger', function (DateHelper, $filter) {
             /**
              * Обработка левого свайпа - увеличение текущей даты
              */
-            $(".panel").on('swipeLeft', function () {
-                if (hasFutureData) {
-                    getNewDate(1);
-                }
-            });
-
-            /**
-             * Обработка правого свайпа - уменьшение текущей даты
-             */
-            $(".panel").on('swipeRight', function () {
-                if (hasPrevData) {
-                    getNewDate(-1);
-                }
-            });
+            //            $(".panel").on('swipeLeft', function () {
+            //                if (hasFutureData) {
+            //                    getNewDate(1);
+            //                }
+            //            });
+            //
+            //            /**
+            //             * Обработка правого свайпа - уменьшение текущей даты
+            //             */
+            //            $(".panel").on('swipeRight', function () {
+            //                if (hasPrevData) {
+            //                    getNewDate(-1);
+            //                }
+            //            });
 
             for (var i = 0; i < steps.length; i++) {
                 element.find("#periodButtons").append(
@@ -182,7 +207,6 @@ myApp.directive('dateChanger', function (DateHelper, $filter) {
                         text: titleSteps[i],
                         "id": "" + steps[i],
                         click: function () {
-                            $(this).addClass('pressed');
                             scope[attrs.step] = this.id;
                             scope.$apply();
                         }

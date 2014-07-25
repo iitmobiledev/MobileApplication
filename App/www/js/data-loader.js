@@ -130,7 +130,7 @@ myApp.factory('VisitsLoader', function () {
                 return new Date(a.date).getTime() - new Date(b.date).getTime()
             });
         }
-        return null;
+        return [];
     };
 });
 

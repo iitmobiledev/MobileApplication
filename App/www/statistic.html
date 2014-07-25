@@ -1,131 +1,137 @@
 <header-content title="'Салон красоты'" show-back-button="false"></header-content>
 <orient orientation="'portrait'"></orient>
-<footer-content show="true" active-page="StatisticsFooter" inactive-pages="['VisitsFooter','SettingsFooter']"></footer-content>
+<footer-content show="true" active-page="StatisticsFooter" inactive-pages="['VisitsFooter', 'SettingsFooter']"></footer-content>
 <div class="upage-content" id="mainsub">
     <div id="statisticPanel">
 
-        <date-changer step='step' date='date' steps='["day", "week", "month"]' titles='["За день", "За неделю", "За месяц"]' has-future-data='hasFutureData()' has-prev-data='hasPrevData()'></date-changer>
+        <date-changer step='step' date='date' steps='["day", "week", "month"]' titles='["За день", "За неделю", "За месяц"]' has-future-data='hasFutureData()' has-prev-data='hasPrevData()' index='pageIndex'></date-changer>
+        <ul id='carousel' rn-carousel rn-carousel-index="pageIndex">
+            <li ng-repeat="page in pages">
+                <form class="grid urow uib_row_4 row-height-4 tablePadding" data-uib="layout/row" data-ver="0">
 
-        <form class="grid urow uib_row_4 row-height-4 tablePadding" data-uib="layout/row" data-ver="0">
+                    <a href="#/chart/proceeds/" class="col uib_col_9 col-0_6-12 cell" data-uib="layout/col" data-ver="0">
+                        <div class="widget-container content-area vertical-col">
+                            <div class="widget uib_w_16 d-margins text" data-uib="media/text" data-ver="0" id="clientsText">
+                                <div class="widget-container left-receptacle"></div>
+                                <div class="widget-container right-receptacle"></div>
+                                <div>
+                                    <p>Выручка</p>
+                                    <h3>{{page.proceeds}} р.</h3>
+                                    <p>В прошлом</p>
+                                    <p>{{prevData.proceeds}} р.</p>
 
-            <a href="#/chart/proceeds/" class="col uib_col_9 col-0_6-12 cell" data-uib="layout/col" data-ver="0">
-                <div class="widget-container content-area vertical-col">
-                    <div class="widget uib_w_16 d-margins text" data-uib="media/text" data-ver="0" id="clientsText">
-                        <div class="widget-container left-receptacle"></div>
-                        <div class="widget-container right-receptacle"></div>
-                        <div>
-                            <p>Выручка</p>
-                            <h3>{{data.proceeds}} р.</h3>
-                            <p>В прошлом</p>
-                            <p>{{prevData.proceeds}} р.</p>
+                                </div>
+                            </div>
+                            <span class="uib_shim"></span>
                         </div>
-                    </div>
+                    </a>
+
+                    <a href="#/chart/profit" class="col uib_col_10 col-0_6-12 cell" data-uib="layout/col" data-ver="0">
+                        <!--                                <div class="col uib_col_10 col-0_6-12 cell" data-uib="layout/col" data-ver="0">-->
+                        <div class="widget-container content-area vertical-col">
+                            <div class="widget uib_w_16 d-margins text" data-uib="media/text" data-ver="0" id="clientsText">
+                                <div class="widget-container left-receptacle"></div>
+                                <div class="widget-container right-receptacle"></div>
+                                <div>
+                                    <p>Прибыль</p>
+                                    <p></p>
+                                    <h3>{{page.profit}} р.</h3>
+                                    <p>В прошлом</p>
+                                    <p>{{prevData.profit}} р.</p>
+                                </div>
+                            </div>
+                            <span class="uib_shim"></span>
+                        </div>
+                        <!--                                </div>-->
+                        <span class="uib_shim"></span>
+                    </a>
+                </form>
+
+                <div class="grid urow uib_row_6 tablePadding row-height-4" data-uib="layout/row" data-ver="0">
+                    <a href="#/chart/clients" class="col uib_col_12 col-0_6-12 cell" data-uib="layout/col" data-ver="0">
+                        <div class="widget-container content-area vertical-col">
+                            <div class="widget uib_w_16 d-margins text" data-uib="media/text" data-ver="0" id="clientsText">
+                                <div class="widget-container left-receptacle"></div>
+                                <div class="widget-container right-receptacle"></div>
+                                <div>
+                                    <p>Клиентов</p>
+                                    <p></p>
+                                    <h3>{{page.clients}}</h3>
+                                    <p>В прошлом</p>
+                                    <p>{{prevData.clients}}</p>
+                                </div>
+                            </div>
+                            <span class="uib_shim"></span>
+                        </div>
+                    </a>
+
+                    <!--                            <div class="col uib_col_13 col-0_6-12 cell" data-uib="layout/col" data-ver="0">-->
+                    <a href="#/chart/workload" class="col uib_col_13 col-0_6-12 cell" data-uib="layout/col" data-ver="0">
+                        <div class="widget-container content-area vertical-col">
+                            <div class="widget uib_w_17 d-margins text" data-uib="media/text" data-ver="0" id="workLoadText">
+                                <div class="widget-container left-receptacle"></div>
+                                <div class="widget-container right-receptacle"></div>
+                                <div>
+                                    <p>Загруженность</p>
+                                    <p></p>
+                                    <h3>{{page.workload}}%</h3>
+                                    <p>В прошлом</p>
+                                    <p>{{prevData.workload}}%</p>
+                                </div>
+                            </div>
+                            <span class="uib_shim"></span>
+                        </div>
+                    </a>
+                    <!--                            </div>-->
                     <span class="uib_shim"></span>
                 </div>
-            </a>
 
-            <a href="#/chart/profit" class="col uib_col_10 col-0_6-12 cell" data-uib="layout/col" data-ver="0">
-                <!--                                <div class="col uib_col_10 col-0_6-12 cell" data-uib="layout/col" data-ver="0">-->
-                <div class="widget-container content-area vertical-col">
-                    <div class="widget uib_w_16 d-margins text" data-uib="media/text" data-ver="0" id="clientsText">
-                        <div class="widget-container left-receptacle"></div>
-                        <div class="widget-container right-receptacle"></div>
-                        <div>
-                            <p>Прибыль</p>
-                            <p></p>
-                            <h3>{{data.profit}} р.</h3>
-                            <p>В прошлом</p>
-                            <p>{{prevData.profit}} р.</p>
+
+
+                <div class="grid grid-pad urow uib_row_7 row-height-7" data-uib="layout/row" data-ver="0" ng-controller="FinanceStatisticsController">
+                    <div class="col uib_col_14 col-0_6-12" data-uib="layout/col" data-ver="0">
+                        <div class="widget-container content-area vertical-col">
+
+                            <div class="widget uib_w_11 d-margins header3" data-uib="media/text" data-ver="0" id="cashOnHand">
+                                <div class="widget-container left-receptacle"></div>
+                                <div class="widget-container right-receptacle"></div>
+                                <div>
+                                    <p>Денег в кассе</p>
+                                </div>
+                            </div>
+                            <div class="widget uib_w_12 d-margins money" data-uib="media/text" data-ver="0" id="cashOnHandValue">
+                                <div class="widget-container left-receptacle"></div>
+                                <div class="widget-container right-receptacle"></div>
+                                <div>
+                                    <p>{{FinanceStatistics.tillMoney}} р.</p>
+                                </div>
+                            </div>
+                            <span class="uib_shim"></span>
                         </div>
                     </div>
-                    <span class="uib_shim"></span>
-                </div>
-                <!--                                </div>-->
-                <span class="uib_shim"></span>
-            </a>
-        </form>
 
-        <div class="grid urow uib_row_6 tablePadding row-height-4" data-uib="layout/row" data-ver="0">
-            <a href="#/chart/clients" class="col uib_col_12 col-0_6-12 cell" data-uib="layout/col" data-ver="0">
-                <div class="widget-container content-area vertical-col">
-                    <div class="widget uib_w_16 d-margins text" data-uib="media/text" data-ver="0" id="clientsText">
-                        <div class="widget-container left-receptacle"></div>
-                        <div class="widget-container right-receptacle"></div>
-                        <div>
-                            <p>Клиентов</p>
-                            <p></p>
-                            <h3>{{data.clients}}</h3>
-                            <p>В прошлом</p>
-                            <p>{{prevData.clients}}</p>
+                    <div class="col uib_col_15 col-0_6-12" data-uib="layout/col" data-ver="0">
+                        <div class="widget-container content-area vertical-col">
+
+                            <div class="widget uib_w_13 d-margins" data-uib="media/text" data-ver="0">
+                                <div class="widget-container left-receptacle">
+                                </div>
+                                <div class="widget-container right-receptacle"></div>
+                                <div>
+                                    <p>Утром: {{FinanceStatistics.morningMoney}}р.</p>
+                                    <p>Приход: {{FinanceStatistics.credit}} р.</p>
+                                    <a href="#/expenditures">
+                                        <p>Расход: {{FinanceStatistics.debit}} р.</p>
+                                    </a>
+                                </div>
+                            </div>
+                            <span class="uib_shim"></span>
                         </div>
                     </div>
-                    <span class="uib_shim"></span>
                 </div>
-            </a>
+            </li>
+        </ul>
 
-            <!--                            <div class="col uib_col_13 col-0_6-12 cell" data-uib="layout/col" data-ver="0">-->
-            <a href="#/chart/workload" class="col uib_col_13 col-0_6-12 cell" data-uib="layout/col" data-ver="0">
-                <div class="widget-container content-area vertical-col">
-                    <div class="widget uib_w_17 d-margins text" data-uib="media/text" data-ver="0" id="workLoadText">
-                        <div class="widget-container left-receptacle"></div>
-                        <div class="widget-container right-receptacle"></div>
-                        <div>
-                            <p>Загруженность</p>
-                            <p></p>
-                            <h3>{{data.workload}}%</h3>
-                            <p>В прошлом</p>
-                            <p>{{prevData.workload}}%</p>
-                        </div>
-                    </div>
-                    <span class="uib_shim"></span>
-                </div>
-            </a>
-            <!--                            </div>-->
-            <span class="uib_shim"></span>
-        </div>
-
-    </div>
-
-    <div class="grid grid-pad urow uib_row_7 row-height-7" data-uib="layout/row" data-ver="0" ng-controller="FinanceStatisticsController">
-        <div class="col uib_col_14 col-0_6-12" data-uib="layout/col" data-ver="0">
-            <div class="widget-container content-area vertical-col">
-
-                <div class="widget uib_w_11 d-margins header3" data-uib="media/text" data-ver="0" id="cashOnHand">
-                    <div class="widget-container left-receptacle"></div>
-                    <div class="widget-container right-receptacle"></div>
-                    <div>
-                        <p>Денег в кассе</p>
-                    </div>
-                </div>
-                <div class="widget uib_w_12 d-margins money" data-uib="media/text" data-ver="0" id="cashOnHandValue">
-                    <div class="widget-container left-receptacle"></div>
-                    <div class="widget-container right-receptacle"></div>
-                    <div>
-                        <p>{{FinanceStatistics.tillMoney}} р.</p>
-                    </div>
-                </div>
-                <span class="uib_shim"></span>
-            </div>
-        </div>
-
-        <div class="col uib_col_15 col-0_6-12" data-uib="layout/col" data-ver="0">
-            <div class="widget-container content-area vertical-col">
-
-                <div class="widget uib_w_13 d-margins" data-uib="media/text" data-ver="0">
-                    <div class="widget-container left-receptacle">
-                    </div>
-                    <div class="widget-container right-receptacle"></div>
-                    <div>
-                        <p>Утром: {{FinanceStatistics.morningMoney}}р.</p>
-                        <p>Приход: {{FinanceStatistics.credit}} р.</p>
-                        <a href="#/expenditures">
-                            <p>Расход: {{FinanceStatistics.debit}} р.</p>
-                        </a>
-                    </div>
-                </div>
-                <span class="uib_shim"></span>
-            </div>
-        </div>
         <span class="uib_shim"></span>
     </div>
 </div>
