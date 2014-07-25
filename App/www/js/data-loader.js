@@ -159,7 +159,7 @@ myApp.factory('MastersPerDayLoader', function () {
 
     function checkMasterInList(master, masters) {
         for (var i = 0; i < masters.length; i++) {
-            if (master === masters[i].master) {
+            if (master.id === masters[i].master.id) {
                 return i;
             }
         }
@@ -206,6 +206,7 @@ myApp.factory('MastersPerDayLoader', function () {
                 return 1;
             return 0;
         });
+        console.log("allMasterPerday:", allMasters.length);
         return allMasters;
     }
 
