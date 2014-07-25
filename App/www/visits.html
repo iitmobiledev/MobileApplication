@@ -9,8 +9,6 @@
     <date-changer step='step' date='date' steps='["day"]' has-future-data='hasFutureData()' has-prev-data='hasPrevData()' index='pageIndex'></date-changer>
     <ul id='carousel' rn-carousel rn-carousel-index="pageIndex" style="height: 100%">
         <li ng-repeat="page in pages">
-
-
             <ul class="list inset">
                 <li ng-repeat="visit in page" id="visitsPerTime">
                     {{getVisitInfo(visit)}}
@@ -20,14 +18,13 @@
                             <div style="font-weight:bold;">
                                 <span style="float:left;  width:65%;white-space:nowrap;text-overflow:ellipsis;overflow: hidden;">
                                     {{visitInfo.client}}
-                                    <!--                                    {{visit.client.lastName}} {{visit.client.firstName[0]}}. {{visit.client.middleName[0]}}.-->
                                 </span>
                                 <span style=" text-align:right; width:35%;white-space:nowrap;text-overflow:ellipsis">
                                     {{visitInfo.time}}
                                 </span>
                             </div>
                             <div>
-                                <span style="float:left;  width:65%;white-space:nowrap;text-overflow:ellipsis;overflow: hidden;">
+                                <span style="float:left;width:65%;white-space:nowrap;text-overflow:ellipsis;overflow: hidden;">
                                     {{visitInfo.masters}}:{{visitInfo.services}}
                                 </span>
                                 <span style=" text-align:right; width:35%;white-space:nowrap;text-overflow:ellipsis">
@@ -37,9 +34,10 @@
                         </div>
                     </a>
                 </li>
-                <li id="noVisitMessage" style='text-align: center; font-size: 14pt;'>Нет визитов</li>
             </ul>
-
+            <ul class="list inset" ng-hide="hasVisits(page)">
+                <li style='text-align: center; font-size: 14pt;'>Нет визитов</li>
+            </ul>
         </li>
     </ul>
 

@@ -180,28 +180,10 @@ myApp.directive('dateChanger', function (DateHelper, $filter) {
                 return "";
             }
 
-            /**
-             * Обработка левого свайпа - увеличение текущей даты
-             */
-            //            $(".panel").on('swipeLeft', function () {
-            //                if (hasFutureData) {
-            //                    getNewDate(1);
-            //                }
-            //            });
-            //
-            //            /**
-            //             * Обработка правого свайпа - уменьшение текущей даты
-            //             */
-            //            $(".panel").on('swipeRight', function () {
-            //                if (hasPrevData) {
-            //                    getNewDate(-1);
-            //                }
-            //            });
-
             for (var i = 0; i < steps.length; i++) {
                 element.find("#periodButtons").append(
                     $("<a>", {
-                        "class": "button widget uib_w_6 d-margins gray",
+                        "class": "button widget uib_w_6 d-margins",
                         "data-uib": "app_framework/button",
                         "data-ver": "1",
                         text: titleSteps[i],
@@ -209,6 +191,7 @@ myApp.directive('dateChanger', function (DateHelper, $filter) {
                         click: function () {
                             scope[attrs.step] = this.id;
                             scope.$apply();
+                            //$(this).addClass("pressed");
                         }
                     })
                 );

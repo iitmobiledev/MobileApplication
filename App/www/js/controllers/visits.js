@@ -5,8 +5,8 @@
  * @name myApp.controller:VisitsController
  */
 myApp.controller('VisitsController', function ($scope, $filter, $location, VisitsLoader, DateHelper, MastersPerDayLoader) {
-     $('#timeButton').addClass('pressed');
-    
+    $('#timeButton').addClass('pressed');
+
     $scope.date = new Date();
     $scope.step = 'day';
 
@@ -22,11 +22,14 @@ myApp.controller('VisitsController', function ($scope, $filter, $location, Visit
     $scope.hasFutureData = function () {
         return true;
     };
-    
-    $scope.onMasters = function(){
+
+    $scope.onMasters = function () {
         $location.path('visits-master');
     }
     
+    $scope.hasVisits = function(visit){
+        return visit.length != 0;
+    }
 
     $scope.$watch('date.toDateString()', function () {
         $scope.prevdate = new Date($scope.date.getFullYear(), $scope.date.getMonth(),
@@ -37,14 +40,6 @@ myApp.controller('VisitsController', function ($scope, $filter, $location, Visit
 
         $scope.pageIndex = 1;
     });
-
-    $scope.hasVisitsList = function () {
-        if ($scope.VisitsPerDay.length == 0) {
-            return false;
-        }
-        return true;
-    }
-
 
     $scope.getVisitInfo = function (visit) {
         var services = [],
@@ -59,6 +54,7 @@ myApp.controller('VisitsController', function ($scope, $filter, $location, Visit
             coast += service.cost;
             startTimes.push(service.startTime);
             endTimes.push(service.endTime);
+            $scope.noVisit = false;
         }
         masters = $.unique(masters);
         $scope.visitInfo = {};
@@ -70,8 +66,5 @@ myApp.controller('VisitsController', function ($scope, $filter, $location, Visit
         $scope.visitInfo.masters = masters.join(",");
         $scope.visitInfo.services = services.join(",");
         $scope.visitInfo.cost = coast + ' р.';
-
     }
-
-
 });

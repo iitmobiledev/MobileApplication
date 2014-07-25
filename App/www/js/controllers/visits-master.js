@@ -29,8 +29,8 @@ myApp.controller('VisitsMasterController', function ($scope, $filter, $location,
     }
     
     
-    $scope.toMaster = function(id){
-        $location.path('master/'+ id);
+    $scope.hasVisits = function(visit){
+        return visit.length != 0;
     }
 
     $scope.$watch('date.toDateString()', function () {
@@ -43,13 +43,6 @@ myApp.controller('VisitsMasterController', function ($scope, $filter, $location,
 
         $scope.pageIndex = 1;
     });
-
-    $scope.hasVisitsList = function () {
-        if ($scope.VisitsPerDay.length == 0) {
-            return false;
-        }
-        return true;
-    }
     
     $scope.getMasterInfo = function(master){
         return master.lastName + " " + master.firstName;
