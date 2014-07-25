@@ -28,6 +28,9 @@ myApp.controller('VisitsMasterController', function ($scope, $filter, $location,
         $location.path('visits');
     }
     
+     $scope.toMaster = function (id) {
+        $location.path('master/'+id);
+    }
     
     $scope.hasVisits = function(visit){
         return visit.length != 0;

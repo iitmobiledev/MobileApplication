@@ -11,15 +11,13 @@
  */
 myApp.controller('MasterController', function ($scope, $routeParams, VisitsLoader, $filter, MastersPerDayLoader) {
     $scope.id = $routeParams.id;
-    $scope.date = new Date();
-    $scope.step = 'day';
-    $scope.masters = MastersPerDayLoader.getAllMastersPerDay($scope.date, VisitsLoader);
 
-    //    $scope.prevdate = new Date($scope.date.getFullYear(), $scope.date.getMonth(), $scope.date.getDate() - 1);
-    //    $scope.nextdate = new Date($scope.date.getFullYear(), $scope.date.getMonth(), $scope.date.getDate() + 1);
-    //    $scope.pages = [MastersPerDayLoader.getAllMastersPerDay($scope.prevdate, VisitsLoader), MastersPerDayLoader.getAllMastersPerDay($scope.date, VisitsLoader), MastersPerDayLoader.getAllMastersPerDay($scope.nextdate, VisitsLoader)];
-    //
-    //    $scope.pageIndex = 1;
+    $scope.date = new Date(); // $routeParams.date;
+    updatePages();
+
+    //    $scope.pages = [MastersPerDayLoader.getAllMastersPerDay(prevdate, VisitsLoader), MastersPerDayLoader.getAllMastersPerDay($scope.date, VisitsLoader), MastersPerDayLoader.getAllMastersPerDay(nextdate, VisitsLoader)];
+
+    $scope.pageIndex = 1;
 
     $scope.hasPrevData = function () {
         return true;
@@ -30,13 +28,13 @@ myApp.controller('MasterController', function ($scope, $routeParams, VisitsLoade
     };
 
 
-    $scope.getNeededMaster = function () {
-        for (var i = 0; i < $scope.masters.length; i++) {
-            if ($scope.masters[i].master.id == $scope.id) {
-                return $scope.masters[i];
+    function getNeededMaster(masters) {
+        for (var i = 0; i < masters.length; i++) {
+            if (masters[i].master.id == $scope.id) {
+                return masters[i];
             }
         }
-        return null;
+        return [];
     };
 
     /**
@@ -46,10 +44,10 @@ myApp.controller('MasterController', function ($scope, $routeParams, VisitsLoade
      * @methodOf myApp.controller:MasterController
      * @description Отображает всю информацию о мастере(занятость мастера за день)
      */
-    $scope.showMaster = function () {
-        $scope.neededMaster = $scope.getNeededMaster();
-        if ($scope.neededMaster != null) {
-            $scope.masterInfo = $scope.neededMaster.master.lastName + ' ' + $scope.neededMaster.master.firstName;
+    $scope.showMaster = function (masterAndVisits) {
+        //$scope.neededMaster = $scope.getNeededMaster();
+        if (masterAndVisits != []) {
+            $scope.masterInfo = masterAndVisits.master.lastName + ' ' + masterAndVisits.master.firstName;
             console.log($scope.masterInfo);
             //            var master = $scope.neededMaster;
             //        for (var i = 0; i < master.visList.length; i++) {
@@ -74,9 +72,25 @@ myApp.controller('MasterController', function ($scope, $routeParams, VisitsLoade
         }
     }
 
+    function updatePages() {
+        var prevdate = new Date($scope.date.getFullYear(), $scope.date.getMonth(), $scope.date.getDate() - 1);
+        var nextdate = new Date($scope.date.getFullYear(), $scope.date.getMonth(), $scope.date.getDate() + 1);
+
+        var masters = MastersPerDayLoader.getAllMastersPerDay($scope.date, VisitsLoader);
+        var prevMasters = MastersPerDayLoader.getAllMastersPerDay(prevdate, VisitsLoader);
+        var nextMasters = MastersPerDayLoader.getAllMastersPerDay(nextdate, VisitsLoader);
+
+        $scope.pages = [getNeededMaster(prevMasters), getNeededMaster(masters), getNeededMaster(nextMasters)];
+
+        $scope.pageIndex = 1;
+    }
+
 
     $scope.$watch('date.toDateString()', function () {
-        $scope.masters = MastersPerDayLoader.getAllMastersPerDay($scope.date, VisitsLoader);
-        $scope.showMaster();
+        updatePages();
+
+        //$scope.masters = MastersPerDayLoader.getAllMastersPerDay($scope.date, VisitsLoader);
+        //$scope.showMaster();
+
     });
 });

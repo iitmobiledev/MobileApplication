@@ -1,11 +1,10 @@
 <header-content title="'Мастер'" show-back-button="true"></header-content>
 <footer-content show="true"></footer-content>
-<date-changer step='step' date='date' steps='["day"]' has-future-data='hasFutureData()' has-prev-data='hasPrevData()' index='pageIndex'></date-changer>
+<date-changer step='"day"' date='date' steps='["day"]' has-future-data='hasFutureData()' has-prev-data='hasPrevData()' index='pageIndex'></date-changer>
 <ul id='carousel' rn-carousel rn-carousel-index="pageIndex" style="height: 100%">
     <li ng-repeat="page in pages">
-
         <div id="master" style="background-color: #6666FF">
-            <h2 style="margin: 2px;">{{getMasterInfo(masterVis.master)}}</h2>
+            <h2 style="margin: 2px;">{{page.master.lastName}}</h2>
         </div>
         
         <ul class="list inset">
