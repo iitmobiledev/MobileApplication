@@ -2,14 +2,13 @@
  * @description Директива добавляет на страницу приложения график
  * @ngdoc directive
  * @name myApp.directive:chart
- * @restrict C
- * @param {Array} items данные для отображения графика: массив из списков, где 1 элемент-объект {Data}, 2 элемент-величина в зависимости от типа графика
- * @param {String}  dimension размерность по оси OY (в зависимости от типа графика)
+ * @restrict E
+ * @param {String} chart-data имя параметра со списком данных для отображения графика: массив из списков, где 1 элемент-объект {Data}, 2 элемент-величина в зависимости от типа графика
  */
 
 myApp.directive('chart', function () {
     return {
-        restrict: 'C',
+        restrict: 'E',
         replace: true,
         template: '<div id="container"></div>',
         link: function (scope, element, attrs) {
@@ -60,7 +59,6 @@ myApp.directive('chart', function () {
                     },
                     series: [{
                         name: scope.title,
-                        data: scope.data
                 }]
                 });
             }
@@ -70,7 +68,7 @@ myApp.directive('chart', function () {
             /*
              *watch, смотрящий за изменением данных для графика
              */
-            scope.$watch("data", function (newValue) {
+            scope.$watch(attrs.chartData, function (newValue) {
                 var chart = $('#container').highcharts();
                 if (chart) {
                     chart.series[0].update({

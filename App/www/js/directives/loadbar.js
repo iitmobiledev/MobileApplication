@@ -3,7 +3,7 @@
  * @ngdoc directive
  * @name myApp.directive:loadBar
  * @restrict E
- * @param {String}
+ * @param {String} paramName имя параметра за которым нужно следить чтобы понять нужно ли отображать лоадбар.
  */
 
 myApp.directive('loadBar', function () {

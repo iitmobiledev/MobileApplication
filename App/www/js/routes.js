@@ -23,7 +23,7 @@ myApp.config(['$routeProvider',
             templateUrl: 'visit.html',
             controller: 'VisitController'
         }).
-        when('/master', {
+        when('/master/:id', {
             templateUrl: 'master.html',
             controller: 'MasterController'
         }).
