@@ -108,7 +108,7 @@ myApp.factory('ExpendituresLoader', function () {
                 return getedData[i].expenditureList;
             }
         }
-        return null;
+        return [];
     };
 });
 

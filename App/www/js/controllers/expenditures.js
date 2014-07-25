@@ -13,15 +13,19 @@
  */
 myApp.controller('ExpendituresController', function ($scope, $filter, ExpendituresLoader, DateHelper) {
     $scope.date = new Date();
-    $scope.step = 'day';
     $scope.expList = ExpendituresLoader($scope.date);
+
+    var prevdate = new Date($scope.date.getFullYear(), $scope.date.getMonth(), $scope.date.getDate() - 1);
+    var nextdate = new Date($scope.date.getFullYear(), $scope.date.getMonth(), $scope.date.getDate() + 1);
+    $scope.pages = [ExpendituresLoader(prevdate), ExpendituresLoader($scope.date), ExpendituresLoader(nextdate)];
+    $scope.pageIndex = 1;
 
     $scope.hasPrevData = function () {
         return true;
     };
 
     $scope.hasFutureData = function () {
-        var period = DateHelper.getPeriod($scope.date, $scope.step);
+        var period = DateHelper.getPeriod($scope.date, DateHelper.steps.DAY);
         if (period.end > new Date() || period.end.toDateString() == new Date().toDateString())
             return false;
         else
@@ -29,16 +33,16 @@ myApp.controller('ExpendituresController', function ($scope, $filter, Expenditur
     };
 
     $scope.$watch('date.toDateString()', function () {
-        $scope.expList = ExpendituresLoader($scope.date);
+        var prevdate = new Date($scope.date.getFullYear(), $scope.date.getMonth(), $scope.date.getDate() - 1);
+        var nextdate = new Date($scope.date.getFullYear(), $scope.date.getMonth(), $scope.date.getDate() + 1);
+        $scope.pages = [ExpendituresLoader(prevdate), ExpendituresLoader($scope.date), ExpendituresLoader(nextdate)];
+        $scope.pageIndex = 1;
     });
 
-    $scope.$watch('step', function () {
-        $scope.expList = ExpendituresLoader($scope.date);
-    });
 
 
     $scope.hasExpenditures = function () {
-        return $scope.expList != null;
+        return $scope.expList != [];
     }
 
     /*
