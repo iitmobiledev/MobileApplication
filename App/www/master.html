@@ -3,13 +3,8 @@
 <date-changer step='"day"' date='date' steps='["day"]' has-future-data='hasFutureData()' has-prev-data='hasPrevData()' index='pageIndex'></date-changer>
 <ul id='carousel' rn-carousel rn-carousel-index="pageIndex" style="height: 100%">
     <li ng-repeat="page in pages">
-<!--
-        <div id="master" style="background-color: #6666FF">
-            <h2 style="margin: 2px;">{{page.master.lastName}} {{page.master.firstName}}</h2>
-        </div>
--->
-
         <ul class="list inset">
+<!--            {{checkOnInoccupationMaster(page)}}-->
             <li ng-repeat="visit in page">
                 {{getVisitByMasterInfo(visit)}}
                 <a href="#/visit/{{visit.id}}">

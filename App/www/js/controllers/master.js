@@ -95,7 +95,7 @@ myApp.controller('MasterController', function ($scope, $routeParams, VisitsLoade
      * @ngdoc method
      * @name myApp.controller:MasterController#updatePages
      * @methodOf myApp.controller:MasterController
-     * @description Метод, обновляющий массив данных нужных для анимации
+     * @description Метод для обновления массива данных $scope.pages, содержащий визиты к мастеру за текущий, прошлый и будущий дни, необходим для анимации.
      */
     function updatePages() {
         var prevdate = new Date($scope.date.getFullYear(), $scope.date.getMonth(), $scope.date.getDate() - 1);
@@ -110,9 +110,5 @@ myApp.controller('MasterController', function ($scope, $routeParams, VisitsLoade
 
     $scope.$watch('date.toDateString()', function () {
         updatePages();
-
-        //$scope.masters = MastersPerDayLoader.getAllMastersPerDay($scope.date, VisitsLoader);
-        //$scope.showMaster();
-
     });
 });

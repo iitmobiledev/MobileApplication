@@ -17,6 +17,8 @@
  * следующий период.
  * @param {Boolean} hasPrevData переменная показывает есть ли данные за
  * прошлый период.
+ * @param {Boolean} index переменная показывает влево или вправо была
+ * сдвинута страница по свайпу.
  */
 myApp.directive('dateChanger', function (DateHelper, $filter) {
     return {
@@ -25,7 +27,15 @@ myApp.directive('dateChanger', function (DateHelper, $filter) {
         link: function (scope, element, attrs) {
             var date, step, steps, titleSteps, hasFutureData, hasPrevData, index;
 
-
+             /**
+             *
+             * @ngdoc method
+             * @name myApp.directive:dateChanger#updateIndex
+             * @methodOf myApp.directive:dateChanger
+             * @description Метод, вызывающий другой метод getNewDate для
+             * изменения даты в зависимости от параметра директивы
+             * index.
+             */
             var updateIndex = function () {
                 index = scope.$eval(attrs.index);
                 if (index !== 1) {
@@ -54,6 +64,15 @@ myApp.directive('dateChanger', function (DateHelper, $filter) {
             scope.$watch(attrs.step, updateStep);
             updateStep();
 
+            /**
+             *
+             * @ngdoc method
+             * @name myApp.directive:dateChanger#updateSteps
+             * @methodOf myApp.directive:dateChanger
+             * @description Метод покажет кнопки для изменения периода,
+             * если параметр директивы steps, содержит больше 1
+             * елемента, скроет в противном случае.
+             */
             var updateSteps = function () {
                 steps = scope.$eval(attrs.steps);
                 if (steps.length > 1)
@@ -70,6 +89,15 @@ myApp.directive('dateChanger', function (DateHelper, $filter) {
             scope.$watch(attrs.titleSteps, updateTitleSteps);
             updateTitleSteps();
 
+             /**
+             *
+             * @ngdoc method
+             * @name myApp.directive:dateChanger#updateHasFutureData
+             * @methodOf myApp.directive:dateChanger
+             * @description Метод покажет кнопку для перехода на
+             * следующую дату, если параметр директивы hasFutureData
+             * равен true, скроет кнопку в противном случае.
+             */
             var updateHasFutureData = function () {
                 hasFutureData = scope.$eval(attrs.hasFutureData);
                 if (hasFutureData) {
@@ -81,6 +109,15 @@ myApp.directive('dateChanger', function (DateHelper, $filter) {
             scope.$watch(attrs.hasFutureData, updateHasFutureData);
             updateHasFutureData();
 
+            /**
+             *
+             * @ngdoc method
+             * @name myApp.directive:dateChanger#updateHasPrevData
+             * @methodOf myApp.directive:dateChanger
+             * @description Метод покажет кнопку для перехода на
+             * предыдущую дату, если параметр директивы hasPrevData
+             * равен true, скроет кнопку в противном случае.
+             */
             var updateHasPrevData = function () {
                 hasPrevData = scope.$eval(attrs.hasPrevData);
                 if (hasPrevData)
@@ -104,13 +141,11 @@ myApp.directive('dateChanger', function (DateHelper, $filter) {
             element.find("#PrevDay").bind('click', function () {
                 scope[attrs.index] = 0;
                 scope.$apply();
-                //getNewDate(-1);
             });
 
             element.find("#NextDay").bind('click', function () {
                 scope[attrs.index] = 2;
                 scope.$apply();
-                //getNewDate(1);
             });
 
             /**
@@ -123,20 +158,14 @@ myApp.directive('dateChanger', function (DateHelper, $filter) {
                 if (step == 'day') {
                     scope[attrs.date] = new Date(date.getFullYear(), date.getMonth(),
                         date.getDate() + sign * 1);
-                    //scope[attrs.index] = 1;
-                    //scope.$apply();
                 }
                 if (step == 'week') {
                     scope[attrs.date] = new Date(date.getFullYear(), date.getMonth(),
                         date.getDate() + sign * 7);
-                    //scope[attrs.index] = 1;
-                    //scope.$apply();
                 }
                 if (step == 'month') {
                     scope[attrs.date] = new Date(date.getFullYear(), date.getMonth() + sign * 1,
                         date.getDate());
-                    //scope[attrs.index] = 1;
-                    //scope.$apply();
                 }
             }
 

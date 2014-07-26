@@ -43,10 +43,25 @@ myApp.controller('VisitsMasterController', function ($scope, $filter, $location,
         return true;
     };
 
+    /**
+     *
+     * @ngdoc method
+     * @name myApp.controller:VisitsMasterController#onTime
+     * @methodOf myApp.controller:VisitsMasterController
+     * @description Метод для перехода на страницу визитов по времени.
+     */
     $scope.onTime = function () {
         $location.path('visits');
     }
 
+    /**
+     *
+     * @ngdoc method
+     * @name myApp.controller:VisitsMasterController#toMaster
+     * @methodOf myApp.controller:VisitsMasterController
+     * @param {String} id идентификатор мастера.
+     * @description Метод для перехода на страницу мастера.
+     */
     $scope.toMaster = function (id) {
         $location.path('master/' + id + "/" + $scope.date);
     }

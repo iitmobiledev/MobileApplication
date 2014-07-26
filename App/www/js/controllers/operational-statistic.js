@@ -14,7 +14,7 @@
  */
 myApp.controller('OperationalStatisticController', function ($scope, $location, OperationalStatisticLoader, DateHelper) {
 
-        $scope.date = new Date();
+    $scope.date = new Date();
 
     $scope.step = DateHelper.steps.DAY;
 
@@ -22,11 +22,29 @@ myApp.controller('OperationalStatisticController', function ($scope, $location, 
     $scope.nextdate = new Date($scope.date.getFullYear(), $scope.date.getMonth(), $scope.date.getDate() + 1);
     $scope.pages = [OperationalStatisticLoader($scope.prevdate, $scope.step), OperationalStatisticLoader($scope.date, $scope.step), OperationalStatisticLoader($scope.nextdate, $scope.step)];
     $scope.pageIndex = 1;
-
+    
+     /**
+     *
+     * @ngdoc method
+     * @name myApp.controller:OperationalStatisticController#hasPrevData
+     * @methodOf myApp.controller:OperationalStatisticController
+     * @returns {Boleean} Возвращает true, если есть данные за прошлое.
+     * @description Метод для проверки наличия данных за прошлый
+     * период.
+     */
     $scope.hasPrevData = function () {
         return true;
     };
 
+     /**
+     *
+     * @ngdoc method
+     * @name myApp.controller:OperationalStatisticController#hasFutureData
+     * @methodOf myApp.controller:OperationalStatisticController
+     * @returns {Boleean} Возвращает true, если есть данные за будущее.
+     * @description Метод для проверки наличия данных за будущий
+     * период.
+     */
     $scope.hasFutureData = function () {
         var period = DateHelper.getPeriod($scope.date, $scope.step);
         return !(period.end > new Date() || period.end.toDateString() == new Date().toDateString());
@@ -63,9 +81,16 @@ myApp.controller('OperationalStatisticController', function ($scope, $location, 
         $scope.hasPrevData();
         $scope.hasFutureData();
     });
-
-    $scope.toChart = function (statField) {
-        console.log(statField);
-        $location.path('chart/' + statField);
+    
+    /**
+     *
+     * @ngdoc method
+     * @name myApp.controller:OperationalStatisticController#toChart
+     * @methodOf myApp.controller:OperationalStatisticController
+     * @params {String} type тип графика, поле объекта OperationalStatistics.
+     * @description Метод для перехода на страницу графика.
+     */
+    $scope.toChart = function (type) {
+        $location.path('chart/' + type);
     }
 });
