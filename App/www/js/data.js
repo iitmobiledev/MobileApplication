@@ -75,7 +75,7 @@ function User(firstName, middleName, lastName, email, login, password) {
 
 var manyData = [];
 var nowDay = new Date();
-for (var i = 0; i < 3650; i++) {
+for (var i = 0; i < 365; i++) {
     var a = getRandom(1000, 10000);
     manyData.push(new OperationalStatistics(new Date(nowDay.getFullYear(), nowDay.getMonth(), nowDay.getDate() - i),
         a,
@@ -84,7 +84,7 @@ for (var i = 0; i < 3650; i++) {
         getRandom(50, 100)));
 }
 
-function getData() {
+function getOperationalStatisticsData() {
     return manyData.sort();
 }
 

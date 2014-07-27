@@ -22,39 +22,17 @@ myApp.factory('UserAuthorization', function ($http) {
             responseType: 'json'
         }).
         success(function (data, status, headers, config) {
-            console.log('http data ', data);
             callback(data);
         });
-
-
-
-        //        $http({
-        //            method: 'POST',
-        //            url: 'http://auth.test.arnica.pro/rest/login',
-        //            params: {
-        //                email: login,
-        //                password: password
-        //            }
-        //        }).
-        //        success(function (data, status, headers, config) {
-        //            console.log('http data.error ' + data.validationErrors.password);
-        //            callback(data);
-        //        }).
-        //        error(function (data, status, headers, config) {
-        //            console.log('http data ' + data);
-        //            return null; //token
-        //        });
-
-        //        var users = getUsers();
-        //        for (var i = 0; i < users.length; i++) {
-        //            if (users[i].login == login && users[i].password == password)
-        //                return users[i];
-        //        }
-        //        return null;
     };
 });
 
-
+/**
+ * @ngdoc service
+ * @description Сервис для выхода пользователя из системы.
+ * @name myApp.service:UserLogout
+ * @param {Token} token токен пользователя.
+ */
 myApp.factory('UserLogout', function ($http) {
     return function (token) {
         $http({
@@ -79,16 +57,78 @@ myApp.factory('UserLogout', function ($http) {
  * @param {String} step шаг периода (этап, например, 'day'), за который будут
  * получены данные, должен быть прописан в DateHelper.steps
  * @returns {OperationalStatistics} объект статистики
+ * @requires myApp.service:DateHelper
+ * @requires myApp.service:OperatonalStatisticsDataSumming
  */
 myApp.factory('OperationalStatisticLoader', function (DateHelper, OperatonalStatisticsDataSumming) {
-    return function (date, step) {
-        var allStatistic = getData();
+    /**
+     *
+     * @ngdoc method
+     * @name myApp.service:OperationalStatisticLoader#getData
+     * @methodOf myApp.service:OperationalStatisticLoader
+     * @description Функция для получения статистических данных за
+     * период.
+     * @param {Date} date дата, за которую необходимо получить данные.
+     * @param {String} step название периода, допустимые значения
+     * параметра описаны в DateHelper.steps.
+     * @returns {OperationalStatistics} объект, содержищий статистические
+     * данные.
+     */
+    function getData(date, step){
+        var allStatistic = getOperationalStatisticsData();
         var period = DateHelper.getPeriod(date, step);
         allStatistic = allStatistic.filter(function (statistic) {
             return (statistic.date <= period.end && statistic.date >= period.begin || statistic.date.toDateString() == period.end.toDateString());
         });
         return OperatonalStatisticsDataSumming(allStatistic);
-    };
+    }
+    
+    /**
+     *
+     * @ngdoc method
+     * @name myApp.service:OperationalStatisticLoader#getMinDate
+     * @methodOf myApp.service:OperationalStatisticLoader
+     * @description Функция для получения минимальной даты (самой
+     * прошлой), за которую есть статистические данные.
+     * @returns {Date} дата самых давних данных статистики.
+     */
+    function getMinDate(){
+        var allStatistic = getOperationalStatisticsData();
+        var minDate = new Date();
+        for (var i = 0; i < allStatistic.length; i++)
+        {
+            if (allStatistic[i].date < minDate)
+                minDate = new Date(allStatistic[i].date.getFullYear(), allStatistic[i].date.getMonth(), allStatistic[i].date.getDate());
+        }
+        return minDate;
+    }
+    
+    /**
+     *
+     * @ngdoc method
+     * @name myApp.service:OperationalStatisticLoader#getMaxDate
+     * @methodOf myApp.service:OperationalStatisticLoader
+     * @description Функция для получения максимальной даты (самой
+     * будущей), за которую есть статистические данные.
+     * @returns {Date} дата, за которую внесены максимально будущие
+     * статистические данны.
+     */
+    function getMaxDate(){
+        var allStatistic = getOperationalStatisticsData();
+        var maxDate = new Date();
+        for (var i = 0; i < allStatistic.length; i++)
+        {
+            if (allStatistic[i].date > maxDate)
+                maxDate = new Date(allStatistic[i].date.getFullYear(), allStatistic[i].date.getMonth(), allStatistic[i].date.getDate());
+        }
+        return maxDate;
+    }
+    
+    return {
+        getData: getData,
+        getMinDate: getMinDate,
+        getMaxDate: getMaxDate
+    }
 });
 
 
@@ -386,7 +426,6 @@ myApp.factory('DateHelper', function () {
      * @description Метод для получения названия месяца по его номеру
      */
     function getMonthTitle(monthNumber) {
-        console.log(monthNumber);
         switch (monthNumber + '') {
         case '0':
             return 'Январь';

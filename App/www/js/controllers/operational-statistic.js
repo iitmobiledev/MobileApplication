@@ -20,7 +20,7 @@ myApp.controller('OperationalStatisticController', function ($scope, $location, 
 
     $scope.prevdate = new Date($scope.date.getFullYear(), $scope.date.getMonth(), $scope.date.getDate() - 1);
     $scope.nextdate = new Date($scope.date.getFullYear(), $scope.date.getMonth(), $scope.date.getDate() + 1);
-    $scope.pages = [OperationalStatisticLoader($scope.prevdate, $scope.step), OperationalStatisticLoader($scope.date, $scope.step), OperationalStatisticLoader($scope.nextdate, $scope.step)];
+    $scope.pages = [OperationalStatisticLoader.getData($scope.prevdate, $scope.step), OperationalStatisticLoader.getData($scope.date, $scope.step), OperationalStatisticLoader.getData($scope.nextdate, $scope.step)];
     $scope.pageIndex = 1;
     
      /**
@@ -33,7 +33,7 @@ myApp.controller('OperationalStatisticController', function ($scope, $location, 
      * период.
      */
     $scope.hasPrevData = function () {
-        return true;
+        return $scope.date > OperationalStatisticLoader.getMinDate();
     };
 
      /**
@@ -46,37 +46,38 @@ myApp.controller('OperationalStatisticController', function ($scope, $location, 
      * период.
      */
     $scope.hasFutureData = function () {
+        var date = OperationalStatisticLoader.getMaxDate();
         var period = DateHelper.getPeriod($scope.date, $scope.step);
-        return !(period.end > new Date() || period.end.toDateString() == new Date().toDateString());
+        return period.end < date && period.end.toDateString() != date.toDateString();
     };
 
     $scope.$watch('date.toDateString()', function () {
-        $scope.data = OperationalStatisticLoader($scope.date, $scope.step);
-        $scope.prevData = OperationalStatisticLoader(DateHelper.getPrev($scope.date, $scope.step),
+        $scope.data = OperationalStatisticLoader.getData($scope.date, $scope.step);
+        $scope.prevData = OperationalStatisticLoader.getData(DateHelper.getPrev($scope.date, $scope.step),
             $scope.step);
 
         $scope.hasPrevData();
         if (!$scope.hasFutureData()) {
             $scope.prevdate = new Date($scope.date.getFullYear(), $scope.date.getMonth(),
                 $scope.date.getDate() - 1);
-            $scope.pages = [OperationalStatisticLoader($scope.prevdate, $scope.step),
-                        OperationalStatisticLoader($scope.date, $scope.step)];
+            $scope.pages = [OperationalStatisticLoader.getData($scope.prevdate, $scope.step),
+                        OperationalStatisticLoader.getData($scope.date, $scope.step)];
         } else {
 
             $scope.prevdate = new Date($scope.date.getFullYear(), $scope.date.getMonth(),
                 $scope.date.getDate() - 1);
             $scope.nextdate = new Date($scope.date.getFullYear(), $scope.date.getMonth(),
                 $scope.date.getDate() + 1);
-            $scope.pages = [OperationalStatisticLoader($scope.prevdate, $scope.step),
-                        OperationalStatisticLoader($scope.date, $scope.step),
-                        OperationalStatisticLoader($scope.nextdate, $scope.step)];
+            $scope.pages = [OperationalStatisticLoader.getData($scope.prevdate, $scope.step),
+                        OperationalStatisticLoader.getData($scope.date, $scope.step),
+                        OperationalStatisticLoader.getData($scope.nextdate, $scope.step)];
         }
         $scope.pageIndex = 1;
     });
 
     $scope.$watch('step', function () {
-        $scope.data = OperationalStatisticLoader($scope.date, $scope.step);
-        $scope.prevData = OperationalStatisticLoader(DateHelper.getPrev($scope.date, $scope.step),
+        $scope.data = OperationalStatisticLoader.getData($scope.date, $scope.step);
+        $scope.prevData = OperationalStatisticLoader.getData(DateHelper.getPrev($scope.date, $scope.step),
             $scope.step);
         $scope.hasPrevData();
         $scope.hasFutureData();

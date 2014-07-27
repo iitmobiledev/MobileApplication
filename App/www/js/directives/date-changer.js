@@ -32,7 +32,7 @@ myApp.directive('dateChanger', function (DateHelper, $filter) {
              * @ngdoc method
              * @name myApp.directive:dateChanger#updateIndex
              * @methodOf myApp.directive:dateChanger
-             * @description Метод, вызывающий другой метод getNewDate для
+             * @description Метод, вызывающий другой метод setNewDate для
              * изменения даты в зависимости от параметра директивы
              * index.
              */
@@ -41,10 +41,10 @@ myApp.directive('dateChanger', function (DateHelper, $filter) {
                 if (index !== 1) {
                     switch (index) {
                     case 2:
-                        getNewDate(1);
+                        setNewDate(1);
                         break;
                     case 0:
-                        getNewDate(-1);
+                        setNewDate(-1);
                         break;
                     }
                 }
@@ -147,32 +147,46 @@ myApp.directive('dateChanger', function (DateHelper, $filter) {
                 scope[attrs.index] = 2;
                 scope.$apply();
             });
-
+            
             /**
-             * Функция для изменения даты в зависимости от
-             * установленного шага и параметра - знака
-             * @param {Number} sign - знак, который указывает увеличивать
-             * или уменьшать дату.
+             *
+             * @ngdoc method
+             * @name myApp.directive:dateChanger#setNewDate
+             * @methodOf myApp.directive:dateChanger
+             * @description Функция для изменения даты. Должна быть
+             * объявлена переменная step, которая показывает
+             * выбранный период. Валидные значения step объявлены
+             * в DateHelper.steps
+             * @param {Number} sign - знак, который показывает увеличивать
+             * или уменьшать дату, должен быть равен 1 или -1.
              */
-            function getNewDate(sign) {
-                if (step == 'day') {
+            function setNewDate(sign) {
+                if (step == DateHelper.steps.DAY) {
                     scope[attrs.date] = new Date(date.getFullYear(), date.getMonth(),
                         date.getDate() + sign * 1);
                 }
-                if (step == 'week') {
+                if (step == DateHelper.steps.WEEK) {
                     scope[attrs.date] = new Date(date.getFullYear(), date.getMonth(),
                         date.getDate() + sign * 7);
                 }
-                if (step == 'month') {
+                if (step == DateHelper.steps.MONTH) {
                     scope[attrs.date] = new Date(date.getFullYear(), date.getMonth() + sign * 1,
                         date.getDate());
                 }
             }
 
             /**
-             * Функция для получения текущей даты в читабельном виде
-             * @return {Date} date
-             * @require $filter для форматирования даты
+             *
+             * @ngdoc method
+             * @name myApp.directive:dateChanger#getDateString
+             * @methodOf myApp.directive:dateChanger
+             * @description Функция для получения текущей даты в
+             * читабельном виде и/или добавления заголока над
+             * датой. Надпись добавляется путем вызова функции
+             * `updateTitle`.
+             * @returns {String} дату в формате `dd.MM.yyyy`, если текущий
+             * период step равен дню или неделе, в противном случае
+             * возвращает пустую строку.
              */
             function getDateString() {
                 element.find('#Title').html(updateTitle());
@@ -189,10 +203,22 @@ myApp.directive('dateChanger', function (DateHelper, $filter) {
 
             element.find('#Date').html(getDateString());
 
+            
             /**
-             * Функция для обновления надписи над датой в зависимости
-             * от установленной даты.
-             * @return {String} "", или "За сегодня", или "За завтра".
+             *
+             * @ngdoc method
+             * @name myApp.directive:dateChanger#updateTitle
+             * @methodOf myApp.directive:dateChanger
+             * @description Функция для обновления надписи над датой.
+             * Если шаг периода step равен дню и текущая
+             * дата это сегодня или вчера, то добавится надпись 
+             * 'За сегодня' или 'За вчера'. Если step равен неделе, то
+             * заголовок добавлен не будет. Если step равен месяцу,
+             * то вместо даты будет добавлена только надпись с
+             * названием текущего месяца и годом, например 
+             * 'Август 2013'.
+             * @returns {String} надпись, если дата и шаг удовлетворяют
+             * описанным критериям, иначе пустая строка.
              */
             function updateTitle() {
                 if (step == DateHelper.steps.DAY) {
