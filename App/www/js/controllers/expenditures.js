@@ -13,13 +13,7 @@
  */
 myApp.controller('ExpendituresController', function ($scope, $filter, ExpendituresLoader, DateHelper) {
     $scope.date = new Date();
-    //    $scope.expList = ExpendituresLoader($scope.date);
-
-    var prevdate = new Date($scope.date.getFullYear(), $scope.date.getMonth(), $scope.date.getDate() - 1);
-    var nextdate = new Date($scope.date.getFullYear(), $scope.date.getMonth(), $scope.date.getDate() + 1);
-    $scope.pages = [ExpendituresLoader(prevdate), ExpendituresLoader($scope.date), ExpendituresLoader(nextdate)];
-    console.log($scope.pages);
-    $scope.pageIndex = 1;
+    updatePages();
 
     $scope.hasPrevData = function () {
         return true;
@@ -33,7 +27,13 @@ myApp.controller('ExpendituresController', function ($scope, $filter, Expenditur
             return true;
     };
 
-    $scope.$watch('date.toDateString()', function () {
+    /**
+     * @description Обновляет информацию о затратах, зранящуюся в списке `pages`. В зависимости от даты, хранящейся в `$scope.date` данные будут загружаться за этот день, предыдущий и посдедующий.
+     * @ngdoc method
+     * @name myApp.controller:ExpendituresController#updatePages
+     * @methodOf myApp.controller:ExpendituresController
+     */
+    function updatePages() {
         var prevdate = new Date($scope.date.getFullYear(), $scope.date.getMonth(), $scope.date.getDate() - 1);
         var nextdate = new Date($scope.date.getFullYear(), $scope.date.getMonth(), $scope.date.getDate() + 1);
         if ($scope.hasFutureData()) {
@@ -43,23 +43,14 @@ myApp.controller('ExpendituresController', function ($scope, $filter, Expenditur
         }
 
         $scope.pageIndex = 1;
+    }
+
+
+    $scope.$watch('date.toDateString()', function () {
+        updatePages();
     });
 
     $scope.hasExpenditures = function (expendit) {
         return expendit.length != 0;
     }
-
-    /*
-     *функция, отображающая список расходов салона за день. Текущий день указывается в `scope`
-     */
-    //    $scope.showExp = function () {
-    //        $scope.expenList = [];
-    //        for (var i = 0; i < $scope.expList.length; i++) {
-    //            var expItem = {};
-    //            expItem.description = $scope.expList[i].description;
-    //            expItem.cost = $scope.expList[i].cost;
-    //            $scope.expenList.push(expItem);
-    //        }
-    //    }
-    //    $scope.$watch('expList', $scope.showExp);
 });

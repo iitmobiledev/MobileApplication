@@ -17,12 +17,18 @@ myApp.directive('footerContent', function () {
             var inactivePages = scope.$eval(attrs.inactivePages) || [];
             showFooter();
 
+            /**
+             * @description Отображает футер на странице в зависимости от значения атрибута `show`. Пытается выполнится до тех пор, пока не будет подгружена библиотека `intel.xdk`.
+             * @ngdoc method
+             * @name myApp.directive:footerContent#showFooter
+             * @methodOf myApp.directive:footerContent
+             */
             function showFooter() {
                 if (intel.xdk && intel.xdk.device) {
                     if (show) {
                         $(element).hide().html();
                         $("#navbar").show();
-                        
+
                         $('#' + activePage).addClass('pressed');
                         for (var i = 0; i < inactivePages.length; i++) {
                             $('#' + inactivePages[i]).removeClass('pressed');

@@ -21,6 +21,12 @@ myApp.directive('headerContent', function () {
 
             show();
 
+            /**
+             * @description Отображает хедер на странице. Пытается выполнится до тех пор, пока не будет подгружена библиотека `intel.xdk`.
+             * @ngdoc method
+             * @name myApp.directive:headerContent#show
+             * @methodOf myApp.directive:headerContent
+             */
             function show() {
                 if (intel.xdk && intel.xdk.device) {
                     var hC = $(element).hide().html();
@@ -44,6 +50,12 @@ myApp.directive('headerContent', function () {
                 $(element).find("h1").html(scope.$eval(attrs.title));
             }
 
+            /**
+             * @description Отображает кнопку назад на хедере, при условии, что атрибут `showBackButton` равен `true`.
+             * @ngdoc method
+             * @name myApp.directive:headerContent#show
+             * @methodOf myApp.directive:headerContent
+             */
             function setBackButton() {
                 if (showBut) {
                     $(element).find("a").replaceWith('<a class="button" id="backButton" onclick="history.go(-1);">Назад</a>');
