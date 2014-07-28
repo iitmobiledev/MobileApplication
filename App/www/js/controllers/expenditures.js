@@ -13,7 +13,6 @@
  */
 myApp.controller('ExpendituresController', function ($scope, $filter, ExpendituresLoader, DateHelper) {
     $scope.date = new Date();
-    updatePages();
 
     $scope.hasPrevData = function () {
         return true;
@@ -26,6 +25,8 @@ myApp.controller('ExpendituresController', function ($scope, $filter, Expenditur
         else
             return true;
     };
+
+    updatePages();
 
     /**
      * @description Обновляет информацию о затратах, зранящуюся в списке `pages`. В зависимости от даты, хранящейся в `$scope.date` данные будут загружаться за этот день, предыдущий и посдедующий.

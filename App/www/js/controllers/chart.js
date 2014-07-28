@@ -11,7 +11,6 @@ myApp.controller('GraphicController', function ($scope, $routeParams) {
      * @param {Array} data данные для отображения графика:массив из списков, где 1 элемент-объект {Data}, 2 элемент-величина в зависимости от типа графика
      */
     $scope.type = $routeParams.type;
-    console.log('type ', $scope.type);
     $scope.period = 3;
     getGoodData($scope.type, $scope.period, function (data) {
         $scope.loading = false;
@@ -67,7 +66,7 @@ myApp.controller('GraphicController', function ($scope, $routeParams) {
 });
 
 function getGoodData(needValue, period, callback) {
-    var manyData = getData();
+    var manyData = getOperationalStatisticsData();
     var goodData = [];
     var nowDay = new Date();
     var endDay = new Date(nowDay.getFullYear(), nowDay.getMonth() - period, nowDay.getDate());

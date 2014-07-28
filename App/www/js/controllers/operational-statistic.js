@@ -22,8 +22,8 @@ myApp.controller('OperationalStatisticController', function ($scope, $location, 
     $scope.nextdate = new Date($scope.date.getFullYear(), $scope.date.getMonth(), $scope.date.getDate() + 1);
     $scope.pages = [OperationalStatisticLoader.getData($scope.prevdate, $scope.step), OperationalStatisticLoader.getData($scope.date, $scope.step), OperationalStatisticLoader.getData($scope.nextdate, $scope.step)];
     $scope.pageIndex = 1;
-    
-     /**
+
+    /**
      *
      * @ngdoc method
      * @name myApp.controller:OperationalStatisticController#hasPrevData
@@ -36,7 +36,7 @@ myApp.controller('OperationalStatisticController', function ($scope, $location, 
         return $scope.date > OperationalStatisticLoader.getMinDate();
     };
 
-     /**
+    /**
      *
      * @ngdoc method
      * @name myApp.controller:OperationalStatisticController#hasFutureData
@@ -52,27 +52,52 @@ myApp.controller('OperationalStatisticController', function ($scope, $location, 
     };
 
     $scope.$watch('date.toDateString()', function () {
+        console.log('date change');
+        
         $scope.data = OperationalStatisticLoader.getData($scope.date, $scope.step);
-        $scope.prevData = OperationalStatisticLoader.getData(DateHelper.getPrev($scope.date, $scope.step),
-            $scope.step);
+        $scope.prevData = OperationalStatisticLoader.getData(DateHelper.getPrev($scope.date, $scope.step), $scope.step);
 
-        $scope.hasPrevData();
-        if (!$scope.hasFutureData()) {
-            $scope.prevdate = new Date($scope.date.getFullYear(), $scope.date.getMonth(),
-                $scope.date.getDate() - 1);
-            $scope.pages = [OperationalStatisticLoader.getData($scope.prevdate, $scope.step),
-                        OperationalStatisticLoader.getData($scope.date, $scope.step)];
-        } else {
-
-            $scope.prevdate = new Date($scope.date.getFullYear(), $scope.date.getMonth(),
-                $scope.date.getDate() - 1);
-            $scope.nextdate = new Date($scope.date.getFullYear(), $scope.date.getMonth(),
-                $scope.date.getDate() + 1);
-            $scope.pages = [OperationalStatisticLoader.getData($scope.prevdate, $scope.step),
-                        OperationalStatisticLoader.getData($scope.date, $scope.step),
-                        OperationalStatisticLoader.getData($scope.nextdate, $scope.step)];
-        }
+        $scope.prevdate = new Date($scope.date.getFullYear(), $scope.date.getMonth(), $scope.date.getDate() - 1);
+        $scope.nextdate = new Date($scope.date.getFullYear(), $scope.date.getMonth(), $scope.date.getDate() + 1);
+        $scope.pages = [OperationalStatisticLoader.getData($scope.prevdate, $scope.step), OperationalStatisticLoader.getData($scope.date, $scope.step), OperationalStatisticLoader.getData($scope.nextdate, $scope.step)];
         $scope.pageIndex = 1;
+
+        //$scope.pages = [OperationalStatisticLoader.getData($scope.date, $scope.step)];
+
+        if (!$scope.hasFutureData()) {
+            $scope.pages.pop();
+        }
+
+        if (!$scope.hasPrevData()) {
+            $scope.pages = [OperationalStatisticLoader.getData($scope.date, $scope.step), OperationalStatisticLoader.getData($scope.nextdate, $scope.step)];
+            $scope.pageIndex = 0;
+        }
+
+        
+
+        //$scope.hasPrevData();
+        //        if (!$scope.hasFutureData()) {
+        //            $scope.prevdate = new Date($scope.date.getFullYear(), $scope.date.getMonth(),
+        //                $scope.date.getDate() - 1);
+        //            $scope.pages = [OperationalStatisticLoader.getData($scope.prevdate, $scope.step),
+        //                        OperationalStatisticLoader.getData($scope.date, $scope.step)];
+        //        } else {
+        //
+        //            if (!$scope.hasPrevData()) {
+        //                $scope.nextdate = new Date($scope.date.getFullYear(), $scope.date.getMonth(),
+        //                    $scope.date.getDate() + 1);
+        //                $scope.pages = [OperationalStatisticLoader.getData($scope.date, $scope.step), OperationalStatisticLoader.getData($scope.nextdate, $scope.step)];
+        //            } else {
+        //                $scope.prevdate = new Date($scope.date.getFullYear(), $scope.date.getMonth(),
+        //                    $scope.date.getDate() - 1);
+        //                $scope.nextdate = new Date($scope.date.getFullYear(), $scope.date.getMonth(),
+        //                    $scope.date.getDate() + 1);
+        //                $scope.pages = [OperationalStatisticLoader.getData($scope.prevdate, $scope.step),
+        //                        OperationalStatisticLoader.getData($scope.date, $scope.step),
+        //                        OperationalStatisticLoader.getData($scope.nextdate, $scope.step)];
+        //            }
+        //        }
+
     });
 
     $scope.$watch('step', function () {
@@ -82,7 +107,7 @@ myApp.controller('OperationalStatisticController', function ($scope, $location, 
         $scope.hasPrevData();
         $scope.hasFutureData();
     });
-    
+
     /**
      *
      * @ngdoc method
