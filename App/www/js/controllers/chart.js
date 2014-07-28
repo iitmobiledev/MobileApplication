@@ -4,7 +4,7 @@
  * @name myApp.controller:GraphicController
  */
 
-myApp.controller('GraphicController', function ($scope, $routeParams) {
+myApp.controller('GraphicController', function ($scope, $routeParams, ChartDataLoader) {
     /**
      * @param {String} type тип графика(что отображает график)
      * @param {Number} period период в месяцах, за который должен быть отрисован график
@@ -12,7 +12,8 @@ myApp.controller('GraphicController', function ($scope, $routeParams) {
      */
     $scope.type = $routeParams.type;
     $scope.period = 3;
-    getGoodData($scope.type, $scope.period, function (data) {
+    $scope.chartStep = 7;
+    ChartDataLoader.getGoodData($scope.type, $scope.period, $scope.chartStep, function (data) {
         $scope.loading = false;
         $scope.data = data;
         $scope.$apply();
@@ -57,29 +58,10 @@ myApp.controller('GraphicController', function ($scope, $routeParams) {
      */
     $scope.$watch('period', function (newValue) {
         $scope.loading = true;
-        getGoodData($scope.type, $scope.period, function (data) {
+        ChartDataLoader.getGoodData($scope.type, $scope.period, $scope.chartStep, function (data) {
             $scope.loading = false;
             $scope.data = data;
             $scope.$apply();
         });
     });
 });
-
-function getGoodData(needValue, period, callback) {
-    var manyData = getOperationalStatisticsData();
-    var goodData = [];
-    var nowDay = new Date();
-    var endDay = new Date(nowDay.getFullYear(), nowDay.getMonth() - period, nowDay.getDate());
-    for (i = 0; i < manyData.length; i++) {
-        if (manyData[i].date > endDay && manyData[i].date < nowDay) {
-            var item = [];
-            item.push(Date.UTC(manyData[i].date.getFullYear(), manyData[i].date.getMonth(), manyData[i].date.getDate()));
-            item.push(manyData[i][needValue]);
-            goodData.push(item);
-        }
-    }
-    goodData = goodData.sort();
-    setTimeout(function () {
-        callback(goodData);
-    }, 8000);
-}

@@ -140,6 +140,15 @@ NG_DOCS={
     },
     {
       "section": "api",
+      "id": "myApp.service:ChartDataLoader",
+      "shortName": "ChartDataLoader",
+      "type": "service",
+      "moduleName": "myApp",
+      "shortDescription": "Сервис для авторизации пользователя.",
+      "keywords": "api callback getgooddata method myapp needvalue period service step"
+    },
+    {
+      "section": "api",
       "id": "myApp.service:DateHelper",
       "shortName": "DateHelper",
       "type": "service",
