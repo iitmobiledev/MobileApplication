@@ -15,7 +15,7 @@ myApp.directive('headerContent', function () {
         replace: true,
         transclude: false,
         link: function (scope, element, attrs) {
-            var showBut = scope.$eval(attrs.showBackButton);
+            var backButtonLink = scope.$eval(attrs.backButtonLink);
             setTitle();
             setBackButton();
 
@@ -29,6 +29,7 @@ myApp.directive('headerContent', function () {
              */
             function show() {
                 if (intel.xdk && intel.xdk.device) {
+                    listenHardBack();
                     var hC = $(element).hide().html();
                     $("#header").html(hC);
                     $("#header").show();
@@ -42,7 +43,7 @@ myApp.directive('headerContent', function () {
                 setTitle();
             });
 
-            scope.$watch(attrs.showBackButton, function () {
+            scope.$watch(attrs.backButtonLink, function () {
                 setBackButton();
             });
 
@@ -57,9 +58,16 @@ myApp.directive('headerContent', function () {
              * @methodOf myApp.directive:headerContent
              */
             function setBackButton() {
-                if (showBut) {
-                    $(element).find("a").replaceWith('<a class="button" id="backButton" onclick="history.go(-1);">Назад</a>');
+                if (backButtonLink) {
+                    $(element).find("a").replaceWith('<a class="button" id="backButton" href="' + backButtonLink + '">Назад</a>');
                 }
+            }
+
+            function listenHardBack() {
+                document.addEventListener("intel.xdk.device.hardware.back", function () {
+                    console.log("back");
+                    navigator.app.exitApp();
+                }, false);
             }
         },
         template: '<div style="height:100%">' +
