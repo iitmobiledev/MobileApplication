@@ -10,7 +10,7 @@ NG_DOCS={
       "type": "controller",
       "moduleName": "myApp",
       "shortDescription": " Контроллер, отвечающий за авторизацию",
-      "keywords": "api controller myapp"
+      "keywords": "api controller enter method myapp service"
     },
     {
       "section": "api",
@@ -19,7 +19,7 @@ NG_DOCS={
       "type": "controller",
       "moduleName": "myApp",
       "shortDescription": "Контроллер, получающий данные для отображения расходов за день.",
-      "keywords": "$scope api controller date-directive directive expenditureitem explist hasfuturedata hasprevdata myapp step"
+      "keywords": "$scope api controller date-directive directive expenditureitem explist hasfuturedata hasprevdata method myapp step updatepages"
     },
     {
       "section": "api",
@@ -32,21 +32,12 @@ NG_DOCS={
     },
     {
       "section": "api",
-      "id": "myApp.controller:IndexController",
-      "shortName": "IndexController",
-      "type": "controller",
-      "moduleName": "myApp",
-      "shortDescription": " Контроллер, отвечающий за хранение глобальных",
-      "keywords": "api controller myapp"
-    },
-    {
-      "section": "api",
       "id": "myApp.controller:MasterController",
       "shortName": "MasterController",
       "type": "controller",
       "moduleName": "myApp",
       "shortDescription": "Контроллер, содержащий данные о визите. Получает данные из пути к странице",
-      "keywords": "api controller getneededvisits getvisitbymasterinfo hasfuturedata hasprevdata masterandvisits method myapp service true updatepages visit"
+      "keywords": "$scope api controller getneededvisits getvisitbymasterinfo hasfuturedata hasprevdata masterandvisits method myapp service true updatepages visit"
     },
     {
       "section": "api",
@@ -55,7 +46,7 @@ NG_DOCS={
       "type": "controller",
       "moduleName": "myApp",
       "shortDescription": " Контроллер, отвечающий за загрузку статистических",
-      "keywords": "$scope api controller datehelper hasfuturedata hasprevdata myapp service step steps"
+      "keywords": "$scope api controller datehelper hasfuturedata hasprevdata method myapp operationalstatistics service step steps tochart true type"
     },
     {
       "section": "api",
@@ -91,7 +82,7 @@ NG_DOCS={
       "type": "controller",
       "moduleName": "myApp",
       "shortDescription": "Контроллер, отвечающий за загрузку данных о визитах,",
-      "keywords": "api controller getmasterinfo getvisitbymasterinfo hasfuturedata hasprevdata hasvisits master masterinfo method myapp service true visit"
+      "keywords": "api controller getmasterinfo getvisitbymasterinfo hasfuturedata hasprevdata hasvisits master masterinfo method myapp ontime service tomaster true visit"
     },
     {
       "section": "api",
@@ -109,7 +100,7 @@ NG_DOCS={
       "type": "directive",
       "moduleName": "myApp",
       "shortDescription": "Директива для изменения и отображения даты и периода.",
-      "keywords": "api datehelper directive hasfuturedata hasprevdata myapp step steps titles upage-content"
+      "keywords": "api datehelper dd directive getdatestring hasfuturedata hasprevdata method mm myapp setnewdate sign step steps titles true upage-content updatehasfuturedata updatehasprevdata updateindex updatesteps updatetitle yyyy"
     },
     {
       "section": "api",
@@ -118,7 +109,7 @@ NG_DOCS={
       "type": "directive",
       "moduleName": "myApp",
       "shortDescription": "Директива добавляет на страницу приложения",
-      "keywords": "api directive myapp true"
+      "keywords": "api directive intel method myapp showfooter true xdk"
     },
     {
       "section": "api",
@@ -127,7 +118,7 @@ NG_DOCS={
       "type": "directive",
       "moduleName": "myApp",
       "shortDescription": "Директива добавляет на страницу приложения хедер,",
-      "keywords": "api directive myapp show-back-button title"
+      "keywords": "api directive intel method myapp show-back-button showbackbutton title true xdk"
     },
     {
       "section": "api",
@@ -172,7 +163,7 @@ NG_DOCS={
       "type": "service",
       "moduleName": "myApp",
       "shortDescription": "Сервис для загрузки статистики за период.",
-      "keywords": "api datehelper day myapp service step steps"
+      "keywords": "api datehelper day getdata getmaxdate getmindate method myapp service step steps"
     },
     {
       "section": "api",
@@ -200,6 +191,15 @@ NG_DOCS={
       "moduleName": "myApp",
       "shortDescription": "Сервис для получения текущего пользователя.",
       "keywords": "api myapp service"
+    },
+    {
+      "section": "api",
+      "id": "myApp.service:UserLogout",
+      "shortName": "UserLogout",
+      "type": "service",
+      "moduleName": "myApp",
+      "shortDescription": "Сервис для выхода пользователя из системы.",
+      "keywords": "api myapp service token"
     },
     {
       "section": "api",

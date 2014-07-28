@@ -15,7 +15,8 @@
        step="{String}"
        titles="{Array}"
        has-future-data="{Boolean}"
-       has-prev-data="{Boolean}"&gt;
+       has-prev-data="{Boolean}"
+       index="{Boolean}"&gt;
 &lt;/date-changer&gt;</pre>
 <h4 id="usage_parameters">Parameters</h4><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>date</td><td><a href="" class="label type-hint type-hint-date">Date</a></td><td><div class="myapp-directive-page myapp-directive-datechanger-page"><p>начальная дата для отображения и изменения</p>
 </div></td></tr><tr><td>steps</td><td><a href="" class="label type-hint type-hint-array">Array</a></td><td><div class="myapp-directive-page myapp-directive-datechanger-page"><p>все возможные этапы периода, должны быть прописаны
@@ -29,5 +30,68 @@
 следующий период.</p>
 </div></td></tr><tr><td>hasPrevData</td><td><a href="" class="label type-hint type-hint-boolean">Boolean</a></td><td><div class="myapp-directive-page myapp-directive-datechanger-page"><p>переменная показывает есть ли данные за
 прошлый период.</p>
+</div></td></tr><tr><td>index</td><td><a href="" class="label type-hint type-hint-boolean">Boolean</a></td><td><div class="myapp-directive-page myapp-directive-datechanger-page"><p>переменная показывает влево или вправо была
+сдвинута страница по свайпу.</p>
 </div></td></tr></tbody></table></div>
+<div class="member method"><h2 id="methods">Methods</h2>
+<ul class="methods"><li><h3 id="methods_getdatestring">getDateString()</h3>
+<div class="getdatestring"><div class="myapp-directive-page myapp-directive-datechanger-getdatestring-page"><p>Функция для получения текущей даты в
+читабельном виде и/или добавления заголока над
+датой. Надпись добавляется путем вызова функции
+<code>updateTitle</code>.</p>
+</div><h5 id="methods_getdatestring_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="myapp-directive-page myapp-directive-datechanger-getdatestring-page"><p>дату в формате <code>dd.MM.yyyy</code>, если текущий
+период step равен дню или неделе, в противном случае
+возвращает пустую строку.</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_setnewdate">setNewDate(sign)</h3>
+<div class="setnewdate"><div class="myapp-directive-page myapp-directive-datechanger-setnewdate-page"><p>Функция для изменения даты. Должна быть
+объявлена переменная step, которая показывает
+выбранный период. Валидные значения step объявлены
+в DateHelper.steps</p>
+</div><h5 id="methods_setnewdate_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>sign</td><td><a href="" class="label type-hint type-hint-number">Number</a></td><td><div class="myapp-directive-page myapp-directive-datechanger-setnewdate-page"><ul>
+<li>знак, который показывает увеличивать
+или уменьшать дату, должен быть равен 1 или -1.</li>
+</ul>
+</div></td></tr></tbody></table></div>
+</li>
+<li><h3 id="methods_updatehasfuturedata">updateHasFutureData()</h3>
+<div class="updatehasfuturedata"><div class="myapp-directive-page myapp-directive-datechanger-updatehasfuturedata-page"><p>Метод покажет кнопку для перехода на
+следующую дату, если параметр директивы hasFutureData
+равен true, скроет кнопку в противном случае.</p>
+</div></div>
+</li>
+<li><h3 id="methods_updatehasprevdata">updateHasPrevData()</h3>
+<div class="updatehasprevdata"><div class="myapp-directive-page myapp-directive-datechanger-updatehasprevdata-page"><p>Метод покажет кнопку для перехода на
+предыдущую дату, если параметр директивы hasPrevData
+равен true, скроет кнопку в противном случае.</p>
+</div></div>
+</li>
+<li><h3 id="methods_updateindex">updateIndex()</h3>
+<div class="updateindex"><div class="myapp-directive-page myapp-directive-datechanger-updateindex-page"><p>Метод, вызывающий другой метод setNewDate для
+изменения даты в зависимости от параметра директивы
+index.</p>
+</div></div>
+</li>
+<li><h3 id="methods_updatesteps">updateSteps()</h3>
+<div class="updatesteps"><div class="myapp-directive-page myapp-directive-datechanger-updatesteps-page"><p>Метод покажет кнопки для изменения периода,
+если параметр директивы steps, содержит больше 1
+елемента, скроет в противном случае.</p>
+</div></div>
+</li>
+<li><h3 id="methods_updatetitle">updateTitle()</h3>
+<div class="updatetitle"><div class="myapp-directive-page myapp-directive-datechanger-updatetitle-page"><p>Функция для обновления надписи над датой.
+Если шаг периода step равен дню и текущая
+дата это сегодня или вчера, то добавится надпись 
+&#39;За сегодня&#39; или &#39;За вчера&#39;. Если step равен неделе, то
+заголовок добавлен не будет. Если step равен месяцу,
+то вместо даты будет добавлена только надпись с
+названием текущего месяца и годом, например 
+&#39;Август 2013&#39;.</p>
+</div><h5 id="methods_updatetitle_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="myapp-directive-page myapp-directive-datechanger-updatetitle-page"><p>надпись, если дата и шаг удовлетворяют
+описанным критериям, иначе пустая строка.</p>
+</div></td></tr></table></div>
+</li>
+</ul>
+</div>
 </div>
