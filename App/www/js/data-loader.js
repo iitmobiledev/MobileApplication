@@ -81,7 +81,7 @@ myApp.factory('ChartDataLoader', function (OperatonalStatisticsDataSumming) {
 
 });
 
-=
+
 /**
  * @ngdoc service
  * @description Сервис для выхода пользователя из системы.
