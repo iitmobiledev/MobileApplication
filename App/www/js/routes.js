@@ -4,43 +4,43 @@ myApp.config(['$routeProvider',
     function ($routeProvider) {
         $routeProvider.
         when('/index', {
-            templateUrl: 'statistic.html',
+            templateUrl: 'views/statistic.html',
             controller: 'OperationalStatisticController'
         }).
         when('/chart/:type', {
-            templateUrl: 'chart.html',
+            templateUrl: 'views/chart.html',
             controller: 'GraphicController'
         }).
         when('/expenditures', {
-            templateUrl: 'expenditures.html',
+            templateUrl: 'views/expenditures.html',
             controller: 'ExpendituresController'
         }).
         when('/visits', {
-            templateUrl: 'visits.html',
+            templateUrl: 'views/visits.html',
             controller: 'VisitsController'
         }).
         when('/visits-master', {
-            templateUrl: 'visits-master.html',
+            templateUrl: 'views/visits-master.html',
             controller: 'VisitsMasterController'
         }).
         when('/visit/:id', {
-            templateUrl: 'visit.html',
+            templateUrl: 'views/visit.html',
             controller: 'VisitController'
         }).
         when('/master/:id/:date', {
-            templateUrl: 'master.html',
+            templateUrl: 'views/master.html',
             controller: 'MasterController'
         }).
         when('/settings', {
-            templateUrl: 'settings.html',
+            templateUrl: 'views/settings.html',
             controller: 'SettingsController'
         }).
         when('/login', {
-            templateUrl: 'login.html',
+            templateUrl: 'views/login.html',
             controller: 'LoginController'
         }).
         when('/authorization', {
-            templateUrl: 'authorization.html',
+            templateUrl: 'views/authorization.html',
             controller: 'AuthorizationController'
         }).
         otherwise({

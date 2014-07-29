@@ -27,7 +27,7 @@ myApp.directive('dateChanger', function (DateHelper, $filter) {
         link: function (scope, element, attrs) {
             var date, step, steps, titleSteps, hasFutureData, hasPrevData, index;
 
-             /**
+            /**
              *
              * @ngdoc method
              * @name myApp.directive:dateChanger#updateIndex
@@ -48,8 +48,7 @@ myApp.directive('dateChanger', function (DateHelper, $filter) {
                         setNewDate(-1);
                         break;
                     }
-                }
-                else {
+                } else {
                     if (!hasPrevData && prevIndex == 0 && index == 1)
                         setNewDate(1);
                 }
@@ -94,7 +93,7 @@ myApp.directive('dateChanger', function (DateHelper, $filter) {
             scope.$watch(attrs.titleSteps, updateTitleSteps);
             updateTitleSteps();
 
-             /**
+            /**
              *
              * @ngdoc method
              * @name myApp.directive:dateChanger#updateHasFutureData
@@ -152,7 +151,7 @@ myApp.directive('dateChanger', function (DateHelper, $filter) {
                 scope[attrs.index] = 2;
                 scope.$apply();
             });
-            
+
             /**
              *
              * @ngdoc method
@@ -208,7 +207,7 @@ myApp.directive('dateChanger', function (DateHelper, $filter) {
 
             element.find('#Date').html(getDateString());
 
-            
+
             /**
              *
              * @ngdoc method
@@ -216,11 +215,11 @@ myApp.directive('dateChanger', function (DateHelper, $filter) {
              * @methodOf myApp.directive:dateChanger
              * @description Функция для обновления надписи над датой.
              * Если шаг периода step равен дню и текущая
-             * дата это сегодня или вчера, то добавится надпись 
+             * дата это сегодня или вчера, то добавится надпись
              * 'За сегодня' или 'За вчера'. Если step равен неделе, то
              * заголовок добавлен не будет. Если step равен месяцу,
              * то вместо даты будет добавлена только надпись с
-             * названием текущего месяца и годом, например 
+             * названием текущего месяца и годом, например
              * 'Август 2013'.
              * @returns {String} надпись, если дата и шаг удовлетворяют
              * описанным критериям, иначе пустая строка.
@@ -257,6 +256,6 @@ myApp.directive('dateChanger', function (DateHelper, $filter) {
                 );
             }
         },
-        templateUrl: 'date-navigation.html'
+        templateUrl: 'views/date-navigation.html'
     }
 });
