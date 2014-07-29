@@ -30,6 +30,7 @@ myApp.factory('ChartDataLoader', function (OperatonalStatisticsDataSumming) {
             if (manyData[i].date > endDay && manyData[i].date < nowDay) {
                 tempData.push(manyData[i]);
                 if (i % step == 0) {
+                    console.log(i);
                     summedData.push(OperatonalStatisticsDataSumming(tempData));
                     tempData = [];
                 }

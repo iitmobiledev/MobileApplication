@@ -76,7 +76,6 @@ myApp.controller('MasterController', function ($scope, $routeParams, VisitsLoade
             if (nmav[j].startTime != nmav[j - 1].endTime) {
                 nmav[j - 1].downTime = $filter('date')(nmav[j - 1].endTime, "HH:mm") + '-' + $filter('date')(nmav[j].startTime, "HH:mm");
                 nmav[j - 1].isDownTime = true;
-                console.log("downtime");
             }
         }
         return nmav;
