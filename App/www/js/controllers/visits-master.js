@@ -4,18 +4,19 @@
  * @ngdoc controller
  * @name myApp.controller:VisitsMasterController
  * @requires myApp.service:VisitsLoader
- * @requires myApp.service:DateHelper
  * @requires myApp.service:MastersPerDayLoader
  */
-myApp.controller('VisitsMasterController', function ($scope, $filter, $location, VisitsLoader, DateHelper, MastersPerDayLoader) {
+myApp.controller('VisitsMasterController', function ($scope, $filter, $location, VisitsLoader, MastersPerDayLoader) {
     $('#mastersButton').addClass('pressed');
 
-    $scope.date = new Date();
-    $scope.step = 'day';
+    var minDate = VisitsLoader.getMinDate();
+    var maxDate = VisitsLoader.getMaxDate();
 
-    $scope.prevdate = new Date($scope.date.getFullYear(), $scope.date.getMonth(), $scope.date.getDate() - 1);
-    $scope.nextdate = new Date($scope.date.getFullYear(), $scope.date.getMonth(), $scope.date.getDate() + 1);
-    $scope.pages = [MastersPerDayLoader.getAllMastersPerDay($scope.prevdate, VisitsLoader), MastersPerDayLoader.getAllMastersPerDay($scope.date, VisitsLoader), MastersPerDayLoader.getAllMastersPerDay($scope.nextdate, VisitsLoader)];
+    $scope.date = new Date();
+
+    //    $scope.prevdate = new Date($scope.date.getFullYear(), $scope.date.getMonth(), $scope.date.getDate() - 1);
+    //    $scope.nextdate = new Date($scope.date.getFullYear(), $scope.date.getMonth(), $scope.date.getDate() + 1);
+    //    $scope.pages = [MastersPerDayLoader.getAllMastersPerDay($scope.prevdate, VisitsLoader), MastersPerDayLoader.getAllMastersPerDay($scope.date, VisitsLoader), MastersPerDayLoader.getAllMastersPerDay($scope.nextdate, VisitsLoader)];
 
     $scope.pageIndex = 1;
 
@@ -24,11 +25,11 @@ myApp.controller('VisitsMasterController', function ($scope, $filter, $location,
      * @ngdoc method
      * @name myApp.controller:VisitsMasterController#hasPrevData
      * @methodOf myApp.controller:VisitsMasterController
-     * @returns {Boleean} Возвращает true
+     * @returns {Boleean} Возвращает true, если есть данные за прошлое.
      * @description Метод для проверки существования данных за прошлое
      */
     $scope.hasPrevData = function () {
-        return true;
+        return $scope.date > minDate;
     };
 
     /**
@@ -36,11 +37,11 @@ myApp.controller('VisitsMasterController', function ($scope, $filter, $location,
      * @ngdoc method
      * @name myApp.controller:VisitsMasterController#hasFutureData
      * @methodOf myApp.controller:VisitsMasterController
-     * @returns {Boleean} Возвращает true
+     * @returns {Boleean} Возвращает true, если есть данные за будущее.
      * @description Метод для проверки существования данных за будущее
      */
     $scope.hasFutureData = function () {
-        return true;
+        return $scope.date < maxDate && $scope.date.toDateString() != maxDate.toDateString();
     };
 
     /**
@@ -80,12 +81,27 @@ myApp.controller('VisitsMasterController', function ($scope, $filter, $location,
     }
 
     $scope.$watch('date.toDateString()', function () {
-        $scope.prevdate = new Date($scope.date.getFullYear(), $scope.date.getMonth(),
-            $scope.date.getDate() - 1);
-        $scope.nextdate = new Date($scope.date.getFullYear(), $scope.date.getMonth(),
-            $scope.date.getDate() + 1);
-        $scope.pages = [MastersPerDayLoader.getAllMastersPerDay($scope.prevdate, VisitsLoader), MastersPerDayLoader.getAllMastersPerDay($scope.date, VisitsLoader), MastersPerDayLoader.getAllMastersPerDay($scope.nextdate, VisitsLoader)];
-        $scope.pageIndex = 1;
+        $scope.prevdate = new Date($scope.date.getFullYear(), $scope.date.getMonth(), $scope.date.getDate() - 1);
+        $scope.nextdate = new Date($scope.date.getFullYear(), $scope.date.getMonth(), $scope.date.getDate() + 1);
+
+        if (!$scope.hasFutureData()) {
+            $scope.pages = [MastersPerDayLoader.getAllMastersPerDay($scope.prevdate), MastersPerDayLoader.getAllMastersPerDay($scope.date)];
+            $scope.pageIndex = 1;
+        } else {
+            if ($scope.hasPrevData()) {
+                $scope.pages = [MastersPerDayLoader.getAllMastersPerDay($scope.prevdate), MastersPerDayLoader.getAllMastersPerDay($scope.date), MastersPerDayLoader.getAllMastersPerDay($scope.nextdate)];
+                $scope.pageIndex = 1;
+            }
+        }
+
+
+
+//        $scope.prevdate = new Date($scope.date.getFullYear(), $scope.date.getMonth(),
+//            $scope.date.getDate() - 1);
+//        $scope.nextdate = new Date($scope.date.getFullYear(), $scope.date.getMonth(),
+//            $scope.date.getDate() + 1);
+//        $scope.pages = [MastersPerDayLoader.getAllMastersPerDay($scope.prevdate, VisitsLoader), MastersPerDayLoader.getAllMastersPerDay($scope.date, VisitsLoader), MastersPerDayLoader.getAllMastersPerDay($scope.nextdate, VisitsLoader)];
+//        $scope.pageIndex = 1;
     });
 
 

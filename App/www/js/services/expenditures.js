@@ -13,8 +13,8 @@ myApp.factory('ExpendituresLoader', function () {
      * @description Функция для получения данных о расходах за
      * определенную дату.
      * @param {Date} date дата, за которую будут подгружаться данные.
-     * @returns {Expenditures} объект расходов или [], если данных за
-     * эту дату нет.
+     * @returns {Array} массив из объектов расходов Expenditures или [],
+     * если данных за эту дату нет.
      */
     function getData(date) {
         var getedData = getExpenditures();

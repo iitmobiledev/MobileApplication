@@ -2,14 +2,22 @@
  * @ngdoc service
  * @description Сервис для получения данных о визитах
  * @name myApp.service:VisitsLoader
- * @param {Date} neededDate дата, за которую нужно получить список визитов
- * @returns {Array} список визитов за нужную дату
  */
 myApp.factory('VisitsLoader', function () {
-    return function (neededDate) {
+    /**
+     *
+     * @ngdoc method
+     * @name myApp.service:VisitsLoader#getData
+     * @methodOf myApp.service:VisitsLoader
+     * @description Проверяет есть ли мастер в списке мастеров
+     * @param {Date} date дата, за которую нужно получить список визитов
+     * @returns {Array} список визитов за нужную дату или [], если
+     * визитов за эту дату нет.
+     */
+    function getData(date) {
         var getedData = getVisits();
         getedData = getedData.filter(function (visit) {
-            return (visit.date.toDateString() == neededDate.toDateString());
+            return (visit.date.toDateString() == date.toDateString());
         });
         if (getedData.length != 0) {
             return getedData.sort(function (a, b) {
@@ -17,9 +25,55 @@ myApp.factory('VisitsLoader', function () {
             });
         }
         return [];
+    }
+    
+    
+    /**
+     *
+     * @ngdoc method
+     * @name myApp.service:VisitsLoader#getMinDate
+     * @methodOf myApp.service:VisitsLoader
+     * @description Функция для получения минимальной даты (самой
+     * прошлой), за которую есть данные по визитам.
+     * @returns {Date} дата самых ранних данных по визитам.
+     */
+    function getMinDate() {
+        var data = getVisits();
+        var minDate = new Date();
+        for (var i = 0; i < data.length; i++) {
+            if (data[i].date < minDate)
+                minDate = new Date(data[i].date.getFullYear(), data[i].date.getMonth(), data[i].date.getDate());
+        }
+        return minDate;
+    }
+
+    /**
+     *
+     * @ngdoc method
+     * @name myApp.service:VisitsLoader#getMaxDate
+     * @methodOf myApp.service:VisitsLoader
+     * @description Функция для получения максимальной даты (самой
+     * будущей), за которую есть данные по визитам.
+     * @returns {Date} дата, за которую внесены максимально будущие
+     * данные по визитам.
+     */
+    function getMaxDate() {
+        var data = getVisits();
+        var maxDate = new Date();
+        for (var i = 0; i < data.length; i++) {
+            if (data[i].date > maxDate)
+                maxDate = new Date(data[i].date.getFullYear(), data[i].date.getMonth(), data[i].date.getDate());
+        }
+        return maxDate;
+    }
+
+
+    return {
+        getData: getData,
+        getMinDate: getMinDate,
+        getMaxDate: getMaxDate
     };
 });
-
 
 
 /**
@@ -30,7 +84,7 @@ myApp.factory('VisitsLoader', function () {
  * @param {Service} VisitsLoader Сервис для загрузки списка визитов
  * @returns {method}  getAllMastersPerDay Метод для получения  списка отсортированных по фамилии мастера объектов perMaster
  */
-myApp.factory('MastersPerDayLoader', function () {
+myApp.factory('MastersPerDayLoader', function (VisitsLoader) {
 
     /**
      *
@@ -42,7 +96,6 @@ myApp.factory('MastersPerDayLoader', function () {
      * @param {Array}  masters Список мастеров
      * @returns {Null or Number}  Индекс мастера, если он есть в списке; null если нет.
      */
-
     function checkMasterInList(master, masters) {
         for (var i = 0; i < masters.length; i++) {
             if (master.id === masters[i].master.id) {
@@ -71,8 +124,8 @@ myApp.factory('MastersPerDayLoader', function () {
      * @param {Service} VisitsLoader  Сервис для загрузки списка визитов
      * @returns {Array} allMasters Список отсортированных по фамилии мастера объектов perMaster
      */
-    function getAllMastersPerDay(neededDate, VisitsLoader) {
-        var getedData = VisitsLoader(neededDate);
+    function getAllMastersPerDay(neededDate) {
+        var getedData = VisitsLoader.getData(neededDate);
         var allMasters = [];
         for (var i = 0; i < getedData.length; i++) {
             for (var j = 0; j < getedData[i].serviceList.length; j++) {

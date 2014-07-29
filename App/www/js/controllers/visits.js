@@ -7,38 +7,38 @@
  * @requires myApp.service:DateHelper
  * @requires myApp.service:MastersPerDayLoader
  */
-myApp.controller('VisitsController', function ($scope, $filter, $location, VisitsLoader, DateHelper, MastersPerDayLoader) {
+myApp.controller('VisitsController', function ($scope, $filter, $location, VisitsLoader) {
     $('#timeButton').addClass('pressed');
 
-    $scope.date = new Date();
-    $scope.step = 'day';
+    var minDate = VisitsLoader.getMinDate();
+    var maxDate = VisitsLoader.getMaxDate();
 
-    $scope.prevdate = new Date($scope.date.getFullYear(), $scope.date.getMonth(), $scope.date.getDate() - 1);
-    $scope.nextdate = new Date($scope.date.getFullYear(), $scope.date.getMonth(), $scope.date.getDate() + 1);
-    $scope.pages = [VisitsLoader($scope.prevdate), VisitsLoader($scope.date), VisitsLoader($scope.nextdate)];
+    $scope.date = new Date();
+
     $scope.pageIndex = 1;
-    
+
     /**
      *
      * @ngdoc method
      * @name myApp.controller:VisitsController#hasPrevData
      * @methodOf myApp.controller:VisitsController
-     * @returns {Boleean} Возвращает true
+     * @returns {Boleean} Возвращает true, если есть данные за прошлое.
      * @description Метод для проверки существования данных за прошлое
      */
     $scope.hasPrevData = function () {
-        return true;
+        return $scope.date > minDate;
     };
+
     /**
      *
      * @ngdoc method
      * @name myApp.controller:VisitsController#hasFutureData
      * @methodOf myApp.controller:VisitsController
-     * @returns {Boleean} Возвращает true
+     * @returns {Boleean} Возвращает true, если есть данные за будущее.
      * @description Метод для проверки существования данных за будущее
      */
     $scope.hasFutureData = function () {
-        return true;
+        return $scope.date < maxDate && $scope.date.toDateString() != maxDate.toDateString();
     };
 
     $scope.onMasters = function () {
@@ -58,13 +58,18 @@ myApp.controller('VisitsController', function ($scope, $filter, $location, Visit
     }
 
     $scope.$watch('date.toDateString()', function () {
-        $scope.prevdate = new Date($scope.date.getFullYear(), $scope.date.getMonth(),
-            $scope.date.getDate() - 1);
-        $scope.nextdate = new Date($scope.date.getFullYear(), $scope.date.getMonth(),
-            $scope.date.getDate() + 1);
-        $scope.pages = [VisitsLoader($scope.prevdate), VisitsLoader($scope.date), VisitsLoader($scope.nextdate)];
+        $scope.prevdate = new Date($scope.date.getFullYear(), $scope.date.getMonth(), $scope.date.getDate() - 1);
+        $scope.nextdate = new Date($scope.date.getFullYear(), $scope.date.getMonth(), $scope.date.getDate() + 1);
 
-        $scope.pageIndex = 1;
+        if (!$scope.hasFutureData()) {
+            $scope.pages = [VisitsLoader.getData($scope.prevdate), VisitsLoader.getData($scope.date)];
+            $scope.pageIndex = 1;
+        } else {
+            if ($scope.hasPrevData()) {
+                $scope.pages = [VisitsLoader.getData($scope.prevdate), VisitsLoader.getData($scope.date), VisitsLoader.getData($scope.nextdate)];
+                $scope.pageIndex = 1;
+            }
+        }
     });
 
     /**
