@@ -140,6 +140,9 @@ csx
 AppPackages/
 
 # Others
+App/docs/
+**/.ignore
+App/node_modules/
 sql/
 *.Cache
 ClientBin/
