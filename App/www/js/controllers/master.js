@@ -43,7 +43,7 @@ myApp.controller('MasterController', function ($scope, $routeParams, VisitsLoade
      * @ngdoc method
      * @name myApp.controller:MasterController#getNeededVisits
      * @methodOf myApp.controller:MasterController
-     * @param {Array} masterAndVisits Массив с мастерами и из визитами. Каждыйэлемент массива объект, где 1 поле-мастер,2 -список его визитов за определенную дату
+     * @param {Array} masterAndVisits Массив с мастерами и их визитами. Каждыйэлемент массива объект, где 1 поле-мастер,2 -список его визитов за определенную дату
      * @returns {Array} Возвращает массив визитов для нужного мастера
      * @description Метод для получения списка визитов для конкретного мастера
      */
