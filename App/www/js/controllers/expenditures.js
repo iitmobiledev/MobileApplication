@@ -12,44 +12,45 @@
  * @name myApp.controller:ExpendituresController
  */
 myApp.controller('ExpendituresController', function ($scope, $filter, ExpendituresLoader, DateHelper) {
+    var getExpenditures = ExpendituresLoader.getData;
+    var minDate = ExpendituresLoader.getMinDate();
+    var maxDate = ExpendituresLoader.getMaxDate();
+
     $scope.date = new Date();
 
+    $scope.pageIndex = 1;
+
     $scope.hasPrevData = function () {
-        return true;
+        return $scope.date > minDate;
     };
 
     $scope.hasFutureData = function () {
-        var period = DateHelper.getPeriod($scope.date, DateHelper.steps.DAY);
-        if (period.end > new Date() || period.end.toDateString() == new Date().toDateString())
-            return false;
-        else
-            return true;
+        return $scope.date < maxDate && $scope.date.toDateString() != maxDate.toDateString();
     };
 
-    updatePages();
-
     /**
-     * @description Обновляет информацию о затратах, зранящуюся в списке `pages`. В зависимости от даты, хранящейся в `$scope.date` данные будут загружаться за этот день, предыдущий и посдедующий.
+     * @description Обновляет информацию о затратах, хранящуюся в списке `pages`. В зависимости от даты, хранящейся в `$scope.date` данные будут загружаться за этот день, предыдущий и посдедующий.
      * @ngdoc method
      * @name myApp.controller:ExpendituresController#updatePages
      * @methodOf myApp.controller:ExpendituresController
      */
     function updatePages() {
-        var prevdate = new Date($scope.date.getFullYear(), $scope.date.getMonth(), $scope.date.getDate() - 1);
-        var nextdate = new Date($scope.date.getFullYear(), $scope.date.getMonth(), $scope.date.getDate() + 1);
-        if ($scope.hasFutureData()) {
-            $scope.pages = [ExpendituresLoader(prevdate), ExpendituresLoader($scope.date), ExpendituresLoader(nextdate)];
-        } else {
-            $scope.pages = [ExpendituresLoader(prevdate), ExpendituresLoader($scope.date)];
-        }
+        $scope.prevdate = new Date($scope.date.getFullYear(), $scope.date.getMonth(), $scope.date.getDate() - 1);
+        $scope.nextdate = new Date($scope.date.getFullYear(), $scope.date.getMonth(), $scope.date.getDate() + 1);
 
-        $scope.pageIndex = 1;
+        if (!$scope.hasFutureData()) {
+            $scope.pages = [getExpenditures($scope.prevdate), getExpenditures($scope.date)];
+            $scope.pageIndex = 1;
+        } else {
+            if ($scope.hasPrevData()) {
+                $scope.pages = [getExpenditures($scope.prevdate), getExpenditures($scope.date), getExpenditures($scope.nextdate)];
+                $scope.pageIndex = 1;
+            }
+        }
     }
 
 
-    $scope.$watch('date.toDateString()', function () {
-        updatePages();
-    });
+    $scope.$watch('date.toDateString()', updatePages);
 
     $scope.hasExpenditures = function (expendit) {
         return expendit.length != 0;

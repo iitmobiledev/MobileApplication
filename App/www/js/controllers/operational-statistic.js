@@ -13,8 +13,9 @@
  * @requires myApp.service:DateHelper
  */
 myApp.controller('OperationalStatisticController', function ($scope, $location, OperationalStatisticLoader, DateHelper) {
-
     var getStatistic = OperationalStatisticLoader.getData;
+    var minDate = OperationalStatisticLoader.getMinDate();
+    var maxDate = OperationalStatisticLoader.getMaxDate();
 
     $scope.date = new Date();
 
@@ -32,7 +33,7 @@ myApp.controller('OperationalStatisticController', function ($scope, $location, 
      * период.
      */
     $scope.hasPrevData = function () {
-        return $scope.date > OperationalStatisticLoader.getMinDate();
+        return $scope.date > minDate;
     };
 
     /**
@@ -45,9 +46,8 @@ myApp.controller('OperationalStatisticController', function ($scope, $location, 
      * период.
      */
     $scope.hasFutureData = function () {
-        var date = OperationalStatisticLoader.getMaxDate();
         var period = DateHelper.getPeriod($scope.date, $scope.step);
-        return period.end < date && period.end.toDateString() != date.toDateString();
+        return period.end < maxDate && period.end.toDateString() != maxDate.toDateString();
     };
 
     /**
