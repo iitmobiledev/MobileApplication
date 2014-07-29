@@ -115,6 +115,7 @@ myApp.controller('VisitsMasterController', function ($scope, $filter, $location,
      * @description Метод, формирующий данные в виде, нужном для отображения визитов отсортированных по мастерам
      */
     $scope.getMasterInfo = function (master) {
+        $scope.masterId = master.id;
         return master.lastName + " " + master.firstName;
     }
 
@@ -134,10 +135,12 @@ myApp.controller('VisitsMasterController', function ($scope, $filter, $location,
             coast = 0;
         for (var j = 0; j < visit.serviceList.length; j++) {
             var service = visit.serviceList[j];
-            services.push(service.description);
-            coast += service.cost
-            startTimes.push(service.startTime);
-            endTimes.push(service.endTime);
+            if (service.master.id == $scope.masterId) {
+                services.push(service.description);
+                coast += service.cost
+                startTimes.push(service.startTime);
+                endTimes.push(service.endTime);
+            }
         }
 
         $scope.masterVisitInfo.id = visit.id;

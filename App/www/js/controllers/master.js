@@ -51,12 +51,73 @@ myApp.controller('MasterController', function ($scope, $routeParams, VisitsLoade
         for (var i = 0; i < masterAndVisits.length; i++) {
             if (masterAndVisits[i].master.id == $scope.id) {
                 $scope.master = masterAndVisits[i].master;
-                return masterAndVisits[i].visList;
+                return getGoodVisitsList(masterAndVisits[i].visList);
             }
         }
         return [];
     };
 
+
+    /**
+     *
+     * @ngdoc method
+     * @name myApp.controller:MasterController#getGoodVisitsList
+     * @methodOf myApp.controller:MasterController
+     * @param {Array} masterList список визитов мастера
+     * @description Метод, формирующий список объектов "визит" с дополнительными информационными полями
+     * @returns {Object} Список объектов "визит" с новыми полями
+     */
+    function getGoodVisitsList(masterList) {
+        var nmav = [];
+        for (var i = 0; i < masterList.length; i++) {
+            nmav.push(selectVisitInfo(masterList[i]));
+        }
+        for (var j = 1; j < nmav.length; j++) {
+            if (nmav[j].startTime != nmav[j - 1].endTime) {
+                nmav[j - 1].downTime = $filter('date')(nmav[j - 1].endTime, "HH:mm") + '-' + $filter('date')(nmav[j].startTime, "HH:mm");
+                nmav[j - 1].isDownTime = true;
+                console.log("downtime");
+            }
+        }
+        return nmav;
+    }
+
+
+    /**
+     *
+     * @ngdoc method
+     * @name myApp.controller:MasterController#selectVisitInfo
+     * @methodOf myApp.controller:MasterController
+     * @param {Object} visit Объект визит
+     * @description Метод, формирующий объект визит с дополнительными информационными полями
+     * @returns {Object} Объект визит с новыми полями
+     */
+    function selectVisitInfo(visit) {
+        var services = [],
+            startTimes = [],
+            endTimes = [],
+            coast = 0;
+        for (var j = 0; j < visit.serviceList.length; j++) {
+            var service = visit.serviceList[j];
+            if ($scope.master.id == service.master.id) {
+                services.push(service.description);
+                coast += service.cost
+                startTimes.push(service.startTime);
+                endTimes.push(service.endTime);
+            }
+        }
+        var result = {};
+        result.id = visit.id;
+        result.status = visit.status;
+        result.client = visit.client.lastName + ' ' + visit.client.firstName;
+        result.service = services.join(",");
+        result.cost = coast + ' р.';
+        result.startTime = Math.min.apply(null, startTimes);
+        result.endTime = Math.max.apply(null, endTimes);
+        result.isDownTime = false;
+        result.downTime = '';
+        return result;
+    }
 
     /**
      *
@@ -68,25 +129,14 @@ myApp.controller('MasterController', function ($scope, $routeParams, VisitsLoade
      */
     $scope.getVisitByMasterInfo = function (visit) {
         $scope.masterVisitInfo = {};
-        var services = [],
-            startTimes = [],
-            endTimes = [],
-            coast = 0;
-        for (var j = 0; j < visit.serviceList.length; j++) {
-            var service = visit.serviceList[j];
-            services.push(service.description);
-            coast += service.cost
-            startTimes.push(service.startTime);
-            endTimes.push(service.endTime);
-        }
-
         $scope.masterVisitInfo.id = visit.id;
         $scope.masterVisitInfo.status = visit.status;
-        $scope.masterVisitInfo.client = visit.client.lastName + ' ' + visit.client.firstName;
-        $scope.masterVisitInfo.time = $filter('date')(Math.min.apply(null, startTimes), "HH:mm") + '-' +
-            $filter('date')(Math.max.apply(null, endTimes), "HH:mm");
-        $scope.masterVisitInfo.service = services.join(",");
-        $scope.masterVisitInfo.cost = coast + ' р.';
+        $scope.masterVisitInfo.client = visit.client;
+        $scope.masterVisitInfo.time = $filter('date')(visit.startTime, "HH:mm") + '-' + $filter('date')(visit.endTime, "HH:mm");
+        $scope.masterVisitInfo.service = visit.sevice;
+        $scope.masterVisitInfo.cost = visit.cost;
+        $scope.masterVisitInfo.isDownTime = visit.isDownTime;
+        $scope.masterVisitInfo.downTime = visit.downTime;
     }
 
 
