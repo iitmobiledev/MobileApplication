@@ -38,9 +38,7 @@ myApp.directive('dateChanger', function (DateHelper, $filter) {
              */
             var updateIndex = function () {
                 var prevIndex = index;
-                console.log('prev index ', prevIndex);
                 index = scope.$eval(attrs.index);
-                console.log('current index ', index);
                 if (index !== 1) {
                     switch (index) {
                     case 2:
