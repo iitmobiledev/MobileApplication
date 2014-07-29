@@ -16,9 +16,9 @@
                                 <div class="widget-container right-receptacle"></div>
                                 <div>
                                     <p>Выручка</p>
-                                    <h3>{{page.proceeds}} р.</h3>
+                                    <h3>{{page.currentData.proceeds}} р.</h3>
                                     <p>В прошлом</p>
-                                    <p>{{prevData.proceeds}} р.</p>
+                                    <p>{{page.prevData.proceeds}} р.</p>
 
                                 </div>
                             </div>
@@ -35,9 +35,9 @@
                                 <div>
                                     <p>Прибыль</p>
                                     <p></p>
-                                    <h3>{{page.profit}} р.</h3>
+                                    <h3>{{page.currentData.profit}} р.</h3>
                                     <p>В прошлом</p>
-                                    <p>{{prevData.profit}} р.</p>
+                                    <p>{{page.prevData.profit}} р.</p>
                                 </div>
                             </div>
                             <span class="uib_shim"></span>
@@ -56,9 +56,9 @@
                                 <div>
                                     <p>Клиентов</p>
                                     <p></p>
-                                    <h3>{{page.clients}}</h3>
+                                    <h3>{{page.currentData.clients}}</h3>
                                     <p>В прошлом</p>
-                                    <p>{{prevData.clients}}</p>
+                                    <p>{{page.prevData.clients}}</p>
                                 </div>
                             </div>
                             <span class="uib_shim"></span>
@@ -74,9 +74,9 @@
                                 <div>
                                     <p>Загруженность</p>
                                     <p></p>
-                                    <h3>{{page.workload}}%</h3>
+                                    <h3>{{page.currentData.workload}}%</h3>
                                     <p>В прошлом</p>
-                                    <p>{{prevData.workload}}%</p>
+                                    <p>{{page.prevData.workload}}%</p>
                                 </div>
                             </div>
                             <span class="uib_shim"></span>

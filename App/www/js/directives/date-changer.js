@@ -37,7 +37,10 @@ myApp.directive('dateChanger', function (DateHelper, $filter) {
              * index.
              */
             var updateIndex = function () {
+                var prevIndex = index;
+                console.log('prev index ', prevIndex);
                 index = scope.$eval(attrs.index);
+                console.log('current index ', index);
                 if (index !== 1) {
                     switch (index) {
                     case 2:
@@ -47,6 +50,10 @@ myApp.directive('dateChanger', function (DateHelper, $filter) {
                         setNewDate(-1);
                         break;
                     }
+                }
+                else {
+                    if (!hasPrevData && prevIndex == 0 && index == 1)
+                        setNewDate(1);
                 }
             };
             scope.$watch(attrs.index, updateIndex);
