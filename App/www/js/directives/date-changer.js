@@ -198,7 +198,9 @@ myApp.directive('dateChanger', function (DateHelper, $filter) {
             function getDateString() {
                 element.find('#Title').html(updateTitle());
                 if (step == DateHelper.steps.DAY) {
-                    return $filter('date')(date, "dd.MM.yyyy");
+                    return (date.getDate() + ' ' + DateHelper.getMonthTitle(date.getMonth(), step) + ' ' + date.getFullYear() + ', ' + DateHelper.getWeekDayTitle(date.getDay()));
+                    //return dateString;
+//                    return $filter('date')(date, "dd.MM.yyyy") + ', ' + DateHelper.getWeekDayTitle(date.getDay());
                 }
                 if (step == DateHelper.steps.WEEK) {
                     var period = DateHelper.getPeriod(date, step);
@@ -229,15 +231,17 @@ myApp.directive('dateChanger', function (DateHelper, $filter) {
              */
             function updateTitle() {
                 if (step == DateHelper.steps.DAY) {
+                    $('#Title').css('font-size', '13px');
                     var today = new Date();
                     var yesterday = new Date(today.getFullYear(), today.getMonth(), today.getDate() - 1);
                     if (date.toDateString() == today.toDateString())
-                        return "За сегодня";
+                        return "Сегодня";
                     if (date.toDateString() == yesterday.toDateString())
-                        return "За вчера";
+                        return "Вчера";
                 }
                 if (step == DateHelper.steps.MONTH) {
-                    return DateHelper.getMonthTitle(date.getMonth()) + ' ' + date.getFullYear();
+                    $('#Title').css('font-size', '');
+                    return DateHelper.getMonthTitle(date.getMonth(), step) + ' ' + date.getFullYear();
                 }
                 return "";
             }

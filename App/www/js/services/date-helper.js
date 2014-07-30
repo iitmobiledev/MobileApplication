@@ -86,32 +86,101 @@ myApp.factory('DateHelper', function () {
      * @returns {String} название месяца
      * @description Метод для получения названия месяца по его номеру
      */
-    function getMonthTitle(monthNumber) {
+    function getMonthTitle(monthNumber, step) {
         switch (monthNumber + '') {
         case '0':
-            return 'Январь';
+            if (step == steps.MONTH)
+                return 'Январь';
+            if (step == steps.DAY)
+                return 'января';
         case '1':
-            return 'Февраль';
+            if (step == steps.MONTH)
+                return 'Февраль';
+            if (step == steps.DAY)
+                return 'февраля';
         case '2':
-            return 'Март';
+            if (step == steps.MONTH)
+                return 'Март';
+            if (step == steps.DAY)
+                return 'марта';
         case '3':
-            return 'Апрель';
+            if (step == steps.MONTH)
+                return 'Апрель';
+            if (step == steps.DAY)
+                return 'апреля';
         case '4':
-            return 'Май';
+            if (step == steps.MONTH)
+                return 'Май';
+            if (step == steps.DAY)
+                return 'мая';
         case '5':
-            return 'Июнь';
+            if (step == steps.MONTH)
+                return 'Июнь';
+            if (step == steps.DAY)
+                return 'июня';
         case '6':
-            return 'Июль';
+            if (step == steps.MONTH)
+                return 'Июль';
+            if (step == steps.DAY)
+                return 'июля';
         case '7':
-            return 'Август';
+            if (step == steps.MONTH)
+                return 'Август';
+            if (step == steps.DAY)
+                return 'августа';
         case '8':
-            return 'Сентябрь';
+            if (step == steps.MONTH)
+                return 'Сентябрь';
+            if (step == steps.DAY)
+                return 'сентября';
         case '9':
-            return 'Октябрь';
+            if (step == steps.MONTH)
+                return 'Октябрь';
+            if (step == steps.DAY)
+                return 'октября';
         case '10':
-            return 'Ноябрь';
+            if (step == steps.MONTH)
+                return 'Ноябрь';
+            if (step == steps.DAY)
+                return 'ноября';
         case '11':
-            return 'Декабрь';
+            if (step == steps.MONTH)
+                return 'Декабрь';
+            if (step == steps.DAY)
+                return 'декабря';
+        default:
+            return '';
+        }
+    };
+
+
+    /**
+     *
+     * @ngdoc method
+     * @name myApp.serviceDateHelper#getWeekDayTitle
+     * @methodOf myApp.service:DateHelper
+     * @param {Number} dayNumber номер дня на неделе, начиная с воскресенья - 0.
+     * @returns {String} название для неделт
+     * @description Метод для получения названия дня недели по его номеру.
+     */
+    function getWeekDayTitle(dayNumber) {
+        switch (dayNumber + '') {
+        case '0':
+            return 'воскресенье';
+        case '1':
+            return 'понедельник';
+        case '2':
+            return 'вторник';
+        case '3':
+            return 'среда';
+        case '4':
+            return 'четверг';
+        case '5':
+            return 'пятница';
+        case '6':
+            return 'суббота';
+        case '7':
+            return 'воскресенье';
         default:
             return '';
         }
@@ -121,6 +190,7 @@ myApp.factory('DateHelper', function () {
         steps: steps,
         getPrev: getPrev,
         getPeriod: getPeriod,
-        getMonthTitle: getMonthTitle
+        getMonthTitle: getMonthTitle,
+        getWeekDayTitle: getWeekDayTitle
     };
 });
