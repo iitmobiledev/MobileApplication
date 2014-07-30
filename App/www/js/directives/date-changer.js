@@ -45,12 +45,14 @@ myApp.directive('dateChanger', function (DateHelper, $filter) {
                         setNewDate(1);
                         break;
                     case 0:
-                        setNewDate(-1);
+                        if (hasPrevData)
+                            setNewDate(-1);
                         break;
                     }
                 } else {
-                    if (!hasPrevData && prevIndex == 0 && index == 1)
+                    if (!hasPrevData && prevIndex == 0 && index == 1) {
                         setNewDate(1);
+                    }
                 }
             };
             scope.$watch(attrs.index, updateIndex);
@@ -165,6 +167,7 @@ myApp.directive('dateChanger', function (DateHelper, $filter) {
              * или уменьшать дату, должен быть равен 1 или -1.
              */
             function setNewDate(sign) {
+                console.log('directive');
                 if (step == DateHelper.steps.DAY) {
                     scope[attrs.date] = new Date(date.getFullYear(), date.getMonth(),
                         date.getDate() + sign * 1);

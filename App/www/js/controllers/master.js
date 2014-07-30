@@ -6,14 +6,18 @@
  * @requires myApp.service:MastersPerDayLoader
  */
 myApp.controller('MasterController', function ($scope, $routeParams, VisitsLoader, $filter, MastersPerDayLoader) {
+    var minDate = VisitsLoader.getMinDate();
+    var maxDate = VisitsLoader.getMaxDate();
+
     $scope.id = $routeParams.id;
     $scope.date = new Date($routeParams.date);
+    console.log('date ' + $scope.date);
 
     // * @param {Number} id ID Мастера
     // * @param {Date} date Текущая дата
     // * @param {String} step Шаг для директивы DateChanger
     // * @param {Array} masters Списов мастеров с их визитами
-    updatePages();
+
 
     /**
      *
@@ -24,7 +28,7 @@ myApp.controller('MasterController', function ($scope, $routeParams, VisitsLoade
      * @description Метод для проверки существования данных за прошлое
      */
     $scope.hasPrevData = function () {
-        return true;
+        return $scope.date > minDate;
     };
 
     /**
@@ -36,8 +40,10 @@ myApp.controller('MasterController', function ($scope, $routeParams, VisitsLoade
      * @description Метод для проверки существования данных за будущее
      */
     $scope.hasFutureData = function () {
-        return true;
+        return $scope.date < maxDate && $scope.date.toDateString() != maxDate.toDateString();
     };
+
+    updatePages();
     /**
      *
      * @ngdoc method
@@ -149,15 +155,47 @@ myApp.controller('MasterController', function ($scope, $routeParams, VisitsLoade
     function updatePages() {
         var prevdate = new Date($scope.date.getFullYear(), $scope.date.getMonth(), $scope.date.getDate() - 1);
         var nextdate = new Date($scope.date.getFullYear(), $scope.date.getMonth(), $scope.date.getDate() + 1);
-        var masters = MastersPerDayLoader.getAllMastersPerDay($scope.date, VisitsLoader);
-        var prevMasters = MastersPerDayLoader.getAllMastersPerDay(prevdate, VisitsLoader);
-        var nextMasters = MastersPerDayLoader.getAllMastersPerDay(nextdate, VisitsLoader);
-        $scope.pages = [getNeededVisits(prevMasters), getNeededVisits(masters), getNeededVisits(nextMasters)];
-        $scope.pageIndex = 1;
+
+        if (!$scope.hasFutureData()) {
+            console.log(1);
+            var masters = MastersPerDayLoader.getAllMastersPerDay($scope.date, VisitsLoader);
+            var prevMasters = MastersPerDayLoader.getAllMastersPerDay(prevdate, VisitsLoader);
+            $scope.pages = [getNeededVisits(prevMasters), getNeededVisits(masters)];
+            $scope.pageIndex = 1;
+        } else {
+            if ($scope.hasPrevData()) {
+                console.log(2);
+                var masters = MastersPerDayLoader.getAllMastersPerDay($scope.date, VisitsLoader);
+                var prevMasters = MastersPerDayLoader.getAllMastersPerDay(prevdate, VisitsLoader);
+                var nextMasters = MastersPerDayLoader.getAllMastersPerDay(nextdate, VisitsLoader);
+                $scope.pages = [getNeededVisits(prevMasters), getNeededVisits(masters), getNeededVisits(nextMasters)];
+                $scope.pageIndex = 1;
+            } else {
+                console.log(3);
+                var masters = MastersPerDayLoader.getAllMastersPerDay($scope.date, VisitsLoader);
+                var nextMasters = MastersPerDayLoader.getAllMastersPerDay(nextdate, VisitsLoader);
+                $scope.pages = [getNeededVisits(masters), getNeededVisits(nextMasters)];
+                $scope.pageIndex = 0;
+            }
+        }
     }
 
 
     $scope.$watch('date.toDateString()', function () {
         updatePages();
     });
+
+
+    /**
+     *
+     * @ngdoc method
+     * @name myApp.controller:MasterController#hasVisits
+     * @methodOf myApp.controller:MasterController
+     * @param {Object} visit Объект визит
+     * @returns {Boleean} Возвращает true, если визит есть
+     * @description Метод для проверки существования визита
+     */
+    $scope.hasVisits = function (visit) {
+        return visit.length != 0;
+    }
 });

@@ -30,6 +30,8 @@
             </li>
             <li style="font-weight:bold; text-align:center; font-size:12pt;" ng-show="visit.isDownTime">Простой мастера {{visit.downTime}}</li>
         </ul>
-
+        <ul class="list inset" ng-hide="hasVisits(page)">
+            <li style='text-align: center; font-size: 14pt;'>Нет визитов</li>
+        </ul>
     </li>
 </ul>

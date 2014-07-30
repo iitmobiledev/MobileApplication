@@ -93,15 +93,6 @@ myApp.controller('VisitsMasterController', function ($scope, $filter, $location,
                 $scope.pageIndex = 1;
             }
         }
-
-
-
-//        $scope.prevdate = new Date($scope.date.getFullYear(), $scope.date.getMonth(),
-//            $scope.date.getDate() - 1);
-//        $scope.nextdate = new Date($scope.date.getFullYear(), $scope.date.getMonth(),
-//            $scope.date.getDate() + 1);
-//        $scope.pages = [MastersPerDayLoader.getAllMastersPerDay($scope.prevdate, VisitsLoader), MastersPerDayLoader.getAllMastersPerDay($scope.date, VisitsLoader), MastersPerDayLoader.getAllMastersPerDay($scope.nextdate, VisitsLoader)];
-//        $scope.pageIndex = 1;
     });
 
 
