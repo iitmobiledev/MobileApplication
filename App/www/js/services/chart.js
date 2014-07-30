@@ -27,13 +27,17 @@ myApp.factory('ChartDataLoader', function (OperatonalStatisticsDataSumming) {
 
         var tempData = [];
         for (i = 0; i < manyData.length; i++) {
-            if (manyData[i].date > endDay && manyData[i].date < nowDay) {
+            if (manyData[i].date >= endDay && manyData[i].date <= nowDay) {
                 tempData.push(manyData[i]);
-                if (i % step == 0) {
+                if (tempData.length % step == 0 && i != 0) {
                     summedData.push(OperatonalStatisticsDataSumming(tempData));
                     tempData = [];
                 }
             }
+        }
+        if (tempData.length != 0) {
+            summedData.push(OperatonalStatisticsDataSumming(tempData));
+            tempData = [];
         }
         for (i = 0; i < summedData.length; i++) {
             var item = [];

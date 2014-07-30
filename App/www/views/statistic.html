@@ -14,11 +14,10 @@
                             <div class="widget uib_w_16 d-margins text" data-uib="media/text" data-ver="0" id="clientsText">
                                 <div class="widget-container left-receptacle"></div>
                                 <div class="widget-container right-receptacle"></div>
-                                <div>
+                                <div style="align: center;">
+                                    <h1>{{page.currentData.proceeds}} р.</h1>
+                                    <p>В прошлом {{page.prevData.proceeds}} р.</p>
                                     <p>Выручка</p>
-                                    <h3>{{page.currentData.proceeds}} р.</h3>
-                                    <p>В прошлом</p>
-                                    <p>{{page.prevData.proceeds}} р.</p>
 
                                 </div>
                             </div>
@@ -32,12 +31,10 @@
                             <div class="widget uib_w_16 d-margins text" data-uib="media/text" data-ver="0" id="clientsText">
                                 <div class="widget-container left-receptacle"></div>
                                 <div class="widget-container right-receptacle"></div>
-                                <div>
+                                <div style="align: center;">
+                                    <h1>{{page.currentData.profit}} р.</h1>
+                                    <p>В прошлом {{page.prevData.profit}} р.</p>
                                     <p>Прибыль</p>
-                                    <p></p>
-                                    <h3>{{page.currentData.profit}} р.</h3>
-                                    <p>В прошлом</p>
-                                    <p>{{page.prevData.profit}} р.</p>
                                 </div>
                             </div>
                             <span class="uib_shim"></span>
@@ -53,12 +50,10 @@
                             <div class="widget uib_w_16 d-margins text" data-uib="media/text" data-ver="0" id="clientsText">
                                 <div class="widget-container left-receptacle"></div>
                                 <div class="widget-container right-receptacle"></div>
-                                <div>
+                                <div style="align: center;">
+                                    <h1>{{page.currentData.clients}}</h1>
+                                    <p>В прошлом {{page.prevData.clients}}</p>
                                     <p>Клиентов</p>
-                                    <p></p>
-                                    <h3>{{page.currentData.clients}}</h3>
-                                    <p>В прошлом</p>
-                                    <p>{{page.prevData.clients}}</p>
                                 </div>
                             </div>
                             <span class="uib_shim"></span>
@@ -71,12 +66,10 @@
                             <div class="widget uib_w_17 d-margins text" data-uib="media/text" data-ver="0" id="workLoadText">
                                 <div class="widget-container left-receptacle"></div>
                                 <div class="widget-container right-receptacle"></div>
-                                <div>
+                                <div style="align: center;">
+                                    <h1>{{page.currentData.workload}}%</h1>
+                                    <p>В прошлом {{page.prevData.workload}}%</p>
                                     <p>Загруженность</p>
-                                    <p></p>
-                                    <h3>{{page.currentData.workload}}%</h3>
-                                    <p>В прошлом</p>
-                                    <p>{{page.prevData.workload}}%</p>
                                 </div>
                             </div>
                             <span class="uib_shim"></span>
@@ -88,22 +81,22 @@
 
 
 
-                <div class="grid grid-pad urow uib_row_7 row-height-7" data-uib="layout/row" data-ver="0" ng-controller="FinanceStatisticsController">
+                <div class="grid grid-pad urow uib_row_7 row-height-7" data-uib="layout/row" data-ver="0" ng-controller="FinanceStatisticsController" style="border:1px solid gray;">
                     <div class="col uib_col_14 col-0_6-12" data-uib="layout/col" data-ver="0">
                         <div class="widget-container content-area vertical-col">
 
-                            <div class="widget uib_w_11 d-margins header3" data-uib="media/text" data-ver="0" id="cashOnHand">
-                                <div class="widget-container left-receptacle"></div>
-                                <div class="widget-container right-receptacle"></div>
-                                <div>
-                                    <p>Денег в кассе</p>
-                                </div>
-                            </div>
                             <div class="widget uib_w_12 d-margins money" data-uib="media/text" data-ver="0" id="cashOnHandValue">
                                 <div class="widget-container left-receptacle"></div>
                                 <div class="widget-container right-receptacle"></div>
                                 <div>
                                     <p>{{FinanceStatistics.tillMoney}} р.</p>
+                                </div>
+                            </div>
+                            <div class="widget uib_w_11 d-margins header3" data-uib="media/text" data-ver="0" id="cashOnHand">
+                                <div class="widget-container left-receptacle"></div>
+                                <div class="widget-container right-receptacle"></div>
+                                <div>
+                                    <p>В кассе</p>
                                 </div>
                             </div>
                             <span class="uib_shim"></span>
@@ -117,7 +110,7 @@
                                 <div class="widget-container left-receptacle">
                                 </div>
                                 <div class="widget-container right-receptacle"></div>
-                                <div>
+                                <div style="text-align:left;">
                                     <p>Утром: {{FinanceStatistics.morningMoney}}р.</p>
                                     <p>Приход: {{FinanceStatistics.credit}} р.</p>
                                     <a href="#/expenditures">
