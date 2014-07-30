@@ -743,14 +743,14 @@ only screen and (min-width: 768px) {
     position: absolute;
 }
 #afui .footer {
-    background: #f4f4f4;
+    background: #f6f6f6;
     border: none;
-    border-top: 1px solid #0088D1;
+    border-top: 1px solid #e0e0e0;
     box-shadow: none;
 }
 #afui footer>a:not(.button) {} #afui footer>a.pressed:not(.button) {
     border-radius: 0;
-    background: #E4E4E4;
+    background: #f6f6f6;
     color: rgb(168, 61, 190);
 }
 #afui footer>a.icon.pressed:not(.button):before {
@@ -1268,16 +1268,16 @@ only screen and (min-width: 768px) {
 #afui .button {
     position: relative;
     display: inline-block;
-    padding: 8px 12px;
+    padding: 12px 12px;
     margin: 8px 0;
-    font-weight: bold;
-    color: #000;
+    font-weight: normal;
+    font-size: 16px;
+    color: gray;
     text-align: center;
     vertical-align: top;
     cursor: pointer;
-    background-color: #eee;
-    border: 1px solid #666;
-    border-radius: 6px;
+    background-color: #f8f8f8;
+    border: 0 solid #666;
     /*box-shadow: 0 1px 0 #fff;*/
     text-decoration: none;
     z-index: 2;
@@ -1285,7 +1285,8 @@ only screen and (min-width: 768px) {
 /* Active */
 
 #afui .button.pressed {
-    background: #fff;
+    color: purple;
+    border-bottom: 5px solid purple;
 }
 #afui .button.previous {
     margin-left: 16px;
@@ -1345,14 +1346,14 @@ only screen and (min-width: 768px) {
 #afui .button-grouped * {
     border-radius: 0px;
     float: left;
-    border-left: 0px solid transparent;
-    border-right: 1px solid #666;
-    border-bottom: 1px solid #666;
-    border-top: 1px solid #666;
+    border-left: 0 solid transparent;
+    border-right: 0 solid #666;
+    border-bottom: 0 solid #666;
+    border-top: 0 solid #666;
     margin: 0;
 }
 #afui .button-grouped > .button:first-child {
-    border-left: 1px solid #666;
+    border-left: 0 solid #666;
     border-top-left-radius: 6px;
     border-bottom-left-radius: 6px;
 }
