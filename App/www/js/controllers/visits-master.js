@@ -7,7 +7,7 @@
  * @requires myApp.service:MastersPerDayLoader
  */
 myApp.controller('VisitsMasterController', function ($scope, $filter, $location, VisitsLoader, MastersPerDayLoader) {
-    $('#mastersButton').addClass('pressed');
+    //$('#mastersButton').addClass('pressed');
 
     var minDate = VisitsLoader.getMinDate();
     var maxDate = VisitsLoader.getMaxDate();

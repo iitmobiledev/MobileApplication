@@ -1278,6 +1278,7 @@ only screen and (min-width: 768px) {
     cursor: pointer;
     background-color: #f8f8f8;
     border: 0 solid #666;
+    border-radius: 0;
     /*box-shadow: 0 1px 0 #fff;*/
     text-decoration: none;
     z-index: 2;
@@ -1285,6 +1286,11 @@ only screen and (min-width: 768px) {
 /* Active */
 
 #afui .button.pressed {
+    color: purple;
+/*    border-bottom: 5px solid purple;*/
+}
+
+#afui .button.active {
     color: purple;
     border-bottom: 5px solid purple;
 }

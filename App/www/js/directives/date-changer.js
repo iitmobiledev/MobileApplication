@@ -247,9 +247,12 @@ myApp.directive('dateChanger', function (DateHelper, $filter) {
             }
 
             for (var i = 0; i < steps.length; i++) {
+                var classValue = "button widget uib_w_6 d-margins";
+                if (i == 0)
+                    classValue += ' active';
                 element.find("#periodButtons").append(
                     $("<a>", {
-                        "class": "button widget uib_w_6 d-margins",
+                        "class": classValue,
                         "data-uib": "app_framework/button",
                         "data-ver": "1",
                         text: titleSteps[i],
@@ -257,7 +260,9 @@ myApp.directive('dateChanger', function (DateHelper, $filter) {
                         click: function () {
                             scope[attrs.step] = this.id;
                             scope.$apply();
-                            //$(this).addClass("pressed");
+                            for (var j = 0; j < steps.length; j++)
+                                element.find("#"+steps[j]).removeClass('active');
+                             $(this).addClass("active");
                         }
                     })
                 );
