@@ -62,16 +62,21 @@ myApp.factory('UserLoader', function ($http) {
  * @param {Token} token токен пользователя.
  */
 myApp.factory('UserLogout', function ($http) {
-    return function (token) {
+    return function (token, callback) {
         $http({
             method: 'POST',
             url: 'http://auth.test.arnica.pro/rest/logout',
-            params: {
+            data: {
+                v: '1.0',
+                appID: 'test',
+                rand: '13',
+                sign: hex_md5(hex_md5('appidtestrand12v1.0test') + 'logout' + 'WatchThatStupidLeech'),
                 token: token
-            }
+            },
+            responseType: 'json'
         }).
-        success(function (data, status, headers, config) {
-            console.log("Пользователь разлогинен.");
+        success(function () {
+            callback();
         });
-    }
+    };
 });

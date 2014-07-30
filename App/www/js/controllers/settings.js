@@ -17,10 +17,10 @@ myApp.controller('SettingsController', function ($scope, UserLoader, UserLogout,
         else
             alert("Ошибка аутентификации. Пожалуйста проверьте правильность введенных данных.");
     });
-    //$scope.user = sessvars.user;
-//    $scope.exit = function () {
-//        UserLogout(sessvars.token);
-//        sessvars.$.clearMem();
-//        $location.path('authorization');
-//    };
+    $scope.exit = function () {
+        UserLogout(sessvars.token, function () {
+            sessvars.$.clearMem();
+            $location.path('authorization');
+        });
+    };
 });
