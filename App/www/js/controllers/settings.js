@@ -11,11 +11,16 @@
  * @requires myApp.service:UserLoader
  */
 myApp.controller('SettingsController', function ($scope, UserLoader, UserLogout, $location) {
-     $scope.user = UserLoader(sessvars.token);
+    UserLoader(sessvars.token, function (userInfo) {
+        if (userInfo)
+            $scope.user = userInfo;
+        else
+            alert("Ошибка аутентификации. Пожалуйста проверьте правильность введенных данных.");
+    });
     //$scope.user = sessvars.user;
-     $scope.exit = function(){
-         UserLogout(sessvars.token);
-         sessvars.$.clearMem();
-         $location.path('authorization');
-     };
- });
+//    $scope.exit = function () {
+//        UserLogout(sessvars.token);
+//        sessvars.$.clearMem();
+//        $location.path('authorization');
+//    };
+});

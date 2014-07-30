@@ -6,7 +6,7 @@
  * @requires myApp.service:UserAuthorization
  */
 myApp.controller('AuthorizationController', function ($scope, $location, UserAuthorization) {
-    if (sessvars.user)
+    if (sessvars.token)
         $location.path('index');
     
     /**

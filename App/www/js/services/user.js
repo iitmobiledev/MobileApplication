@@ -22,7 +22,7 @@ myApp.factory('UserAuthorization', function ($http) {
             responseType: 'json'
         }).
         success(function (data, status, headers, config) {
-            callback(data);
+            callback(data.token);
         });
     };
 });
@@ -35,23 +35,22 @@ myApp.factory('UserAuthorization', function ($http) {
  * @returns {UserInfo} объект пользователя
  */
 myApp.factory('UserLoader', function ($http) {
-    return function (token) {
+    return function (token, callback) {
         $http({
             method: 'POST',
             url: 'http://auth.test.arnica.pro/rest/getUserInfo',
-            params: {
+            data: {
+                v: '1.0',
+                appID: 'test',
+                rand: '12',
+                sign: hex_md5(hex_md5('appidtestrand12v1.0test') + 'getUserInfo' + 'WatchThatStupidLeech'),
                 token: token
-            }
+            },
+            responseType: 'json'
         }).
         success(function (data, status, headers, config) {
-            return data;
-        }).
-        error(function () {
-            return null;
+            callback(data);
         });
-
-        //        var user = getCurrentUser();
-        //        return user;
     };
 });
 

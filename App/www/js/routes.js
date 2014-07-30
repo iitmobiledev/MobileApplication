@@ -44,7 +44,7 @@ myApp.config(['$routeProvider',
             controller: 'AuthorizationController'
         }).
         otherwise({
-            redirectTo: '/index'
+            redirectTo: '/authorization'
         });
     }]);
 
