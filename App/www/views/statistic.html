@@ -5,127 +5,61 @@
     <div id="statisticPanel">
 
         <date-changer step='step' date='date' steps='["day", "week", "month"]' titles='["За день", "За неделю", "За месяц"]' has-future-data='hasFutureData()' has-prev-data='hasPrevData()' index='pageIndex'></date-changer>
-        <ul id='carousel' rn-carousel rn-carousel-index="pageIndex">
-            <li ng-repeat="page in pages">
-                <div class="grid urow uib_row_4 row-height-4 tablePadding" data-uib="layout/row" data-ver="0">
 
-                    <a ng-click="toChart('proceeds')" class="col uib_col_9 col-0_6-12 cell" data-uib="layout/col" data-ver="0">
-                        <div class="widget-container content-area vertical-col">
-                            <div class="widget uib_w_16 d-margins text" data-uib="media/text" data-ver="0" id="clientsText">
-                                <div class="widget-container left-receptacle"></div>
-                                <div class="widget-container right-receptacle"></div>
-                                <div style="align: center;">
-                                    <h1>{{page.currentData.proceeds}} р.</h1>
-                                    <p>В прошлом {{page.prevData.proceeds}} р.</p>
-                                    <p>Выручка</p>
+        <div style="margin:10px;">
+            <ul id='carousel' rn-carousel rn-carousel-index="pageIndex">
+                <li ng-repeat="page in pages">
+                    <table id="statisticTable">
+                        <tr>
+                            <td class="sCell" ng-click="toChart('proceeds')">
+                                <img src="images/proceeds.PNG" style="margin:5px;">
+                                <h1>{{page.currentData.proceeds}} р.</h1>
+                                <p>Выручка</p>
+                            </td>
+                            <td class="sCell" ng-click="toChart('profit')">
+                                <img src="images/profit.PNG" style="margin:5px">
+                                <h1>{{page.currentData.profit}} р.</h1>
+                                <p>Прибыль</p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="sCell" ng-click="toChart('clients')">
+                                <img src="images/clients.PNG" style="margin:5px">
+                                <h1>{{page.currentData.clients}}</h1>
+                                <p>Клиента</p>
+                            </td>
+                            <td class="sCell" ng-click="toChart('workload')">
+                                <img src="images/workload.PNG" style="margin:5px">
+                                <h1>{{page.currentData.workload}}%</h1>
+                                <p>Загруженность</p>
+                            </td>
+                        </tr>
+                    </table>
+                </li>
+            </ul>
+            <table id="financeTable" style="border: solid 1px gray">
+                <tr ng-controller="FinanceStatisticsController">
+                    <td class="financeCell">
+                        <h1>{{FinanceStatistics.tillMoney}} р.</h1>
+                        <p style="font-size:14px; ">В кассе</p>
+                    </td>
+                    <td class="financeCell">
+                        <p>Утром: {{FinanceStatistics.morningMoney}}р.</p>
+                        <p>Приход: {{FinanceStatistics.credit}} р.</p>
+                        <a ng-click="toExpenditures() ">
+                            <p>Расход: {{FinanceStatistics.debit}} р.</p>
+                        </a>
+                    </td>
 
-                                </div>
-                            </div>
-                            <span class="uib_shim"></span>
-                        </div>
-                    </a>
-
-                    <a ng-click="toChart('profit')" class="col uib_col_10 col-0_6-12 cell" data-uib="layout/col" data-ver="0">
-                        <div class="widget-container content-area vertical-col">
-                            <div class="widget uib_w_16 d-margins text" data-uib="media/text" data-ver="0" id="clientsText">
-                                <div class="widget-container left-receptacle"></div>
-                                <div class="widget-container right-receptacle"></div>
-                                <div style="align: center;">
-                                    <h1>{{page.currentData.profit}} р.</h1>
-                                    <p>В прошлом {{page.prevData.profit}} р.</p>
-                                    <p>Прибыль</p>
-                                </div>
-                            </div>
-                            <span class="uib_shim"></span>
-                        </div>
-                        <span class="uib_shim"></span>
-                    </a>
-                </div>
-
-                <div class="grid urow uib_row_6 tablePadding row-height-4" data-uib="layout/row" data-ver="0">
-                    <a ng-click="toChart('clients')" class="col uib_col_12 col-0_6-12 cell" data-uib="layout/col" data-ver="0">
-                        <div class="widget-container content-area vertical-col">
-                            <div class="widget uib_w_16 d-margins text" data-uib="media/text" data-ver="0" id="clientsText">
-                                <div class="widget-container left-receptacle"></div>
-                                <div class="widget-container right-receptacle"></div>
-                                <div style="align: center;">
-                                    <h1>{{page.currentData.clients}}</h1>
-                                    <p>В прошлом {{page.prevData.clients}}</p>
-                                    <p>Клиентов</p>
-                                </div>
-                            </div>
-                            <span class="uib_shim"></span>
-                        </div>
-                    </a>
-                    <a ng-click="toChart('workload')" class="col uib_col_13 col-0_6-12 cell" data-uib="layout/col" data-ver="0">
-                        <div class="widget-container content-area vertical-col">
-                            <div class="widget uib_w_17 d-margins text" data-uib="media/text" data-ver="0" id="workLoadText">
-                                <div class="widget-container left-receptacle"></div>
-                                <div class="widget-container right-receptacle"></div>
-                                <div style="align: center;">
-                                    <h1>{{page.currentData.workload}}%</h1>
-                                    <p>В прошлом {{page.prevData.workload}}%</p>
-                                    <p>Загруженность</p>
-                                </div>
-                            </div>
-                            <span class="uib_shim"></span>
-                        </div>
-                    </a>
-                    <span class="uib_shim"></span>
-                </div>
-
-
-
-                <div class="grid grid-pad urow uib_row_7 row-height-7" data-uib="layout/row" data-ver="0" ng-controller="FinanceStatisticsController" style="border:1px solid gray;">
-                    <div class="col uib_col_14 col-0_6-12" data-uib="layout/col" data-ver="0">
-                        <div class="widget-container content-area vertical-col">
-
-                            <div class="widget uib_w_12 d-margins money" data-uib="media/text" data-ver="0" id="cashOnHandValue">
-                                <div class="widget-container left-receptacle"></div>
-                                <div class="widget-container right-receptacle"></div>
-                                <div>
-                                    <p>{{FinanceStatistics.tillMoney}} р.</p>
-                                </div>
-                            </div>
-                            <div class="widget uib_w_11 d-margins header3" data-uib="media/text" data-ver="0" id="cashOnHand">
-                                <div class="widget-container left-receptacle"></div>
-                                <div class="widget-container right-receptacle"></div>
-                                <div>
-                                    <p style="font-weight:normal; font-size:14px;">В кассе</p>
-                                </div>
-                            </div>
-                            <span class="uib_shim"></span>
-                        </div>
-                    </div>
-
-                    <div class="col uib_col_15 col-0_6-12" data-uib="layout/col" data-ver="0">
-                        <div class="widget-container content-area vertical-col">
-
-                            <div class="widget uib_w_13 d-margins" data-uib="media/text" data-ver="0">
-                                <div class="widget-container left-receptacle">
-                                </div>
-                                <div class="widget-container right-receptacle"></div>
-                                <div style="text-align:left;">
-                                    <p>Утром: {{FinanceStatistics.morningMoney}}р.</p>
-                                    <p>Приход: {{FinanceStatistics.credit}} р.</p>
-                                    <a ng-click="toExpenditures()">
-                                        <p>Расход: {{FinanceStatistics.debit}} р.</p>
-                                    </a>
-                                </div>
-                            </div>
-                            <span class="uib_shim"></span>
-                        </div>
-                    </div>
-                </div>
-            </li>
-        </ul>
-
-        <span class="uib_shim"></span>
+                </tr>
+            </table>
+        </div>
+        <span class="uib_shim "></span>
     </div>
 </div>
 
 <!-- /upage-content -->
-<!-- //<div class="footer"></div>-->
+<!-- //<div class="footer "></div>-->
 <!--
    
 -->

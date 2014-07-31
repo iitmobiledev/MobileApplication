@@ -1,4 +1,31 @@
-#header {
-    color: #f4f4f4;
-    background: #f4f4f4;
+#statisticTable {
+    border-collapse: separate;
+    border-spacing: 0px;
+    width: 100%;
+    height: 100%;
+}
+#statisticTable .sCell {
+    border: 1px solid #D3D3D3;
+    text-align: center;
+    padding: 10px;
+}
+/*
+#statisticTable .rightCell {
+    border: 1px solid gray;
+    text-align: center;
+    position: relative;
+}
+*/
+
+#financeTable {
+    border-collapse: separate;
+    border-spacing: 0px;
+    width: 100%;
+    height: 100%;
+}
+#financeTable .financeCell {
+    text-align: center;
+}
+#financeTable .financeRow {
+    border: 1px solid #D3D3D3;
 }

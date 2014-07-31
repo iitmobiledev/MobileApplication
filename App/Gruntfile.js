@@ -7,7 +7,7 @@ module.exports = function (grunt) {
                 html5Mode: false
             },
             api: {
-                src: ['www/js/*.js', 'www/js/directives/*.js', 'www/js/controllers/*.js'],
+                src: ['www/js/*.js', 'www/js/directives/*.js', 'www/js/controllers/*.js','www/js/services/*.js'],
                 title: 'API Documentation'
             }
         },
