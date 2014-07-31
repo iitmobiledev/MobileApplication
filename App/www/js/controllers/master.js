@@ -161,7 +161,7 @@ myApp.controller('MasterController', function ($scope, $routeParams, VisitsLoade
             var masters = MastersPerDayLoader.getAllMastersPerDay($scope.date, VisitsLoader);
             var prevMasters = MastersPerDayLoader.getAllMastersPerDay(prevdate, VisitsLoader);
             $scope.pages = [getNeededVisits(prevMasters), getNeededVisits(masters)];
-            $scope.pageIndex = 1;
+//            $scope.pageIndex = 1;
         } else {
             if ($scope.hasPrevData()) {
                 console.log(2);
@@ -169,7 +169,7 @@ myApp.controller('MasterController', function ($scope, $routeParams, VisitsLoade
                 var prevMasters = MastersPerDayLoader.getAllMastersPerDay(prevdate, VisitsLoader);
                 var nextMasters = MastersPerDayLoader.getAllMastersPerDay(nextdate, VisitsLoader);
                 $scope.pages = [getNeededVisits(prevMasters), getNeededVisits(masters), getNeededVisits(nextMasters)];
-                $scope.pageIndex = 1;
+//                $scope.pageIndex = 1;
             } else {
                 console.log(3);
                 var masters = MastersPerDayLoader.getAllMastersPerDay($scope.date, VisitsLoader);

@@ -57,11 +57,11 @@ myApp.controller('ExpendituresController', function ($scope, $filter, Expenditur
 
         if (!$scope.hasFutureData()) {
             $scope.pages = [ExpendituresLoader.getData($scope.prevdate), ExpendituresLoader.getData($scope.date)];
-            $scope.pageIndex = 1;
+//            $scope.pageIndex = 1;
         } else {
             if ($scope.hasPrevData()) {
                 $scope.pages = [ExpendituresLoader.getData($scope.prevdate), ExpendituresLoader.getData($scope.date), ExpendituresLoader.getData($scope.nextdate)];
-                $scope.pageIndex = 1;
+//                $scope.pageIndex = 1;
             }
         }
     }

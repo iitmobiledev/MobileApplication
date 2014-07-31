@@ -71,7 +71,7 @@ myApp.controller('OperationalStatisticController', function ($scope, $location, 
                 currentData: getStatistic($scope.date, $scope.step),
                 prevData: getStatistic(DateHelper.getPrev($scope.date, $scope.step), $scope.step)
             }];
-            $scope.pageIndex = 1;
+//            $scope.pageIndex = 1;
         } else {
             if ($scope.hasPrevData()) {
                 $scope.pages = [{
@@ -84,7 +84,7 @@ myApp.controller('OperationalStatisticController', function ($scope, $location, 
                     currentData: getStatistic($scope.nextdate, $scope.step),
                     prevData: getStatistic(DateHelper.getPrev($scope.nextdate, $scope.step), $scope.step)
                 }];
-                $scope.pageIndex = 1;
+//                $scope.pageIndex = 1;
             } else {
                 $scope.date = OperationalStatisticLoader.getMinDate();
             }

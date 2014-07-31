@@ -63,11 +63,11 @@ myApp.controller('VisitsController', function ($scope, $filter, $location, Visit
 
         if (!$scope.hasFutureData()) {
             $scope.pages = [VisitsLoader.getData($scope.prevdate), VisitsLoader.getData($scope.date)];
-            $scope.pageIndex = 1;
+//            $scope.pageIndex = 1;
         } else {
             if ($scope.hasPrevData()) {
                 $scope.pages = [VisitsLoader.getData($scope.prevdate), VisitsLoader.getData($scope.date), VisitsLoader.getData($scope.nextdate)];
-                $scope.pageIndex = 1;
+//                $scope.pageIndex = 1;
             }
         }
     });

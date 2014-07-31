@@ -86,11 +86,11 @@ myApp.controller('VisitsMasterController', function ($scope, $filter, $location,
 
         if (!$scope.hasFutureData()) {
             $scope.pages = [MastersPerDayLoader.getAllMastersPerDay($scope.prevdate), MastersPerDayLoader.getAllMastersPerDay($scope.date)];
-            $scope.pageIndex = 1;
+//            $scope.pageIndex = 1;
         } else {
             if ($scope.hasPrevData()) {
                 $scope.pages = [MastersPerDayLoader.getAllMastersPerDay($scope.prevdate), MastersPerDayLoader.getAllMastersPerDay($scope.date), MastersPerDayLoader.getAllMastersPerDay($scope.nextdate)];
-                $scope.pageIndex = 1;
+//                $scope.pageIndex = 1;
             }
         }
     });
