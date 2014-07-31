@@ -4,7 +4,7 @@
  * @name myApp.service:UserAuthorization
  * @param {String} login логин пользователя.
  * @param {String} password пароль пользователя.
- * @returns {Token} токен
+ * @returns {String} токен зарегистрированного пользователя.
  */
 myApp.factory('UserAuthorization', function ($http) {
     return function (login, password, callback) {
@@ -30,9 +30,10 @@ myApp.factory('UserAuthorization', function ($http) {
 
 /**
  * @ngdoc service
- * @description Сервис для получения текущего пользователя.
+ * @description Сервис для получения текущего аутентифицированного 
+ * пользователя.
  * @name myApp.service:UserLoader
- * @returns {UserInfo} объект пользователя
+ * @returns {UserInfo} информация о пользователе.
  */
 myApp.factory('UserLoader', function ($http) {
     return function (token, callback) {
