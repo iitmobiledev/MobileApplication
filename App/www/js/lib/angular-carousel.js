@@ -75,6 +75,7 @@ angular.module('angular-carousel')
 angular.module('angular-carousel')
 
 .directive('rnCarouselControls', [
+
     function () {
         return {
             restrict: 'A',
@@ -107,6 +108,7 @@ angular.module('angular-carousel').run(['$templateCache',
 angular.module('angular-carousel')
 
 .directive('rnCarouselIndicators', [
+
     function () {
         return {
             restrict: 'A',
@@ -219,12 +221,12 @@ angular.module('angular-carousel').run(['$templateCache',
                                 scope.carouselExposedIndex = newValue;
                             });
                             scope.$watch('indicatorIndex', function (newValue) {
-                                goToSlide(newValue, true);
+//                                goToSlide(newValue, true);
                             });
                         }
 
                         scope.$watch('carouselExposedIndex', function (newValue) {
-                            goToSlide(newValue, true);
+//                            goToSlide(newValue, true);
                         });
                         // enable carousel indicator
                         if (angular.isDefined(iAttributes.rnCarouselIndicator)) {
@@ -256,14 +258,16 @@ angular.module('angular-carousel').run(['$templateCache',
                                 scope.carouselIndex = indexModel(scope);
                                 scope.$parent.$watch(indexModel, function (newValue, oldValue) {
                                     if (newValue !== undefined) {
-                                        if (newValue >= slidesCount) {
-                                            newValue = slidesCount - 1;
-                                            updateParentIndex(newValue);
-                                        } else if (newValue < 0) {
-                                            newValue = 0;
-                                            updateParentIndex(newValue);
+                                        if (newValue != -1) {
+                                            if (newValue >= slidesCount) {
+                                                newValue = slidesCount - 1;
+                                                updateParentIndex(newValue);
+                                            } else if (newValue < 0) {
+                                                newValue = 0;
+                                                updateParentIndex(newValue);
+                                            }
+                                            goToSlide(newValue, true);
                                         }
-                                        goToSlide(newValue, true);
                                     }
                                 });
                                 isIndexBound = true;
@@ -380,11 +384,12 @@ angular.module('angular-carousel').run(['$templateCache',
                         }
 
                         function goToSlide(i, animate) {
+                            console.log("i", i, animate);
                             if (isNaN(i)) {
                                 i = scope.carouselIndex;
                             }
                             if (animate) {
-                                if (scope.carouselIndex == 1) {
+                                if (i != 1) {
                                     // simulate a swipe so we have the standard animation
                                     // used when external binding index is updated or touch canceed
                                     offset = (i * containerWidth);
@@ -404,6 +409,10 @@ angular.module('angular-carousel').run(['$templateCache',
                                 }
                             }
                             scroll();
+                            if (i != 1 && animate === undefined) {
+                                goToSlide(1, true);
+                            }
+
                         }
 
                         function getAbsMoveTreshold() {
