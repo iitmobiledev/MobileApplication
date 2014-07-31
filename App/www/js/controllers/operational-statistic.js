@@ -106,4 +106,17 @@ myApp.controller('OperationalStatisticController', function ($scope, $location, 
     $scope.toChart = function (type) {
         $location.path('chart/' + type);
     }
+    
+    
+    /**
+     *
+     * @ngdoc method
+     * @name myApp.controller:OperationalStatisticController#toExpenditures
+     * @methodOf myApp.controller:OperationalStatisticController
+     * @description Метод для перехода на страницу расходов.
+     */
+    $scope.toExpenditures = function () {
+        $location.path('expenditures');
+    }
+    
 });
