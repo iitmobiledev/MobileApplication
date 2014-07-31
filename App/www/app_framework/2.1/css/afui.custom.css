@@ -1345,10 +1345,12 @@ only screen and (min-width: 768px) {
     margin: 0;
     border-color: #fff;
 }
+/*
 #afui .button-grouped {
     display: inline-block;
     margin: 5px;
 }
+*/
 #afui .button-grouped * {
     border-radius: 0px;
     float: left;
