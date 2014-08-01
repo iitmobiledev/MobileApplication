@@ -62,11 +62,11 @@ myApp.factory('DateHelper', function () {
                     this.end = date;
                     break;
                 case steps.WEEK:
-                    var weekDay = date.getDay() - 1; // для начала недели с понедельника
+                    var weekDay = date.getDay() - 1;
                     if (weekDay < 0)
                         weekDay = 6;
                     this.begin = new Date(date.getFullYear(), date.getMonth(), date.getDate() - weekDay);
-                    this.end = new Date(date.getFullYear(), date.getMonth(), this.begin.getDate() + 6);
+                    this.end = new Date(this.begin.getFullYear(), this.begin.getMonth(), this.begin.getDate() + 6);
                     break;
                 case steps.MONTH:
                     var begin = new Date(date.getFullYear(), date.getMonth(), 1);
@@ -78,6 +78,16 @@ myApp.factory('DateHelper', function () {
             };
         return period;
     };
+    
+    function getPrevPeriod(date, step){
+        var currentPeriod = getPeriod(date, step);
+        return getPeriod(new Date(currentPeriod.begin.getFullYear(), currentPeriod.begin.getMonth(), currentPeriod.begin.getDate() - 1), step);
+    }
+    
+    function getNextPeriod(date, step){
+        var currentPeriod = getPeriod(date, step);
+        return getPeriod(new Date(currentPeriod.end.getFullYear(), currentPeriod.end.getMonth(), currentPeriod.end.getDate() + 1), step);
+    }
 
     /**
      *
@@ -94,70 +104,11 @@ myApp.factory('DateHelper', function () {
      * номеру.
      */
     function getMonthTitle(monthNumber, step) {
-        switch (monthNumber + '') {
-        case '0':
-            if (step == steps.MONTH)
-                return 'Январь';
-            if (step == steps.DAY)
-                return 'января';
-        case '1':
-            if (step == steps.MONTH)
-                return 'Февраль';
-            if (step == steps.DAY)
-                return 'февраля';
-        case '2':
-            if (step == steps.MONTH)
-                return 'Март';
-            if (step == steps.DAY)
-                return 'марта';
-        case '3':
-            if (step == steps.MONTH)
-                return 'Апрель';
-            if (step == steps.DAY)
-                return 'апреля';
-        case '4':
-            if (step == steps.MONTH)
-                return 'Май';
-            if (step == steps.DAY)
-                return 'мая';
-        case '5':
-            if (step == steps.MONTH)
-                return 'Июнь';
-            if (step == steps.DAY)
-                return 'июня';
-        case '6':
-            if (step == steps.MONTH)
-                return 'Июль';
-            if (step == steps.DAY)
-                return 'июля';
-        case '7':
-            if (step == steps.MONTH)
-                return 'Август';
-            if (step == steps.DAY)
-                return 'августа';
-        case '8':
-            if (step == steps.MONTH)
-                return 'Сентябрь';
-            if (step == steps.DAY)
-                return 'сентября';
-        case '9':
-            if (step == steps.MONTH)
-                return 'Октябрь';
-            if (step == steps.DAY)
-                return 'октября';
-        case '10':
-            if (step == steps.MONTH)
-                return 'Ноябрь';
-            if (step == steps.DAY)
-                return 'ноября';
-        case '11':
-            if (step == steps.MONTH)
-                return 'Декабрь';
-            if (step == steps.DAY)
-                return 'декабря';
-        default:
-            return '';
-        }
+        if (step == steps.MONTH)
+            return ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'][monthNumber] || '';
+        if (step == steps.DAY)
+            return ['января', 'февраля', 'марта', 'апреля', 'мая', 'июня', 'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря'][monthNumber] || '';
+        return '';
     };
 
 
@@ -171,32 +122,15 @@ myApp.factory('DateHelper', function () {
      * @description Метод для получения названия дня недели по его номеру.
      */
     function getWeekDayTitle(dayNumber) {
-        switch (dayNumber + '') {
-        case '0':
-            return 'воскресенье';
-        case '1':
-            return 'понедельник';
-        case '2':
-            return 'вторник';
-        case '3':
-            return 'среда';
-        case '4':
-            return 'четверг';
-        case '5':
-            return 'пятница';
-        case '6':
-            return 'суббота';
-        case '7':
-            return 'воскресенье';
-        default:
-            return '';
-        }
+        return ['воскресенье', 'понедельник', 'вторник', 'среда', 'четверг', 'пятница', 'суббота'][dayNumber] || '';
     };
 
     return {
         steps: steps,
         getPrev: getPrev,
         getPeriod: getPeriod,
+        getPrevPeriod: getPrevPeriod,
+        getNextPeriod: getNextPeriod,
         getMonthTitle: getMonthTitle,
         getWeekDayTitle: getWeekDayTitle
     };

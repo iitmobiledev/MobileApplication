@@ -15,7 +15,7 @@
                     <a href="#/visit/{{visitInfo.id}}">
                         <div>
                             <div>{{visitInfo.status}}</div>
-                            <div style="font-weight:bold;">
+                            <div>
                                 <span style="float:left;  width:65%;white-space:nowrap;text-overflow:ellipsis;overflow: hidden;">
                                     {{visitInfo.client}}
                                 </span>
@@ -25,18 +25,20 @@
                             </div>
                             <div>
                                 <span style="float:left;width:65%;white-space:nowrap;text-overflow:ellipsis;overflow: hidden;">
-                                    {{visitInfo.masters}}:{{visitInfo.services}}
+                                    {{visitInfo.cost}} {{visitInfo.services}}
                                 </span>
+<!--
                                 <span style=" text-align:right; width:35%;white-space:nowrap;text-overflow:ellipsis">
                                     {{visitInfo.cost}}
                                 </span>
+-->
                             </div>
                         </div>
                     </a>
                 </li>
-            </ul>
-            <ul class="list inset" ng-hide="hasVisits(page)">
-                <li style='text-align: center; font-size: 14pt;'>Нет визитов</li>
+                <ul class="list inset" ng-hide="hasVisits(page)">
+                    <li style='text-align: center; font-size: 14pt;'>Нет визитов</li>
+                </ul>
             </ul>
         </li>
     </ul>

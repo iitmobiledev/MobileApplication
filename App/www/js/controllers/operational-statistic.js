@@ -62,9 +62,8 @@ myApp.controller('OperationalStatisticController', function ($scope, $location, 
      */
     function updatePages() {
         var period = DateHelper.getPeriod($scope.date, $scope.step);
-        $scope.prevdate = new Date($scope.date.getFullYear(), $scope.date.getMonth(), period.begin.getDate() - 1);
-        $scope.nextdate = new Date($scope.date.getFullYear(), $scope.date.getMonth(), period.end.getDate() + 1);
-
+        $scope.prevdate = DateHelper.getPrevPeriod($scope.date, $scope.step).begin;
+        $scope.nextdate = DateHelper.getNextPeriod($scope.date, $scope.step).end;
         if (!$scope.hasFutureData()) {
             $scope.pages = [{
                 currentData: getStatistic($scope.prevdate, $scope.step),

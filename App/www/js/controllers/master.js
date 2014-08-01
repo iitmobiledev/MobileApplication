@@ -11,8 +11,9 @@
  * @name myApp.controller:MasterController
  * @requires myApp.service:VisitsLoader
  * @requires myApp.service:MastersPerDayLoader
+  * @requires myApp.service:DateHelper
  */
-myApp.controller('MasterController', function ($scope, $routeParams, VisitsLoader, $filter, MastersPerDayLoader) {
+myApp.controller('MasterController', function ($scope, $routeParams, VisitsLoader, $filter, MastersPerDayLoader, DateHelper) {
     var minDate = VisitsLoader.getMinDate();
     var maxDate = VisitsLoader.getMaxDate();
 
@@ -156,8 +157,8 @@ myApp.controller('MasterController', function ($scope, $routeParams, VisitsLoade
      * @description Метод для обновления массива данных `$scope.pages`, содержащий визиты к мастеру за текущий, прошлый и будущий дни, необходим для анимации.
      */
     function updatePages() {
-        var prevdate = new Date($scope.date.getFullYear(), $scope.date.getMonth(), $scope.date.getDate() - 1);
-        var nextdate = new Date($scope.date.getFullYear(), $scope.date.getMonth(), $scope.date.getDate() + 1);
+        var prevdate = DateHelper.getPrevPeriod($scope.date, DateHelper.steps.DAY).begin;
+        var nextdate = DateHelper.getNextPeriod($scope.date, DateHelper.steps.DAY).end;
 
         if (!$scope.hasFutureData()) {
             console.log(1);

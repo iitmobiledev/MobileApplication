@@ -11,10 +11,9 @@
  * @ngdoc controller
  * @name myApp.controller:VisitsController
  * @requires myApp.service:VisitsLoader
- * @requires $location
- * @requires $filter
+ * @requires myApp.service:DateHelper
  */
-myApp.controller('VisitsController', function ($scope, $filter, $location, VisitsLoader) {
+myApp.controller('VisitsController', function ($scope, $filter, $location, VisitsLoader, DateHelper) {
     var minDate = VisitsLoader.getMinDate();
     var maxDate = VisitsLoader.getMaxDate();
 
@@ -63,8 +62,8 @@ myApp.controller('VisitsController', function ($scope, $filter, $location, Visit
     }
 
     $scope.$watch('date.toDateString()', function () {
-        $scope.prevdate = new Date($scope.date.getFullYear(), $scope.date.getMonth(), $scope.date.getDate() - 1);
-        $scope.nextdate = new Date($scope.date.getFullYear(), $scope.date.getMonth(), $scope.date.getDate() + 1);
+        $scope.prevdate = DateHelper.getPrevPeriod($scope.date, DateHelper.steps.DAY).begin;
+        $scope.nextdate = DateHelper.getNextPeriod($scope.date, DateHelper.steps.DAY).end;
 
         if (!$scope.hasFutureData()) {
             $scope.pages = [VisitsLoader.getData($scope.prevdate), VisitsLoader.getData($scope.date)];

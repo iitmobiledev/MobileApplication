@@ -10,10 +10,9 @@
  * @name myApp.controller:VisitsMasterController
  * @requires myApp.service:VisitsLoader
  * @requires myApp.service:MastersPerDayLoader
- * @requires $filter
- * @requires $location
+ * @requires myApp.service:DateHelper
  */
-myApp.controller('VisitsMasterController', function ($scope, $filter, $location, VisitsLoader, MastersPerDayLoader) {
+myApp.controller('VisitsMasterController', function ($scope, $filter, $location, VisitsLoader, MastersPerDayLoader, DateHelper) {
     var minDate = VisitsLoader.getMinDate();
     var maxDate = VisitsLoader.getMaxDate();
 
@@ -83,16 +82,16 @@ myApp.controller('VisitsMasterController', function ($scope, $filter, $location,
     }
 
     $scope.$watch('date.toDateString()', function () {
-        $scope.prevdate = new Date($scope.date.getFullYear(), $scope.date.getMonth(), $scope.date.getDate() - 1);
-        $scope.nextdate = new Date($scope.date.getFullYear(), $scope.date.getMonth(), $scope.date.getDate() + 1);
+        $scope.prevdate = DateHelper.getPrevPeriod($scope.date, DateHelper.steps.DAY).begin;
+        $scope.nextdate = DateHelper.getNextPeriod($scope.date, DateHelper.steps.DAY).end;
 
         if (!$scope.hasFutureData()) {
             $scope.pages = [MastersPerDayLoader.getAllMastersPerDay($scope.prevdate), MastersPerDayLoader.getAllMastersPerDay($scope.date)];
-//            $scope.pageIndex = 1;
+            //            $scope.pageIndex = 1;
         } else {
             if ($scope.hasPrevData()) {
                 $scope.pages = [MastersPerDayLoader.getAllMastersPerDay($scope.prevdate), MastersPerDayLoader.getAllMastersPerDay($scope.date), MastersPerDayLoader.getAllMastersPerDay($scope.nextdate)];
-//                $scope.pageIndex = 1;
+                //                $scope.pageIndex = 1;
             }
         }
     });
