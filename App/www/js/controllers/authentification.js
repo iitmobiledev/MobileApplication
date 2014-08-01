@@ -24,7 +24,7 @@ myApp.controller('AuthentificationController', function ($scope, $location, User
     $scope.enter = function () {
         var login = document.getElementById('login').value;
         var password = document.getElementById('password').value;
-        UserAuthorization(login, password, function (token) {
+        UserAuthentification(login, password, function (token) {
             sessvars.token = token;
             if (sessvars.token)
                 $location.path('index');
