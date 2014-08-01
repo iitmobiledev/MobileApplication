@@ -1,15 +1,20 @@
 /**
  * @description <p>Контроллер, отвечающий за загрузку данных о визитах,
  * т.е. записей с указанием времени, мастера и клиента.</p>
+ * <p>`$scope` содержит следующие поля:</p>
+ *
+ * - `Date` date - текущая дата;
+ * - `Array` pages - список из объектов `Visit` за 3 дня:
+ * вчерашний, текущий, завтрашний (если существует);
+ * - `Number` pageIndex - индекс массива `pages`, выбранной страницы.
+ * @ngdoc controller
  * @ngdoc controller
  * @name myApp.controller:VisitsController
  * @requires myApp.service:VisitsLoader
- * @requires myApp.service:DateHelper
- * @requires myApp.service:MastersPerDayLoader
+ * @requires $location
+ * @requires $filter
  */
 myApp.controller('VisitsController', function ($scope, $filter, $location, VisitsLoader) {
-    //$('#timeButton').addClass('pressed');
-
     var minDate = VisitsLoader.getMinDate();
     var maxDate = VisitsLoader.getMaxDate();
 

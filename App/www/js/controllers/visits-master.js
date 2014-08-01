@@ -1,22 +1,23 @@
 /**
- * @description <p>Контроллер, отвечающий за загрузку данных о визитах,
- * т.е. записей с указанием времени, мастера и клиента.</p>
+ * @description <p>Контроллер, отвечающий за загрузку данных о визитах с сортировкой по мастерам.</p>
+ * <p>`$scope` содержит следующие поля:</p>
+ *
+ * - `Date` date - текущая дата;
+ * - `Array` pages - список из объектов `perMaster` за 3 дня:
+ * вчерашний, текущий, завтрашний (если существует);
+ * - `Number` pageIndex - индекс массива `pages`, выбранной страницы.
  * @ngdoc controller
  * @name myApp.controller:VisitsMasterController
  * @requires myApp.service:VisitsLoader
  * @requires myApp.service:MastersPerDayLoader
+ * @requires $filter
+ * @requires $location
  */
 myApp.controller('VisitsMasterController', function ($scope, $filter, $location, VisitsLoader, MastersPerDayLoader) {
-    //$('#mastersButton').addClass('pressed');
-
     var minDate = VisitsLoader.getMinDate();
     var maxDate = VisitsLoader.getMaxDate();
 
     $scope.date = new Date();
-
-    //    $scope.prevdate = new Date($scope.date.getFullYear(), $scope.date.getMonth(), $scope.date.getDate() - 1);
-    //    $scope.nextdate = new Date($scope.date.getFullYear(), $scope.date.getMonth(), $scope.date.getDate() + 1);
-    //    $scope.pages = [MastersPerDayLoader.getAllMastersPerDay($scope.prevdate, VisitsLoader), MastersPerDayLoader.getAllMastersPerDay($scope.date, VisitsLoader), MastersPerDayLoader.getAllMastersPerDay($scope.nextdate, VisitsLoader)];
 
     $scope.pageIndex = 1;
 
@@ -26,7 +27,7 @@ myApp.controller('VisitsMasterController', function ($scope, $filter, $location,
      * @name myApp.controller:VisitsMasterController#hasPrevData
      * @methodOf myApp.controller:VisitsMasterController
      * @returns {Boleean} Возвращает true, если есть данные за прошлое.
-     * @description Метод для проверки существования данных за прошлое
+     * @description Метод для проверки существования данных за прошлое.
      */
     $scope.hasPrevData = function () {
         return $scope.date > minDate;
@@ -38,7 +39,7 @@ myApp.controller('VisitsMasterController', function ($scope, $filter, $location,
      * @name myApp.controller:VisitsMasterController#hasFutureData
      * @methodOf myApp.controller:VisitsMasterController
      * @returns {Boleean} Возвращает true, если есть данные за будущее.
-     * @description Метод для проверки существования данных за будущее
+     * @description Метод для проверки существования данных за будущее.
      */
     $scope.hasFutureData = function () {
         return $scope.date < maxDate && $scope.date.toDateString() != maxDate.toDateString();
@@ -49,7 +50,8 @@ myApp.controller('VisitsMasterController', function ($scope, $filter, $location,
      * @ngdoc method
      * @name myApp.controller:VisitsMasterController#onTime
      * @methodOf myApp.controller:VisitsMasterController
-     * @description Метод для перехода на страницу визитов по времени.
+     * @description Метод для перехода на страницу визитов с
+     * сортировкой по времени.
      */
     $scope.onTime = function () {
         $location.path('visits');
@@ -72,9 +74,9 @@ myApp.controller('VisitsMasterController', function ($scope, $filter, $location,
      * @ngdoc method
      * @name myApp.controller:VisitsMasterController#hasVisits
      * @methodOf myApp.controller:VisitsMasterController
-     * @param {Object} visit Объект визит
-     * @returns {Boleean} Возвращает true, если визит есть
-     * @description Метод для проверки существования визита
+     * @param {Array} visits визиты всех мастеров за выбранный день.
+     * @returns {Boleean} Возвращает true, если визиты есть.
+     * @description Метод для проверки существования визитов.
      */
     $scope.hasVisits = function (visit) {
         return visit.length != 0;
@@ -102,8 +104,8 @@ myApp.controller('VisitsMasterController', function ($scope, $filter, $location,
      * @name myApp.controller:VisitsMasterController#getMasterInfo
      * @methodOf myApp.controller:VisitsMasterController
      * @param {Object} master Объект мастер
-     * @returns {String} masterInfo Фамилия и имя мастера одной строкой
-     * @description Метод, формирующий данные в виде, нужном для отображения визитов отсортированных по мастерам
+     * @returns {String} masterInfo Фамилия и имя мастера одной строкой.
+     * @description Метод для получения фамилии и имени мастера.
      */
     $scope.getMasterInfo = function (master) {
         $scope.masterId = master.id;
@@ -115,8 +117,8 @@ myApp.controller('VisitsMasterController', function ($scope, $filter, $location,
      * @ngdoc method
      * @name myApp.controller:VisitsMasterController#getVisitByMasterInfo
      * @methodOf myApp.controller:VisitsMasterController
-     * @param {Object} visit Объект визит
-     * @description Метод, формирующий данные в виде, нужном для отображения визитов отсортированных по мастерам
+     * @param {Object} visit Объект визит.
+     * @description Метод, формирующий данные в виде, нужном для отображения визитов, отсортированных по мастерам.
      */
     $scope.getVisitByMasterInfo = function (visit) {
         $scope.masterVisitInfo = {};

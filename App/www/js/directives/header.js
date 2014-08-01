@@ -1,12 +1,12 @@
 /**
  * @description Директива добавляет на страницу приложения хедер,
  * содержащий заголовок, и если указано, кнопку перехода на
- * предыдущую страницу
+ * предыдущую страницу.
  * @ngdoc directive
  * @name myApp.directive:headerContent
  * @restrict E
  * @param {String} title Заголовок окна, отображаемый в хедере
- * @param {Boolean} show-back-button Указание необходимости отображения кнопки "Назад"
+ * @param {Boolean} show-back-button Указание необходимости отображения кнопки "Назад".
  */
 
 myApp.directive('headerContent', function () {

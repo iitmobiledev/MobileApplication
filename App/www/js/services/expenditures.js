@@ -12,8 +12,8 @@ myApp.factory('ExpendituresLoader', function () {
      * @methodOf myApp.service:ExpendituresLoader
      * @description Функция для получения данных о расходах за
      * определенную дату.
-     * @param {Date} date дата, за которую будут подгружаться данные.
-     * @returns {Array} массив из объектов расходов Expenditures или [],
+     * @param {Date} date Дата, за которую будут подгружаться данные.
+     * @returns {Array} Массив из объектов расходов `Expenditures` или [],
      * если данных за эту дату нет.
      */
     function getData(date) {
@@ -33,7 +33,7 @@ myApp.factory('ExpendituresLoader', function () {
      * @methodOf myApp.service:ExpendituresLoader
      * @description Функция для получения минимальной даты (самой
      * прошлой), за которую есть данные по расходам.
-     * @returns {Date} дата самых ранних данных по расходам.
+     * @returns {Date} Дата самых ранних данных по расходам.
      */
     function getMinDate() {
         var data = getExpenditures();
@@ -52,7 +52,7 @@ myApp.factory('ExpendituresLoader', function () {
      * @methodOf myApp.service:ExpendituresLoader
      * @description Функция для получения максимальной даты (самой
      * будущей), за которую есть данные по расходам.
-     * @returns {Date} дата, за которую внесены максимально будущие
+     * @returns {Date} Дата, за которую внесены максимально будущие
      * данные по расходам.
      */
     function getMaxDate() {

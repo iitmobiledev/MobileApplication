@@ -1,12 +1,13 @@
 /**
  * @ngdoc service
- * @description Сервис для авторизации пользователя.
- * @name myApp.service:UserAuthorization
- * @param {String} login логин пользователя.
- * @param {String} password пароль пользователя.
- * @returns {String} токен зарегистрированного пользователя.
+ * @description Сервис для аутентификации пользователя.
+ * @name myApp.service:UserAuthentification
+ * @param {String} login Логин пользователя.
+ * @param {String} password Пароль пользователя.
+ * @returns {String} Токен зарегистрированного пользователя.
+ * @requires $http
  */
-myApp.factory('UserAuthorization', function ($http) {
+myApp.factory('UserAuthentification', function ($http) {
     return function (login, password, callback) {
         $http({
             method: 'POST',
@@ -33,7 +34,7 @@ myApp.factory('UserAuthorization', function ($http) {
  * @description Сервис для получения текущего аутентифицированного 
  * пользователя.
  * @name myApp.service:UserLoader
- * @returns {UserInfo} информация о пользователе.
+ * @returns {UserInfo} Информация о пользователе.
  */
 myApp.factory('UserLoader', function ($http) {
     return function (token, callback) {
@@ -60,7 +61,7 @@ myApp.factory('UserLoader', function ($http) {
  * @ngdoc service
  * @description Сервис для выхода пользователя из системы.
  * @name myApp.service:UserLogout
- * @param {Token} token токен пользователя.
+ * @param {Token} token Токен аутентифицированного пользователя.
  */
 myApp.factory('UserLogout', function ($http) {
     return function (token, callback) {

@@ -1,5 +1,6 @@
 /**
- * @description Контроллер, содержащий данные о визите. Получает данные из пути к странице
+ * @description Контроллер, содержащий данные о визите. Получает данные из пути к странице.
+ * @ngdoc controller
  * @ngdoc controller
  * @name myApp.controller:VisitController
  * @requires myApp.service:VisitLoader
@@ -13,7 +14,8 @@ myApp.controller('VisitController', function ($scope, $filter, $routeParams, Vis
      * @ngdoc method
      * @name myApp.controller:VisitController#showVisit
      * @methodOf myApp.controller:VisitController
-     * @description Отображает всю информацию о визите
+     * @description Загружает в переменные `$scope` всю информацию о
+     * визите.
      */
     $scope.showVisit = function () {
         if ($scope.visit !== null) {

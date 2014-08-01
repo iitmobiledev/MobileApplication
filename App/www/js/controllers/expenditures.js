@@ -1,14 +1,16 @@
 /**
- * @description <p>Контроллер, получающий данные для отображения расходов за день.</p>
+ * @description <p>Контроллер для получения данных о расходах за
+ * текущий день.</p>
  * <p>`$scope` содержит следующие поля:</p>
  *
- * - `date` - начальная дата, за которую должны отображаться расходы
- * - `step` - период за который отображаются расход
- * - `expList` - список расходов, состоит из объектов `ExpenditureItem`
- * - `hasPrevData` и `hasFutureData` - проверка необходимости, перехода на предыдущую или следующую дату, необходимо для для `date-directive`
- * @requires myApp.directive:dateChanger
+ * - `Date` date - текущая дата;
+ * - `Array` pages - список из объектов `ExpenditureItem` за 3 дня:
+ * вчерашний, текущий, завтрашний (если существует);
+ * - `Number` pageIndex - индекс массива `pages`, выбранной страницы.
  * @ngdoc controller
  * @name myApp.controller:ExpendituresController
+ * @requires myApp.service:ExpendituresLoader
+ * @requires myApp.service:DateHelper
  */
 myApp.controller('ExpendituresController', function ($scope, $filter, ExpendituresLoader, DateHelper) {
     var minDate = ExpendituresLoader.getMinDate();
@@ -36,7 +38,7 @@ myApp.controller('ExpendituresController', function ($scope, $filter, Expenditur
      * @ngdoc method
      * @name myApp.controller:ExpendituresController#hasFutureData
      * @methodOf myApp.controller:ExpendituresController
-     * @returns {Boleean} Возвращает true, если есть данные за будущее.
+     * @returns {Boleean} Возвращает `true`, если есть данные за будущее.
      * @description Метод для проверки наличия данных за будущий
      * период.
      */
@@ -67,6 +69,14 @@ myApp.controller('ExpendituresController', function ($scope, $filter, Expenditur
 
     $scope.$watch('date.toDateString()', updatePages);
 
+    /**
+     * @description Функция для определения наличия данных за
+     * текущий день.
+     * @returns {Boleean} Возвращает `true`, если есть данные, иначе `else`.
+     * @ngdoc method
+     * @name myApp.controller:ExpendituresController#hasExpenditures
+     * @methodOf myApp.controller:ExpendituresController
+     */
     $scope.hasExpenditures = function (expendit) {
         return expendit.length != 0;
     }

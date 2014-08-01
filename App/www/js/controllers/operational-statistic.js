@@ -5,10 +5,12 @@
  * данных. </p>
  * <p>`$scope` содержит следующие поля:</p>
  *
- * - `date` - текущая дата,
- * - `step` - текущий шаг периода, должен быть определен в DateHelper.steps,
- * - `hasPrevData` - показывает, есть ли данные за предыдущий период,
- * - `hasFutureData` - показывает, есть ли за следующий период.
+ * - `Date` date - текущая дата;
+ * - `String` step - текущий период, допустимые значения определены
+ * в DateHelper.steps;
+ * - `Array` pages - список из объектов `OperationalStatistics` за 3 дня:
+ * вчерашний, текущий, завтрашний (если существует);
+ * - `Number` pageIndex - индекс массива `pages`, выбранной страницы.
  * @requires myApp.service:OperationalStatisticLoader
  * @requires myApp.service:DateHelper
  */
@@ -28,7 +30,7 @@ myApp.controller('OperationalStatisticController', function ($scope, $location, 
      * @ngdoc method
      * @name myApp.controller:OperationalStatisticController#hasPrevData
      * @methodOf myApp.controller:OperationalStatisticController
-     * @returns {Boleean} Возвращает true, если есть данные за прошлое.
+     * @returns {Boleean} Возвращает `true`, если есть данные за прошлое.
      * @description Метод для проверки наличия данных за прошлый
      * период.
      */
@@ -41,7 +43,7 @@ myApp.controller('OperationalStatisticController', function ($scope, $location, 
      * @ngdoc method
      * @name myApp.controller:OperationalStatisticController#hasFutureData
      * @methodOf myApp.controller:OperationalStatisticController
-     * @returns {Boleean} Возвращает true, если есть данные за будущее.
+     * @returns {Boleean} Возвращает `true`, если есть данные за будущее.
      * @description Метод для проверки наличия данных за будущий
      * период.
      */
@@ -100,7 +102,7 @@ myApp.controller('OperationalStatisticController', function ($scope, $location, 
      * @ngdoc method
      * @name myApp.controller:OperationalStatisticController#toChart
      * @methodOf myApp.controller:OperationalStatisticController
-     * @params {String} type тип графика, поле объекта OperationalStatistics.
+     * @params {String} type тип графика, поле объекта `OperationalStatistics`.
      * @description Метод для перехода на страницу графика.
      */
     $scope.toChart = function (type) {

@@ -1,8 +1,6 @@
 /**
  * @ngdoc service
- * @description Сервис для работы с датами. Позволяет получить
- * предыдущую дату с помощью метода `getPrev`, получить период методом
- * `getPeriod`, получить возможные шаги полем `steps`.
+ * @description Сервис для работы с датами и периодами. 
  * @name myApp.service:DateHelper
  */
 myApp.factory('DateHelper', function () {
@@ -17,14 +15,16 @@ myApp.factory('DateHelper', function () {
      * @ngdoc method
      * @name myApp.serviceDateHelper#getPrev
      * @methodOf myApp.service:DateHelper
-     * @param {Date} date дата, для которой будет вычислена предыдущая
+     * @param {Date} date Дата, для которой будет вычислена предыдущая
      * дата.
-     * @param {String} step шаг, показывающий за какой период
-     * необходимо вычислить предыдущую дату.
-     * @returns {Date} предыдущая дата.
+     * @param {String} step Указание периода, для которого будет
+     * вычсилена предыдущая дата. Валидные значения параметра
+     * прописаны в `DateHelper.steps`.  
+     * @returns {Date} Предыдущая дата или `null`, если `step` не равен
+     * одному из значений `steps`.
      * @description Метод предназначен для получения того же дня на
      * прошлой неделе или прошлой недели, или прошлого месяца.
-     * Необходимое указывается параметром step.
+     * Необходимое указывается параметром `step`.
      */
         function getPrev(date, step) {
             switch (step) {
@@ -44,11 +44,13 @@ myApp.factory('DateHelper', function () {
      * @ngdoc method
      * @name myApp.serviceDateHelper#getPeriod
      * @methodOf myApp.service:DateHelper
-     * @param {Date} date дата, по которой будет определяться период.
-     * @param {String} step шаг, показывающий какой период необходимо
-     * вернуть, должен быть определен в DateHelper.steps.
-     * @returns {Period} объект с полями {Date} begin и {Date} end, обозначающими
-     * начальную и конечную даты периода.
+     * @param {Date} date Дата, по которой будет определяться период.
+     * @param {String} step Шаг, показывающий какой период необходимо
+     * вернуть. Валидные значения этого параметра определены в
+     * `DateHelper.steps`.
+     * @returns {Period} Объект с полями `Date` begin и `Date` end,
+     * обозначающими сответственно начальную и конечную даты
+     * периода.
      * @description Метод предназначен для получения периода, т.е.
      * начальной даты и конечной даты.
      */
@@ -82,9 +84,14 @@ myApp.factory('DateHelper', function () {
      * @ngdoc method
      * @name myApp.serviceDateHelper#getMonthTitle
      * @methodOf myApp.service:DateHelper
-     * @param {Number} monthNumber номер месяца, начиная с 0
-     * @returns {String} название месяца
-     * @description Метод для получения названия месяца по его номеру
+     * @param {Number} monthNumber Номер месяца, начиная с 0.
+     * @param {String} step Указание периода. Если период равен месяцу,
+     * то название месяца будет с заглавной буквы в
+     * именительном падеже. Если период равен дню, то название
+     * месяца будет в родительном падеже и со строчной буквы.
+     * @returns {String} Название месяца.
+     * @description Метод для получения названия месяца по его
+     * номеру.
      */
     function getMonthTitle(monthNumber, step) {
         switch (monthNumber + '') {
@@ -159,8 +166,8 @@ myApp.factory('DateHelper', function () {
      * @ngdoc method
      * @name myApp.serviceDateHelper#getWeekDayTitle
      * @methodOf myApp.service:DateHelper
-     * @param {Number} dayNumber номер дня на неделе, начиная с воскресенья - 0.
-     * @returns {String} название для неделт
+     * @param {Number} dayNumber Номер дня недели, начиная с воскресенья - 0.
+     * @returns {String} Название для недели со строчной буквы или пустая строка, если номер дня < 0 или > 7.
      * @description Метод для получения названия дня недели по его номеру.
      */
     function getWeekDayTitle(dayNumber) {
