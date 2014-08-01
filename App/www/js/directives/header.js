@@ -7,6 +7,7 @@
  * @restrict E
  * @param {String} title Заголовок окна, отображаемый в хедере
  * @param {Boolean} show-back-button Указание необходимости отображения кнопки "Назад".
+ * @param {Boolean} show Указание необходимости отображения хедера.
  */
 
 myApp.directive('headerContent', function () {
@@ -18,8 +19,8 @@ myApp.directive('headerContent', function () {
             var backButtonLink = scope.$eval(attrs.backButtonLink);
             setTitle();
             setBackButton();
-
-            show();
+            var show = scope.$eval(attrs.show);
+            showHeader();
 
             /**
              * @description Отображает хедер на странице. Пытается выполнится до тех пор, пока не будет подгружена библиотека `intel.xdk`.
@@ -27,16 +28,28 @@ myApp.directive('headerContent', function () {
              * @name myApp.directive:headerContent#show
              * @methodOf myApp.directive:headerContent
              */
-            function show() {
+            function showHeader() {
                 if (intel.xdk && intel.xdk.device) {
-                    listenHardBack();
-                    var hC = $(element).hide().html();
-                    $("#header").html(hC);
-                    $("#header").show();
+                    if (show) {
+                        listenHardBack();
+                        var hC = $(element).hide().html();
+                        $("#header").html(hC);
+                        $("#header").show();
+                    }
                 } else {
                     setTimeout(show, 100);
                 }
             }
+
+            scope.$watch(attrs.show, function () {
+                if (show) {
+                    $(element).hide().html();
+                    $("#header").show();
+                } else {
+                    $(element).hide().html();
+                    $("#header").hide();
+                }
+            })
 
 
             scope.$watch(attrs.title, function () {
