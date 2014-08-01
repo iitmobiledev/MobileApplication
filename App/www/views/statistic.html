@@ -1,4 +1,4 @@
-<header-content title="'Салон красоты'" show-back-button="false"></header-content>
+<header-content title="'Салон красоты'" show-back-button="false" show="true"></header-content>
 <orient orientation="'portrait'"></orient>
 <footer-content show="true" active-page="StatisticsFooter" inactive-pages="['VisitsFooter', 'SettingsFooter']"></footer-content>
 <div class="upage-content" id="mainsub">
@@ -6,55 +6,54 @@
 
         <date-changer step='step' date='date' steps='["day", "week", "month"]' titles='["За день", "За неделю", "За месяц"]' has-future-data='hasFutureData()' has-prev-data='hasPrevData()' index='pageIndex'></date-changer>
 
-        <div style="margin:10px;">
-            <ul id='carousel' rn-carousel rn-carousel-index="pageIndex">
-                <li ng-repeat="page in pages">
-                    <table id="statisticTable">
-                        <tr>
-                            <td class="sCell" ng-click="toChart('proceeds')">
-                                <img src="images/proceeds.PNG" style="margin:5px;">
-                                <h1>{{page.currentData.proceeds}} р.</h1>
-                                <p>Выручка</p>
-                            </td>
-                            <td class="sCell" ng-click="toChart('profit')">
-                                <img src="images/profit.PNG" style="margin:5px">
-                                <h1>{{page.currentData.profit}} р.</h1>
-                                <p>Прибыль</p>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="sCell" ng-click="toChart('clients')">
-                                <img src="images/clients.PNG" style="margin:5px">
-                                <h1>{{page.currentData.clients}}</h1>
-                                <p>Клиента</p>
-                            </td>
-                            <td class="sCell" ng-click="toChart('workload')">
-                                <img src="images/workload.PNG" style="margin:5px">
-                                <h1>{{page.currentData.workload}}%</h1>
-                                <p>Загруженность</p>
-                            </td>
-                        </tr>
-                    </table>
-                </li>
-            </ul>
-            <table id="financeTable">
-                <tr ng-controller="FinanceStatisticsController">
-                    <td class="financeCell">
-                        <h1>{{FinanceStatistics.tillMoney}} р.</h1>
-                        <p style="font-size:14px; ">В кассе</p>
-                    </td>
-                    <td class="financeCell">
-                        <p>Утром: {{FinanceStatistics.morningMoney}}р.</p>
-                        <p>Приход: {{FinanceStatistics.credit}} р.</p>
-                        <a ng-click="toExpenditures() ">
-                            <p>Расход: {{FinanceStatistics.debit}} р.</p>
-                        </a>
-                    </td>
 
-                </tr>
-            </table>
-        </div>
-        <span class="uib_shim "></span>
+        <ul id='carousel' rn-carousel rn-carousel-index="pageIndex">
+            <li ng-repeat="page in pages">
+                <table id="statisticTable">
+                    <tr>
+                        <td class="sCell" ng-click="toChart('proceeds')">
+                            <img src="images/proceeds.PNG" style="margin:5px;">
+                            <h1>{{page.currentData.proceeds}} р.</h1>
+                            <p>Выручка</p>
+                        </td>
+                        <td class="sCell" ng-click="toChart('profit')">
+                            <img src="images/profit.PNG" style="margin:5px">
+                            <h1>{{page.currentData.profit}} р.</h1>
+                            <p>Прибыль</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="sCell" ng-click="toChart('clients')">
+                            <img src="images/clients.PNG" style="margin:5px">
+                            <h1>{{page.currentData.clients}}</h1>
+                            <p>Клиента</p>
+                        </td>
+                        <td class="sCell" ng-click="toChart('workload')">
+                            <img src="images/workload.PNG" style="margin:5px">
+                            <h1>{{page.currentData.workload}}%</h1>
+                            <p>Загруженность</p>
+                        </td>
+                    </tr>
+                </table>
+            </li>
+        </ul>
+        <table id="financeTable">
+            <tr ng-controller="FinanceStatisticsController">
+                <td class="financeCell">
+                    <h1>{{FinanceStatistics.tillMoney}} р.</h1>
+                    <p style="font-size:14px; ">В кассе</p>
+                </td>
+                <td class="financeCell">
+                    <p>Утром: {{FinanceStatistics.morningMoney}}р.</p>
+                    <p>Приход: {{FinanceStatistics.credit}} р.</p>
+                    <a ng-click="toExpenditures() ">
+                        <p>Расход: {{FinanceStatistics.debit}} р.</p>
+                    </a>
+                </td>
+
+            </tr>
+        </table>
+
     </div>
 </div>
 

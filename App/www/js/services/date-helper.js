@@ -1,8 +1,6 @@
 /**
  * @ngdoc service
- * @description Сервис для работы с датами. Позволяет получить
- * предыдущую дату с помощью метода `getPrev`, получить период методом
- * `getPeriod`, получить возможные шаги полем `steps`.
+ * @description Сервис для работы с датами и периодами. 
  * @name myApp.service:DateHelper
  */
 myApp.factory('DateHelper', function () {
@@ -17,14 +15,16 @@ myApp.factory('DateHelper', function () {
      * @ngdoc method
      * @name myApp.serviceDateHelper#getPrev
      * @methodOf myApp.service:DateHelper
-     * @param {Date} date дата, для которой будет вычислена предыдущая
+     * @param {Date} date Дата, для которой будет вычислена предыдущая
      * дата.
-     * @param {String} step шаг, показывающий за какой период
-     * необходимо вычислить предыдущую дату.
-     * @returns {Date} предыдущая дата.
+     * @param {String} step Указание периода, для которого будет
+     * вычсилена предыдущая дата. Валидные значения параметра
+     * прописаны в `DateHelper.steps`.  
+     * @returns {Date} Предыдущая дата или `null`, если `step` не равен
+     * одному из значений `steps`.
      * @description Метод предназначен для получения того же дня на
      * прошлой неделе или прошлой недели, или прошлого месяца.
-     * Необходимое указывается параметром step.
+     * Необходимое указывается параметром `step`.
      */
         function getPrev(date, step) {
             switch (step) {
@@ -44,11 +44,13 @@ myApp.factory('DateHelper', function () {
      * @ngdoc method
      * @name myApp.serviceDateHelper#getPeriod
      * @methodOf myApp.service:DateHelper
-     * @param {Date} date дата, по которой будет определяться период.
-     * @param {String} step шаг, показывающий какой период необходимо
-     * вернуть, должен быть определен в DateHelper.steps.
-     * @returns {Period} объект с полями {Date} begin и {Date} end, обозначающими
-     * начальную и конечную даты периода.
+     * @param {Date} date Дата, по которой будет определяться период.
+     * @param {String} step Шаг, показывающий какой период необходимо
+     * вернуть. Валидные значения этого параметра определены в
+     * `DateHelper.steps`.
+     * @returns {Period} Объект с полями `Date` begin и `Date` end,
+     * обозначающими сответственно начальную и конечную даты
+     * периода.
      * @description Метод предназначен для получения периода, т.е.
      * начальной даты и конечной даты.
      */
@@ -60,11 +62,11 @@ myApp.factory('DateHelper', function () {
                     this.end = date;
                     break;
                 case steps.WEEK:
-                    var weekDay = date.getDay() - 1; // для начала недели с понедельника
+                    var weekDay = date.getDay() - 1;
                     if (weekDay < 0)
                         weekDay = 6;
                     this.begin = new Date(date.getFullYear(), date.getMonth(), date.getDate() - weekDay);
-                    this.end = new Date(date.getFullYear(), date.getMonth(), this.begin.getDate() + 6);
+                    this.end = new Date(this.begin.getFullYear(), this.begin.getMonth(), this.begin.getDate() + 6);
                     break;
                 case steps.MONTH:
                     var begin = new Date(date.getFullYear(), date.getMonth(), 1);
@@ -76,81 +78,37 @@ myApp.factory('DateHelper', function () {
             };
         return period;
     };
+    
+    function getPrevPeriod(date, step){
+        var currentPeriod = getPeriod(date, step);
+        return getPeriod(new Date(currentPeriod.begin.getFullYear(), currentPeriod.begin.getMonth(), currentPeriod.begin.getDate() - 1), step);
+    }
+    
+    function getNextPeriod(date, step){
+        var currentPeriod = getPeriod(date, step);
+        return getPeriod(new Date(currentPeriod.end.getFullYear(), currentPeriod.end.getMonth(), currentPeriod.end.getDate() + 1), step);
+    }
 
     /**
      *
      * @ngdoc method
      * @name myApp.serviceDateHelper#getMonthTitle
      * @methodOf myApp.service:DateHelper
-     * @param {Number} monthNumber номер месяца, начиная с 0
-     * @returns {String} название месяца
-     * @description Метод для получения названия месяца по его номеру
+     * @param {Number} monthNumber Номер месяца, начиная с 0.
+     * @param {String} step Указание периода. Если период равен месяцу,
+     * то название месяца будет с заглавной буквы в
+     * именительном падеже. Если период равен дню, то название
+     * месяца будет в родительном падеже и со строчной буквы.
+     * @returns {String} Название месяца.
+     * @description Метод для получения названия месяца по его
+     * номеру.
      */
     function getMonthTitle(monthNumber, step) {
-        switch (monthNumber + '') {
-        case '0':
-            if (step == steps.MONTH)
-                return 'Январь';
-            if (step == steps.DAY)
-                return 'января';
-        case '1':
-            if (step == steps.MONTH)
-                return 'Февраль';
-            if (step == steps.DAY)
-                return 'февраля';
-        case '2':
-            if (step == steps.MONTH)
-                return 'Март';
-            if (step == steps.DAY)
-                return 'марта';
-        case '3':
-            if (step == steps.MONTH)
-                return 'Апрель';
-            if (step == steps.DAY)
-                return 'апреля';
-        case '4':
-            if (step == steps.MONTH)
-                return 'Май';
-            if (step == steps.DAY)
-                return 'мая';
-        case '5':
-            if (step == steps.MONTH)
-                return 'Июнь';
-            if (step == steps.DAY)
-                return 'июня';
-        case '6':
-            if (step == steps.MONTH)
-                return 'Июль';
-            if (step == steps.DAY)
-                return 'июля';
-        case '7':
-            if (step == steps.MONTH)
-                return 'Август';
-            if (step == steps.DAY)
-                return 'августа';
-        case '8':
-            if (step == steps.MONTH)
-                return 'Сентябрь';
-            if (step == steps.DAY)
-                return 'сентября';
-        case '9':
-            if (step == steps.MONTH)
-                return 'Октябрь';
-            if (step == steps.DAY)
-                return 'октября';
-        case '10':
-            if (step == steps.MONTH)
-                return 'Ноябрь';
-            if (step == steps.DAY)
-                return 'ноября';
-        case '11':
-            if (step == steps.MONTH)
-                return 'Декабрь';
-            if (step == steps.DAY)
-                return 'декабря';
-        default:
-            return '';
-        }
+        if (step == steps.MONTH)
+            return ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'][monthNumber] || '';
+        if (step == steps.DAY)
+            return ['января', 'февраля', 'марта', 'апреля', 'мая', 'июня', 'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря'][monthNumber] || '';
+        return '';
     };
 
 
@@ -159,37 +117,20 @@ myApp.factory('DateHelper', function () {
      * @ngdoc method
      * @name myApp.serviceDateHelper#getWeekDayTitle
      * @methodOf myApp.service:DateHelper
-     * @param {Number} dayNumber номер дня на неделе, начиная с воскресенья - 0.
-     * @returns {String} название для неделт
+     * @param {Number} dayNumber Номер дня недели, начиная с воскресенья - 0.
+     * @returns {String} Название для недели со строчной буквы или пустая строка, если номер дня < 0 или > 7.
      * @description Метод для получения названия дня недели по его номеру.
      */
     function getWeekDayTitle(dayNumber) {
-        switch (dayNumber + '') {
-        case '0':
-            return 'воскресенье';
-        case '1':
-            return 'понедельник';
-        case '2':
-            return 'вторник';
-        case '3':
-            return 'среда';
-        case '4':
-            return 'четверг';
-        case '5':
-            return 'пятница';
-        case '6':
-            return 'суббота';
-        case '7':
-            return 'воскресенье';
-        default:
-            return '';
-        }
+        return ['воскресенье', 'понедельник', 'вторник', 'среда', 'четверг', 'пятница', 'суббота'][dayNumber] || '';
     };
 
     return {
         steps: steps,
         getPrev: getPrev,
         getPeriod: getPeriod,
+        getPrevPeriod: getPrevPeriod,
+        getNextPeriod: getNextPeriod,
         getMonthTitle: getMonthTitle,
         getWeekDayTitle: getWeekDayTitle
     };

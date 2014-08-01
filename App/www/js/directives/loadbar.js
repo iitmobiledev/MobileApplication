@@ -1,9 +1,10 @@
 /**
- * @description Директива добавляет на страницу приложения анимацию загрузки(loaderBar)
+ * @description Директива добавляет на страницу приложения анимацию загрузки (loaderBar)
  * @ngdoc directive
  * @name myApp.directive:loadBar
  * @restrict E
- * @param {String} paramName имя параметра за которым нужно следить чтобы понять нужно ли отображать лоадбар.
+ * @param {Boolean} paramName Параметр, указывающий необходимо или нет
+ * отображать анимацию загрузки.
  */
 
 myApp.directive('loadBar', function () {

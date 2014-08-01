@@ -1,15 +1,21 @@
 /**
- * @description Контроллер, получающий данные для отрисовки графика
+ * @description Контроллер, получающий данные для отрисовки графика.
+ * <p>`$scope` содержит следующие поля:</p>
+ *
+ * - `String` type - тип графика (что отображает график),
+ * - `Number` period - период в месяцах, за который должен быть
+ * отрисован график,
+ * - `Number` chartStep - количество дней, за которые будут
+ * просуммированы данные и отображены на графике,
+ * - `Array` data - данные для отображения графика: массив из списков, где 1-ый элемент - объект {Data}, 2-ой элемент - величина в зависимости от типа графика,
+ * - `Boolean` loader - переменная для показа или скрытия анимации
+ * загрузки графика.
  * @ngdoc controller
  * @name myApp.controller:GraphicController
+ * @requires myApp.service:ChartDataLoader
  */
 
 myApp.controller('GraphicController', function ($scope, $routeParams, ChartDataLoader) {
-    /**
-     * @param {String} type тип графика(что отображает график)
-     * @param {Number} period период в месяцах, за который должен быть отрисован график
-     * @param {Array} data данные для отображения графика:массив из списков, где 1 элемент-объект {Data}, 2 элемент-величина в зависимости от типа графика
-     */
     $scope.type = $routeParams.type;
     $scope.period = 3;
     $scope.chartStep = 7;

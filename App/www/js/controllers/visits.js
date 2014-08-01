@@ -1,15 +1,19 @@
 /**
  * @description <p>Контроллер, отвечающий за загрузку данных о визитах,
  * т.е. записей с указанием времени, мастера и клиента.</p>
+ * <p>`$scope` содержит следующие поля:</p>
+ *
+ * - `Date` date - текущая дата;
+ * - `Array` pages - список из объектов `Visit` за 3 дня:
+ * вчерашний, текущий, завтрашний (если существует);
+ * - `Number` pageIndex - индекс массива `pages`, выбранной страницы.
+ * @ngdoc controller
  * @ngdoc controller
  * @name myApp.controller:VisitsController
  * @requires myApp.service:VisitsLoader
  * @requires myApp.service:DateHelper
- * @requires myApp.service:MastersPerDayLoader
  */
-myApp.controller('VisitsController', function ($scope, $filter, $location, VisitsLoader) {
-    //$('#timeButton').addClass('pressed');
-
+myApp.controller('VisitsController', function ($scope, $filter, $location, VisitsLoader, DateHelper) {
     var minDate = VisitsLoader.getMinDate();
     var maxDate = VisitsLoader.getMaxDate();
 
@@ -58,8 +62,8 @@ myApp.controller('VisitsController', function ($scope, $filter, $location, Visit
     }
 
     $scope.$watch('date.toDateString()', function () {
-        $scope.prevdate = new Date($scope.date.getFullYear(), $scope.date.getMonth(), $scope.date.getDate() - 1);
-        $scope.nextdate = new Date($scope.date.getFullYear(), $scope.date.getMonth(), $scope.date.getDate() + 1);
+        $scope.prevdate = DateHelper.getPrevPeriod($scope.date, DateHelper.steps.DAY).begin;
+        $scope.nextdate = DateHelper.getNextPeriod($scope.date, DateHelper.steps.DAY).end;
 
         if (!$scope.hasFutureData()) {
             $scope.pages = [VisitsLoader.getData($scope.prevdate), VisitsLoader.getData($scope.date)];

@@ -41,7 +41,7 @@ myApp.config(['$routeProvider',
         }).
         when('/authorization', {
             templateUrl: 'views/authorization.html',
-            controller: 'AuthorizationController'
+            controller: 'AuthentificationController'
         }).
         otherwise({
             redirectTo: 'index'

@@ -2,8 +2,7 @@
  * @ngdoc service
  * @description Сервис для загрузки данных для графика.
  * @name myApp.service:ChartDataLoader
- * @param {OperatonalStatisticsDataSumming} Объект статистики(суммированные данные в одном объекте)
- * @returns {Function} getGoodData Функцию, возвращающую массив нужных данных, суммированных по шагу step
+ * @requires myApp.service:OperatonalStatisticsDataSumming
  */
 myApp.factory('ChartDataLoader', function (OperatonalStatisticsDataSumming) {
     /**
@@ -11,12 +10,17 @@ myApp.factory('ChartDataLoader', function (OperatonalStatisticsDataSumming) {
      * @ngdoc method
      * @name myApp.service:ChartDataLoader#getGoodData
      * @methodOf myApp.service:ChartDataLoader
-     * @description Функция для выборки нужных данных за нужный период
-     * @param {String} needValue Поле статистики, которое требуется выбрать
-     * @param {Number} period Количество месяцев, за которые отображается статистика
-     * @param {Number} Step Шаг, с которым суммируются данные
-     * @param {Function} Callback callback функция
-     * @returns {OperationalStatistics} Массив нужных данных, суммированных по шагу step
+     * @description Функция для выборки необходимых данных за
+     * требуемый период.
+     * @param {String} needValue Поле статистики, которое нужно выбрать.
+     * @param {Number} period Количество месяцев, за которые
+     * отображается статистика.
+     * @param {Number} step Количество дней, за которые суммируются
+     * данные.
+     * @param {Function} callback Функция, которая будет вызвана после
+     * обработки всех данных.
+     * @returns {Array} Массив из объектов `OperationalStatistics`,
+     * суммированных по шагу `step`.
      */
     function getGoodData(needValue, period, step, callback) {
         var manyData = getOperationalStatisticsData();

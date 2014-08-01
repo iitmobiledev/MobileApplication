@@ -1,24 +1,25 @@
 /**
- * @description Директива для изменения и отображения даты и периода.
- * Для обработки свайпа на странице подключения директивы
- * необходимо иметь тег с классом `upage-content`.
+ * @description Директива для изменения и отображения даты и
+ * периода.
  * @ngdoc directive
  * @name myApp.directive:dateChanger
  * @restrict E
- * @param {Date} date начальная дата для отображения и изменения
- * @param {Array} steps все возможные этапы периода, должны быть прописаны
- * в DateHelper.steps
- * @param {String} step начальный период для отображения даты, должен
- * быть равен одному из элементов steps
- * @param {Array} titles названия этапов периода, которые будет видеть
+ * @param {Date} date Начальная дата для отображения и изменения.
+ * @param {Array} steps Все возможные периоды, должны быть прописаны
+ * в DateHelper.steps.
+ * @param {String} step Начальный период для отображения даты, должен
+ * быть равен одному из элементов steps.
+ * @param {Array} titles Названия периодов, которые будет видеть
  * пользователь, например ["За день", "За неделю", "За месяц"],
- * должны быть равны по размеру steps
- * @param {Boolean} hasFutureData переменная показывает есть ли данные за
+ * должны соответстовать параметру steps поэлементно. 
+ * @param {Boolean} hasFutureData Переменная показывает есть ли данные за
  * следующий период.
- * @param {Boolean} hasPrevData переменная показывает есть ли данные за
+ * @param {Boolean} hasPrevData Переменная показывает есть ли данные за
  * прошлый период.
- * @param {Boolean} index переменная показывает влево или вправо была
- * сдвинута страница по свайпу.
+ * @param {Boolean} index Переменная показывает влево или вправо была
+ * сдвинута страница по свайпу, т.е. уменьшать или увеличивать
+ * дату.
+ * @requires myApp.service:DateHelper
  */
 myApp.directive('dateChanger', function (DateHelper, $filter) {
     return {
@@ -32,9 +33,9 @@ myApp.directive('dateChanger', function (DateHelper, $filter) {
              * @ngdoc method
              * @name myApp.directive:dateChanger#updateIndex
              * @methodOf myApp.directive:dateChanger
-             * @description Метод, вызывающий другой метод setNewDate для
-             * изменения даты в зависимости от параметра директивы
-             * index.
+             * @description Метод для обновления и обработки индекса. В
+             * зависимости от нового значения индекса бдует
+             * вызвана функция `setNewDate` с нужным параметром. 
              */
             var updateIndex = function () {
                 var prevIndex = index;
@@ -76,8 +77,8 @@ myApp.directive('dateChanger', function (DateHelper, $filter) {
              * @name myApp.directive:dateChanger#updateSteps
              * @methodOf myApp.directive:dateChanger
              * @description Метод покажет кнопки для изменения периода,
-             * если параметр директивы steps, содержит больше 1
-             * елемента, скроет в противном случае.
+             * если параметр директивы `steps` содержит больше 1
+             * елемента или скроет в противном случае.
              */
             var updateSteps = function () {
                 steps = scope.$eval(attrs.steps);
@@ -101,8 +102,8 @@ myApp.directive('dateChanger', function (DateHelper, $filter) {
              * @name myApp.directive:dateChanger#updateHasFutureData
              * @methodOf myApp.directive:dateChanger
              * @description Метод покажет кнопку для перехода на
-             * следующую дату, если параметр директивы hasFutureData
-             * равен true, скроет кнопку в противном случае.
+             * следующую дату, если параметр директивы `hasFutureData`
+             * равен `true` или скроет кнопку в противном случае.
              */
             var updateHasFutureData = function () {
                 hasFutureData = scope.$eval(attrs.hasFutureData);
@@ -121,8 +122,8 @@ myApp.directive('dateChanger', function (DateHelper, $filter) {
              * @name myApp.directive:dateChanger#updateHasPrevData
              * @methodOf myApp.directive:dateChanger
              * @description Метод покажет кнопку для перехода на
-             * предыдущую дату, если параметр директивы hasPrevData
-             * равен true, скроет кнопку в противном случае.
+             * предыдущую дату, если параметр директивы `hasPrevData`
+             * равен `true` или скроет кнопку в противном случае.
              */
             var updateHasPrevData = function () {
                 hasPrevData = scope.$eval(attrs.hasPrevData);
@@ -159,15 +160,14 @@ myApp.directive('dateChanger', function (DateHelper, $filter) {
              * @ngdoc method
              * @name myApp.directive:dateChanger#setNewDate
              * @methodOf myApp.directive:dateChanger
-             * @description Функция для изменения даты. Должна быть
-             * объявлена переменная step, которая показывает
-             * выбранный период. Валидные значения step объявлены
-             * в DateHelper.steps
-             * @param {Number} sign - знак, который показывает увеличивать
+             * @description Функция для изменения даты. Во внешей
+             * области видимости должна быть объявлена переменная
+             * `step`, которая показывает текущий период. Валидные
+             * значения `step` объявлены в `DateHelper.steps`.
+             * @param {Number} sign Знак, который показывает увеличивать
              * или уменьшать дату, должен быть равен 1 или -1.
              */
             function setNewDate(sign) {
-                console.log('directive');
                 if (step == DateHelper.steps.DAY) {
                     scope[attrs.date] = new Date(date.getFullYear(), date.getMonth(),
                         date.getDate() + sign * 1);
@@ -188,19 +188,17 @@ myApp.directive('dateChanger', function (DateHelper, $filter) {
              * @name myApp.directive:dateChanger#getDateString
              * @methodOf myApp.directive:dateChanger
              * @description Функция для получения текущей даты в
-             * читабельном виде и/или добавления заголока над
+             * читабельном виде и/или добавления заголовка над
              * датой. Надпись добавляется путем вызова функции
-             * `updateTitle`.
-             * @returns {String} дату в формате `dd.MM.yyyy`, если текущий
-             * период step равен дню или неделе, в противном случае
+             * `addTitle`.
+             * @returns {String} Дата в формате `dd.MM.yyyy`, если текущий
+             * период `step` равен дню или неделе, в противном случае
              * возвращает пустую строку.
              */
             function getDateString() {
-                element.find('#Title').html(updateTitle());
+                element.find('#Title').html(addTitle());
                 if (step == DateHelper.steps.DAY) {
                     return (date.getDate() + ' ' + DateHelper.getMonthTitle(date.getMonth(), step) + ' ' + date.getFullYear() + ', ' + DateHelper.getWeekDayTitle(date.getDay()));
-                    //return dateString;
-//                    return $filter('date')(date, "dd.MM.yyyy") + ', ' + DateHelper.getWeekDayTitle(date.getDay());
                 }
                 if (step == DateHelper.steps.WEEK) {
                     var period = DateHelper.getPeriod(date, step);
@@ -216,22 +214,21 @@ myApp.directive('dateChanger', function (DateHelper, $filter) {
             /**
              *
              * @ngdoc method
-             * @name myApp.directive:dateChanger#updateTitle
+             * @name myApp.directive:dateChanger#addTitle
              * @methodOf myApp.directive:dateChanger
-             * @description Функция для обновления надписи над датой.
-             * Если шаг периода step равен дню и текущая
-             * дата это сегодня или вчера, то добавится надпись
-             * 'За сегодня' или 'За вчера'. Если step равен неделе, то
-             * заголовок добавлен не будет. Если step равен месяцу,
-             * то вместо даты будет добавлена только надпись с
-             * названием текущего месяца и годом, например
-             * 'Август 2013'.
-             * @returns {String} надпись, если дата и шаг удовлетворяют
+             * @description Функция для добавления надписи над датой.
+             * Если шаг периода `step` равен дню и текущая
+             * дата - это сегодня или вчера, то добавится надпись
+             * `Сегодня` или `Вчера`. Если `step` равен неделе, то
+             * заголовок добавлен не будет. Если `step` равен месяцу,
+             * то будет добавлена надпись с названием текущего
+             * месяца и годом, например 'Август 2013'.
+             * @returns {String} Надпись, если дата и шаг удовлетворяют
              * описанным критериям, иначе пустая строка.
              */
-            function updateTitle() {
+            function addTitle() {
                 if (step == DateHelper.steps.DAY) {
-                    $('#Title').css('font-size', '13px');
+                    //$('#Title').css('font-size', '13px');
                     var today = new Date();
                     var yesterday = new Date(today.getFullYear(), today.getMonth(), today.getDate() - 1);
                     if (date.toDateString() == today.toDateString())
@@ -240,7 +237,7 @@ myApp.directive('dateChanger', function (DateHelper, $filter) {
                         return "Вчера";
                 }
                 if (step == DateHelper.steps.MONTH) {
-                    $('#Title').css('font-size', '');
+                    //$('#Title').css('font-size', '');
                     return DateHelper.getMonthTitle(date.getMonth(), step) + ' ' + date.getFullYear();
                 }
                 return "";

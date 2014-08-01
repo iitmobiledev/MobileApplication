@@ -13,10 +13,10 @@ myApp.factory('OperationalStatisticLoader', function (DateHelper, OperatonalStat
      * @methodOf myApp.service:OperationalStatisticLoader
      * @description Функция для получения статистических данных за
      * период.
-     * @param {Date} date дата, за которую необходимо получить данные.
-     * @param {String} step название периода, допустимые значения
+     * @param {Date} date Дата, за которую необходимо получить данные.
+     * @param {String} step Название периода, допустимые значения
      * параметра описаны в DateHelper.steps.
-     * @returns {OperationalStatistics} объект, содержищий статистические
+     * @returns {OperationalStatistics} Объект, содержищий статистические
      * данные.
      */
     function getData(date, step) {
@@ -35,7 +35,7 @@ myApp.factory('OperationalStatisticLoader', function (DateHelper, OperatonalStat
      * @methodOf myApp.service:OperationalStatisticLoader
      * @description Функция для получения минимальной даты (самой
      * прошлой), за которую есть статистические данные.
-     * @returns {Date} дата самых давних данных статистики.
+     * @returns {Date} Дата самых давних данных статистики.
      */
     function getMinDate() {
         var allStatistic = getOperationalStatisticsData();
@@ -54,7 +54,7 @@ myApp.factory('OperationalStatisticLoader', function (DateHelper, OperatonalStat
      * @methodOf myApp.service:OperationalStatisticLoader
      * @description Функция для получения максимальной даты (самой
      * будущей), за которую есть статистические данные.
-     * @returns {Date} дата, за которую внесены максимально будущие
+     * @returns {Date} Дата, за которую внесены максимально будущие
      * статистические данны.
      */
     function getMaxDate() {
@@ -80,8 +80,8 @@ myApp.factory('OperationalStatisticLoader', function (DateHelper, OperatonalStat
  * @description Сервис для суммирования статистических данных за
  * период.
  * @name myApp.service:OperatonalStatisticsDataSumming
- * @param {Array} statisticForPeriod статические данные за период, объекты
- * `OperationalStatistics`.
+ * @param {Array} statisticForPeriod Статические данные за период, список
+ * объектов `OperationalStatistics`.
  * @returns {OperationalStatistics} объект статистики, содержащий все
  * полученные статистические данные за весь период.
  */
@@ -109,13 +109,12 @@ myApp.factory('OperatonalStatisticsDataSumming', function () {
 });
 
 
-//сервис для загрузки финансовой статистики за сегодня
 /**
  * @ngdoc service
  * @description Сервис для загрузки финансовой статистики за
  * сегодня
  * @name myApp.service:FinanceStatisticsLoader
- * @returns {FinanceStatistics} объект финансовой статистики.
+ * @returns {FinanceStatistics} Объект финансовой статистики.
  */
 myApp.factory('FinanceStatisticsLoader', function () {
     return function () {

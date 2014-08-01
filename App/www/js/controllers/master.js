@@ -1,22 +1,24 @@
 /**
- * @description Контроллер, содержащий данные о визите. Получает данные из пути к странице
+ * @description Контроллер для обработки данных о визите. 
+ * <p>`$scope` содержит следующие поля:</p>
+ *
+ * - `Date` date - текущая дата;
+ * - `Array` pages - список из объектов `VisitInfo` за 3 дня:
+ * вчерашний, текущий, завтрашний (если существует);
+ * - `Number` pageIndex - индекс массива `pages`, выбранной страницы;
+ * - `Number` id - иднтификатора мастера.
  * @ngdoc controller
  * @name myApp.controller:MasterController
  * @requires myApp.service:VisitsLoader
  * @requires myApp.service:MastersPerDayLoader
+  * @requires myApp.service:DateHelper
  */
-myApp.controller('MasterController', function ($scope, $routeParams, VisitsLoader, $filter, MastersPerDayLoader) {
+myApp.controller('MasterController', function ($scope, $routeParams, VisitsLoader, $filter, MastersPerDayLoader, DateHelper) {
     var minDate = VisitsLoader.getMinDate();
     var maxDate = VisitsLoader.getMaxDate();
 
     $scope.id = $routeParams.id;
     $scope.date = new Date($routeParams.date);
-    console.log('date ' + $scope.date);
-
-    // * @param {Number} id ID Мастера
-    // * @param {Date} date Текущая дата
-    // * @param {String} step Шаг для директивы DateChanger
-    // * @param {Array} masters Списов мастеров с их визитами
 
 
     /**
@@ -24,8 +26,8 @@ myApp.controller('MasterController', function ($scope, $routeParams, VisitsLoade
      * @ngdoc method
      * @name myApp.controller:MasterController#hasPrevData
      * @methodOf myApp.controller:MasterController
-     * @returns {Boleean} Возвращает true
-     * @description Метод для проверки существования данных за прошлое
+     * @returns {Boleean}  Возвращает `true`, если есть данные за прошлое.
+     * @description Метод для проверки существования данных за прошлое.
      */
     $scope.hasPrevData = function () {
         return $scope.date > minDate;
@@ -36,8 +38,8 @@ myApp.controller('MasterController', function ($scope, $routeParams, VisitsLoade
      * @ngdoc method
      * @name myApp.controller:MasterController#hasFutureData
      * @methodOf myApp.controller:MasterController
-     * @returns {Boleean} Возвращает true
-     * @description Метод для проверки существования данных за будущее
+     * @returns {Boleean}  Возвращает `true`, если есть данные за будущее.
+     * @description Метод для проверки существования данных за будущее.
      */
     $scope.hasFutureData = function () {
         return $scope.date < maxDate && $scope.date.toDateString() != maxDate.toDateString();
@@ -49,9 +51,11 @@ myApp.controller('MasterController', function ($scope, $routeParams, VisitsLoade
      * @ngdoc method
      * @name myApp.controller:MasterController#getNeededVisits
      * @methodOf myApp.controller:MasterController
-     * @param {Array} masterAndVisits Массив с мастерами и их визитами. Каждыйэлемент массива объект, где 1 поле-мастер,2 -список его визитов за определенную дату
+     * @param {Array} masterAndVisits Массив с мастерами и их визитами.
+     * Каждый элемент массива объект, где 1-ое поле - мастер, 
+     * 2-оё - список его визитов за определенную дату.
      * @returns {Array} Возвращает массив визитов для нужного мастера
-     * @description Метод для получения списка визитов для конкретного мастера
+     * @description Метод для получения списка визитов для конкретного мастера.
      */
     function getNeededVisits(masterAndVisits) {
         for (var i = 0; i < masterAndVisits.length; i++) {
@@ -69,9 +73,9 @@ myApp.controller('MasterController', function ($scope, $routeParams, VisitsLoade
      * @ngdoc method
      * @name myApp.controller:MasterController#getGoodVisitsList
      * @methodOf myApp.controller:MasterController
-     * @param {Array} masterList список визитов мастера
+     * @param {Array} masterList Список визитов мастера
      * @description Метод, формирующий список объектов "визит" с дополнительными информационными полями
-     * @returns {Object} Список объектов "визит" с новыми полями
+     * @returns {Array} Список объектов "визит" с новыми полями
      */
     function getGoodVisitsList(masterList) {
         var nmav = [];
@@ -93,9 +97,9 @@ myApp.controller('MasterController', function ($scope, $routeParams, VisitsLoade
      * @ngdoc method
      * @name myApp.controller:MasterController#selectVisitInfo
      * @methodOf myApp.controller:MasterController
-     * @param {Object} visit Объект визит
-     * @description Метод, формирующий объект визит с дополнительными информационными полями
-     * @returns {Object} Объект визит с новыми полями
+     * @param {Object} visit Объект визит.
+     * @description Метод, формирующий объект визит с дополнительными информационными полями.
+     * @returns {Object} Объект визит с новыми полями.
      */
     function selectVisitInfo(visit) {
         var services = [],
@@ -129,8 +133,8 @@ myApp.controller('MasterController', function ($scope, $routeParams, VisitsLoade
      * @ngdoc method
      * @name myApp.controller:MasterController#getVisitByMasterInfo
      * @methodOf myApp.controller:MasterController
-     * @param {Object} visit Объект визит
-     * @description Метод, формирующий данные в виде, нужном для отображения мастера и списки визитов к нему
+     * @param {Object} visit Объект визит.
+     * @description Метод, формирующий данные в виде, нужном для отображения мастера и списки визитов к нему.
      */
     $scope.getVisitByMasterInfo = function (visit) {
         $scope.masterVisitInfo = {};
@@ -150,11 +154,11 @@ myApp.controller('MasterController', function ($scope, $routeParams, VisitsLoade
      * @ngdoc method
      * @name myApp.controller:MasterController#updatePages
      * @methodOf myApp.controller:MasterController
-     * @description Метод для обновления массива данных $scope.pages, содержащий визиты к мастеру за текущий, прошлый и будущий дни, необходим для анимации.
+     * @description Метод для обновления массива данных `$scope.pages`, содержащий визиты к мастеру за текущий, прошлый и будущий дни, необходим для анимации.
      */
     function updatePages() {
-        var prevdate = new Date($scope.date.getFullYear(), $scope.date.getMonth(), $scope.date.getDate() - 1);
-        var nextdate = new Date($scope.date.getFullYear(), $scope.date.getMonth(), $scope.date.getDate() + 1);
+        var prevdate = DateHelper.getPrevPeriod($scope.date, DateHelper.steps.DAY).begin;
+        var nextdate = DateHelper.getNextPeriod($scope.date, DateHelper.steps.DAY).end;
 
         if (!$scope.hasFutureData()) {
             console.log(1);
@@ -191,11 +195,11 @@ myApp.controller('MasterController', function ($scope, $routeParams, VisitsLoade
      * @ngdoc method
      * @name myApp.controller:MasterController#hasVisits
      * @methodOf myApp.controller:MasterController
-     * @param {Object} visit Объект визит
-     * @returns {Boleean} Возвращает true, если визит есть
-     * @description Метод для проверки существования визита
+     * @param {Array} visits Список визитов.
+     * @returns {Boleean} Возвращает `true`, если визиты есть, в противном случае - `else`.
+     * @description Метод для проверки существования визитов.
      */
-    $scope.hasVisits = function (visit) {
-        return visit.length != 0;
+    $scope.hasVisits = function (visits) {
+        return visits.length != 0;
     }
 });

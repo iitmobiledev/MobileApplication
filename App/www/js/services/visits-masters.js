@@ -1,6 +1,6 @@
 /**
  * @ngdoc service
- * @description Сервис для получения данных о визитах
+ * @description Сервис для загрузки данных о визитах.
  * @name myApp.service:VisitsLoader
  */
 myApp.factory('VisitsLoader', function () {
@@ -9,9 +9,9 @@ myApp.factory('VisitsLoader', function () {
      * @ngdoc method
      * @name myApp.service:VisitsLoader#getData
      * @methodOf myApp.service:VisitsLoader
-     * @description Проверяет есть ли мастер в списке мастеров
-     * @param {Date} date дата, за которую нужно получить список визитов
-     * @returns {Array} список визитов за нужную дату или [], если
+     * @description Метод для получения визитом за выбранный день.
+     * @param {Date} date Дата, за которую нужно получить список визитов.
+     * @returns {Array} Список визитов за нужную дату или [], если
      * визитов за эту дату нет.
      */
     function getData(date) {
@@ -35,7 +35,7 @@ myApp.factory('VisitsLoader', function () {
      * @methodOf myApp.service:VisitsLoader
      * @description Функция для получения минимальной даты (самой
      * прошлой), за которую есть данные по визитам.
-     * @returns {Date} дата самых ранних данных по визитам.
+     * @returns {Date} Дата самых ранних данных по визитам.
      */
     function getMinDate() {
         var data = getVisits();
@@ -54,7 +54,7 @@ myApp.factory('VisitsLoader', function () {
      * @methodOf myApp.service:VisitsLoader
      * @description Функция для получения максимальной даты (самой
      * будущей), за которую есть данные по визитам.
-     * @returns {Date} дата, за которую внесены максимально будущие
+     * @returns {Date} Дата, за которую внесены максимально будущие
      * данные по визитам.
      */
     function getMaxDate() {
@@ -78,11 +78,9 @@ myApp.factory('VisitsLoader', function () {
 
 /**
  * @ngdoc service
- * @description Сервис для получения списка мастеров с их визитами за нужную дату
+ * @description Сервис для получения списка мастеров с их визитами за нужную дату.
  * @name myApp.service:MastersPerDayLoader
- * @param {Date} neededDate Дата, за которую нужно получить список мастеров с их визитами
- * @param {Service} VisitsLoader Сервис для загрузки списка визитов
- * @returns {method}  getAllMastersPerDay Метод для получения  списка отсортированных по фамилии мастера объектов perMaster
+ * @requires myApp.service:VisitsLoader
  */
 myApp.factory('MastersPerDayLoader', function (VisitsLoader) {
 
@@ -91,10 +89,11 @@ myApp.factory('MastersPerDayLoader', function (VisitsLoader) {
      * @ngdoc method
      * @name myApp.service:MastersPerDayLoader#checkMasterInList
      * @methodOf myApp.service:MastersPerDayLoader
-     * @description Проверяет есть ли мастер в списке мастеров
-     * @param {String} master Объект мастер
-     * @param {Array}  masters Список мастеров
-     * @returns {Null or Number}  Индекс мастера, если он есть в списке; null если нет.
+     * @description Проверяет есть ли мастер в списке мастеров.
+     * @param {Object} master Объект мастер.
+     * @param {Array}  masters Список мастеров.
+     * @returns {Null or Number}  Индекс мастера, если он есть в списке,
+     * иначе - null.
      */
     function checkMasterInList(master, masters) {
         for (var i = 0; i < masters.length; i++) {
@@ -119,10 +118,9 @@ myApp.factory('MastersPerDayLoader', function (VisitsLoader) {
      * @ngdoc method
      * @name myApp.service:MastersPerDayLoader#getAllMastersPerDay
      * @methodOf myApp.service:MastersPerDayLoader
-     * @description Метод для получения списка отсортированных по фамилии мастера объектов perMaster
-     * @param {Date} neededData  Дата, за которую требуется получить список объектов
-     * @param {Service} VisitsLoader  Сервис для загрузки списка визитов
-     * @returns {Array} allMasters Список отсортированных по фамилии мастера объектов perMaster
+     * @description Метод для получения списка, отсортированных по фамилии мастера объектов `perMaster`.
+     * @param {Date} neededData  Дата, за которую требуется получить список объектов.
+     * @returns {Array} allMasters Список отсортированных по фамилии мастера объектов `perMaster`.
      */
     function getAllMastersPerDay(neededDate) {
         var getedData = VisitsLoader.getData(neededDate);
@@ -158,8 +156,8 @@ myApp.factory('MastersPerDayLoader', function (VisitsLoader) {
  * @ngdoc service
  * @description Сервис для получения визита по указанному id
  * @name myApp.service:VisitLoader
- * @param {Number} neededID id визита
- * @returns {Visit} объект "Визит"
+ * @param {Number} neededID Идентификатор визита.
+ * @returns {Visit} Объект "Визит" или null, если такой id не был найден.
  */
 myApp.factory('VisitLoader', function () {
     return function (neededID) {

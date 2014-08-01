@@ -5,7 +5,7 @@
  * @ngdoc directive
  * @name myApp.directive:footerContent
  * @restrict E
- * @param {Boolean} show если true - показывает навигационную панель(футер), иначе - скрывает
+ * @param {Boolean} show Указание необходимости отображения футера.
  */
 myApp.directive('footerContent', function () {
     return {

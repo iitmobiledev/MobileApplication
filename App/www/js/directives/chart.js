@@ -1,9 +1,11 @@
 /**
- * @description Директива добавляет на страницу приложения график
+ * @description Директива для добавления на страницу приложения
+ * графика.
  * @ngdoc directive
  * @name myApp.directive:chart
  * @restrict E
- * @param {String} chart-data имя параметра со списком данных для отображения графика: массив из списков, где 1 элемент-объект {Data}, 2 элемент-величина в зависимости от типа графика
+ * @param {String} chart-data Список данных, которые будут отображены
+ * на графике: массив из списков, где 1-ый элемент - объект `Date`, 2-ой элемент - величина в зависимости от типа графика
  */
 
 myApp.directive('chart', function () {
@@ -18,7 +20,7 @@ myApp.directive('chart', function () {
              * @ngdoc method
              * @name myApp.directive:chart#drawChart
              * @methodOf myApp.directive:chart
-             * @description Метод, рисующий график
+             * @description Метод для отрисовки графика.
              */
             var drawChart = function () {
                 Highcharts.setOptions({

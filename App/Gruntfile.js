@@ -17,22 +17,10 @@ module.exports = function (grunt) {
                 options: {
                     base: 'src'
                 },
-                src: ['www/date-navigation.html'],
+                src: ['www/views/date-navigation.html'],
                 dest: 'tpl/templates.js'
             }
         }
-
-        //        html2js: {
-        //            options: {
-        //                base: 'src'
-        //                // custom options, see below
-        //            },
-        //            main: {
-        //                src: ['date-navigation.html'],
-        //                dest: 'tpl/templates.js'
-        //            }
-        //        }
-
     });
 
     grunt.loadNpmTasks('grunt-ngdocs');
