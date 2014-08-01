@@ -3,29 +3,38 @@
     border-spacing: 0px;
     width: 100%;
     height: 100%;
+    padding: 0 2% 0 2%;
 }
 #statisticTable .sCell {
     border: 1px solid #D3D3D3;
     text-align: center;
-    padding: 5%;
 }
 #financeTable {
     border-collapse: separate;
     border-spacing: 0px;
-    width: 100%;
+    width: 96%;
     height: 100%;
     border: 1px solid #D3D3D3;
+    margin: 0 2% 2% 2%;
 }
 #financeTable .financeCell {
     text-align: center;
 }
 #dateToggle {
     border-spacing: 0px;
-    width: 90%;
+    width: 94%;
     height: 100%;
-    /*    margin-left: 5%;*/
-    margin: 20px 5% 20px 5%;
+    margin: 20px 2% 20px 2%;
+    table-layout: fixed;
 }
-#dateToggle .Cell {
+#dateToggle .dCell {
+    width: 70%;
     text-align: center;
+    white-space: nowrap;
+}
+#dateToggle .prevDay {
+    text-align: left;
+}
+#dateToggle .nextDay {
+    text-align: right;
 }
