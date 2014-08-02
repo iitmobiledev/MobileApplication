@@ -29,7 +29,7 @@ myApp.controller('VisitController', function ($scope, $filter, $routeParams, Vis
                 $scope.balColor = "green";
             }
             $scope.clientBalance = visit.client.balance;
-            $scope.clientDiscount = "Скидка: " + $scope.visit.client.discount + "%"
+            $scope.clientDiscount = $scope.visit.client.discount + "%"
 
             $scope.servList = [];
             $scope.sum = 0;

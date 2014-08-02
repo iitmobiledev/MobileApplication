@@ -131,8 +131,8 @@ function getVisits() {
     //3 visit
     serviceList = [];
     client = new Client("Светлана", "Андреевна", "Бравилова", "+79021565814", 50000, 0);
-    serviceList.push(new Service("Мелирование", new Date(2014, 6, 25, 20, 10), new Date(2014, 6, 25, 23, 10), new Master(3, "Владимир", "Петрович", "Петров"), 6000));
-    visit = new Visit(3, client, serviceList, "Очень густые волосы", new Date(2014, 6, 25, 20, 00), "Подтверждено");
+    serviceList.push(new Service("Мелирование", new Date(2014, 7, 2, 20, 10), new Date(2014, 7, 2, 23, 10), new Master(3, "Владимир", "Петрович", "Петров"), 6000));
+    visit = new Visit(3, client, serviceList, "Очень густые волосы", new Date(2014, 7, 2, 20, 00), "Подтверждено");
     visList.push(visit);
     return visList;
 }

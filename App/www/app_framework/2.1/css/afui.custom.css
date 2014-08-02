@@ -1283,13 +1283,30 @@ only screen and (min-width: 768px) {
     text-decoration: none;
     z-index: 2;
 }
+#afui .loginButton {
+    position: relative;
+    display: inline-block;
+    padding: 12px 12px;
+    margin: 8px 0;
+    font-weight: normal;
+    font-size: 16px;
+    color: white;
+    text-align: center;
+    vertical-align: top;
+    cursor: pointer;
+    background-color: rgb(149, 19, 195);
+    border: 0 solid #666;
+    border-radius: 0;
+    /*box-shadow: 0 1px 0 #fff;*/
+    text-decoration: none;
+    z-index: 2;
+}
 /* Active */
 
 #afui .button.pressed {
     color: purple;
-/*    border-bottom: 5px solid purple;*/
+    /*    border-bottom: 5px solid purple;*/
 }
-
 #afui .button.active {
     color: purple;
     border-bottom: 5px solid purple;
@@ -1351,6 +1368,7 @@ only screen and (min-width: 768px) {
     margin: 5px;
 }
 */
+
 #afui .button-grouped * {
     border-radius: 0px;
     float: left;

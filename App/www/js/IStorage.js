@@ -1,0 +1,1 @@
+var IStorage = angular.module('IStorage', []);
