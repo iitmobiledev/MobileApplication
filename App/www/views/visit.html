@@ -14,7 +14,7 @@
 
             <table class="disBalance">
                 <tr>
-                    <td style="color:gray;align:left;">
+                    <td style="color:gray;text-align:left;">
                         Скидка:
                         <span style="color:black;">{{clientDiscount}}</span>
                     </td>
@@ -27,22 +27,25 @@
         </div>
 
         <div id="services">
-            <!--
-            <div id="serviceTitle" style="background-color: #DEDEDE">
-                <h2 style="margin: 3px;">Услуги</h2>
-            </div>
--->
             <ul class="list inset">
                 <li class="divider">
-                    <span style="font-weight:bold; font-size: 14pt;text-align: right;float: right; ">Итого: {{sum}}</span>
-                    <span>Услуги</span>
+                    <div style="width:90%;text-align:right;font-size:15pt;margin: 0 10%;">Итого: {{sum}}</div>
+
+                    <div style="width:90%;font-size:15pt;margin: 0 10%">
+                        <span style="font-size:16pt;color:gray;">Услуги</span>
+                        <span style="float:right;">Оплачено: 1000</span>
+                    </div>
+                    <!--
+                    <td style="text-align:left;font-size:16pt; ">Услуги</td>
+<td style="text-align:right;font-size:16pt; ">Оплачено:</td>
+-->
                 </li>
-                <li ng-repeat="item in servList">
+                <li ng-repeat="item in servList ">
                     <div>
                         <span>{{item.description}}</span>
                     </div>
                     <div>{{item.time}}
-                        <span style="font-weight:bold; font-size: 13pt; float: right; text-align: right;">{{item.cost}}</span>
+                        <span style="font-weight:bold; font-size: 13pt; float: right; text-align: right; ">{{item.cost}}</span>
                     </div>
                     <div>{{item.master}}
                     </div>
@@ -50,8 +53,8 @@
 
                 <!--
                 <li>
-                    <span style="font-weight:bold; font-size: 14pt">Итого:</span>
-                    <span style=" font-size: 14pt; font-weight:bold; float: right; text-align: right;" id="sum">{{sum}}</span>
+                    <span style="font-weight:bold; font-size: 14pt ">Итого:</span>
+                    <span style=" font-size: 14pt; font-weight:bold; float: right; text-align: right; " id="sum ">{{sum}}</span>
                 </li>
 -->
             </ul>
