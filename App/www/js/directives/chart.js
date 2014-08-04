@@ -25,7 +25,8 @@ myApp.directive('chart', function () {
             var drawChart = function () {
                 Highcharts.setOptions({
                     lang: {
-                        shortMonths: ['Янв', 'Фев', 'Мар', 'Апр', 'Май', 'Июн', 'Июл', 'Авг', 'Сен', 'Окт', 'Ноя', 'Дек'],
+                        shortMonths: ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'],
+                        weekdays: ['Воскресенье', 'Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота'],
                     }
                 });
                 var chart = new Highcharts.Chart({
@@ -38,21 +39,12 @@ myApp.directive('chart', function () {
                         animation: true,
                     },
                     title: "",
-                    loading: {
-                        hideDuration: 3000,
-                        showDuration: 3000
-                    },
                     xAxis: {
                         type: 'datetime',
                         minRange: 3 * 24 * 3600000,
                         dateTimeLabelFormats: { //don't display the dummy year
                             month: '%e %b %y'
                         },
-                    },
-                    tooltip: {
-                        formatter: function () {
-                            return '<b>' + Highcharts.dateFormat('%b, %e', this.x) + '</b>' + '<br>' + this.y + scope.yFormat;
-                        }
                     },
                     yAxis: {
                         maxPadding: 0.25,
@@ -63,9 +55,38 @@ myApp.directive('chart', function () {
                     legend: {
                         enabled: false,
                     },
+
+                    plotOptions: {
+                        area: {
+                            fillColor: {
+                                linearGradient: {
+                                    x1: 0,
+                                    y1: 0,
+                                    x2: 0,
+                                    y2: 1
+                                },
+                                stops: [
+                            [0, Highcharts.getOptions().colors[0]],
+                            [1, Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
+                        ]
+                            },
+                            marker: {
+                                radius: 2
+                            },
+                            lineWidth: 1,
+                            states: {
+                                hover: {
+                                    lineWidth: 1
+                                }
+                            },
+                            threshold: null
+                        }
+                    },
+
                     series: [{
-                        name: scope.title,
-                }]
+                        type: 'area',
+                        name: scope.title
+                    }]
                 });
             }
 

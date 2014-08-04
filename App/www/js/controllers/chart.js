@@ -17,8 +17,8 @@
 
 myApp.controller('GraphicController', function ($scope, $routeParams, ChartDataLoader) {
     $scope.type = $routeParams.type;
-    $scope.period = 3;
-    $scope.chartStep = 7;
+    $scope.period = 12;
+    $scope.chartStep = 1;
     ChartDataLoader.getGoodData($scope.type, $scope.period, $scope.chartStep, function (data) {
         $scope.loading = false;
         $scope.data = data;
