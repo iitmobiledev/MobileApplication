@@ -3,7 +3,7 @@
  * @description Сервис для кэширования данных
  * @name myApp.service:Storage
  */
-myApp.factory('Storage', function () {
+myApp.factory('Storage', function (localdb) {
 
     /**
      *
@@ -14,16 +14,14 @@ myApp.factory('Storage', function () {
      * @description Добавляет объект в контейнер, если объект с таким же первичным ключом уже присутствует в контейнере, данные должны быть обновлены Вложенные объекты также должны быть добавлены
      */
     function update(obj) {
-        var db = html5rocks.indexedDB.db;
+        var db = localdb.locdb;
         var objClass = obj.getClass(); //получим класс объекта
         var trans = db.transaction([objClass], "readwrite");
         var store = trans.objectStore(objClass); //найдем хранилище для объектов данного класса
         //нужно проверить, нет ли объекта с таким же PK
         //обновление объекта: https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API/Using_IndexedDB#Getting_data_from_the_database
         //если есть вложенные объекты, то как их вытащить?
-        var request = store.put( //положим в хранилище json-объект
-            obj.json();
-        );
+        var request = store.put(obj.json()); //положим в хранилище json-объект
 
         //если транзакт прошел успешно
         request.onsuccess = function (e) {
@@ -40,15 +38,14 @@ myApp.factory('Storage', function () {
      *
      *  @ngdoc method
      *  @name myApp.service:Storage#get
+     *  @methodOf myApp.service:Storage
      *  @param {String} className имя класса определенного с помощью angular.factory
-     *  @param {Array|String|Number}  primary первичный ключ.
-     *  Массив, если ключ составной
+     *  @param {Array|String|Number} primary первичный ключ. Массив, еслиключсоставной
      *  @return {Object} экземпляр класса  className
-     *  @description возвращает объект по первичному ключу. Объект должен быть
-     *  предварительно добавлены с помощью
+     *  @description возвращает объект по первичному ключу. Объект должен быть предварительно добавлены с помощью
      */
     function get(className, primary) {
-        var db = html5rocks.indexedDB.db;
+        var db = localdb.locdb;
         var objClass = obj.getClass(); //получим класс объекта
         var trans = db.transaction([objClass], "readwrite");
         var store = trans.objectStore(objClass); //найдем хранилище для объектов данного класса
@@ -63,17 +60,16 @@ myApp.factory('Storage', function () {
             return request.result;
         };
     };
-
     /**
      *
      * @ngdoc method
-     * @name myApp.service:Storage#update
+     * @name myApp.service:Storage#del
      * @methodOf myApp.service:Storage
      * @param {Object} obj объект модель
      * @description удаляет объект из контейнера. Вложенные объекты не удаляются
      */
     function del(obj) {
-        var db = html5rocks.indexedDB.db;
+        var db = localdb.locdb;
         var objClass = obj.getClass(); //получим класс объекта
         var trans = db.transaction([objClass], "readwrite");
         var store = trans.objectStore(objClass); //найдем хранилище для объектов данного класса
@@ -88,7 +84,6 @@ myApp.factory('Storage', function () {
             console.log(e);
         };
     };
-
     return {
         del: del,
         update: update,
