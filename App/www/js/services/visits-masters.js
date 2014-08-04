@@ -4,6 +4,7 @@
  * @name myApp.service:VisitsLoader
  */
 myApp.factory('VisitsLoader', function () {
+    var statuses = [ "Новая запись", "Клиент не пришел", "Подтверждена", "Клиент пришел"];
     /**
      *
      * @ngdoc method
@@ -71,7 +72,8 @@ myApp.factory('VisitsLoader', function () {
     return {
         getData: getData,
         getMinDate: getMinDate,
-        getMaxDate: getMaxDate
+        getMaxDate: getMaxDate,
+        statuses: statuses
     };
 });
 

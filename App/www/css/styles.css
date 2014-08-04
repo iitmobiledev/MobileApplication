@@ -39,8 +39,14 @@
 #dateToggle .prevDay {
     text-align: left;
 }
+#dateToggle .prevDay .pressed {
+    color: purple;
+}
 #dateToggle .nextDay {
     text-align: right;
+}
+#dateToggle .nextDay .pressed {
+    color: purple;
 }
 /*Visit page*/
 
@@ -56,4 +62,58 @@
     width: 100%;
     padding: 0% 10% 5% 10%;
     font-size: 16pt;
+}
+/*Visits page*/
+#status{
+    text-align: center;
+    color: white;
+    font-size: 15px;
+/*    border: 1px solid #77CC33;*/
+    border-radius: 2px;
+    height: 20px;
+    margin-bottom: 5px;
+}
+.not-come{
+    width: 120px;
+    background-color: #FF9F9F;
+    text-align: center;
+    color: white;
+    font-size: 15px;
+/*    border: 1px solid #77CC33;*/
+    border-radius: 2px;
+    height: 20px;
+    margin-bottom: 5px;
+}
+.new{
+    width: 120px;
+    background-color: #FFCC66;
+    text-align: center;
+    color: white;
+    font-size: 15px;
+/*    border: 1px solid #77CC33;*/
+    border-radius: 2px;
+    height: 20px;
+    margin-bottom: 5px;
+}
+.confirm{
+    width: 120px;
+    background-color: #33BBFF;
+    text-align: center;
+    color: white;
+    font-size: 15px;
+/*    border: 1px solid #77CC33;*/
+    border-radius: 2px;
+    height: 20px;
+    margin-bottom: 5px;
+}
+.come{
+    width: 120px;
+    background-color: #77CC33;
+    text-align: center;
+    color: white;
+    font-size: 15px;
+/*    border: 1px solid #77CC33;*/
+    border-radius: 2px;
+    height: 20px;
+    margin-bottom: 5px;
 }

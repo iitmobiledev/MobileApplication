@@ -103,6 +103,7 @@ myApp.controller('VisitsController', function ($scope, $filter, $location, Visit
         $scope.visitInfo = {};
         $scope.visitInfo.id = visit.id;
         $scope.visitInfo.status = visit.status;
+        //$('#status').css('background-color', 'blue');
         $scope.visitInfo.client = visit.client.lastName + ' ' + visit.client.firstName;
         $scope.visitInfo.time = $filter('date')(Math.min.apply(null, startTimes), "HH:mm") + '-' +
             $filter('date')(Math.max.apply(null, endTimes), "HH:mm");
