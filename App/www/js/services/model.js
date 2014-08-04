@@ -174,7 +174,10 @@
  *  {
  *      // обратный вызов для сериализации объекта. Принимает один
  *      // аргумент - типизированный объект, вовращает объект-данные.
- *      // Поведение по умолчанию возвращает самого себя
+ *      // Поведение по умолчанию: копирует все собственные значения,
+ *      // если значение содержит метод  json, он будет вызван и результат
+ *      // записан вместо самого объекта.  Добавляет ключ __class__
+ *      // содержащий имя класса
  *      serialize: function(self){}
  *      // обратный вызов для сериализации объекта. Принимает два
  *      // аргумента - типизированный объект и объект-данные.
@@ -211,6 +214,7 @@
  *              angular.extend(self, data);
  *          },
  *          serialize: function(self){
+ *              self.constructor.prototype.call(self)
  *              var data = angular.extend({},self);
  *              delete data.period;
  *              return data;
@@ -250,7 +254,18 @@ myApp.factory("Model",function(){
             options.primary = ['id'];
         }
         if (!options.serialize){
-            options.serialize = function(self) { return self;};
+            options.serialize = function(self) {
+                var data = {};
+                angular.forEach(self, function(key, value){
+                    if (value.json instanceof Function){
+                       data[key] = value.json();
+                    } else {
+                       data[key] = value;
+                    }
+                });
+                data.__class__ = className;
+                return data;
+            };
         }
 
         var clz = function(data){
