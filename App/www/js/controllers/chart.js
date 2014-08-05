@@ -18,8 +18,8 @@
 myApp.controller('GraphicController', function ($scope, $routeParams, ChartDataLoader) {
     $scope.type = $routeParams.type;
     $scope.period = 12;
-    $scope.chartStep = 1;
-    ChartDataLoader.getGoodData($scope.type, $scope.period, $scope.chartStep, function (data) {
+    //    $scope.chartStep = 1;
+    ChartDataLoader.getGoodData($scope.type, $scope.period, function (data) {
         $scope.loading = false;
         $scope.data = data;
         $scope.$apply();
@@ -64,7 +64,7 @@ myApp.controller('GraphicController', function ($scope, $routeParams, ChartDataL
      */
     $scope.$watch('period', function (newValue) {
         $scope.loading = true;
-        ChartDataLoader.getGoodData($scope.type, $scope.period, $scope.chartStep, function (data) {
+        ChartDataLoader.getGoodData($scope.type, $scope.period, function (data) {
             $scope.loading = false;
             $scope.data = data;
             $scope.$apply();

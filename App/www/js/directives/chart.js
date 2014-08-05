@@ -47,7 +47,6 @@ myApp.directive('chart', function () {
                         },
                     },
                     yAxis: {
-                        maxPadding: 0.25,
                         title: {
                             text: scope.yFormat,
                         },
