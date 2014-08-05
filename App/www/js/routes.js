@@ -13,7 +13,7 @@ myApp.value('localdb', {
 
         request.onsuccess = function (event) {
             this.locdb = request.result;
-            //            console.log("locdb in myApp value: ", this.locdb);
+            console.log("locdb in myApp value: ", this.locdb);
 
             if (this.locdb) {
                 var sName = this.locdb.name;
@@ -53,9 +53,9 @@ myApp.value('localdb', {
 myApp.run(function (localdb) {
     if (localdb.checkSupport()) {
         localdb.open();
-        setTimeout(function () {
-            console.log(localdb.locdb.name);
-        }, 10000)
+        //        setTimeout(function () {
+        console.log(localdb.locdb);
+        //        }, 10000)
     }
 });
 

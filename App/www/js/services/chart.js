@@ -14,16 +14,16 @@ myApp.factory('ChartDataLoader', function (OperatonalStatisticsDataSumming) {
      * требуемый период.
      * @param {String} needValue Поле статистики, которое нужно выбрать.
      * @param {Number} period Количество месяцев, за которые отображается статистика.
-//     * @param {
-//        Number
-//    }
-//    step Количество дней, за которые суммируются
-    //     * данные.
      * @param {Function} callback Функция, которая будет вызвана после
      * обработки всех данных.
      * @returns {Array} Массив из объектов `OperationalStatistics`,
-//     * суммированных по шагу `step`.
      */
+    //     * @param {
+    //        Number
+    //    }
+    //    step Количество дней, за которые суммируются
+    //     * данные.
+    //     * суммированных по шагу `step`.
     function getGoodData(needValue, period, callback) {
         var manyData = getOperationalStatisticsData();
         var goodData = [];

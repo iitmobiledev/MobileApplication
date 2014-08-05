@@ -25,7 +25,7 @@ myApp.directive('chart', function () {
             var drawChart = function () {
                 Highcharts.setOptions({
                     lang: {
-                        shortMonths: ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'],
+                        shortMonths: ['Января', 'Февраля', 'Марта', 'Апреля', 'Мая', 'Июня', 'Июля', 'Августа', 'Сентября', 'Октября', 'Ноября', 'Декабря'],
                         weekdays: ['Воскресенье', 'Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота'],
                     }
                 });
@@ -42,8 +42,8 @@ myApp.directive('chart', function () {
                     xAxis: {
                         type: 'datetime',
                         minRange: 3 * 24 * 3600000,
-                        dateTimeLabelFormats: { //don't display the dummy year
-                            month: '%e %b %y'
+                        dateTimeLabelFormats: {
+                            month: "%d.%m.%Y"
                         },
                     },
                     yAxis: {
@@ -56,7 +56,13 @@ myApp.directive('chart', function () {
                     },
 
                     plotOptions: {
-                        area: {
+                        series: {
+                            tooltip: {
+                                dateTimeLabelFormats: {
+                                    day: '%A, %d %b , %Y'
+                                },
+                                valueSuffix: scope.yFormat
+                            },
                             fillColor: {
                                 linearGradient: {
                                     x1: 0,
@@ -65,20 +71,15 @@ myApp.directive('chart', function () {
                                     y2: 1
                                 },
                                 stops: [
-                            [0, Highcharts.getOptions().colors[0]],
-                            [1, Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
+                            [0, Highcharts.Color("#9513B9").setOpacity(0.2).get('rgba')],
+                            [1, Highcharts.Color("#ffffff").setOpacity(0.2).get('rgba')]
                         ]
                             },
+                            lineWidth: 0.5,
+                            lineColor: '#9513B9',
                             marker: {
-                                radius: 2
-                            },
-                            lineWidth: 1,
-                            states: {
-                                hover: {
-                                    lineWidth: 1
-                                }
-                            },
-                            threshold: null
+                                fillColor: '#9513B9',
+                            }
                         }
                     },
 
