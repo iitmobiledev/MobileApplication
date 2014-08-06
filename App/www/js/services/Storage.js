@@ -6,8 +6,10 @@
 myApp.factory('Storage', function () {
 
     var dbName = "storage";
-    var database = {};
+    var database = null;
 
+    open();
+    //    var update = waitDatabase(function (obj) {});
     /**
      *
      * @ngdoc method
@@ -18,6 +20,7 @@ myApp.factory('Storage', function () {
     function checkSupport() {
         return window.indexedDB;
     }
+
 
     /**
      *
@@ -47,6 +50,26 @@ myApp.factory('Storage', function () {
         };
     }
 
+    /**
+     *
+     * @ngdoc method
+     * @name myApp.service:Storage#waitDatabase
+     * @methodOf myApp.service:Storage
+     * @param {Function} fn функция,которую нужно выполнить когда бд инициализирована
+     * @description Ждет, пока бд инициализурется
+     */
+    function waitDatabase(fn) {
+        var f = function () {
+            var args = arguments;
+            if (database) {
+                return fn.apply(null, args);
+            }
+            setTimeout(function () {
+                f.apply(null, args);
+            }, 100);
+        }
+        return f;
+    };
 
     /**
      *
@@ -56,87 +79,81 @@ myApp.factory('Storage', function () {
      * @param {Object} obj объект модель
      * @description Добавляет объект в контейнер, если объект с таким же первичным ключом уже присутствует в контейнере, данные должны быть обновлены Вложенные объекты также должны быть добавлены
      */
-    function update(obj) {
-        open();
-        //        var db = database;
-        console.log("db in myApp.service.Storage.update: ", database);
-        //        var objClass = obj.getClass(); //получим класс объекта
-        //        var trans = db.indexedDB.db.transaction(["visit"], "readwrite");
-        //        var store = trans.objectStore("visit"); //найдем хранилище для объектов данного класса
-        //нужно проверить, нет ли объекта с таким же PK
-        //обновление объекта: https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API/Using_IndexedDB#Getting_data_from_the_database
-        //если есть вложенные объекты, то как их вытащить?
-        //        var request = store.put(obj); //положим в хранилище json-объект
+    var update = waitDatabase(function (obj) {
+        var db = database;
+        var objClass = obj.getClass(); //получим класс объекта
+        var trans = db.transaction([objClass], "readwrite");
+        var store = trans.objectStore(objClass); //найдем хранилище для объектов данного класса
+        //        обновление объекта: https: //developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API/Using_IndexedDB#Getting_data_from_the_database
+        var request = store.put(obj); //положим в хранилище json-объект
 
-        //если транзакт прошел успешно
-        //        request.onsuccess = function (e) {
-        //            //make something
-        //            console.log("obj in db!");
-        //        };
-        //
-        //        //если что-то пошло не так
-        //        request.onerror = function (e) {
-        //            console.log(e.value);
-        //        };
+        request.onsuccess = function (e) { //если транзакт прошел успешно
+            console.log("obj in db!");
+        };
 
-    };
+        request.onerror = function (e) { //если что-то пошло не так
+            console.log(e.value);
+        };
 
-    //    /**  
-    //     *
-    //     *  @ngdoc method
-    //     *  @name myApp.service:Storage#get
-    //     *  @methodOf myApp.service:Storage
-    //     *  @param {String} className имя класса определенного с помощью angular.factory
-    //     *  @param {Array|String|Number} primary первичный ключ. Массив, еслиключсоставной
-    //     *  @return {Object} экземпляр класса  className
-    //     *  @description возвращает объект по первичному ключу. Объект должен быть предварительно добавлены с помощью
-    //     */
-    //    function get(className, primary) {
-    //        var db = localdb.locdb;
-    //        var objClass = obj.getClass(); //получим класс объекта
-    //        var trans = db.transaction([objClass], "readwrite");
-    //        var store = trans.objectStore(objClass); //найдем хранилище для объектов данного класса
-    //
-    //        var request = objectStore.get(primary); //произвести выборку по PK 
-    //        request.onerror = function (event) {
-    //            //make something
-    //        };
-    //        request.onsuccess = function (event) {
-    //            // Do something with the request.result!
-    //            //вернуть результат
-    //            return request.result;
-    //        };
-    //    };
-    //    /**
-    //     *
-    //     * @ngdoc method
-    //     * @name myApp.service:Storage#del
-    //     * @methodOf myApp.service:Storage
-    //     * @param {Object} obj объект модель
-    //     * @description удаляет объект из контейнера. Вложенные объекты не удаляются
-    //     */
-    //    function del(obj) {
-    //        var db = localdb.locdb;
-    //        var objClass = obj.getClass(); //получим класс объекта
-    //        var trans = db.transaction([objClass], "readwrite");
-    //        var store = trans.objectStore(objClass); //найдем хранилище для объектов данного класса
-    //
-    //        var request = store.delete(obj.getKey()); //получим PK объекта, далее удалим по PK из бд нужный объект
-    //
-    //        request.onsuccess = function (e) {
-    //            //        make something
-    //        };
-    //
-    //        request.onerror = function (e) {
-    //            console.log(e);
-    //        };
-    //    };
+    });
+
+    /**  
+     *
+     *  @ngdoc method
+     *  @name myApp.service:Storage#get
+     *  @methodOf myApp.service:Storage
+     *  @param {String} className имя класса определенного с помощью angular.factory
+     *  @param {Array|String|Number} primary первичный ключ. Массив, еслиключсоставной
+     *  @return {Object} экземпляр класса  className
+     *  @description возвращает объект по первичному ключу. Объект должен быть предварительно добавлены с помощью
+     */
+    var get = waitDatabase(function (className, primary) {
+        var db = database;
+        var objClass = obj.getClass(); //получим класс объекта
+        var trans = db.transaction([className], "readwrite");
+        var store = trans.objectStore(objClass); //найдем хранилище для объектов данного класса
+
+        var request = store.get(primary); //произвести выборку по PK 
+        request.onerror = function (event) {
+            //make something
+        };
+        request.onsuccess = function (event) {
+            if (request.result) {
+                console.log("obj get:", request.result);
+            }
+            return request.result;
+        };
+    });
+
+    /**
+     *
+     * @ngdoc method
+     * @name myApp.service:Storage#del
+     * @methodOf myApp.service:Storage
+     * @param {Object} obj объект модель
+     * @description удаляет объект из контейнера. Вложенные объекты не удаляются
+     */
+    var del = waitDatabase(function (obj) {
+        var db = database;
+        var objClass = obj.getClass(); //получим класс объекта
+        var trans = db.transaction([objClass], "readwrite");
+        var store = trans.objectStore(objClass); //найдем хранилище для объектов данного класса
+
+        var request = store.delete(); //получим PK объекта, далее удалим по PK из бд нужный объект
+
+        request.onsuccess = function (e) {
+            //        make something
+        };
+
+        request.onerror = function (e) {
+            console.log(e);
+        };
+    });
     return {
-        //        del: del,
+        del: del,
+        open: open,
         update: update,
-        //        get: get,
-        checkSupport: checkSupport,
-        //        db: db,
-        //        init: init
+        get: get,
+        checkSupport: checkSupport
     };
 });

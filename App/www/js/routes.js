@@ -2,14 +2,14 @@ var myApp = angular.module('myApp', ['ngRoute', 'ngAnimate', 'angular-carousel',
 
 myApp.run(function (Storage) {
     if (Storage.checkSupport()) {
-        //        Storage.init();
-
         var master = new Master(1, "Петр", "Михайлович", "Яковлев");
         var serviceList = [];
         var client = new Client("Марина", "Андреевна", "Иванова", "+79227062050", 2000, 0);
         serviceList.push(new Service("Мелирование", new Date(2014, 6, 20, 15, 00), new Date(2014, 6, 20, 16, 00), master, 2000));
         var visit = new Visit(3, client, serviceList, "Очень плохие волосы", new Date(2014, 6, 20, 16, 00), "Клиент опаздывает");
         Storage.update(visit);
+        Storage.get("visit", 3);
+        Storage.del("3");
     }
 });
 
