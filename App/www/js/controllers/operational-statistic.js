@@ -35,7 +35,8 @@ myApp.controller('OperationalStatisticController', function ($scope, $location, 
      * период.
      */
     $scope.hasPrevData = function () {
-        return $scope.date > minDate;
+        return true;
+        //return $scope.date > minDate;
     };
 
     /**
@@ -48,8 +49,9 @@ myApp.controller('OperationalStatisticController', function ($scope, $location, 
      * период.
      */
     $scope.hasFutureData = function () {
-        var period = DateHelper.getPeriod($scope.date, $scope.step);
-        return period.end < maxDate && period.end.toDateString() != maxDate.toDateString();
+        return true;
+//        var period = DateHelper.getPeriod($scope.date, $scope.step);
+//        return period.end < maxDate && period.end.toDateString() != maxDate.toDateString();
     };
 
     /**
@@ -65,26 +67,11 @@ myApp.controller('OperationalStatisticController', function ($scope, $location, 
         $scope.prevdate = DateHelper.getPrevPeriod($scope.date, $scope.step).begin;
         $scope.nextdate = DateHelper.getNextPeriod($scope.date, $scope.step).end;
         if (!$scope.hasFutureData()) {
-            $scope.pages = [{
-                currentData: getStatistic($scope.prevdate, $scope.step),
-                prevData: getStatistic(DateHelper.getPrev($scope.prevdate, $scope.step), $scope.step)
-            }, {
-                currentData: getStatistic($scope.date, $scope.step),
-                prevData: getStatistic(DateHelper.getPrev($scope.date, $scope.step), $scope.step)
-            }];
+            $scope.pages = [getStatistic($scope.prevdate, $scope.step), getStatistic($scope.date, $scope.step)];
 //            $scope.pageIndex = 1;
         } else {
             if ($scope.hasPrevData()) {
-                $scope.pages = [{
-                    currentData: getStatistic($scope.prevdate, $scope.step),
-                    prevData: getStatistic(DateHelper.getPrev($scope.prevdate, $scope.step), $scope.step)
-                }, {
-                    currentData: getStatistic($scope.date, $scope.step),
-                    prevData: getStatistic(DateHelper.getPrev($scope.date, $scope.step), $scope.step)
-                }, {
-                    currentData: getStatistic($scope.nextdate, $scope.step),
-                    prevData: getStatistic(DateHelper.getPrev($scope.nextdate, $scope.step), $scope.step)
-                }];
+                $scope.pages = [getStatistic($scope.prevdate, $scope.step), getStatistic($scope.date, $scope.step), getStatistic($scope.nextdate, $scope.step)];
 //                $scope.pageIndex = 1;
             } else {
                 $scope.date = OperationalStatisticLoader.getMinDate();

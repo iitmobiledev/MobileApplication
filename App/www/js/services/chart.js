@@ -4,7 +4,7 @@
  * @name myApp.service:ChartDataLoader
  * @requires myApp.service:OperatonalStatisticsDataSumming
  */
-myApp.factory('ChartDataLoader', function (OperatonalStatisticsDataSumming) {
+myApp.factory('ChartDataLoader', function (OperationalStatisticLoader, DateHelper, OperatonalStatisticsDataSumming) {
     /**
      *
      * @ngdoc method
@@ -25,11 +25,19 @@ myApp.factory('ChartDataLoader', function (OperatonalStatisticsDataSumming) {
     //     * данные.
     //     * суммированных по шагу `step`.
     function getGoodData(needValue, period, callback) {
-        var manyData = getOperationalStatisticsData();
+        //var manyData = OperationalStatisticLoader.getData();
         var goodData = [];
-        var summedData = [];
+        //        var summedData = [];
         var nowDay = new Date();
         var endDay = new Date(nowDay.getFullYear(), nowDay.getMonth() - period, nowDay.getDate());
+        for (var day = nowDay; day > endDay; day = DateHelper.getPrevPeriod(day, 'day').begin) {
+            var item = [];
+            item.push(Date.UTC(day.getFullYear(), day.getMonth(), day.getDate()));
+            item.push(OperationalStatisticLoader.getData(day)[needValue.toString()]);
+            goodData.push(item);
+        }
+        goodData = goodData.sort();
+
 
         //        var tempData = [];
         //        for (i = 0; i < manyData.length; i++) {
@@ -45,13 +53,13 @@ myApp.factory('ChartDataLoader', function (OperatonalStatisticsDataSumming) {
         //            summedData.push(OperatonalStatisticsDataSumming(tempData));
         //            tempData = [];
         //        }
-        for (i = 0; i < manyData.length; i++) {
-            var item = [];
-            item.push(Date.UTC(manyData[i].date.getFullYear(), manyData[i].date.getMonth(), manyData[i].date.getDate()));
-            item.push(manyData[i][needValue]);
-            goodData.push(item);
-        }
-        goodData = goodData.sort();
+        //        for (i = 0; i < manyData.length; i++) {
+        //            var item = [];
+        //            item.push(Date.UTC(manyData[i].dateFrom.getFullYear(), manyData[i].dateFrom.getMonth(), manyData[i].dateFrom.getDate()));
+        //            item.push(manyData[i][needValue]);
+        //            goodData.push(item);
+        //        }
+        //        goodData = goodData.sort();
         setTimeout(function () {
             callback(goodData);
         }, 5000);

@@ -66,19 +66,19 @@
  *  @description интерфейс, который должны реализовать объекты данных.
  *  коструктор класса должен принимать десериализованные JSON  объекты
  */
- /**  @ngdoc method
+/**  @ngdoc method
  *  @methodOf myApp.interface:IModel
  *  @name getKey
  *  @return {Array} массив значений свойств, входящих в первичный ключ
  *  @virtual
  */
- /**  @ngdoc method
+/**  @ngdoc method
  *  @methodOf myApp.interface:IModel
  *  @name getClass
  *  @return {String}  название класса
  *  @virtual
  */
- /**  @ngdoc method
+/**  @ngdoc method
  *  @methodOf myApp.interface:IModel
  *  @name json
  *  @return {Object} отформатированный JSON-объект
@@ -88,7 +88,7 @@
  *  @name myApp.interface:IStorage
  *  @description интерфейс, для синхронного контейнера
  */
- /**  @ngdoc method
+/**  @ngdoc method
  *  @methodOf myApp.interface:IStorage
  *  @name get
  *  @param {String} className имя класса определенного с помощью angular.factory
@@ -100,7 +100,7 @@
  *  {@link myApp.interface:IStorage#methods_save}
  *  @virtual
  */
- /**  @ngdoc method
+/**  @ngdoc method
  *  @methodOf myApp.interface:IStorage
  *  @name update
  *  @param {Object} obj объект-модель
@@ -109,7 +109,7 @@
  *  Вложенные объекты также должны быть добавлены
  *  @virtual
  */
- /**  @ngdoc method
+/**  @ngdoc method
  *  @methodOf myApp.interface:IStorage
  *  @name del
  *  @param {Object} obj объект-модель
@@ -120,7 +120,7 @@
  *  @name myApp.interface:IAsyncStorage
  *  @description интерфейс, для асинхронного контейнера
  */
- /**  @ngdoc method
+/**  @ngdoc method
  *  @methodOf myApp.interface:IAsyncStorage
  *  @name get
  *  @param {String} className имя класса определенного с помощью
@@ -132,7 +132,7 @@
  *  @description возвращает объект по первичному ключу
  *  @virtual
  */
- /**  @ngdoc method
+/**  @ngdoc method
  *  @methodOf myApp.interface:IAsyncStorage
  *  @name search
  *  @param {String} className имя класса определенного с помощью
@@ -144,7 +144,7 @@
  *  @description возвращает объект по первичному ключу
  *  @virtual
  */
- /**  @ngdoc method
+/**  @ngdoc method
  *  @methodOf myApp.interface:IAsyncStorage
  *  @name update
  *  @param {Object} obj объект-модель
@@ -155,7 +155,7 @@
  *  Вложенные объекты также должны быть добавлены
  *  @virtual
  */
- /**  @ngdoc method
+/**  @ngdoc method
  *  @methodOf myApp.interface:IAsyncStorage
  *  @name del
  *  @param {Object} obj объект-модель
@@ -244,23 +244,23 @@
  * }]);
  *</pre>
  */
-myApp.factory("Model",function(){
-    return  function(className, options){
+myApp.factory("Model", function () {
+    return function (className, options) {
         options = options || {};
-        if (!options.deserialize){
-           options.deserialize = angular.extend;
+        if (!options.deserialize) {
+            options.deserialize = angular.extend;
         }
-        if (!options.primary){
+        if (!options.primary) {
             options.primary = ['id'];
         }
-        if (!options.serialize){
-            options.serialize = function(self) {
+        if (!options.serialize) {
+            options.serialize = function (self) {
                 var data = {};
-                angular.forEach(self, function(key, value){
-                    if (value.json instanceof Function){
-                       data[key] = value.json();
+                angular.forEach(self, function (key, value) {
+                    if (value.json instanceof Function) {
+                        data[key] = value.json();
                     } else {
-                       data[key] = value;
+                        data[key] = value;
                     }
                 });
                 data.__class__ = className;
@@ -268,31 +268,31 @@ myApp.factory("Model",function(){
             };
         }
 
-        var clz = function(data){
+        var clz = function (data) {
             options.deserialize(this, data);
         };
         clz.prototype = {
-        /**
-         *  @ngdoc method
-         *  @name getKey
-         *  @methodOf myApp.service:Model
-         *  @return {Array}  массив значений первичного ключа
-         */
-            getKey: function(){
+            /**
+             *  @ngdoc method
+             *  @name getKey
+             *  @methodOf myApp.service:Model
+             *  @return {Array}  массив значений первичного ключа
+             */
+            getKey: function () {
                 var res = [];
-                for(var i = 0; i < clz.__primary__.length; i++){
+                for (var i = 0; i < clz.__primary__.length; i++) {
                     res.push(this[clz.__primary__[i]]);
                 }
                 return res;
             },
-            getClass: function(){
+            getClass: function () {
                 return this.constructor.__class__;
             },
-            json: function(){
+            json: function () {
                 return options.serialize(this);
             }
         };
-        clz.__primary__ = ['id'];
+        clz.__primary__ = options.primary;
         clz.__class__ = className;
         /**
          *  @ngdoc method
@@ -311,8 +311,8 @@ myApp.factory("Model",function(){
          *  var key = Something.key({date: new Date(), step: 'day'});
          *  </pre>
          */
-        clz.key = function(data){
-            if (!(data instanceof Array)){
+        clz.key = function (data) {
+            if (!(data instanceof Array)) {
                 data = clz.prototype.getKey.call(data);
             }
             return data.join(":");
@@ -333,7 +333,7 @@ myApp.factory("Model",function(){
  * @ property Number profit; //прибыль
  * @ property Number clients; //количество клиентов
  * @ property Number workload; //загруженность
-myVApp.factory("OperationalStatistics", ["Model",function(Model){
+myApp.factory("OperationalStatistics", ["Model",function(Model){
     var OS = function(data){
         angular.extend(this, data);
     }
@@ -374,7 +374,7 @@ function ($scope, $location, OperationalStatisticLoader, DateHelper) {
         //  здесь самое время сделать нужный препроцессинг
         $scope.pages = data;
         });
-        }
+    }
         $scope.changePeriod = function(){
             $scope.period = DateHelper.getPeriod($scope.date, $scope.step);
         }

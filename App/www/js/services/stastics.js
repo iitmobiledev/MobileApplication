@@ -5,7 +5,7 @@
  * @requires myApp.service:DateHelper
  * @requires myApp.service:OperatonalStatisticsDataSumming
  */
-myApp.factory('OperationalStatisticLoader', function (DateHelper, OperatonalStatisticsDataSumming) {
+myApp.factory('OperationalStatisticLoader', function (DateHelper, OperatonalStatisticsDataSumming, GetOperationalStatistics) {
     /**
      *
      * @ngdoc method
@@ -20,12 +20,16 @@ myApp.factory('OperationalStatisticLoader', function (DateHelper, OperatonalStat
      * данные.
      */
     function getData(date, step) {
-        var allStatistic = getOperationalStatisticsData();
+        step = step || 'day';
         var period = DateHelper.getPeriod(date, step);
-        allStatistic = allStatistic.filter(function (statistic) {
-            return (statistic.date <= period.end && statistic.date >= period.begin || statistic.date.toDateString() == period.end.toDateString());
-        });
-        return OperatonalStatisticsDataSumming(allStatistic);
+        var statistics = GetOperationalStatistics(period.begin, period.end);
+        //        var allStatistic = getOperationalStatisticsData();
+        //        var period = DateHelper.getPeriod(date, step);
+        //        allStatistic = allStatistic.filter(function (statistic) {
+        //            return (statistic.date <= period.end && statistic.date >= period.begin || statistic.date.toDateString() == period.end.toDateString());
+        //        });
+        return statistics || {};
+        //return OperatonalStatisticsDataSumming(allStatistic);
     }
 
     /**
@@ -38,7 +42,7 @@ myApp.factory('OperationalStatisticLoader', function (DateHelper, OperatonalStat
      * @returns {Date} Дата самых давних данных статистики.
      */
     function getMinDate() {
-        var allStatistic = getOperationalStatisticsData();
+        var allStatistic = GetOperationalStatistics();
         var minDate = new Date();
         for (var i = 0; i < allStatistic.length; i++) {
             if (allStatistic[i].date < minDate)
@@ -58,7 +62,7 @@ myApp.factory('OperationalStatisticLoader', function (DateHelper, OperatonalStat
      * статистические данны.
      */
     function getMaxDate() {
-        var allStatistic = getOperationalStatisticsData();
+        var allStatistic = GetOperationalStatistics();
         var maxDate = new Date();
         for (var i = 0; i < allStatistic.length; i++) {
             if (allStatistic[i].date > maxDate)
@@ -90,11 +94,7 @@ myApp.factory('OperatonalStatisticsDataSumming', function () {
         var date, proceeds = 0,
             profit = 0,
             clients = 0,
-            workload = 0,
-            tillMoney = 0,
-            morningMoney = 0,
-            credit = 0,
-            debit = 0;
+            workload = 0;
         for (var i = 0; i < statisticForPeriod.length; i++) {
             date = statisticForPeriod[i].date;
             proceeds += statisticForPeriod[i].proceeds;
@@ -122,3 +122,56 @@ myApp.factory('FinanceStatisticsLoader', function () {
     };
 });
 
+myApp.factory('OperationalStatistics', function (Model, DateHelper) {
+    return Model("OperationalStatistics", {
+        deserialize: function (self, data) {
+            Object.defineProperty(self, "dateFrom", {
+                value: new Date(data.dateFrom),
+                writable: true
+            });
+            Object.defineProperty(self, "dateTill", {
+                value: new Date(data.dateTill),
+                writable: true
+            });
+            Object.defineProperty(self, "proceeds", {
+                value: data.proceeds,
+                writable: true
+            });
+            Object.defineProperty(self, "profit", {
+                value: data.profit,
+                writable: true
+            });
+            Object.defineProperty(self, "clients", {
+                value: data.clients,
+                writable: true
+            });
+            Object.defineProperty(self, "workload", {
+                value: data.workload,
+                writable: true
+            });
+        },
+        serialize: function (self) {
+            self.constructor.prototype.call(self)
+            var data = angular.extend({}, self);
+            return data;
+        },
+        primary: ['dateFrom', 'dateTill']
+    });
+});
+
+myApp.factory('GetOperationalStatistics', function (Model, OperationalStatistics) {
+    return function (dateFrom, dateTill) {
+        var data = getOperationalStatisticsData();
+        var result = [];
+        for (var i = 0; i < data.length; i++) {
+            var opstat = new OperationalStatistics(data[i]);
+            result.push(opstat);
+        }
+        if (dateFrom && dateTill) {
+            result = result.filter(function (statistic) {
+                return (statistic.dateFrom.toDateString() == dateFrom.toDateString() && statistic.dateTill.toDateString() == dateTill.toDateString());
+            });
+        }
+        return result[0];
+    }
+});
