@@ -5,7 +5,7 @@
  * @requires myApp.service:DateHelper
  * @requires myApp.service:OperatonalStatisticsDataSumming
  */
-myApp.factory('OperationalStatisticLoader', function (DateHelper, OperatonalStatisticsDataSumming, GetOperationalStatistics) {
+myApp.factory('OperationalStatisticLoader', function (DateHelper, OperatonalStatisticsDataSumming, GetOperationalStatistics, GetStatisticsForChart) {
     /**
      *
      * @ngdoc method
@@ -23,13 +23,13 @@ myApp.factory('OperationalStatisticLoader', function (DateHelper, OperatonalStat
         step = step || 'day';
         var period = DateHelper.getPeriod(date, step);
         var statistics = GetOperationalStatistics(period.begin, period.end);
-        //        var allStatistic = getOperationalStatisticsData();
-        //        var period = DateHelper.getPeriod(date, step);
-        //        allStatistic = allStatistic.filter(function (statistic) {
-        //            return (statistic.date <= period.end && statistic.date >= period.begin || statistic.date.toDateString() == period.end.toDateString());
-        //        });
         return statistics || {};
-        //return OperatonalStatisticsDataSumming(allStatistic);
+    }
+    
+    function getDataForChart(date){
+        var endDate = new Date(date.getFullYear() - 1, date.getMonth(), date.getDate());
+        var statistics = GetStatisticsForChart(date, endDate);
+        return statistics || [];
     }
 
     /**
@@ -73,6 +73,7 @@ myApp.factory('OperationalStatisticLoader', function (DateHelper, OperatonalStat
 
     return {
         getData: getData,
+        getDataForChart: getDataForChart,
         getMinDate: getMinDate,
         getMaxDate: getMaxDate
     }
@@ -173,5 +174,22 @@ myApp.factory('GetOperationalStatistics', function (Model, OperationalStatistics
             });
         }
         return result[0];
+    }
+});
+
+myApp.factory('GetStatisticsForChart', function (Model, OperationalStatistics) {
+    return function (dateFrom, dateTill) {
+        var data = getOperationalStatisticsData();
+        var result = [];
+        for (var i = 0; i < data.length; i++) {
+            var opstat = new OperationalStatistics(data[i]);
+            result.push(opstat);
+        }
+        if (dateFrom && dateTill) {
+            result = result.filter(function (statistic) {
+                return (statistic.dateFrom < dateFrom || statistic.dateFrom.toDateString() == dateFrom.toDateString() && statistic.dateTill > dateTill || statistic.dateTill.toDateString() == dateTill.toDateString());
+            });
+        }
+        return result;
     }
 });

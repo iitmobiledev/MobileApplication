@@ -25,18 +25,27 @@ myApp.factory('ChartDataLoader', function (OperationalStatisticLoader, DateHelpe
     //     * данные.
     //     * суммированных по шагу `step`.
     function getGoodData(needValue, period, callback) {
-        //var manyData = OperationalStatisticLoader.getData();
         var goodData = [];
-        //        var summedData = [];
-        var nowDay = new Date();
-        var endDay = new Date(nowDay.getFullYear(), nowDay.getMonth() - period, nowDay.getDate());
-        for (var day = nowDay; day > endDay; day = DateHelper.getPrevPeriod(day, 'day').begin) {
+
+        var statistics = OperationalStatisticLoader.getDataForChart(new Date());
+        for (var i = 0; i < statistics.length; i++)
+        {
             var item = [];
-            item.push(Date.UTC(day.getFullYear(), day.getMonth(), day.getDate()));
-            item.push(OperationalStatisticLoader.getData(day)[needValue.toString()]);
+            item.push(Date.UTC(statistics[i].dateFrom.getFullYear(), statistics[i].dateFrom.getMonth(), statistics[i].dateFrom.getDate()));
+            item.push(statistics[i][needValue.toString()]);
             goodData.push(item);
         }
         goodData = goodData.sort();
+        
+//        var nowDay = new Date();
+//        var endDay = new Date(nowDay.getFullYear(), nowDay.getMonth() - period, nowDay.getDate());
+//        for (var day = nowDay; day > endDay; day = DateHelper.getPrevPeriod(day, 'day').begin) {
+//            var item = [];
+//            item.push(Date.UTC(day.getFullYear(), day.getMonth(), day.getDate()));
+//            item.push(OperationalStatisticLoader.getData(day)[needValue.toString()]);
+//            goodData.push(item);
+//        }
+        
 
 
         //        var tempData = [];

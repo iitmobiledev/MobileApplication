@@ -3,8 +3,7 @@
  * @ngdoc directive
  * @name myApp.directive:loadBar
  * @restrict E
- * @param {Boolean} paramName Параметр, указывающий необходимо или нет
- * отображать анимацию загрузки.
+ * @param {Boolean} paramName Параметр, указывающий необходимо или нет отображать анимацию загрузки.
  */
 
 myApp.directive('loadBar', function () {

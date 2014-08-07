@@ -96,8 +96,10 @@ myApp.directive('chart', function () {
              *watch, смотрящий за изменением данных для графика
              */
             scope.$watch(attrs.chartData, function (newValue) {
+                console.log(newValue);
                 var chart = $('#container').highcharts();
                 if (chart) {
+                    console.log('update');
                     chart.series[0].update({
                         data: newValue
                     });
