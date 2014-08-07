@@ -1,10 +1,51 @@
+myApp.factory('Visit', function (Model) {
+    return Model("Visit", {
+        deserialize: function (self, data) {
+            Object.defineProperty(self, "id", {
+                value: data.id,
+                writable: true
+            });
+            Object.defineProperty(self, "client", {
+                value: data.client,
+                writable: true
+            });
+            Object.defineProperty(self, "serviceList", {
+                value: data.serviceList,
+                writable: true
+            });
+            Object.defineProperty(self, "date", {
+                value: new Date(data.date),
+                writable: true
+            });
+            Object.defineProperty(self, "comment", {
+                value: data.comment,
+                writable: true
+            });
+            Object.defineProperty(self, "status", {
+                value: data.status,
+                writable: true
+            });
+        },
+        serialize: function (self) {
+            self.constructor.prototype.call(self)
+            var data = angular.extend({}, self);
+            return data;
+        },
+        primary: ['id']
+    });
+});
+
+
+
+
+
 /**
  * @ngdoc service
  * @description Сервис для загрузки данных о визитах.
  * @name myApp.service:VisitsLoader
  */
-myApp.factory('VisitsLoader', function () {
-    var statuses = [ "Новая запись", "Клиент не пришел", "Подтверждена", "Клиент пришел"];
+myApp.factory('VisitsLoader', function (Model, Visit) {
+    var statuses = ["Новая запись", "Клиент не пришел", "Подтверждена", "Клиент пришел"];
     /**
      *
      * @ngdoc method
@@ -17,18 +58,25 @@ myApp.factory('VisitsLoader', function () {
      */
     function getData(date) {
         var getedData = getVisits();
-        getedData = getedData.filter(function (visit) {
+        var result = [];
+        console.log("result", getedData);
+        for (var i = 0; i < getedData.length; i++) {
+            var item = Visit(getedData[i]);
+            console.log(item);
+            result.push(item);
+        }
+        result = result.filter(function (visit) {
             return (visit.date.toDateString() == date.toDateString());
         });
-        if (getedData.length != 0) {
-            return getedData.sort(function (a, b) {
+        if (result.length != 0) {
+            return result.sort(function (a, b) {
                 return new Date(a.date).getTime() - new Date(b.date).getTime()
             });
         }
         return [];
     }
-    
-    
+
+
     /**
      *
      * @ngdoc method

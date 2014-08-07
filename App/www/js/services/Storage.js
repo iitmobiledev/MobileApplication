@@ -9,7 +9,6 @@ myApp.factory('Storage', function () {
     var database = null;
 
     open();
-    //    var update = waitDatabase(function (obj) {});
     /**
      *
      * @ngdoc method
@@ -37,6 +36,9 @@ myApp.factory('Storage', function () {
             var db = event.target.result;
             var objectStore = db.createObjectStore("visit", {
                 keyPath: "id"
+            });
+            objectStore = db.createObjectStore("OperationalStatistics", {
+                keyPath: "dateFrom"
             });
         };
 
@@ -120,6 +122,8 @@ myApp.factory('Storage', function () {
         request.onsuccess = function (event) {
             if (request.result) {
                 console.log("obj get:", request.result);
+            } else {
+                console.log("object with primary:", primary, "not found!");
             }
             return request.result;
         };

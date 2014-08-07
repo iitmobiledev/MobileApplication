@@ -25,8 +25,8 @@ myApp.factory('OperationalStatisticLoader', function (DateHelper, OperatonalStat
         var statistics = GetOperationalStatistics(period.begin, period.end);
         return statistics || {};
     }
-    
-    function getDataForChart(date){
+
+    function getDataForChart(date) {
         var endDate = new Date(date.getFullYear() - 1, date.getMonth(), date.getDate());
         var statistics = GetStatisticsForChart(date, endDate);
         return statistics || [];
@@ -172,6 +172,7 @@ myApp.factory('GetOperationalStatistics', function (Model, OperationalStatistics
         var result = [];
         for (var i = 0; i < data.length; i++) {
             var opstat = new OperationalStatistics(data[i]);
+            //            console.log(opstat);
             result.push(opstat);
         }
         if (dateFrom && dateTill) {

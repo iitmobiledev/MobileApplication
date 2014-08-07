@@ -169,32 +169,18 @@ function getExpenditures() {
 
 function getVisits() {
     var visList = [];
-    var client;
-    var master = new Master(1, "Петр", "Михайлович", "Яковлев");
-    var serviceList = [];
-    client = new Client("Екатерина", "Андреевна", "Иванова", "+79227062050", 2000, 0);
-    serviceList.push(new Service("Мелирование", new Date(2014, 6, 20, 15, 00), new Date(2014, 6, 20, 16, 00), master, 2000));
-    visit = new Visit(2, client, serviceList, "Очень плохие волосы", new Date(2014, 6, 20, 16, 00), "Новая запись");
+    var sList = [];
+    sList.push(new Service("Стрижка", new Date(2014, 7, 2, 19, 00), new Date(2014, 7, 2, 20, 00), new Master(3, "Владимир", "Петрович", "Петров"), 5000));
+
+    var visit = {};
+    visit.id = 4;
+    visit.client = new Client("Марина", "Андреевна", "Пекарская", "+79021565814", -1000, 5);
+    visit.serviceList = sList;
+    visit.comment = "Забыла деньги дома. Обещала принести чуть позже."
+    visit.date = new Date(2014, 7, 6, 20, 00);
+    visit.status = "Клиент пришел";
     visList.push(visit);
-    //2 visit
-    serviceList = [];
-    client = new Client("Иван", "Сергеевич", "Иванов", "+79526072050", 5000, 0);
-    serviceList.push(new Service("Стрижка модная", new Date(2014, 6, 20, 10, 00), new Date(2014, 6, 20, 11, 00), master, 2500));
-    serviceList.push(new Service("Мелирование", new Date(2014, 6, 20, 11, 10), new Date(2014, 6, 20, 12, 10), new Master(2, "Владимир", "Михайлович", "Путин"), 1000));
-    visit = new Visit(1, client, serviceList, "Очень длинные волосы", new Date(2014, 6, 20, 10, 00), "Клиент пришел");
-    visList.push(visit);
-    //3 visit
-    serviceList = [];
-    client = new Client("Светлана", "Андреевна", "Бравилова", "+79021565814", 50000, 0);
-    serviceList.push(new Service("Мелирование", new Date(2014, 7, 2, 20, 10), new Date(2014, 7, 2, 23, 10), new Master(3, "Владимир", "Петрович", "Петров"), 6000));
-    visit = new Visit(3, client, serviceList, "Очень густые волосы", new Date(2014, 7, 2, 20, 00), "Подтверждена");
-    visList.push(visit);
-    //4 visit
-    serviceList = [];
-    client = new Client("Марина", "Андреевна", "Пекарская", "+79021565814", -1000, 5);
-    serviceList.push(new Service("Стрижка", new Date(2014, 7, 2, 19, 00), new Date(2014, 7, 2, 20, 00), new Master(3, "Владимир", "Петрович", "Петров"), 5000));
-    visit = new Visit(4, client, serviceList, "Забыла деньги дома. Обещала принести чуть позже.", new Date(2014, 7, 2, 20, 00), "Клиент пришел");
-    visList.push(visit);
+
     return visList;
 }
 
