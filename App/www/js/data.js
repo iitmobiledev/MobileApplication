@@ -6,12 +6,12 @@
 //    this.workload = workload; //загруженность
 //}
 
-function FinanceStatistics(tillMoney, morningMoney, credit, debit) {
-    this.tillMoney = tillMoney; //денег в кассе
-    this.morningMoney = morningMoney; //денег на утро
-    this.credit = credit; //расход      
-    this.debit = debit; //приход
-}
+//function FinanceStatistics(tillMoney, morningMoney, credit, debit) {
+//    this.tillMoney = tillMoney; //денег в кассе
+//    this.morningMoney = morningMoney; //денег на утро
+//    this.credit = credit; //расход      
+//    this.debit = debit; //приход
+//}
 
 //Расходы
 function Expenditures(date, expenditureList) {
@@ -92,7 +92,7 @@ function User(firstName, middleName, lastName, email, login, password) {
 //        profit: 523.33,
 //        clients: 33,
 //        workload: 80
-function getOperationalStatisticsData() {
+function getOperationalStatisticsData(getPeriod) {
     var data = [];
     var nowDay = new Date();
     for (var i = 0; i < 365; i++) {
@@ -104,7 +104,36 @@ function getOperationalStatisticsData() {
         item.profit = getRandom(-1000, 5000);
         item.clients = Math.round(getRandom(3, 50));
         item.workload = getRandom(50, 100);
+        item.financeStat = getFinanceStatistics(item.dateFrom);
         data.push(item);
+
+        if (i % 7 == 0) {
+            item = {};
+            a = getRandom(7000, 70000);
+            var period = getPeriod(new Date(nowDay.getFullYear(), nowDay.getMonth(), nowDay.getDate() - i), "week");
+            item.dateFrom = period.begin;
+            item.dateTill = period.end;
+            item.proceeds = a;
+            item.profit = getRandom(-7000, 35000);
+            item.clients = Math.round(getRandom(35, 200));
+            item.workload = getRandom(50, 100);
+            item.financeStat = {};
+            data.push(item);
+        }
+
+        if (i % 30 == 0) {
+            item = {};
+            a = getRandom(50000, 300000);
+            var period = getPeriod(new Date(nowDay.getFullYear(), nowDay.getMonth(), nowDay.getDate() - i), "month");
+            item.dateFrom = period.begin;
+            item.dateTill = period.end;
+            item.proceeds = a;
+            item.profit = getRandom(-15000, 70000);
+            item.clients = Math.round(getRandom(100, 1000));
+            item.workload = getRandom(50, 100);
+            item.financeStat = {};
+            data.push(item);
+        }
     }
     return data;
 }
@@ -113,9 +142,14 @@ function getRandom(min, max) {
     return Math.round((Math.random() * (max - min) + min) * 100) / 100;
 }
 
-
-function getFinanceStatistics() {
-    return new FinanceStatistics(13000, 1000, 5000, -2000);
+function getFinanceStatistics(date) {
+    return {
+        date: date,
+        tillMoney: getRandom(5000, 15000),
+        morningMoney: getRandom(500, 2000),
+        credit: getRandom(3000, 7000),
+        debit: getRandom(-1000, 2000)
+    };
 }
 
 function getExpenditures() {

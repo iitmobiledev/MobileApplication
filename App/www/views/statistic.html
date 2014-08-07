@@ -35,25 +35,26 @@
                         </td>
                     </tr>
                 </table>
+
+                <table id="financeTable" ng-show="hasFinance(page)">
+                    <!--            <tr ng-controller="FinanceStatisticsController">-->
+                    <tr>
+                        <td class="financeCell">
+                            <h1>{{page.finance.tillMoney}} р.</h1>
+                            <p style="font-size:14px; ">В кассе</p>
+                        </td>
+                        <td class="financeCell">
+                            <p>Утром: {{page.finance.morningMoney}}р.</p>
+                            <p>Приход: {{page.finance.credit}} р.</p>
+                            <a ng-click="toExpenditures() ">
+                                <p>Расход: {{page.finance.debit}} р.</p>
+                            </a>
+                        </td>
+
+                    </tr>
+                </table>
             </li>
         </ul>
-        <table id="financeTable">
-            <tr ng-controller="FinanceStatisticsController">
-                <td class="financeCell">
-                    <h1>{{FinanceStatistics.tillMoney}} р.</h1>
-                    <p style="font-size:14px; ">В кассе</p>
-                </td>
-                <td class="financeCell">
-                    <p>Утром: {{FinanceStatistics.morningMoney}}р.</p>
-                    <p>Приход: {{FinanceStatistics.credit}} р.</p>
-                    <a ng-click="toExpenditures() ">
-                        <p>Расход: {{FinanceStatistics.debit}} р.</p>
-                    </a>
-                </td>
-
-            </tr>
-        </table>
-
     </div>
 </div>
 

@@ -50,8 +50,8 @@ myApp.controller('OperationalStatisticController', function ($scope, $location, 
      */
     $scope.hasFutureData = function () {
         return true;
-//        var period = DateHelper.getPeriod($scope.date, $scope.step);
-//        return period.end < maxDate && period.end.toDateString() != maxDate.toDateString();
+        //        var period = DateHelper.getPeriod($scope.date, $scope.step);
+        //        return period.end < maxDate && period.end.toDateString() != maxDate.toDateString();
     };
 
     /**
@@ -68,11 +68,11 @@ myApp.controller('OperationalStatisticController', function ($scope, $location, 
         $scope.nextdate = DateHelper.getNextPeriod($scope.date, $scope.step).end;
         if (!$scope.hasFutureData()) {
             $scope.pages = [getStatistic($scope.prevdate, $scope.step), getStatistic($scope.date, $scope.step)];
-//            $scope.pageIndex = 1;
+            //            $scope.pageIndex = 1;
         } else {
             if ($scope.hasPrevData()) {
                 $scope.pages = [getStatistic($scope.prevdate, $scope.step), getStatistic($scope.date, $scope.step), getStatistic($scope.nextdate, $scope.step)];
-//                $scope.pageIndex = 1;
+                //                $scope.pageIndex = 1;
             } else {
                 $scope.date = OperationalStatisticLoader.getMinDate();
             }
@@ -94,8 +94,8 @@ myApp.controller('OperationalStatisticController', function ($scope, $location, 
     $scope.toChart = function (type) {
         $location.path('chart/' + type);
     }
-    
-    
+
+
     /**
      *
      * @ngdoc method
@@ -106,5 +106,12 @@ myApp.controller('OperationalStatisticController', function ($scope, $location, 
     $scope.toExpenditures = function () {
         $location.path('expenditures');
     }
-    
+
+    $scope.hasFinance = function (statistics) {
+        if (statistics.finance) {
+            return typeof (statistics.finance.credit) !== 'undefined';
+        }
+        return false;
+    }
+
 });

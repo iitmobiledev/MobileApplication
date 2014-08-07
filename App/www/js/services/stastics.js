@@ -123,7 +123,7 @@ myApp.factory('FinanceStatisticsLoader', function () {
     };
 });
 
-myApp.factory('OperationalStatistics', function (Model, DateHelper) {
+myApp.factory('OperationalStatistics', function (Model, DateHelper, FinanceStatistics) {
     return Model("OperationalStatistics", {
         deserialize: function (self, data) {
             Object.defineProperty(self, "dateFrom", {
@@ -150,6 +150,10 @@ myApp.factory('OperationalStatistics', function (Model, DateHelper) {
                 value: data.workload,
                 writable: true
             });
+            Object.defineProperty(self, "finance", {
+                value: new FinanceStatistics(data.financeStat),
+                writable: true
+            });
         },
         serialize: function (self) {
             self.constructor.prototype.call(self)
@@ -160,9 +164,11 @@ myApp.factory('OperationalStatistics', function (Model, DateHelper) {
     });
 });
 
-myApp.factory('GetOperationalStatistics', function (Model, OperationalStatistics) {
+
+
+myApp.factory('GetOperationalStatistics', function (Model, OperationalStatistics, DateHelper) {
     return function (dateFrom, dateTill) {
-        var data = getOperationalStatisticsData();
+        var data = getOperationalStatisticsData(DateHelper.getPeriod);
         var result = [];
         for (var i = 0; i < data.length; i++) {
             var opstat = new OperationalStatistics(data[i]);
@@ -177,9 +183,9 @@ myApp.factory('GetOperationalStatistics', function (Model, OperationalStatistics
     }
 });
 
-myApp.factory('GetStatisticsForChart', function (Model, OperationalStatistics) {
+myApp.factory('GetStatisticsForChart', function (Model, OperationalStatistics, DateHelper) {
     return function (dateFrom, dateTill) {
-        var data = getOperationalStatisticsData();
+        var data = getOperationalStatisticsData(DateHelper.getPeriod);
         var result = [];
         for (var i = 0; i < data.length; i++) {
             var opstat = new OperationalStatistics(data[i]);
