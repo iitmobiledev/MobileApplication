@@ -177,7 +177,7 @@ function getVisits() {
     visit.client = new Client("Марина", "Андреевна", "Пекарская", "+79021565814", -1000, 5);
     visit.serviceList = sList;
     visit.comment = "Забыла деньги дома. Обещала принести чуть позже."
-    visit.date = new Date(2014, 7, 6, 20, 00);
+    visit.date = new Date(2014, 7, 7, 20, 00);
     visit.status = "Клиент пришел";
     visList.push(visit);
 

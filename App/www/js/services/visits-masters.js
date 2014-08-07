@@ -61,8 +61,7 @@ myApp.factory('VisitsLoader', function (Model, Visit) {
         var result = [];
         console.log("result", getedData);
         for (var i = 0; i < getedData.length; i++) {
-            var item = Visit(getedData[i]);
-            console.log(item);
+            var item = new Visit(getedData[i]);
             result.push(item);
         }
         result = result.filter(function (visit) {
