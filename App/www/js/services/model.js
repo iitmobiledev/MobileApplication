@@ -272,6 +272,8 @@ myApp.factory("Model", function () {
             options.deserialize(this, data);
         };
         clz.prototype = {
+            __class__: className,
+            __primary__: options.primary,
             /**
              *  @ngdoc method
              *  @name getKey
@@ -286,7 +288,7 @@ myApp.factory("Model", function () {
                 return res;
             },
             getClass: function () {
-                return this.constructor.__class__;
+                return this.__class__;
             },
             json: function () {
                 return options.serialize(this);
@@ -317,7 +319,6 @@ myApp.factory("Model", function () {
             }
             return data.join(":");
         };
-        console.log("clz ", clz);
         return clz;
     };
 });
