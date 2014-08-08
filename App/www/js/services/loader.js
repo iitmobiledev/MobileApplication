@@ -1,16 +1,17 @@
-myApp.service("Loader", ["$http", "OperationalStatisticsData", "GetOpStatObjects", "DateHelper",
-    function ($http, OperationalStatisticsData, GetOpStatObjects, DateHelper) {
+myApp.service("Loader", ["$http", "OperationalStatisticsData", "GetOpStatObjects",  "VisitsData", "GetVisitsObjects", "DateHelper",
+    function ($http, OperationalStatisticsData, GetOpStatObjects, VisitsData, GetVisitsObjects, DateHelper) {
         return {
             get: function (modelClass, primaryKey, callback) {
-                var loaders = {
-                    "OperationalStatistics": OperationalStatisticsData
+                var classes = {
+                    "OperationalStatistics": {getData: OperationalStatisticsData,
+                                             getObjects: GetOpStatObjects},
+                    "Visit": {getData: VisitsData,
+                              getObjects: GetVisitsObjects}
                 };
                 //получили нужные данные
                 //преобразовали их в объекты
-                var statData = loaders[modelClass](primaryKey.dateFrom, primaryKey.dateTill, primaryKey.step);
-                var statObjs = GetOpStatObjects(statData);
-                if (statObjs.length == 1 && primaryKey.dateFrom.toDateString() == primaryKey.dateTill.toDateString())
-                    statObjs = statObjs[0];
+                var statData = classes[modelClass].getData(primaryKey.dateFrom, primaryKey.dateTill, primaryKey.step);
+                var statObjs = classes[modelClass].getObjects(statData);
 
                 //тут должна быть запись в хранилище
                 //вместо return

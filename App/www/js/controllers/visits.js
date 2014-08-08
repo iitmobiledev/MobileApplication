@@ -13,14 +13,14 @@
  * @requires myApp.service:VisitsLoader
  * @requires myApp.service:DateHelper
  */
-myApp.controller('VisitsController', function ($scope, $filter, $location, VisitsLoader, DateHelper) {
-    var minDate = VisitsLoader.getMinDate();
-    var maxDate = VisitsLoader.getMaxDate();
+myApp.controller('VisitsController', function ($scope, $filter, $location, Loader, DateHelper) {
+    //    var minDate = VisitsLoader.getMinDate();
+    //    var maxDate = VisitsLoader.getMaxDate();
 
     $scope.date = new Date();
 
     $scope.pageIndex = 1;
-
+    updatePages();
     /**
      *
      * @ngdoc method
@@ -31,7 +31,7 @@ myApp.controller('VisitsController', function ($scope, $filter, $location, Visit
      */
     $scope.hasPrevData = function () {
         return true;
-//        return $scope.date > minDate;
+        //        return $scope.date > minDate;
     };
 
     /**
@@ -44,7 +44,7 @@ myApp.controller('VisitsController', function ($scope, $filter, $location, Visit
      */
     $scope.hasFutureData = function () {
         return true;
-//        return $scope.date < maxDate && $scope.date.toDateString() != maxDate.toDateString();
+        //        return $scope.date < maxDate && $scope.date.toDateString() != maxDate.toDateString();
     };
 
     $scope.onMasters = function () {
@@ -62,21 +62,21 @@ myApp.controller('VisitsController', function ($scope, $filter, $location, Visit
     $scope.hasVisits = function (visit) {
         return visit.length != 0;
     }
-
-    $scope.$watch('date.toDateString()', function () {
+    
+    function updatePages() {
         $scope.prevdate = DateHelper.getPrevPeriod($scope.date, DateHelper.steps.DAY).begin;
         $scope.nextdate = DateHelper.getNextPeriod($scope.date, DateHelper.steps.DAY).end;
+        $scope.pages = [];
+        Loader.search("Visit", {
+            dateFrom: $scope.nextdate,
+            dateTill: $scope.prevdate,
+            step: DateHelper.steps.DAY
+        }, function (data) {
+            $scope.pages = data;
+        });
+    }
 
-        if (!$scope.hasFutureData()) {
-            $scope.pages = [VisitsLoader.getData($scope.prevdate), VisitsLoader.getData($scope.date)];
-//            $scope.pageIndex = 1;
-        } else {
-            if ($scope.hasPrevData()) {
-                $scope.pages = [VisitsLoader.getData($scope.prevdate), VisitsLoader.getData($scope.date), VisitsLoader.getData($scope.nextdate)];
-//                $scope.pageIndex = 1;
-            }
-        }
-    });
+    $scope.$watch('date.toDateString()', updatePages);
 
     /**
      *

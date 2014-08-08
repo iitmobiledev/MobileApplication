@@ -25,42 +25,42 @@ function ExpenditureItem(description, cost) {
     this.cost = cost; //стоимость
 }
 
-///Запись(Визит)
-function Visit(id, client, serviceList, comment, date, status) {
-    this.id = id;
-    this.client = client; //клиент
-    this.serviceList = serviceList; //список услуг
-    this.comment = comment; //коментарий
-    this.date = date; //дата оказания услуги
-    this.status = status;
-}
+/////Запись(Визит)
+//function Visit(id, client, serviceList, comment, date, status) {
+//    this.id = id;
+//    this.client = client; //клиент
+//    this.serviceList = serviceList; //список услуг
+//    this.comment = comment; //коментарий
+//    this.date = date; //дата оказания услуги
+//    this.status = status;
+//}
 
-//Клиент
-function Client(firstName, middleName, lastName, phoneNumber, balance, discount) {
-    this.firstName = firstName; //имя
-    this.middleName = middleName; // отчество
-    this.lastName = lastName; //фамилия
-    this.phoneNumber = phoneNumber; //номер телефона
-    this.balance = balance; //баланс
-    this.discount = discount; // скидка
-}
+////Клиент
+//function Client(firstName, middleName, lastName, phoneNumber, balance, discount) {
+//    this.firstName = firstName; //имя
+//    this.middleName = middleName; // отчество
+//    this.lastName = lastName; //фамилия
+//    this.phoneNumber = phoneNumber; //номер телефона
+//    this.balance = balance; //баланс
+//    this.discount = discount; // скидка
+//}
 
-//Услуга
-function Service(description, startTime, endTime, master, cost) {
-    this.description = description; //название услуги
-    this.startTime = startTime; //время начала оказания услуги
-    this.endTime = endTime; //время конца оказания услуги
-    this.master = master; //мастера, оказывающий услугу
-    this.cost = cost; //стоимость
-}
+////Услуга
+//function Service(description, startTime, endTime, master, cost) {
+//    this.description = description; //название услуги
+//    this.startTime = startTime; //время начала оказания услуги
+//    this.endTime = endTime; //время конца оказания услуги
+//    this.master = master; //мастера, оказывающий услугу
+//    this.cost = cost; //стоимость
+//}
 
-//мастер
-function Master(id, firstName, middleName, lastName) {
-    this.id = id;
-    this.firstName = firstName; //имя
-    this.middleName = middleName; // отчество
-    this.lastName = lastName; //фамилия
-}
+////мастер
+//function Master(id, firstName, middleName, lastName) {
+//    this.id = id;
+//    this.firstName = firstName; //имя
+//    this.middleName = middleName; // отчество
+//    this.lastName = lastName; //фамилия
+//}
 
 //Пользователь
 function User(firstName, middleName, lastName, email, login, password) {
@@ -101,22 +101,7 @@ function getExpenditures() {
 }
 
 
-function getVisits() {
-    var visList = [];
-    var sList = [];
-    sList.push(new Service("Стрижка", new Date(2014, 7, 2, 19, 00), new Date(2014, 7, 2, 20, 00), new Master(3, "Владимир", "Петрович", "Петров"), 5000));
 
-    var visit = {};
-    visit.id = 4;
-    visit.client = new Client("Марина", "Андреевна", "Пекарская", "+79021565814", -1000, 5);
-    visit.serviceList = sList;
-    visit.comment = "Забыла деньги дома. Обещала принести чуть позже."
-    visit.date = new Date(2014, 7, 7, 20, 00);
-    visit.status = "Клиент пришел";
-    visList.push(visit);
-
-    return visList;
-}
 
 function getUsers() {
     var users = [];

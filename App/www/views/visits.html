@@ -14,7 +14,7 @@
                     {{getVisitInfo(visit)}}
                     <a href="#/visit/{{visitInfo.id}}">
                         <div>
-                            <visit-status classes='["new", "not-come", "confirm", "come"]' status='visitInfo.status'></visit-status>
+                            <visit-status classes='["new", "not-come", "confirm", "come"]' status='visitInfo.status' statuses='["Новая запись", "Клиент не пришел", "Подтверждена", "Клиент пришел"]'></visit-status>
 
                             <div>
                                 <span style="text-align:right; width:35%;">

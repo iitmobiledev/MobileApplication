@@ -1,18 +1,9 @@
-/**
- * @description Директива для изменения и отображения даты и
- * периода.
- * @ngdoc directive
- * @name myApp.directive:visitStatus
- * @restrict E
- * @param {Date} date Начальная дата для отображения и изменения.
- * @requires myApp.service:VisitsLoader
- */
-myApp.directive('visitStatus', function (VisitsLoader) {
+myApp.directive('visitStatus', function () {
     return {
         restrict: 'E',
         replace: true,
         link: function (scope, element, attrs) {
-            var statuses = VisitsLoader.statuses;
+            var statuses = scope.$eval(attrs.statuses);
 
             var updateStatus = function () {
                 var status = scope.$eval(attrs.status);
@@ -24,13 +15,11 @@ myApp.directive('visitStatus', function (VisitsLoader) {
                                 "class": classes[i],
                                 text: status
                             }));
-                        //element.find("#status").addClass(classes[i]).html(status);
                         break;
                     }
                 }
             }
             scope.$watch(attrs.status, updateStatus);
-            //updateStatus();
         },
         template: "<div id='stat'></div>"
     }

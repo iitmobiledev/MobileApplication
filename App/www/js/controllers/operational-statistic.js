@@ -66,27 +66,12 @@ myApp.controller('OperationalStatisticController', function ($scope, $location, 
         var period = DateHelper.getPeriod($scope.date, $scope.step);
         $scope.prevdate = DateHelper.getPrevPeriod($scope.date, $scope.step).begin;
         $scope.nextdate = DateHelper.getNextPeriod($scope.date, $scope.step).end;
-        $scope.pages = [];
         Loader.search("OperationalStatistics", {
-            dateFrom: $scope.prevdate,
+            dateFrom: $scope.nextdate,
             dateTill: $scope.prevdate,
             step: $scope.step
         }, function (data) {
-            $scope.pages.push(data);
-            Loader.search("OperationalStatistics", {
-                dateFrom: $scope.date,
-                dateTill: $scope.date,
-                step: $scope.step
-            }, function (data) {
-                $scope.pages.push(data);
-                Loader.search("OperationalStatistics", {
-                    dateFrom: $scope.nextdate,
-                    dateTill: $scope.nextdate,
-                    step: $scope.step
-                }, function (data) {
-                    $scope.pages.push(data);
-                });
-            });
+            $scope.pages = data;
         });
 
         //            if (!$scope.hasFutureData()) {

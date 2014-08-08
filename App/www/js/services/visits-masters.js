@@ -1,4 +1,106 @@
-myApp.factory('Visit', function (Model) {
+myApp.factory('Client', function (Model) {
+    return Model("Client", {
+        deserialize: function (self, data) {
+            Object.defineProperty(self, "firstName", {
+                value: data.firstName,
+                writable: true
+            });
+            Object.defineProperty(self, "middleName", {
+                value: data.middleName,
+                writable: true
+            });
+            Object.defineProperty(self, "lastName", {
+                value: data.lastName,
+                writable: true
+            });
+            Object.defineProperty(self, "phoneNumber", {
+                value: data.phoneNumber,
+                writable: true
+            });
+            Object.defineProperty(self, "balance", {
+                value: data.balance,
+                writable: true
+            });
+            Object.defineProperty(self, "discount", {
+                value: data.discount,
+                writable: true
+            });
+        },
+        serialize: function (self) {
+            self.constructor.prototype.call(self)
+            var data = angular.extend({}, self);
+            return data;
+        },
+        primary: ['firstName', 'middleName', 'lastName']
+    });
+});
+
+myApp.factory('Master', function (Model) {
+    return Model("Master", {
+        deserialize: function (self, data) {
+            Object.defineProperty(self, "id", {
+                value: data.id,
+                writable: true
+            });
+            Object.defineProperty(self, "firstName", {
+                value: data.firstName,
+                writable: true
+            });
+            Object.defineProperty(self, "middleName", {
+                value: data.middleName,
+                writable: true
+            });
+            Object.defineProperty(self, "lastName", {
+                value: data.lastName,
+                writable: true
+            });
+        },
+        serialize: function (self) {
+            self.constructor.prototype.call(self)
+            var data = angular.extend({}, self);
+            return data;
+        },
+        primary: ['firstName', 'middleName', 'lastName']
+    });
+});
+
+
+myApp.factory('Service', function (Model, Master) {
+    return Model("Service", {
+        deserialize: function (self, data) {
+            Object.defineProperty(self, "description", {
+                value: data.description,
+                writable: true
+            });
+            Object.defineProperty(self, "startTime", {
+                value: data.startTime,
+                writable: true
+            });
+            Object.defineProperty(self, "endTime", {
+                value: data.endTime,
+                writable: true
+            });
+            Object.defineProperty(self, "master", {
+                value: new Master(data.master),
+                writable: true
+            });
+            Object.defineProperty(self, "cost", {
+                value: data.cost,
+                writable: true
+            });
+        },
+        serialize: function (self) {
+            self.constructor.prototype.call(self)
+            var data = angular.extend({}, self);
+            return data;
+        },
+        primary: ['firstName', 'middleName', 'lastName']
+    });
+});
+
+
+
+myApp.factory('Visit', function (Model, Client, Service) {
     return Model("Visit", {
         deserialize: function (self, data) {
             Object.defineProperty(self, "id", {
@@ -6,11 +108,14 @@ myApp.factory('Visit', function (Model) {
                 writable: true
             });
             Object.defineProperty(self, "client", {
-                value: data.client,
+                value: new Client(data.client),
                 writable: true
             });
+            var serviceList = [];
+            for (var i = 0; i < data.serviceList.length; i++)
+                serviceList.push(new Service(data.serviceList[i]));
             Object.defineProperty(self, "serviceList", {
-                value: data.serviceList,
+                value: serviceList,
                 writable: true
             });
             Object.defineProperty(self, "date", {
@@ -37,92 +142,113 @@ myApp.factory('Visit', function (Model) {
 
 
 
-
+myApp.factory('GetVisitsObjects', function (Visit) {
+    return function (allVisits) {
+        var result = [];
+        for (var i = 0; i < allVisits.length; i++) {
+            var visitsDay = allVisits[i];
+            var tempResult = [];
+            for (var j = 0; j < visitsDay.length; j++) {
+                var visit = new Visit(visitsDay[j]);
+                tempResult.push(visit);
+            }
+            result.push(tempResult);
+        }
+        var objsList = [];
+        if (result.length != 0) {
+            for (var i = 0; i < result.length; i++) {
+                objsList.push(result[i].sort(function (a, b) {
+                    return new Date(a.date).getTime() - new Date(b.date).getTime()
+                }));
+            }
+        }
+        return objsList;
+    }
+});
 
 /**
  * @ngdoc service
  * @description Сервис для загрузки данных о визитах.
  * @name myApp.service:VisitsLoader
  */
-myApp.factory('VisitsLoader', function (Model, Visit) {
-    var statuses = ["Новая запись", "Клиент не пришел", "Подтверждена", "Клиент пришел"];
-    /**
-     *
-     * @ngdoc method
-     * @name myApp.service:VisitsLoader#getData
-     * @methodOf myApp.service:VisitsLoader
-     * @description Метод для получения визитом за выбранный день.
-     * @param {Date} date Дата, за которую нужно получить список визитов.
-     * @returns {Array} Список визитов за нужную дату или [], если
-     * визитов за эту дату нет.
-     */
-    function getData(date) {
-        var getedData = getVisits();
-        var result = [];
-        console.log("result", getedData);
-        for (var i = 0; i < getedData.length; i++) {
-            var item = new Visit(getedData[i]);
-            result.push(item);
-        }
-        result = result.filter(function (visit) {
-            return (visit.date.toDateString() == date.toDateString());
-        });
-        if (result.length != 0) {
-            return result.sort(function (a, b) {
-                return new Date(a.date).getTime() - new Date(b.date).getTime()
-            });
-        }
-        return [];
-    }
-
-
-    /**
-     *
-     * @ngdoc method
-     * @name myApp.service:VisitsLoader#getMinDate
-     * @methodOf myApp.service:VisitsLoader
-     * @description Функция для получения минимальной даты (самой
-     * прошлой), за которую есть данные по визитам.
-     * @returns {Date} Дата самых ранних данных по визитам.
-     */
-    function getMinDate() {
-        var data = getVisits();
-        var minDate = new Date();
-        for (var i = 0; i < data.length; i++) {
-            if (data[i].date < minDate)
-                minDate = new Date(data[i].date.getFullYear(), data[i].date.getMonth(), data[i].date.getDate());
-        }
-        return minDate;
-    }
-
-    /**
-     *
-     * @ngdoc method
-     * @name myApp.service:VisitsLoader#getMaxDate
-     * @methodOf myApp.service:VisitsLoader
-     * @description Функция для получения максимальной даты (самой
-     * будущей), за которую есть данные по визитам.
-     * @returns {Date} Дата, за которую внесены максимально будущие
-     * данные по визитам.
-     */
-    function getMaxDate() {
-        var data = getVisits();
-        var maxDate = new Date();
-        for (var i = 0; i < data.length; i++) {
-            if (data[i].date > maxDate)
-                maxDate = new Date(data[i].date.getFullYear(), data[i].date.getMonth(), data[i].date.getDate());
-        }
-        return maxDate;
-    }
-
-
-    return {
-        getData: getData,
-        getMinDate: getMinDate,
-        getMaxDate: getMaxDate,
-        statuses: statuses
-    };
-});
+//myApp.factory('VisitsLoader', function (Model, Visit) {
+//    var statuses = ["Новая запись", "Клиент не пришел", "Подтверждена", "Клиент пришел"];
+//    /**
+//     *
+//     * @ngdoc method
+//     * @name myApp.service:VisitsLoader#getData
+//     * @methodOf myApp.service:VisitsLoader
+//     * @description Метод для получения визитом за выбранный день.
+//     * @param {Date} date Дата, за которую нужно получить список визитов.
+//     * @returns {Array} Список визитов за нужную дату или [], если
+//     * визитов за эту дату нет.
+//     */
+//    function getData(date) {
+//        var getedData = getVisits();
+//        var result = [];
+//        for (var i = 0; i < getedData.length; i++) {
+//            var item = new Visit(getedData[i]);
+//            result.push(item);
+//        }
+//        result = result.filter(function (visit) {
+//            return (visit.date.toDateString() == date.toDateString());
+//        });
+//        if (result.length != 0) {
+//            return result.sort(function (a, b) {
+//                return new Date(a.date).getTime() - new Date(b.date).getTime()
+//            });
+//        }
+//        return [];
+//    }
+//
+//
+//    /**
+//     *
+//     * @ngdoc method
+//     * @name myApp.service:VisitsLoader#getMinDate
+//     * @methodOf myApp.service:VisitsLoader
+//     * @description Функция для получения минимальной даты (самой
+//     * прошлой), за которую есть данные по визитам.
+//     * @returns {Date} Дата самых ранних данных по визитам.
+//     */
+////    function getMinDate() {
+////        var data = getVisits();
+////        var minDate = new Date();
+////        for (var i = 0; i < data.length; i++) {
+////            if (data[i].date < minDate)
+////                minDate = new Date(data[i].date.getFullYear(), data[i].date.getMonth(), data[i].date.getDate());
+////        }
+////        return minDate;
+////    }
+//
+//    /**
+//     *
+//     * @ngdoc method
+//     * @name myApp.service:VisitsLoader#getMaxDate
+//     * @methodOf myApp.service:VisitsLoader
+//     * @description Функция для получения максимальной даты (самой
+//     * будущей), за которую есть данные по визитам.
+//     * @returns {Date} Дата, за которую внесены максимально будущие
+//     * данные по визитам.
+//     */
+////    function getMaxDate() {
+////        var data = getVisits();
+////        var maxDate = new Date();
+////        for (var i = 0; i < data.length; i++) {
+////            if (data[i].date > maxDate)
+////                maxDate = new Date(data[i].date.getFullYear(), data[i].date.getMonth(), data[i].date.getDate());
+////        }
+////        return maxDate;
+////    }
+//
+//
+//    return {
+//        getData: getData,
+//        getMinDate: getMinDate,
+//        getMaxDate: getMaxDate,
+//        statuses: statuses
+//    };
+//});
 
 
 /**
