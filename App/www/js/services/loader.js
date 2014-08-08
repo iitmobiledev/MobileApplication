@@ -29,8 +29,4 @@ myApp.service("Loader", ["$http", "OperationalStatisticsData", "GetOpStatObjects
     }
 }]);
 
-//Loader.search("OperationalStatistics",{
-//            dateFrom: begin,
-//            dateTill: end
-//        }, function(data){
-//        });
+

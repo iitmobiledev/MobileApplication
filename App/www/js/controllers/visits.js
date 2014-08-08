@@ -30,7 +30,8 @@ myApp.controller('VisitsController', function ($scope, $filter, $location, Visit
      * @description Метод для проверки существования данных за прошлое
      */
     $scope.hasPrevData = function () {
-        return $scope.date > minDate;
+        return true;
+//        return $scope.date > minDate;
     };
 
     /**
@@ -42,7 +43,8 @@ myApp.controller('VisitsController', function ($scope, $filter, $location, Visit
      * @description Метод для проверки существования данных за будущее
      */
     $scope.hasFutureData = function () {
-        return $scope.date < maxDate && $scope.date.toDateString() != maxDate.toDateString();
+        return true;
+//        return $scope.date < maxDate && $scope.date.toDateString() != maxDate.toDateString();
     };
 
     $scope.onMasters = function () {
