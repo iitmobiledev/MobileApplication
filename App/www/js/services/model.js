@@ -317,6 +317,7 @@ myApp.factory("Model", function () {
             }
             return data.join(":");
         };
+        console.log("clz ", clz);
         return clz;
     };
 });

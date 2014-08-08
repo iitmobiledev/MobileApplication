@@ -14,10 +14,10 @@
  * @requires myApp.service:OperationalStatisticLoader
  * @requires myApp.service:DateHelper
  */
-myApp.controller('OperationalStatisticController', function ($scope, $location, OperationalStatisticLoader, DateHelper) {
-    var getStatistic = OperationalStatisticLoader.getData;
-    var minDate = OperationalStatisticLoader.getMinDate();
-    var maxDate = OperationalStatisticLoader.getMaxDate();
+myApp.controller('OperationalStatisticController', function ($scope, $location, DateHelper, Loader) {
+    //    var getStatistic = OperationalStatisticLoader.getData;
+    //    var minDate = OperationalStatisticLoader.getMinDate();
+    //    var maxDate = OperationalStatisticLoader.getMaxDate();
 
     $scope.date = new Date();
 
@@ -66,17 +66,42 @@ myApp.controller('OperationalStatisticController', function ($scope, $location, 
         var period = DateHelper.getPeriod($scope.date, $scope.step);
         $scope.prevdate = DateHelper.getPrevPeriod($scope.date, $scope.step).begin;
         $scope.nextdate = DateHelper.getNextPeriod($scope.date, $scope.step).end;
-        if (!$scope.hasFutureData()) {
-            $scope.pages = [getStatistic($scope.prevdate, $scope.step), getStatistic($scope.date, $scope.step)];
-            //            $scope.pageIndex = 1;
-        } else {
-            if ($scope.hasPrevData()) {
-                $scope.pages = [getStatistic($scope.prevdate, $scope.step), getStatistic($scope.date, $scope.step), getStatistic($scope.nextdate, $scope.step)];
-                //                $scope.pageIndex = 1;
-            } else {
-                $scope.date = OperationalStatisticLoader.getMinDate();
-            }
-        }
+        $scope.pages = [];
+        Loader.search("OperationalStatistics", {
+            dateFrom: $scope.prevdate,
+            dateTill: $scope.prevdate,
+            step: $scope.step
+        }, function (data) {
+            $scope.pages.push(data);
+            Loader.search("OperationalStatistics", {
+                dateFrom: $scope.date,
+                dateTill: $scope.date,
+                step: $scope.step
+            }, function (data) {
+                $scope.pages.push(data);
+                Loader.search("OperationalStatistics", {
+                    dateFrom: $scope.nextdate,
+                    dateTill: $scope.nextdate,
+                    step: $scope.step
+                }, function (data) {
+                    $scope.pages.push(data);
+                });
+            });
+        });
+
+        //            if (!$scope.hasFutureData()) {
+        //
+        //            }
+        //            $scope.pages = [getStatistic($scope.prevdate, $scope.step), getStatistic($scope.date, $scope.step)];
+        //            $scope.pageIndex = 1;
+        //        } else {
+        //            if ($scope.hasPrevData()) {
+        //                $scope.pages = [getStatistic($scope.prevdate, $scope.step), getStatistic($scope.date, $scope.step), getStatistic($scope.nextdate, $scope.step)];
+        //                //                $scope.pageIndex = 1;
+        //            } else {
+        //                $scope.date = OperationalStatisticLoader.getMinDate();
+        //            }
+        //        }
     }
 
     $scope.$watch('date.toDateString()', updatePages);

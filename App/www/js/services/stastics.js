@@ -5,7 +5,7 @@
  * @requires myApp.service:DateHelper
  * @requires myApp.service:OperatonalStatisticsDataSumming
  */
-myApp.factory('OperationalStatisticLoader', function (DateHelper, OperatonalStatisticsDataSumming, GetOperationalStatistics, GetStatisticsForChart) {
+myApp.factory('OperationalStatisticLoader', function (DateHelper, OperatonalStatisticsDataSumming) {
     /**
      *
      * @ngdoc method
@@ -19,18 +19,17 @@ myApp.factory('OperationalStatisticLoader', function (DateHelper, OperatonalStat
      * @returns {OperationalStatistics} Объект, содержищий статистические
      * данные.
      */
-    function getData(date, step) {
-        step = step || 'day';
-        var period = DateHelper.getPeriod(date, step);
-        var statistics = GetOperationalStatistics(period.begin, period.end);
-        return statistics || {};
-    }
-
-    function getDataForChart(date) {
-        var endDate = new Date(date.getFullYear() - 1, date.getMonth(), date.getDate());
-        var statistics = GetStatisticsForChart(date, endDate);
-        return statistics || [];
-    }
+//    function getData(dateFrom, dateTill) {
+//        return getOperationalStatisticsData(dateFrom, dateTill, DateHelper.getPrevPeriod);
+////        var statistics = GetOperationalStatistics(period.begin, period.end);
+////        return statistics || {};
+//    }
+    
+//    function getDataForChart(date){
+//        var endDate = new Date(date.getFullYear() - 1, date.getMonth(), date.getDate());
+//        var statistics = GetStatisticsForChart(date, endDate);
+//        return statistics || [];
+//    }
 
     /**
      *
@@ -72,8 +71,6 @@ myApp.factory('OperationalStatisticLoader', function (DateHelper, OperatonalStat
     }
 
     return {
-        getData: getData,
-        getDataForChart: getDataForChart,
         getMinDate: getMinDate,
         getMaxDate: getMaxDate
     }
@@ -117,11 +114,11 @@ myApp.factory('OperatonalStatisticsDataSumming', function () {
  * @name myApp.service:FinanceStatisticsLoader
  * @returns {FinanceStatistics} Объект финансовой статистики.
  */
-myApp.factory('FinanceStatisticsLoader', function () {
-    return function () {
-        return new getFinanceStatistics();
-    };
-});
+//myApp.factory('FinanceStatisticsLoader', function () {
+//    return function () {
+//        return new getFinanceStatistics();
+//    };
+//});
 
 myApp.factory('OperationalStatistics', function (Model, DateHelper, FinanceStatistics) {
     return Model("OperationalStatistics", {
@@ -166,37 +163,30 @@ myApp.factory('OperationalStatistics', function (Model, DateHelper, FinanceStati
 
 
 
-myApp.factory('GetOperationalStatistics', function (Model, OperationalStatistics, DateHelper) {
-    return function (dateFrom, dateTill) {
-        var data = getOperationalStatisticsData(DateHelper.getPeriod);
-        var result = [];
-        for (var i = 0; i < data.length; i++) {
-            var opstat = new OperationalStatistics(data[i]);
-            //            console.log(opstat);
-            result.push(opstat);
-        }
-        if (dateFrom && dateTill) {
-            result = result.filter(function (statistic) {
-                return (statistic.dateFrom.toDateString() == dateFrom.toDateString() && statistic.dateTill.toDateString() == dateTill.toDateString());
-            });
-        }
-        return result[0];
-    }
-});
-
-myApp.factory('GetStatisticsForChart', function (Model, OperationalStatistics, DateHelper) {
-    return function (dateFrom, dateTill) {
-        var data = getOperationalStatisticsData(DateHelper.getPeriod);
+myApp.factory('GetOpStatObjects', function (Model, OperationalStatistics, DateHelper) {
+    return function (data) {
         var result = [];
         for (var i = 0; i < data.length; i++) {
             var opstat = new OperationalStatistics(data[i]);
             result.push(opstat);
-        }
-        if (dateFrom && dateTill) {
-            result = result.filter(function (statistic) {
-                return (statistic.dateFrom < dateFrom || statistic.dateFrom.toDateString() == dateFrom.toDateString() && statistic.dateTill > dateTill || statistic.dateTill.toDateString() == dateTill.toDateString());
-            });
         }
         return result;
     }
 });
+
+//myApp.factory('GetStatisticsForChart', function (Model, OperationalStatistics, DateHelper) {
+//    return function (dateFrom, dateTill) {
+//        var data = getOperationalStatisticsData(DateHelper.getPeriod);
+//        var result = [];
+//        for (var i = 0; i < data.length; i++) {
+//            var opstat = new OperationalStatistics(data[i]);
+//            result.push(opstat);
+//        }
+//        if (dateFrom && dateTill) {
+//            result = result.filter(function (statistic) {
+//                return (statistic.dateFrom < dateFrom || statistic.dateFrom.toDateString() == dateFrom.toDateString() && statistic.dateTill > dateTill || statistic.dateTill.toDateString() == dateTill.toDateString());
+//            });
+//        }
+//        return result;
+//    }
+//});

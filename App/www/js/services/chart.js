@@ -4,7 +4,7 @@
  * @name myApp.service:ChartDataLoader
  * @requires myApp.service:OperatonalStatisticsDataSumming
  */
-myApp.factory('ChartDataLoader', function (OperationalStatisticLoader, DateHelper, OperatonalStatisticsDataSumming) {
+myApp.factory('ChartDataLoader', function (OperationalStatisticLoader, DateHelper, Loader) {
     /**
      *
      * @ngdoc method
@@ -26,26 +26,43 @@ myApp.factory('ChartDataLoader', function (OperationalStatisticLoader, DateHelpe
     //     * суммированных по шагу `step`.
     function getGoodData(needValue, period, callback) {
         var goodData = [];
+        var today = new Date();
+        Loader.search("OperationalStatistics", {
+            dateFrom: today,
+            dateTill: new Date(today.getFullYear() - 1, today.getMonth(), today.getDate()),
+            step: DateHelper.DAY
+        }, function (data) {
+            for (var i = 0; i < data.length; i++) {
+                var item = [];
+                item.push(Date.UTC(data[i].dateFrom.getFullYear(), data[i].dateFrom.getMonth(), data[i].dateFrom.getDate()));
+                item.push(data[i][needValue.toString()]);
+                goodData.push(item);
+            }
+            goodData = goodData.sort();
 
-        var statistics = OperationalStatisticLoader.getDataForChart(new Date());
-        for (var i = 0; i < statistics.length; i++)
-        {
-            var item = [];
-            item.push(Date.UTC(statistics[i].dateFrom.getFullYear(), statistics[i].dateFrom.getMonth(), statistics[i].dateFrom.getDate()));
-            item.push(statistics[i][needValue.toString()]);
-            goodData.push(item);
-        }
-        goodData = goodData.sort();
-        
-//        var nowDay = new Date();
-//        var endDay = new Date(nowDay.getFullYear(), nowDay.getMonth() - period, nowDay.getDate());
-//        for (var day = nowDay; day > endDay; day = DateHelper.getPrevPeriod(day, 'day').begin) {
-//            var item = [];
-//            item.push(Date.UTC(day.getFullYear(), day.getMonth(), day.getDate()));
-//            item.push(OperationalStatisticLoader.getData(day)[needValue.toString()]);
-//            goodData.push(item);
-//        }
-        
+            setTimeout(function () {
+                callback(goodData);
+            }, 5000);
+        });
+
+        //        var statistics = OperationalStatisticLoader.getDataForChart(new Date());
+        //        for (var i = 0; i < statistics.length; i++) {
+        //            var item = [];
+        //            item.push(Date.UTC(statistics[i].dateFrom.getFullYear(), statistics[i].dateFrom.getMonth(), statistics[i].dateFrom.getDate()));
+        //            item.push(statistics[i][needValue.toString()]);
+        //            goodData.push(item);
+        //        }
+        //        goodData = goodData.sort();
+
+        //        var nowDay = new Date();
+        //        var endDay = new Date(nowDay.getFullYear(), nowDay.getMonth() - period, nowDay.getDate());
+        //        for (var day = nowDay; day > endDay; day = DateHelper.getPrevPeriod(day, 'day').begin) {
+        //            var item = [];
+        //            item.push(Date.UTC(day.getFullYear(), day.getMonth(), day.getDate()));
+        //            item.push(OperationalStatisticLoader.getData(day)[needValue.toString()]);
+        //            goodData.push(item);
+        //        }
+
 
 
         //        var tempData = [];
@@ -69,9 +86,9 @@ myApp.factory('ChartDataLoader', function (OperationalStatisticLoader, DateHelpe
         //            goodData.push(item);
         //        }
         //        goodData = goodData.sort();
-        setTimeout(function () {
-            callback(goodData);
-        }, 5000);
+        //        setTimeout(function () {
+        //            callback(goodData);
+        //        }, 5000);
     }
     return {
         getGoodData: getGoodData

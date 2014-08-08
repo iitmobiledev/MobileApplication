@@ -55,6 +55,7 @@ myApp.factory('DateHelper', function () {
      * начальной даты и конечной даты.
      */
     function getPeriod(date, step) {
+        step = step || steps.DAY;
         var period = new function () {
                 switch (step) {
                 case steps.DAY:
