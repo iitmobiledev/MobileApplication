@@ -5,8 +5,13 @@
  * @name myApp.controller:VisitController
  * @requires myApp.service:VisitLoader
  */
-myApp.controller('VisitController', function ($scope, $filter, $routeParams, VisitLoader) {
-    $scope.visit = VisitLoader($routeParams.id);
+myApp.controller('VisitController', function ($scope, $filter, $routeParams, Loader) {
+    Loader.search("Visit", {
+        id: $routeParams.id
+    }, function (data) {
+        $scope.visit = data;
+    });
+    //$scope.visit = VisitLoader($routeParams.id);
     $scope.id = $routeParams.id;
 
     /**
@@ -25,10 +30,10 @@ myApp.controller('VisitController', function ($scope, $filter, $routeParams, Vis
             $scope.clientPhoneNumber = $scope.visit.client.phoneNumber;
             $scope.comment = $scope.visit.comment;
             $scope.balColor = "red";
-            if (visit.client.balance >= 0) {
+            if ($scope.visit.client.balance >= 0) {
                 $scope.balColor = "green";
             }
-            $scope.clientBalance = visit.client.balance;
+            $scope.clientBalance = $scope.visit.client.balance;
             $scope.clientDiscount = $scope.visit.client.discount + "%"
 
             $scope.servList = [];

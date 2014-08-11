@@ -166,6 +166,12 @@ myApp.factory('GetVisitsObjects', function (Visit) {
     }
 });
 
+myApp.factory('GetVisitObjects', function (Visit) {
+    return function (visit) {
+        return new Visit(visit);
+    }
+});
+
 /**
  * @ngdoc service
  * @description Сервис для загрузки данных о визитах.
@@ -257,7 +263,7 @@ myApp.factory('GetVisitsObjects', function (Visit) {
  * @name myApp.service:MastersPerDayLoader
  * @requires myApp.service:VisitsLoader
  */
-myApp.factory('MastersPerDayLoader', function (VisitsLoader) {
+myApp.factory('MastersLoader', function (DateHelper, Loader) {
 
     /**
      *
@@ -297,30 +303,39 @@ myApp.factory('MastersPerDayLoader', function (VisitsLoader) {
      * @param {Date} neededData  Дата, за которую требуется получить список объектов.
      * @returns {Array} allMasters Список отсортированных по фамилии мастера объектов `perMaster`.
      */
-    function getAllMastersPerDay(neededDate) {
-        var getedData = VisitsLoader.getData(neededDate);
-        var allMasters = [];
-        for (var i = 0; i < getedData.length; i++) {
-            for (var j = 0; j < getedData[i].serviceList.length; j++) {
-                var usl = checkMasterInList(getedData[i].serviceList[j].master, allMasters);
-                if (usl !== null) {
-                    allMasters[usl].visList.push(getedData[i]);
-                } else {
-                    allMasters.push(new perMaster(getedData[i].serviceList[j].master, getedData[i]));
+    function getAllMastersPerDay(period, callback) {
+        //        var getedData = VisitsLoader.getData(neededDate);
+        Loader.search("Visits", {
+            dateFrom: period.end,
+            dateTill: period.begin,
+            step: DateHelper.steps.DAY
+        }, function (data) {
+            var mastersForPeriod = [];
+            for (var k = 0; k < data.length; k++) {
+                var mastersForDay = [];
+                for (var i = 0; i < data[k].length; i++) {
+                    for (var j = 0; j < data[k][i].serviceList.length; j++) {
+                        var usl = checkMasterInList(data[k][i].serviceList[j].master, mastersForDay);
+                        if (usl !== null) {
+                            mastersForDay[usl].visList.push(data[k][i]);
+                        } else {
+                            mastersForDay.push(new perMaster(data[k][i].serviceList[j].master, data[k][i]));
+                        }
+                    }
                 }
+
+                mastersForDay = mastersForDay.sort(function (a, b) {
+                    if (a.master.lastName.toLowerCase() < b.master.lastName.toLowerCase())
+                        return -1;
+                    if (nameA = a.master.lastName.toLowerCase() > b.master.lastName.toLowerCase())
+                        return 1;
+                    return 0;
+                });
+                mastersForPeriod.push(mastersForDay);
             }
-        }
-
-        allMasters = allMasters.sort(function (a, b) {
-            if (a.master.lastName.toLowerCase() < b.master.lastName.toLowerCase())
-                return -1;
-            if (nameA = a.master.lastName.toLowerCase() > b.master.lastName.toLowerCase())
-                return 1;
-            return 0;
+            callback(mastersForPeriod);
         });
-        return allMasters;
     }
-
     return {
         getAllMastersPerDay: getAllMastersPerDay
     };
@@ -333,16 +348,21 @@ myApp.factory('MastersPerDayLoader', function (VisitsLoader) {
  * @name myApp.service:VisitLoader
  * @param {Number} neededID Идентификатор визита.
  * @returns {Visit} Объект "Визит" или null, если такой id не был найден.
- */
-myApp.factory('VisitLoader', function () {
-    return function (neededID) {
-        var getedData = getVisits();
-        getedData = getedData.filter(function (visit) {
-            return (visit.id == neededID);
-        });
-        if (getedData.length == 1)
-            return getedData[0];
-        else
-            return null;
-    };
-});
+// */
+//myApp.factory('VisitLoader', function () {
+//    return function (neededID) {
+//        Loader.search("Visit", {
+//            id: neededID
+//        }, function (data) {
+//            return data;
+//        }             
+////        var getedData = getVisits();
+////        getedData = getedData.filter(function (visit) {
+////            return (visit.id == neededID);
+////        });
+////        if (getedData.length == 1)
+////            return getedData[0];
+////        else
+////            return null;
+//    };
+//});

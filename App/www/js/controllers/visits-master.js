@@ -12,9 +12,7 @@
  * @requires myApp.service:MastersPerDayLoader
  * @requires myApp.service:DateHelper
  */
-myApp.controller('VisitsMasterController', function ($scope, $filter, $location, VisitsLoader, MastersPerDayLoader, DateHelper) {
-    var minDate = VisitsLoader.getMinDate();
-    var maxDate = VisitsLoader.getMaxDate();
+myApp.controller('VisitsMasterController', function ($scope, $filter, $location, MastersLoader, DateHelper) {
 
     $scope.date = new Date();
 
@@ -29,7 +27,8 @@ myApp.controller('VisitsMasterController', function ($scope, $filter, $location,
      * @description Метод для проверки существования данных за прошлое.
      */
     $scope.hasPrevData = function () {
-        return $scope.date > minDate;
+        return true;
+        //        return $scope.date > minDate;
     };
 
     /**
@@ -41,7 +40,8 @@ myApp.controller('VisitsMasterController', function ($scope, $filter, $location,
      * @description Метод для проверки существования данных за будущее.
      */
     $scope.hasFutureData = function () {
-        return $scope.date < maxDate && $scope.date.toDateString() != maxDate.toDateString();
+        return true;
+        //        return $scope.date < maxDate && $scope.date.toDateString() != maxDate.toDateString();
     };
 
     /**
@@ -84,16 +84,24 @@ myApp.controller('VisitsMasterController', function ($scope, $filter, $location,
     $scope.$watch('date.toDateString()', function () {
         $scope.prevdate = DateHelper.getPrevPeriod($scope.date, DateHelper.steps.DAY).begin;
         $scope.nextdate = DateHelper.getNextPeriod($scope.date, DateHelper.steps.DAY).end;
+        $scope.pages = [];
+        var period = {
+            begin: $scope.prevdate,
+            end: $scope.nextdate
+        };
+        MastersLoader.getAllMastersPerDay(period, function(masters){
+            $scope.pages = masters;
+        });
 
-        if (!$scope.hasFutureData()) {
-            $scope.pages = [MastersPerDayLoader.getAllMastersPerDay($scope.prevdate), MastersPerDayLoader.getAllMastersPerDay($scope.date)];
-            //            $scope.pageIndex = 1;
-        } else {
-            if ($scope.hasPrevData()) {
-                $scope.pages = [MastersPerDayLoader.getAllMastersPerDay($scope.prevdate), MastersPerDayLoader.getAllMastersPerDay($scope.date), MastersPerDayLoader.getAllMastersPerDay($scope.nextdate)];
-                //                $scope.pageIndex = 1;
-            }
-        }
+        //        if (!$scope.hasFutureData()) {
+        //            $scope.pages = [MastersLoader.getAllMastersPerDay($scope.prevdate), MastersPerDayLoader.getAllMastersPerDay($scope.date)];
+        //            //            $scope.pageIndex = 1;
+        //        } else {
+        //            if ($scope.hasPrevData()) {
+        //                $scope.pages = [MastersPerDayLoader.getAllMastersPerDay($scope.prevdate), MastersPerDayLoader.getAllMastersPerDay($scope.date), MastersPerDayLoader.getAllMastersPerDay($scope.nextdate)];
+        //                //                $scope.pageIndex = 1;
+        //            }
+        //        }
     });
 
 
