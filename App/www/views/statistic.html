@@ -8,7 +8,7 @@
 
 
         <ul id='carousel' rn-carousel rn-carousel-index="pageIndex">
-            
+
             <li ng-repeat="page in pages">
                 <table id="statisticTable">
                     <tr>
@@ -41,14 +41,14 @@
                     <!--            <tr ng-controller="FinanceStatisticsController">-->
                     <tr>
                         <td class="financeCell">
-                            <h1>{{page.finance.tillMoney}} р.</h1>
+                            <h1>{{page.financeStat.tillMoney}} р.</h1>
                             <p style="font-size:14px; ">В кассе</p>
                         </td>
                         <td class="financeCell">
-                            <p>Утром: {{page.finance.morningMoney}}р.</p>
-                            <p>Приход: {{page.finance.credit}} р.</p>
+                            <p>Утром: {{page.financeStat.morningMoney}}р.</p>
+                            <p>Приход: {{page.financeStat.credit}} р.</p>
                             <a ng-click="toExpenditures() ">
-                                <p>Расход: {{page.finance.debit}} р.</p>
+                                <p>Расход: {{page.financeStat.debit}} р.</p>
                             </a>
                         </td>
 

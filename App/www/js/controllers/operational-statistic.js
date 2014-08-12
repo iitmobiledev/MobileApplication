@@ -72,6 +72,7 @@ myApp.controller('OperationalStatisticController', function ($scope, $location, 
             step: $scope.step
         }, function (data) {
             $scope.pages = data;
+            console.log(data);
         });
 
         //            if (!$scope.hasFutureData()) {
@@ -118,7 +119,7 @@ myApp.controller('OperationalStatisticController', function ($scope, $location, 
     }
 
     $scope.hasFinance = function (statistics) {
-        if (statistics.finance) {
+        if (statistics.financeStat) {
             return typeof (statistics.finance.credit) !== 'undefined';
         }
         return false;

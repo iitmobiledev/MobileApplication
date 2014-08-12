@@ -141,7 +141,7 @@ myApp.factory('GetOpStatObjects', function (Model, OperationalStatistics, DateHe
         var result = [];
         for (var i = 0; i < data.length; i++) {
             var opstat = new OperationalStatistics(data[i]);
-            //            console.log(opstat);
+            console.log(opstat);
             result.push(opstat);
         }
         return result;
