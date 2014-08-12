@@ -123,7 +123,13 @@ myApp.factory('OperatonalStatisticsDataSumming', function () {
 myApp.factory('OperationalStatistics', function (Model, DateHelper, FinanceStatistics) {
     return Model("OperationalStatistics", {
         deserialize: function (self, data) {
-            angular.extend(self, data);
+            self.dateFrom = new Date(data.dateFrom);
+            self.dateTill = new Date(data.dateTill);
+            self.proceeds = data.proceeds;
+            self.profit = data.profit;
+            self.clients = data.clients;
+            self.workload = data.workload;
+            self.financeStat = new FinanceStatistics(data.financeStat);
         },
         serialize: function (self) {
             self.constructor.prototype.call(self);
@@ -141,7 +147,7 @@ myApp.factory('GetOpStatObjects', function (Model, OperationalStatistics, DateHe
         var result = [];
         for (var i = 0; i < data.length; i++) {
             var opstat = new OperationalStatistics(data[i]);
-            console.log(opstat);
+            opstat.getKey();
             result.push(opstat);
         }
         return result;

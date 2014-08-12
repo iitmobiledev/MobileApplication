@@ -1,5 +1,5 @@
 /**
- * @description Контроллер для обработки данных о визите. 
+ * @description Контроллер для обработки данных о визите.
  * <p>`$scope` содержит следующие поля:</p>
  *
  * - `Date` date - текущая дата;
@@ -11,15 +11,11 @@
  * @name myApp.controller:MasterController
  * @requires myApp.service:VisitsLoader
  * @requires myApp.service:MastersPerDayLoader
-  * @requires myApp.service:DateHelper
+ * @requires myApp.service:DateHelper
  */
-myApp.controller('MasterController', function ($scope, $routeParams, VisitsLoader, $filter, MastersPerDayLoader, DateHelper) {
-    var minDate = VisitsLoader.getMinDate();
-    var maxDate = VisitsLoader.getMaxDate();
-
+myApp.controller('MasterController', function ($scope, $routeParams, MastersLoader, $filter, DateHelper) {
     $scope.id = $routeParams.id;
     $scope.date = new Date($routeParams.date);
-
 
     /**
      *
@@ -30,7 +26,8 @@ myApp.controller('MasterController', function ($scope, $routeParams, VisitsLoade
      * @description Метод для проверки существования данных за прошлое.
      */
     $scope.hasPrevData = function () {
-        return $scope.date > minDate;
+        return true;
+        //return $scope.date > minDate;
     };
 
     /**
@@ -42,7 +39,8 @@ myApp.controller('MasterController', function ($scope, $routeParams, VisitsLoade
      * @description Метод для проверки существования данных за будущее.
      */
     $scope.hasFutureData = function () {
-        return $scope.date < maxDate && $scope.date.toDateString() != maxDate.toDateString();
+        return true;
+        //        return $scope.date < maxDate && $scope.date.toDateString() != maxDate.toDateString();
     };
 
     updatePages();
@@ -52,19 +50,23 @@ myApp.controller('MasterController', function ($scope, $routeParams, VisitsLoade
      * @name myApp.controller:MasterController#getNeededVisits
      * @methodOf myApp.controller:MasterController
      * @param {Array} masterAndVisits Массив с мастерами и их визитами.
-     * Каждый элемент массива объект, где 1-ое поле - мастер, 
+     * Каждый элемент массива объект, где 1-ое поле - мастер,
      * 2-оё - список его визитов за определенную дату.
      * @returns {Array} Возвращает массив визитов для нужного мастера
      * @description Метод для получения списка визитов для конкретного мастера.
      */
     function getNeededVisits(masterAndVisits) {
+        var masters = [];
         for (var i = 0; i < masterAndVisits.length; i++) {
-            if (masterAndVisits[i].master.id == $scope.id) {
-                $scope.master = masterAndVisits[i].master;
-                return getGoodVisitsList(masterAndVisits[i].visList);
+            for (var j = 0; j < masterAndVisits[i][j]; j++) {
+                if (masterAndVisits[i][j].master.id == $scope.id) {
+                    $scope.master = masterAndVisits[i].master;
+                    masters.push(getGoodVisitsList(masterAndVisits[i].visList));
+//                    return getGoodVisitsList(masterAndVisits[i].visList);
+                }
             }
         }
-        return [];
+        return masters;
     };
 
 
@@ -159,36 +161,17 @@ myApp.controller('MasterController', function ($scope, $routeParams, VisitsLoade
     function updatePages() {
         var prevdate = DateHelper.getPrevPeriod($scope.date, DateHelper.steps.DAY).begin;
         var nextdate = DateHelper.getNextPeriod($scope.date, DateHelper.steps.DAY).end;
-
-        if (!$scope.hasFutureData()) {
-            console.log(1);
-            var masters = MastersPerDayLoader.getAllMastersPerDay($scope.date, VisitsLoader);
-            var prevMasters = MastersPerDayLoader.getAllMastersPerDay(prevdate, VisitsLoader);
-            $scope.pages = [getNeededVisits(prevMasters), getNeededVisits(masters)];
-//            $scope.pageIndex = 1;
-        } else {
-            if ($scope.hasPrevData()) {
-                console.log(2);
-                var masters = MastersPerDayLoader.getAllMastersPerDay($scope.date, VisitsLoader);
-                var prevMasters = MastersPerDayLoader.getAllMastersPerDay(prevdate, VisitsLoader);
-                var nextMasters = MastersPerDayLoader.getAllMastersPerDay(nextdate, VisitsLoader);
-                $scope.pages = [getNeededVisits(prevMasters), getNeededVisits(masters), getNeededVisits(nextMasters)];
-//                $scope.pageIndex = 1;
-            } else {
-                console.log(3);
-                var masters = MastersPerDayLoader.getAllMastersPerDay($scope.date, VisitsLoader);
-                var nextMasters = MastersPerDayLoader.getAllMastersPerDay(nextdate, VisitsLoader);
-                $scope.pages = [getNeededVisits(masters), getNeededVisits(nextMasters)];
-                $scope.pageIndex = 0;
-            }
-        }
+        $scope.pageIndex = 1;
+        var period = {
+            begin: $scope.prevdate,
+            end: $scope.nextdate
+        };
+        MastersLoader.getAllMastersPerDay(period, function (data) {
+            $scope.pages = getNeededVisits(data);
+        });
     }
 
-
-    $scope.$watch('date.toDateString()', function () {
-        updatePages();
-    });
-
+    $scope.$watch('date.toDateString()', updatePages);
 
     /**
      *
