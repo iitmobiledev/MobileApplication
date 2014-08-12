@@ -7,7 +7,7 @@ myApp.factory('Storage', function () {
 
     var dbName = "storage";
     var database = null;
-
+    var dbVersion = 1.0;
     open();
     /**
      *
@@ -28,17 +28,17 @@ myApp.factory('Storage', function () {
      * @methodOf myApp.service:Storage
      * @description Инициализирует ибд
      */
-    function open() {
-        var request = indexedDB.open(dbName, 1);
-
+    function open(callback) {
+        var request = indexedDB.open(dbName, dbVersion);
         request.onupgradeneeded = function (event) {
             console.log("update store");
+
             var db = event.target.result;
             var objectStore = db.createObjectStore("visit", {
-                keyPath: "id"
+                keyPath: "__primary__"
             });
-            objectStore = db.createObjectStore("OperationalStatistics", {
-                keyPath: "dateFrom"
+            objectStore = db.createObjectStore("operationalstatistics", {
+                keyPath: "__primary__"
             });
         };
 
@@ -73,6 +73,9 @@ myApp.factory('Storage', function () {
         return f;
     };
 
+
+
+
     /**
      *
      * @ngdoc method
@@ -83,11 +86,11 @@ myApp.factory('Storage', function () {
      */
     var update = waitDatabase(function (obj) {
         var db = database;
-        var objClass = obj.getClass(); //получим класс объекта
+        var objClass = obj.getClass().toLowerCase(); //получим класс объекта
         var trans = db.transaction([objClass], "readwrite");
         var store = trans.objectStore(objClass); //найдем хранилище для объектов данного класса
         //        обновление объекта: https: //developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API/Using_IndexedDB#Getting_data_from_the_database
-        var request = store.put(obj); //положим в хранилище json-объект
+        var request = store.put(obj); //положим в хранилище
 
         request.onsuccess = function (e) { //если транзакт прошел успешно
             console.log("obj in db!");
@@ -111,22 +114,26 @@ myApp.factory('Storage', function () {
      */
     var get = waitDatabase(function (className, primary) {
         var db = database;
-        var objClass = obj.getClass(); //получим класс объекта
-        var trans = db.transaction([className], "readwrite");
-        var store = trans.objectStore(objClass); //найдем хранилище для объектов данного класса
+        var objClass = className.toLowerCase(); //получим класс объекта
+        if (db.objectStoreNames.contains(objClass)) {
+            var trans = db.transaction([objClass], "readwrite");
+            var store = trans.objectStore(objClass); //найдем хранилище для объектов данного класса
 
-        var request = store.get(primary); //произвести выборку по PK 
-        request.onerror = function (event) {
-            //make something
-        };
-        request.onsuccess = function (event) {
-            if (request.result) {
-                console.log("obj get:", request.result);
-            } else {
-                console.log("object with primary:", primary, "not found!");
-            }
-            return request.result;
-        };
+            console.log(primary);
+            var request = store.get(primary); //произвести выборку по PK 
+            request.onerror = function (event) {
+                //make something
+            };
+            request.onsuccess = function (event) {
+                if (request.result) {
+                    console.log("obj get:", request.result);
+                    return request.result;
+                } else {
+                    console.log("object with primary:", primary, "not found!");
+                }
+            };
+        }
+        return null;
     });
 
     /**
@@ -139,7 +146,7 @@ myApp.factory('Storage', function () {
      */
     var del = waitDatabase(function (obj) {
         var db = database;
-        var objClass = obj.getClass(); //получим класс объекта
+        var objClass = obj.getClass().toLowerCase(); //получим класс объекта
         var trans = db.transaction([objClass], "readwrite");
         var store = trans.objectStore(objClass); //найдем хранилище для объектов данного класса
 

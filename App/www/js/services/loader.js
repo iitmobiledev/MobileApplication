@@ -1,5 +1,5 @@
-myApp.service("Loader", ["$http", "OperationalStatisticsData", "GetOpStatObjects", "VisitsData", "GetVisitsObjects", "DateHelper", "GetVisitObjects",
-    function ($http, OperationalStatisticsData, GetOpStatObjects, VisitsData, GetVisitsObjects, DateHelper, GetVisitObjects) {
+myApp.service("Loader", ["$http", "OperationalStatisticsData", "GetOpStatObjects", "VisitsData", "GetVisitsObjects", "DateHelper", "GetVisitObjects", "Storage",
+    function ($http, OperationalStatisticsData, GetOpStatObjects, VisitsData, GetVisitsObjects, DateHelper, GetVisitObjects, Storage) {
         return {
             get: function (modelClass, primaryKey, callback) {
                 var classes = {
@@ -26,6 +26,10 @@ myApp.service("Loader", ["$http", "OperationalStatisticsData", "GetOpStatObjects
                 }
                 var objs = classes[modelClass].getObjects(data);
 
+                for (var i in objs) {
+                    Storage.update(objs[i]);
+                }
+
                 //тут должна быть запись в хранилище
                 //вместо return
                 return objs;
@@ -38,8 +42,15 @@ myApp.service("Loader", ["$http", "OperationalStatisticsData", "GetOpStatObjects
                 //снова обращается к хранилище, 
                 //если данных вновь нет, то
                 // возвращаем null
-                var objs = this.get(className, primaryKey);
+                var pk = [];
+                for (var i in primaryKey) {
+                    pk.push(primaryKey[i]);
+                }
+                var objs = Storage.get(className, pk.join(":"));
+                if (objs == null) {
+                    objs = this.get(className, primaryKey);
+                }
                 callback(objs);
             }
         }
-}]);
+            }]);

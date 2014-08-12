@@ -12,6 +12,7 @@ myApp.factory('OperationalStatisticsData', function (DateHelper) {
         item.profit = getRandom(-1000, 5000);
         item.clients = Math.round(getRandom(3, 50));
         item.workload = getRandom(50, 100);
+        item.step = step;
         if (step == DateHelper.steps.DAY)
             item.financeStat = getFinanceStatistics(item.dateFrom);
         else
@@ -34,6 +35,7 @@ myApp.factory('OperationalStatisticsData', function (DateHelper) {
             item.profit = getRandom(-1000, 5000);
             item.clients = Math.round(getRandom(3, 50));
             item.workload = getRandom(50, 100);
+            item.step = step;
             if (step == DateHelper.steps.DAY)
                 item.financeStat = getFinanceStatistics(item.dateFrom);
             else

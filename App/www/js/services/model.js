@@ -294,6 +294,12 @@ myApp.factory("Model", function () {
                 return options.serialize(this);
             }
         };
+
+        Object.defineProperty(clz.prototype, "__primary__", {
+            get: function () {
+                return this.getKey().join(":");
+            }
+        });
         clz.__primary__ = options.primary;
         clz.__class__ = className;
         /**

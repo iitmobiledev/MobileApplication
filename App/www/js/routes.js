@@ -1,7 +1,8 @@
 var myApp = angular.module('myApp', ['ngRoute', 'ngAnimate', 'angular-carousel', 'ngTouch']);
 
 myApp.run(function (Storage) {
-    if (Storage.checkSupport()) {
+    if (!Storage.checkSupport()) {
+        alert("indexedDB not support!");
         //        var master = new Master(1, "Петр", "Михайлович", "Яковлев");
         //        var serviceList = [];
         //        var client = new Client("Марина", "Андреевна", "Иванова", "+79227062050", 2000, 0);

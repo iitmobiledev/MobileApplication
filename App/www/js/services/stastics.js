@@ -19,17 +19,17 @@ myApp.factory('OperationalStatisticLoader', function (DateHelper, OperatonalStat
      * @returns {OperationalStatistics} Объект, содержищий статистические
      * данные.
      */
-//    function getData(dateFrom, dateTill) {
-//        return getOperationalStatisticsData(dateFrom, dateTill, DateHelper.getPrevPeriod);
-////        var statistics = GetOperationalStatistics(period.begin, period.end);
-////        return statistics || {};
-//    }
-    
-//    function getDataForChart(date){
-//        var endDate = new Date(date.getFullYear() - 1, date.getMonth(), date.getDate());
-//        var statistics = GetStatisticsForChart(date, endDate);
-//        return statistics || [];
-//    }
+    //    function getData(dateFrom, dateTill) {
+    //        return getOperationalStatisticsData(dateFrom, dateTill, DateHelper.getPrevPeriod);
+    ////        var statistics = GetOperationalStatistics(period.begin, period.end);
+    ////        return statistics || {};
+    //    }
+
+    //    function getDataForChart(date){
+    //        var endDate = new Date(date.getFullYear() - 1, date.getMonth(), date.getDate());
+    //        var statistics = GetStatisticsForChart(date, endDate);
+    //        return statistics || [];
+    //    }
 
     /**
      *
@@ -123,41 +123,14 @@ myApp.factory('OperatonalStatisticsDataSumming', function () {
 myApp.factory('OperationalStatistics', function (Model, DateHelper, FinanceStatistics) {
     return Model("OperationalStatistics", {
         deserialize: function (self, data) {
-            Object.defineProperty(self, "dateFrom", {
-                value: new Date(data.dateFrom),
-                writable: true
-            });
-            Object.defineProperty(self, "dateTill", {
-                value: new Date(data.dateTill),
-                writable: true
-            });
-            Object.defineProperty(self, "proceeds", {
-                value: data.proceeds,
-                writable: true
-            });
-            Object.defineProperty(self, "profit", {
-                value: data.profit,
-                writable: true
-            });
-            Object.defineProperty(self, "clients", {
-                value: data.clients,
-                writable: true
-            });
-            Object.defineProperty(self, "workload", {
-                value: data.workload,
-                writable: true
-            });
-            Object.defineProperty(self, "finance", {
-                value: new FinanceStatistics(data.financeStat),
-                writable: true
-            });
+            angular.extend(self, data);
         },
         serialize: function (self) {
-            self.constructor.prototype.call(self)
+            self.constructor.prototype.call(self);
             var data = angular.extend({}, self);
             return data;
         },
-        primary: ['dateFrom', 'dateTill']
+        primary: ['dateFrom', 'dateTill', 'step']
     });
 });
 
@@ -168,6 +141,7 @@ myApp.factory('GetOpStatObjects', function (Model, OperationalStatistics, DateHe
         var result = [];
         for (var i = 0; i < data.length; i++) {
             var opstat = new OperationalStatistics(data[i]);
+            //            console.log(opstat);
             result.push(opstat);
         }
         return result;
