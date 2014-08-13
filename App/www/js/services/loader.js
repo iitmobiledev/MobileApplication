@@ -23,8 +23,8 @@ myApp.service("Loader", ["$http", "OperationalStatisticsData", "GetOpStatObjects
                 //получили нужные данные
                 //преобразовали их в объекты
                 var data = [];
-                if (primaryKey.dateFrom && primaryKey.dateTill && primaryKey.step) {
-                    data = classes[modelClass].getData.forPeriod(primaryKey.dateFrom, primaryKey.dateTill, primaryKey.step);
+                if (primaryKey.dateFrom && primaryKey.dateTill) {
+                    data = classes[modelClass].getData.forPeriod(primaryKey.dateFrom, primaryKey.dateTill);
                 } else {
                     data = classes[modelClass].getData.byID(primaryKey.id);
                 }
@@ -46,11 +46,11 @@ myApp.service("Loader", ["$http", "OperationalStatisticsData", "GetOpStatObjects
                 //снова обращается к хранилище, 
                 //если данных вновь нет, то
                 // возвращаем null
-                var pk = [];
-                for (var i in primaryKey) {
-                    pk.push(primaryKey[i]);
-                }
-                var objs = Storage.get(className, pk.join(":"));
+                //                var pk = [];
+                //                for (var i in primaryKey) {
+                //                    pk.push(primaryKey[i]);
+                //                }
+                var objs = Storage.get(className, primaryKey);
                 if (objs == null) {
                     objs = this.get(className, primaryKey);
                 }

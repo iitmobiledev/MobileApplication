@@ -37,9 +37,17 @@ myApp.factory('Storage', function () {
             var objectStore = db.createObjectStore("visit", {
                 keyPath: "__primary__"
             });
+
             objectStore = db.createObjectStore("operationalstatistics", {
                 keyPath: "__primary__"
             });
+            objectStore.createIndex("dateFrom", "dateFrom", {
+                unique: false
+            });
+            objectStore.createIndex("dateTill", "dateTill", {
+                unique: false
+            });
+            //            objectStore.createIndex("perPeriod", ["dateFrom", "dateTill"]);
         };
 
         request.onsuccess = function (event) {
@@ -120,7 +128,14 @@ myApp.factory('Storage', function () {
             var store = trans.objectStore(objClass); //найдем хранилище для объектов данного класса
 
             console.log(primary);
-            var request = store.get(primary); //произвести выборку по PK 
+            //            var request = store.get(primary); //произвести выборку по PK 
+            //http://stackoverflow.com/questions/16501459/javascript-searching-indexeddb-using-multiple-indexes
+            var pr = [];
+            for (var i in primary) {
+                pr.push(primary[i]);
+            }
+            console.log(pr);
+            var request = store.index('dateFrom', 'dateTill').get(pr);
             request.onerror = function (event) {
                 //make something
             };
@@ -129,7 +144,7 @@ myApp.factory('Storage', function () {
                     console.log("obj get:", request.result);
                     return request.result;
                 } else {
-                    console.log("object with primary:", primary, "not found!");
+                    console.log("object not found!", request.result);
                 }
             };
         }
@@ -150,7 +165,7 @@ myApp.factory('Storage', function () {
         var trans = db.transaction([objClass], "readwrite");
         var store = trans.objectStore(objClass); //найдем хранилище для объектов данного класса
 
-        var request = store.delete(); //получим PK объекта, далее удалим по PK из бд нужный объект
+        var request = store.delete(obj.getKey()); //получим PK объекта, далее удалим по PK из бд нужный объект
 
         request.onsuccess = function (e) {
             //        make something

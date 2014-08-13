@@ -136,7 +136,7 @@ myApp.factory('OperationalStatistics', function (Model, DateHelper, FinanceStati
             var data = angular.extend({}, self);
             return data;
         },
-        primary: ['dateFrom', 'dateTill', 'step']
+        primary: ['dateFrom', 'dateTill']
     });
 });
 

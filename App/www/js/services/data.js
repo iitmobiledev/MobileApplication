@@ -20,7 +20,8 @@ myApp.factory('OperationalStatisticsData', function (DateHelper) {
         return item;
     }
 
-    function forPeriod(dateFrom, dateTill, step) {
+    function forPeriod(dateFrom, dateTill) {
+        //Вычислять step здесь по 2 датам
         var data = [];
         var period = DateHelper.getPeriod(dateFrom, step);
         var day = period.begin;
@@ -173,7 +174,7 @@ myApp.factory('VisitsData', function (DateHelper) {
 });
 
 myApp.factory('ExpendituresData', function (DateHelper) {
-    function forPeriod (dateFrom, dateTill, step) {
+    function forPeriod(dateFrom, dateTill, step) {
         var data = [];
         var period = DateHelper.getPeriod(dateFrom, step);
         var day = period.begin;
@@ -201,7 +202,7 @@ myApp.factory('ExpendituresData', function (DateHelper) {
         }
         return expList;
     }
-    
+
     return {
         forPeriod: forPeriod
     }
