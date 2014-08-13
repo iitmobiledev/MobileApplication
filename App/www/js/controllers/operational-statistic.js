@@ -63,14 +63,28 @@ myApp.controller('OperationalStatisticController', function ($scope, $location, 
      * текущей, левой и правой страницах.
      */
     function updatePages() {
-        var period = DateHelper.getPeriod($scope.date, $scope.step);
-        $scope.prevdate = DateHelper.getPrevPeriod($scope.date, $scope.step).begin;
-        $scope.nextdate = DateHelper.getNextPeriod($scope.date, $scope.step).end;
+        var currentPeriod = DateHelper.getPeriod($scope.date, $scope.step);
+        var prevPeriod = DateHelper.getPrevPeriod($scope.date, $scope.step);
+        var nextPeriod = DateHelper.getNextPeriod($scope.date, $scope.step);
+        $scope.pages = [];
+
         Loader.search("OperationalStatistics", {
-            dateFrom: $scope.prevdate,
-            dateTill: $scope.nextdate
+            dateFrom: prevPeriod.begin,
+            dateTill: prevPeriod.end
         }, function (data) {
-            $scope.pages = data;
+            $scope.pages.push(data);
+            Loader.search("OperationalStatistics", {
+                dateFrom: currentPeriod.begin,
+                dateTill: currentPeriod.end
+            }, function (data) {
+                $scope.pages.push(data);
+                Loader.search("OperationalStatistics", {
+                    dateFrom: nextPeriod.begin,
+                    dateTill: nextPeriod.end
+                }, function (data) {
+                    $scope.pages.push(data);
+                });
+            });
         });
 
         //            if (!$scope.hasFutureData()) {

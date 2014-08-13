@@ -6,7 +6,7 @@ myApp.directive('password', function () {
             var updateCorrect = function () {
                 if (!scope.$eval(attrs.correct))
                     element.append($("<div>", {
-                        "style": "background-color: #FF0066; color: white;",
+                        "style": "background-color: #FF0066; color: white; margin: 10px 20px; height:50px; vertical-align: middle;",
                         text: "Вы указали неправильный пароль, попробуйте повторить попытку.",
                         id: "incorrect"
                     }));

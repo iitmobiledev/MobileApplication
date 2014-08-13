@@ -22,30 +22,27 @@ myApp.factory('OperationalStatisticsData', function (DateHelper) {
 
     function forPeriod(dateFrom, dateTill) {
         //Вычислять step здесь по 2 датам
-        var data = [];
-        var period = DateHelper.getPeriod(dateFrom, step);
-        var day = period.begin;
-        var till = period.end;
-        while (day < dateTill || day.toDateString() == dateTill.toDateString()) {
-            var item = {};
-            var a = getRandom(1000, 10000);
-            item.dateFrom = day;
-            item.dateTill = till;
-            item.proceeds = a;
-            item.profit = getRandom(-1000, 5000);
-            item.clients = Math.round(getRandom(3, 50));
-            item.workload = getRandom(50, 100);
-            item.step = step;
-            if (step == DateHelper.steps.DAY)
-                item.financeStat = getFinanceStatistics(item.dateFrom);
-            else
-                item.financeStat = {};
-            data.push(item);
-            period = DateHelper.getNextPeriod(day, step);
-            day = period.begin;
-            till = period.end;
-        }
-        return data;
+        //        var period = DateHelper.getPeriod(dateFrom, step);
+        //        var day = period.begin;
+        //        var till = period.end;
+        //        while (day < dateTill || day.toDateString() == dateTill.toDateString()) {
+        var stastics = {};
+        var a = getRandom(1000, 10000);
+        stastics.dateFrom = dateFrom;
+        stastics.dateTill = dateTill;
+        stastics.proceeds = a;
+        stastics.profit = getRandom(-1000, 5000);
+        stastics.clients = Math.round(getRandom(3, 50));
+        stastics.workload = getRandom(50, 100);
+        //финансовую статистику надо показывать только, 
+        //если период равен дню
+        if (dateFrom.toDateString() == dateTill.toDateString())
+            stastics.financeStat = getFinanceStatistics(stastics.dateFrom);
+        else
+            stastics.financeStat = {};
+        stastics.id = Math.round(getRandom(1, 100));
+        //        }
+        return stastics;
     }
 
     return {
