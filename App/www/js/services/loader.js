@@ -29,10 +29,8 @@ myApp.service("Loader", ["$http", "OperationalStatisticsData", "GetOpStatObjects
                     data = classes[modelClass].getData.byID(primaryKey.id);
                 }
                 var objs = classes[modelClass].getObjects(data);
-                console.log("objs ", objs);
-                for (var i in objs) {
-                    Storage.update(objs[i]);
-                }
+                Storage.update(objs);
+
 
                 //тут должна быть запись в хранилище
                 //вместо return
