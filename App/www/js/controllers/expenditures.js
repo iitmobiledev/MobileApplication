@@ -16,7 +16,8 @@ myApp.controller('ExpendituresController', function ($scope, $filter, Loader, Da
 //    var minDate = ExpendituresLoader.getMinDate();
 //    var maxDate = ExpendituresLoader.getMaxDate();
 
-    $scope.date = new Date();
+    var today = new Date();
+    $scope.date = new Date(today.getFullYear(), today.getMonth(), today.getDate());
 
     $scope.pageIndex = 1;
 

@@ -18,8 +18,10 @@ myApp.controller('OperationalStatisticController', function ($scope, $location, 
     //    var getStatistic = OperationalStatisticLoader.getData;
     //    var minDate = OperationalStatisticLoader.getMinDate();
     //    var maxDate = OperationalStatisticLoader.getMaxDate();
-
-    $scope.date = new Date();
+    
+    var today = new Date();
+    $scope.date = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+    console.log("OpStst date ", $scope.date);
 
     $scope.step = DateHelper.steps.DAY;
 

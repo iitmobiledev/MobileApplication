@@ -17,7 +17,8 @@ myApp.controller('VisitsController', function ($scope, $filter, $location, Loade
     //    var minDate = VisitsLoader.getMinDate();
     //    var maxDate = VisitsLoader.getMaxDate();
 
-    $scope.date = new Date();
+    var today = new Date();
+    $scope.date = new Date(today.getFullYear(), today.getMonth(), today.getDate());
 
     $scope.pageIndex = 1;
     updatePages();

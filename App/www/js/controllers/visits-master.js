@@ -14,7 +14,8 @@
  */
 myApp.controller('VisitsMasterController', function ($scope, $filter, $location, MastersLoader, DateHelper) {
 
-    $scope.date = new Date();
+    var today = new Date();
+    $scope.date = new Date(today.getFullYear(), today.getMonth(), today.getDate());
 
     $scope.pageIndex = 1;
 
