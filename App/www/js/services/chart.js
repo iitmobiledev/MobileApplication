@@ -4,7 +4,7 @@
  * @name myApp.service:ChartDataLoader
  * @requires myApp.service:OperatonalStatisticsDataSumming
  */
-myApp.factory('ChartDataLoader', function (OperationalStatisticLoader, DateHelper, Loader) {
+myApp.factory('ChartDataLoader', function (DateHelper, Loader) {
     /**
      *
      * @ngdoc method
