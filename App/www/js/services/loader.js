@@ -1,5 +1,5 @@
-myApp.service("Loader", ["$http", "OperationalStatisticsData", "GetOpStatObjects", "VisitsData", "GetVisitsObjects", "DateHelper", "GetVisitObjects", "Storage",
-    function ($http, OperationalStatisticsData, GetOpStatObjects, VisitsData, GetVisitsObjects, DateHelper, GetVisitObjects, Storage) {
+myApp.service("Loader", ["$http", "OperationalStatisticsData", "GetOpStatObjects", "VisitsData", "GetVisitsObjects", "DateHelper", "GetVisitObjects", "Storage", "ExpendituresData", "GetExpendituresObjects",
+    function ($http, OperationalStatisticsData, GetOpStatObjects, VisitsData, GetVisitsObjects, DateHelper, GetVisitObjects, Storage, ExpendituresData, GetExpendituresObjects) {
         return {
             get: function (modelClass, primaryKey, callback) {
                 var classes = {
@@ -14,6 +14,10 @@ myApp.service("Loader", ["$http", "OperationalStatisticsData", "GetOpStatObjects
                     "Visit": {
                         getData: VisitsData,
                         getObjects: GetVisitObjects
+                    },
+                    "Expenditures": {
+                        getData: ExpendituresData,
+                        getObjects: GetExpendituresObjects
                     }
                 };
                 //получили нужные данные
@@ -25,6 +29,7 @@ myApp.service("Loader", ["$http", "OperationalStatisticsData", "GetOpStatObjects
                     data = classes[modelClass].getData.byID(primaryKey.id);
                 }
                 var objs = classes[modelClass].getObjects(data);
+                console.log("objs ", objs);
                 for (var i in objs) {
                     Storage.update(objs[i]);
                 }

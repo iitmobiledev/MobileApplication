@@ -13,17 +13,17 @@
 //    this.debit = debit; //приход
 //}
 
-//Расходы
-function Expenditures(date, expenditureList) {
-    this.date = date; //дата, за которые получаем расходы
-    this.expenditureList = expenditureList; //список расходов
-}
-
-//Статья расходов
-function ExpenditureItem(description, cost) {
-    this.description = description; //описание статьи расходов
-    this.cost = cost; //стоимость
-}
+////Расходы
+//function Expenditures(date, expenditureList) {
+//    this.date = date; //дата, за которые получаем расходы
+//    this.expenditureList = expenditureList; //список расходов
+//}
+//
+////Статья расходов
+//function ExpenditureItem(description, cost) {
+//    this.description = description; //описание статьи расходов
+//    this.cost = cost; //стоимость
+//}
 
 /////Запись(Визит)
 //function Visit(id, client, serviceList, comment, date, status) {

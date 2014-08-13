@@ -9,9 +9,10 @@
  * @requires myApp.service:UserAuthentification
  */
 myApp.controller('AuthentificationController', function ($scope, $location, UserAuthentification) {
+    $scope.correct = true;
     if (sessvars.token)
         $location.path('index');
-    
+
     /**
      *
      * @ngdoc method
@@ -29,7 +30,7 @@ myApp.controller('AuthentificationController', function ($scope, $location, User
             if (sessvars.token)
                 $location.path('index');
             else
-                alert("Ошибка аутентификации. Пожалуйста проверьте правильность введенных данных.");
+                $scope.correct = false;
         });
     };
 });

@@ -67,8 +67,8 @@ myApp.controller('OperationalStatisticController', function ($scope, $location, 
         $scope.prevdate = DateHelper.getPrevPeriod($scope.date, $scope.step).begin;
         $scope.nextdate = DateHelper.getNextPeriod($scope.date, $scope.step).end;
         Loader.search("OperationalStatistics", {
-            dateFrom: $scope.nextdate,
-            dateTill: $scope.prevdate,
+            dateFrom: $scope.prevdate,
+            dateTill: $scope.nextdate,
             step: $scope.step
         }, function (data) {
             $scope.pages = data;

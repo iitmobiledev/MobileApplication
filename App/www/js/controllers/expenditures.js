@@ -12,9 +12,9 @@
  * @requires myApp.service:ExpendituresLoader
  * @requires myApp.service:DateHelper
  */
-myApp.controller('ExpendituresController', function ($scope, $filter, ExpendituresLoader, DateHelper) {
-    var minDate = ExpendituresLoader.getMinDate();
-    var maxDate = ExpendituresLoader.getMaxDate();
+myApp.controller('ExpendituresController', function ($scope, $filter, Loader, DateHelper) {
+//    var minDate = ExpendituresLoader.getMinDate();
+//    var maxDate = ExpendituresLoader.getMaxDate();
 
     $scope.date = new Date();
 
@@ -30,7 +30,8 @@ myApp.controller('ExpendituresController', function ($scope, $filter, Expenditur
      * период.
      */
     $scope.hasPrevData = function () {
-        return $scope.date > minDate;
+        return true;
+//        return $scope.date > minDate;
     };
 
     /**
@@ -43,7 +44,8 @@ myApp.controller('ExpendituresController', function ($scope, $filter, Expenditur
      * период.
      */
     $scope.hasFutureData = function () {
-        return $scope.date < maxDate && $scope.date.toDateString() != maxDate.toDateString();
+        return true;
+//        return $scope.date < maxDate && $scope.date.toDateString() != maxDate.toDateString();
     };
 
     /**
@@ -55,16 +57,23 @@ myApp.controller('ExpendituresController', function ($scope, $filter, Expenditur
     function updatePages() {
         $scope.prevdate = DateHelper.getPrevPeriod($scope.date, DateHelper.steps.DAY).begin;
         $scope.nextdate = DateHelper.getNextPeriod($scope.date, DateHelper.steps.DAY).end;
+        Loader.search("Expenditures", {
+            dateFrom: $scope.prevdate,
+            dateTill: $scope.nextdate,
+            step: DateHelper.steps.DAY
+        }, function (data) {
+            $scope.pages = data;
+        });
 
-        if (!$scope.hasFutureData()) {
-            $scope.pages = [ExpendituresLoader.getData($scope.prevdate), ExpendituresLoader.getData($scope.date)];
-            //            $scope.pageIndex = 1;
-        } else {
-            if ($scope.hasPrevData()) {
-                $scope.pages = [ExpendituresLoader.getData($scope.prevdate), ExpendituresLoader.getData($scope.date), ExpendituresLoader.getData($scope.nextdate)];
-                //                $scope.pageIndex = 1;
-            }
-        }
+//        if (!$scope.hasFutureData()) {
+//            $scope.pages = [ExpendituresLoader.getData($scope.prevdate), ExpendituresLoader.getData($scope.date)];
+//            //            $scope.pageIndex = 1;
+//        } else {
+//            if ($scope.hasPrevData()) {
+//                $scope.pages = [ExpendituresLoader.getData($scope.prevdate), ExpendituresLoader.getData($scope.date), ExpendituresLoader.getData($scope.nextdate)];
+//                //                $scope.pageIndex = 1;
+//            }
+//        }
     }
 
     $scope.$watch('date.toDateString()', updatePages);

@@ -1,31 +1,31 @@
 myApp.factory('Client', function (Model) {
     return Model("Client", {
-        deserialize: function (self, data) {
-            Object.defineProperty(self, "firstName", {
-                value: data.firstName,
-                writable: true
-            });
-            Object.defineProperty(self, "middleName", {
-                value: data.middleName,
-                writable: true
-            });
-            Object.defineProperty(self, "lastName", {
-                value: data.lastName,
-                writable: true
-            });
-            Object.defineProperty(self, "phoneNumber", {
-                value: data.phoneNumber,
-                writable: true
-            });
-            Object.defineProperty(self, "balance", {
-                value: data.balance,
-                writable: true
-            });
-            Object.defineProperty(self, "discount", {
-                value: data.discount,
-                writable: true
-            });
-        },
+        //        deserialize: function (self, data) {
+        //            Object.defineProperty(self, "firstName", {
+        //                value: data.firstName,
+        //                writable: true
+        //            });
+        //            Object.defineProperty(self, "middleName", {
+        //                value: data.middleName,
+        //                writable: true
+        //            });
+        //            Object.defineProperty(self, "lastName", {
+        //                value: data.lastName,
+        //                writable: true
+        //            });
+        //            Object.defineProperty(self, "phoneNumber", {
+        //                value: data.phoneNumber,
+        //                writable: true
+        //            });
+        //            Object.defineProperty(self, "balance", {
+        //                value: data.balance,
+        //                writable: true
+        //            });
+        //            Object.defineProperty(self, "discount", {
+        //                value: data.discount,
+        //                writable: true
+        //            });
+        //        },
         serialize: function (self) {
             self.constructor.prototype.call(self)
             var data = angular.extend({}, self);
@@ -37,24 +37,14 @@ myApp.factory('Client', function (Model) {
 
 myApp.factory('Master', function (Model) {
     return Model("Master", {
-        deserialize: function (self, data) {
-            Object.defineProperty(self, "id", {
-                value: data.id,
-                writable: true
-            });
-            Object.defineProperty(self, "firstName", {
-                value: data.firstName,
-                writable: true
-            });
-            Object.defineProperty(self, "middleName", {
-                value: data.middleName,
-                writable: true
-            });
-            Object.defineProperty(self, "lastName", {
-                value: data.lastName,
-                writable: true
-            });
-        },
+        //        deserialize: function (self, data) {
+        //            console.log("parent ", parent);
+        //            Parent.call(self, data)
+        //            self.id = data.id;
+        //            self.firstName = data.firstName;
+        //            self.middleName = data.middleName;
+        //            self.lastName = data.lastName;
+        //        },
         serialize: function (self) {
             self.constructor.prototype.call(self)
             var data = angular.extend({}, self);
@@ -68,33 +58,18 @@ myApp.factory('Master', function (Model) {
 myApp.factory('Service', function (Model, Master) {
     return Model("Service", {
         deserialize: function (self, data) {
-            Object.defineProperty(self, "description", {
-                value: data.description,
-                writable: true
-            });
-            Object.defineProperty(self, "startTime", {
-                value: data.startTime,
-                writable: true
-            });
-            Object.defineProperty(self, "endTime", {
-                value: data.endTime,
-                writable: true
-            });
-            Object.defineProperty(self, "master", {
-                value: new Master(data.master),
-                writable: true
-            });
-            Object.defineProperty(self, "cost", {
-                value: data.cost,
-                writable: true
-            });
+            self.description = data.description;
+            self.startTime = data.startTime;
+            self.endTime = data.endTime;
+            self.master = new Master(data.master);
+            self.cost = data.cost;
         },
         serialize: function (self) {
             self.constructor.prototype.call(self)
             var data = angular.extend({}, self);
             return data;
         },
-        primary: ['firstName', 'middleName', 'lastName']
+        primary: ['description']
     });
 });
 
@@ -103,33 +78,17 @@ myApp.factory('Service', function (Model, Master) {
 myApp.factory('Visit', function (Model, Client, Service) {
     return Model("Visit", {
         deserialize: function (self, data) {
-            Object.defineProperty(self, "id", {
-                value: data.id,
-                writable: true
-            });
-            Object.defineProperty(self, "client", {
-                value: new Client(data.client),
-                writable: true
-            });
+            self.id = data.id;
+            self.client = data.client;
+            self.comment = data.comment;
+            self.status = data.status;
+
             var serviceList = [];
             for (var i = 0; i < data.serviceList.length; i++)
                 serviceList.push(new Service(data.serviceList[i]));
-            Object.defineProperty(self, "serviceList", {
-                value: serviceList,
-                writable: true
-            });
-            Object.defineProperty(self, "date", {
-                value: new Date(data.date),
-                writable: true
-            });
-            Object.defineProperty(self, "comment", {
-                value: data.comment,
-                writable: true
-            });
-            Object.defineProperty(self, "status", {
-                value: data.status,
-                writable: true
-            });
+            self.serviceList = serviceList;
+
+            self.date = new Date(data.date);
         },
         serialize: function (self) {
             self.constructor.prototype.call(self)
@@ -299,12 +258,11 @@ myApp.factory('MastersLoader', function (DateHelper, Loader) {
      * @ngdoc method
      * @name myApp.service:MastersPerDayLoader#getAllMastersPerDay
      * @methodOf myApp.service:MastersPerDayLoader
-     * @description Метод для получения списка, отсортированных по фамилии мастера объектов `perMaster`.
-     * @param {Date} neededData  Дата, за которую требуется получить список объектов.
-     * @returns {Array} allMasters Список отсортированных по фамилии мастера объектов `perMaster`.
+     * @description Метод для получения списка мастеров за период, состоящего из списков мастеров за день, отсортированных по фамилии мастера объектов `perMaster`.
+     * @param {Period} period  Период, за который требуется получить мастеров.
+     * @param {Function} callback Функция, в которую будут переданы полученные мастера.
      */
     function getAllMastersPerDay(period, callback) {
-        //        var getedData = VisitsLoader.getData(neededDate);
         Loader.search("Visits", {
             dateFrom: period.end,
             dateTill: period.begin,

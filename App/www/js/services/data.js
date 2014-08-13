@@ -1,5 +1,4 @@
 myApp.factory('OperationalStatisticsData', function (DateHelper) {
-
     function byID(id) {
         var period = DateHelper.getPeriod(new Date(), DateHelper.steps.DAY);
         var day = period.begin;
@@ -26,7 +25,7 @@ myApp.factory('OperationalStatisticsData', function (DateHelper) {
         var period = DateHelper.getPeriod(dateFrom, step);
         var day = period.begin;
         var till = period.end;
-        while (day > dateTill || day.toDateString() == dateTill.toDateString()) {
+        while (day < dateTill || day.toDateString() == dateTill.toDateString()) {
             var item = {};
             var a = getRandom(1000, 10000);
             item.dateFrom = day;
@@ -41,7 +40,7 @@ myApp.factory('OperationalStatisticsData', function (DateHelper) {
             else
                 item.financeStat = {};
             data.push(item);
-            period = DateHelper.getPrevPeriod(day, step);
+            period = DateHelper.getNextPeriod(day, step);
             day = period.begin;
             till = period.end;
         }
@@ -93,9 +92,8 @@ myApp.factory('VisitsData', function (DateHelper) {
         var visList = [];
         var period = DateHelper.getPeriod(dateFrom, step);
         var day = period.begin;
-        var till = period.end;
 
-        while (day > dateTill || day.toDateString() == dateTill.toDateString()) {
+        while (day < dateTill || day.toDateString() == dateTill.toDateString()) {
             var visitsDay = [];
             var sList = [];
             var hours = Math.round(getRandom(8, 21));
@@ -162,15 +160,9 @@ myApp.factory('VisitsData', function (DateHelper) {
 
             visList.push(visitsDay);
 
-            period = DateHelper.getPrevPeriod(day, step);
+            period = DateHelper.getNextPeriod(day, step);
             day = period.begin;
-            till = period.end;
         }
-        //        var result = [];
-        //        result.push(visList[0]);
-        //        result.push([]);
-        //        result.push(visList[2]);
-
         return visList;
     }
 
@@ -180,19 +172,37 @@ myApp.factory('VisitsData', function (DateHelper) {
     }
 });
 
-//function getVisits() {
-//    var visList = [];
-//    var sList = [];
-//    sList.push(new Service("Стрижка", new Date(2014, 7, 2, 19, 00), new Date(2014, 7, 2, 20, 00), new Master(3, "Владимир", "Петрович", "Петров"), 5000));
-//
-//    var visit = {};
-//    visit.id = 4;
-//    visit.client = new Client("Марина", "Андреевна", "Пекарская", "+79021565814", -1000, 5);
-//    visit.serviceList = sList;
-//    visit.comment = "Забыла деньги дома. Обещала принести чуть позже."
-//    visit.date = new Date(2014, 7, 7, 20, 00);
-//    visit.status = "Клиент пришел";
-//    visList.push(visit);
-//
-//    return visList;
-//}
+myApp.factory('ExpendituresData', function (DateHelper) {
+    function forPeriod (dateFrom, dateTill, step) {
+        var data = [];
+        var period = DateHelper.getPeriod(dateFrom, step);
+        var day = period.begin;
+        var till = period.end;
+
+        var expList = [];
+        while (day < dateTill || day.toDateString() == dateTill.toDateString()) {
+
+            var expItemsList = [];
+            expItemsList.push({
+                description: "Покупка расходных материалов",
+                cost: -1500
+            });
+            expItemsList.push({
+                description: "Покупка нового кресла",
+                cost: -5000
+            });
+            expList.push({
+                date: day,
+                expenditureList: expItemsList
+            });
+
+            period = DateHelper.getNextPeriod(day, step);
+            day = period.begin;
+        }
+        return expList;
+    }
+    
+    return {
+        forPeriod: forPeriod
+    }
+});
