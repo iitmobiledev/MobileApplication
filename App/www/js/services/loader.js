@@ -29,6 +29,7 @@ myApp.service("Loader", ["$http", "OperationalStatisticsData", "GetOpStatObjects
                     data = classes[modelClass].getData.byID(primaryKey.id);
                 }
                 var objs = classes[modelClass].getObjects(data);
+                console.log(objs);
                 Storage.update(objs);
 
 
