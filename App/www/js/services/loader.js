@@ -50,9 +50,12 @@ myApp.service("Loader", ["$http", "OperationalStatisticsData", "GetOpStatObjects
                 //                    pk.push(primaryKey[i]);
                 //                }
                 var objs = Storage.get(className, primaryKey);
-                if (objs == null) {
-                    objs = this.get(className, primaryKey);
-                }
+                setTimeout(function (className, primaryKey, objs, get) {
+                    console.log(objs);
+                    if (objs == null) {
+                        objs = get(className, primaryKey);
+                    }
+                }, 7000);
                 callback(objs);
             }
         }
