@@ -72,6 +72,7 @@ myApp.controller('OperationalStatisticController', function ($scope, $location, 
             dateFrom: prevPeriod.begin,
             dateTill: nextPeriod.end
         }, function (data) {
+            console.log("data in ctrl ", data);
             $scope.pages = data;
         });
 

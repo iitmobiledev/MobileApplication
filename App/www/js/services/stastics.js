@@ -146,7 +146,7 @@ myApp.factory('GetOpStatObjects', function (Model, OperationalStatistics, DateHe
     return function (statisticsForPeriod) {
         var statObjs = [];
         for (var i = 0; i < statisticsForPeriod.length; i++) 
-            statObjs.push(new OperationalStatistics(data[i]));
+            statObjs.push(new OperationalStatistics(statisticsForPeriod[i]));
         return statObjs;
     }
 });

@@ -120,7 +120,7 @@ myApp.factory('Storage', function () {
      *  @return {Object} экземпляр класса  className
      *  @description возвращает объект по первичному ключу. Объект должен быть предварительно добавлены с помощью
      */
-    var get = waitDatabase(function (className, primary) {
+    var get = waitDatabase(function (className, primary, callback) {
         var db = database;
         var objClass = className.toLowerCase(); //получим класс объекта
         if (db.objectStoreNames.contains(objClass)) {
@@ -142,9 +142,11 @@ myApp.factory('Storage', function () {
             request.onsuccess = function (event) {
                 if (request.result) {
                     console.log("obj get:", request.result);
-                    return request.result;
+                    callback(request.result);
+//                    return request.result;
                 } else {
                     console.log("object not found!", request.result);
+                    callback(null);
                 }
             };
         }
