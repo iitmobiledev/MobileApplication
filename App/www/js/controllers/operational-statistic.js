@@ -14,7 +14,7 @@
  * @requires myApp.service:OperationalStatisticLoader
  * @requires myApp.service:DateHelper
  */
-myApp.controller('OperationalStatisticController', function ($scope, $location, DateHelper, Loader) {
+myApp.controller('OperationalStatisticController', function ($scope, $location, DateHelper, Loader, Finder) {
     //    var getStatistic = OperationalStatisticLoader.getData;
     //    var minDate = OperationalStatisticLoader.getMinDate();
     //    var maxDate = OperationalStatisticLoader.getMaxDate();
@@ -68,13 +68,17 @@ myApp.controller('OperationalStatisticController', function ($scope, $location, 
         var nextPeriod = DateHelper.getNextPeriod($scope.date, $scope.step);
         $scope.pages = [];
 
-        Loader.search("OperationalStatistics", {
-            dateFrom: prevPeriod.begin,
-            dateTill: nextPeriod.end
-        }, function (data) {
+        Finder.getPerDates(prevPeriod.begin, prevPeriod.end, "OperationalStatistics", function (data) {
             console.log("data in ctrl ", data);
             $scope.pages = data;
         });
+        //        Loader.search("OperationalStatistics", {
+        //            dateFrom: prevPeriod.begin,
+        //            dateTill: nextPeriod.end
+        //        }, function (data) {
+        //            console.log("data in ctrl ", data);
+        //            $scope.pages = data;
+        //        });
 
         //            if (!$scope.hasFutureData()) {
         //

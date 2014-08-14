@@ -126,15 +126,10 @@ myApp.factory('Storage', function () {
         if (db.objectStoreNames.contains(objClass)) {
             var trans = db.transaction([objClass], "readwrite");
             var store = trans.objectStore(objClass); //найдем хранилище для объектов данного класса
-
-            //            console.log("primary in storage.get():", primary);
-            //            var request = store.get(primary); //произвести выборку по PK 
-            //http://stackoverflow.com/questions/16501459/javascript-searching-indexeddb-using-multiple-indexes
             var pr = [];
             for (var i in primary) {
                 pr.push(primary[i].toString());
             }
-            //            cons ole.log(pr);index('dateFrom').
             var request = store.get(pr.join(":"));
             request.onerror = function (event) {
                 //make something
@@ -143,7 +138,7 @@ myApp.factory('Storage', function () {
                 if (request.result) {
                     console.log("obj get:", request.result);
                     callback(request.result);
-//                    return request.result;
+                    //                    return request.result;
                 } else {
                     console.log("object not found!", request.result);
                     callback(null);
