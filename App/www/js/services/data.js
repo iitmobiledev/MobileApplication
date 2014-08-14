@@ -20,29 +20,35 @@ myApp.factory('OperationalStatisticsData', function (DateHelper) {
         return item;
     }
 
-    function forPeriod(dateFrom, dateTill) {
+    function forPeriod(dateFrom, dateTill, step) {
         //Вычислять step здесь по 2 датам
-        //        var period = DateHelper.getPeriod(dateFrom, step);
-        //        var day = period.begin;
-        //        var till = period.end;
-        //        while (day < dateTill || day.toDateString() == dateTill.toDateString()) {
-        var stastics = {};
-        var a = getRandom(1000, 10000);
-        stastics.dateFrom = dateFrom;
-        stastics.dateTill = dateTill;
-        stastics.proceeds = a;
-        stastics.profit = getRandom(-1000, 5000);
-        stastics.clients = Math.round(getRandom(3, 50));
-        stastics.workload = getRandom(50, 100);
-        //финансовую статистику надо показывать только, 
-        //если период равен дню
-        if (dateFrom.toDateString() == dateTill.toDateString())
-            stastics.financeStat = getFinanceStatistics(stastics.dateFrom);
-        else
-            stastics.financeStat = {};
-        stastics.id = Math.round(getRandom(1, 100));
-        //        }
-        return stastics;
+        var period = DateHelper.getPeriod(dateFrom, step);
+        var day = period.begin;
+        var till = period.end;
+        var statisticsForPeriod = [];
+        while (day < dateTill || day.toDateString() == dateTill.toDateString()) {
+            var stastics = {};
+            var a = getRandom(1000, 10000);
+            stastics.dateFrom = day;
+            stastics.dateTill = till;
+            stastics.proceeds = a;
+            stastics.profit = getRandom(-1000, 5000);
+            stastics.clients = Math.round(getRandom(3, 50));
+            stastics.workload = getRandom(50, 100);
+            //финансовую статистику надо показывать только, 
+            //если период равен дню
+            if (step == DateHelper.steps.DAY)
+                stastics.financeStat = getFinanceStatistics(stastics.dateFrom);
+            else
+                stastics.financeStat = {};
+            stastics.id = Math.round(getRandom(1, 100));
+            statisticsForPeriod.push(stastics);
+            
+            period = DateHelper.getNextPeriod(day, step);
+            day = period.begin;
+            till = period.end;
+        }
+        return statisticsForPeriod;
     }
 
     return {
@@ -97,15 +103,15 @@ myApp.factory('VisitsData', function (DateHelper) {
      * @methodOf myApp.service:VisitsData
      * @param {Date} dateFrom Начальная дата.
      * @param {Date} dateTill Конечная дата.
-     * @param {String} step Шаг, с которым будут браться данные. 
-     * Допустимые значения этого параметра написаны в 
+     * @param {String} step Шаг, с которым будут браться данные.
+     * Допустимые значения этого параметра написаны в
      * DateHelper.steps.
      * @example
      * <pre>
      * var data = VisitsData.forPeriod(yesterday, tomorrow, 'day');
      * //data = [[visitsYesterday],[visitsToday],[visitsTomorrow]];
      * </pre>
-     * @returns {Array} Визиты по шагу с начальной по конечную дату. 
+     * @returns {Array} Визиты по шагу с начальной по конечную дату.
      * @description Метод предназначен для получения данных о
      * визитах по периоду и шагу.
      */

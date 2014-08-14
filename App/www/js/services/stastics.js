@@ -143,10 +143,11 @@ myApp.factory('OperationalStatistics', function (Model, DateHelper, FinanceStati
 
 
 myApp.factory('GetOpStatObjects', function (Model, OperationalStatistics, DateHelper) {
-    return function (data) {
-        var opstat = new OperationalStatistics(data);
-        opstat.getKey();
-        return opstat;
+    return function (statisticsForPeriod) {
+        var statObjs = [];
+        for (var i = 0; i < statisticsForPeriod.length; i++) 
+            statObjs.push(new OperationalStatistics(data[i]));
+        return statObjs;
     }
 });
 
