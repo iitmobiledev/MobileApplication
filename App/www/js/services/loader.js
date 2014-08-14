@@ -29,14 +29,15 @@ myApp.service("Loader", ["$http", "OperationalStatisticsData", "GetOpStatObjects
                     data = classes[modelClass].getData.byID(primaryKey.id);
                 }
                 var objs = classes[modelClass].getObjects(data);
-                console.log(objs);
-                Storage.update(objs);
-                
+                console.log("objs in loader.get:", objs);
+                for (var i in objs) {
+                    Storage.update(objs[i]);
+                }
                 callback(objs);
 
                 //тут должна быть запись в хранилище
                 //вместо return
-//                return objs;
+                //                return objs;
 
                 //callback(statObjs);
             },
@@ -52,11 +53,9 @@ myApp.service("Loader", ["$http", "OperationalStatisticsData", "GetOpStatObjects
                 //                }
                 var loader = this;
                 var objs = Storage.get(className, primaryKey, function (data) {
-                    if (objs == null) 
-                    {
-                        console.log("this ", loader);
-                        loader.get(className, primaryKey, callback);}
-                    else
+                    if (objs == null) {
+                        loader.get(className, primaryKey, callback);
+                    } else
                         callback(objs);
                 });
             }
