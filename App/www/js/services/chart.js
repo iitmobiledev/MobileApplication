@@ -29,8 +29,7 @@ myApp.factory('ChartDataLoader', function (DateHelper, Loader) {
         var today = new Date();
         Loader.search("OperationalStatistics", {
             dateFrom: today,
-            dateTill: new Date(today.getFullYear() - 1, today.getMonth(), today.getDate()),
-            step: DateHelper.DAY
+            dateTill: new Date(today.getFullYear() - 1, today.getMonth(), today.getDate())
         }, function (data) {
             for (var i = 0; i < data.length; i++) {
                 var item = [];
@@ -39,7 +38,6 @@ myApp.factory('ChartDataLoader', function (DateHelper, Loader) {
                 goodData.push(item);
             }
             goodData = goodData.sort();
-
             setTimeout(function () {
                 callback(goodData);
             }, 5000);

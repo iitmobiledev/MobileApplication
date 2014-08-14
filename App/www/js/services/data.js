@@ -51,6 +51,11 @@ myApp.factory('OperationalStatisticsData', function (DateHelper) {
     }
 });
 
+/**
+ * @ngdoc service
+ * @description Сервис для получения данных о визитах.
+ * @name myApp.service:VisitsData
+ */
 myApp.factory('VisitsData', function (DateHelper) {
     function byID(id) {
         var sList = [];
@@ -85,7 +90,25 @@ myApp.factory('VisitsData', function (DateHelper) {
         return visit;
     }
 
-
+    /**
+     *
+     * @ngdoc method
+     * @name myApp.service:VisitsData#forPeriod
+     * @methodOf myApp.service:VisitsData
+     * @param {Date} dateFrom Начальная дата.
+     * @param {Date} dateTill Конечная дата.
+     * @param {String} step Шаг, с которым будут браться данные. 
+     * Допустимые значения этого параметра написаны в 
+     * DateHelper.steps.
+     * @example
+     * <pre>
+     * var data = VisitsData.forPeriod(yesterday, tomorrow, 'day');
+     * //data = [[visitsYesterday],[visitsToday],[visitsTomorrow]];
+     * </pre>
+     * @returns {Array} Визиты по шагу с начальной по конечную дату. 
+     * @description Метод предназначен для получения данных о
+     * визитах по периоду и шагу.
+     */
     function forPeriod(dateFrom, dateTill, step) {
         var visList = [];
         var period = DateHelper.getPeriod(dateFrom, step);
@@ -169,6 +192,9 @@ myApp.factory('VisitsData', function (DateHelper) {
         byID: byID
     }
 });
+//     * data = VisitsData.forPeriod(1.08.14, 31.08.14, 'week');
+//     * //data = [[visitsFor(28.07-3.08)],[visitsFor(4.08-10.08)],[visitsFor(11.08-17.08)],[visitsFor(18.08-24.08)],[visitsFor(25.08-31.08)]];
+
 
 myApp.factory('ExpendituresData', function (DateHelper) {
     function forPeriod(dateFrom, dateTill, step) {

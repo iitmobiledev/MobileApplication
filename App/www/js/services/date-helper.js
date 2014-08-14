@@ -13,7 +13,7 @@ myApp.factory('DateHelper', function () {
     /**
      *
      * @ngdoc method
-     * @name myApp.serviceDateHelper#getPrev
+     * @name myApp.service:DateHelper#getPrev
      * @methodOf myApp.service:DateHelper
      * @param {Date} date Дата, для которой будет вычислена предыдущая
      * дата.

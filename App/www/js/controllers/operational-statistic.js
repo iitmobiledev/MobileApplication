@@ -18,10 +18,9 @@ myApp.controller('OperationalStatisticController', function ($scope, $location, 
     //    var getStatistic = OperationalStatisticLoader.getData;
     //    var minDate = OperationalStatisticLoader.getMinDate();
     //    var maxDate = OperationalStatisticLoader.getMaxDate();
-    
+
     var today = new Date();
     $scope.date = new Date(today.getFullYear(), today.getMonth(), today.getDate());
-    console.log("OpStst date ", $scope.date);
 
     $scope.step = DateHelper.steps.DAY;
 
@@ -75,18 +74,18 @@ myApp.controller('OperationalStatisticController', function ($scope, $location, 
             dateTill: prevPeriod.end
         }, function (data) {
             $scope.pages.push(data);
-            Loader.search("OperationalStatistics", {
-                dateFrom: currentPeriod.begin,
-                dateTill: currentPeriod.end
-            }, function (data) {
-                $scope.pages.push(data);
-                Loader.search("OperationalStatistics", {
-                    dateFrom: nextPeriod.begin,
-                    dateTill: nextPeriod.end
-                }, function (data) {
-                    $scope.pages.push(data);
-                });
-            });
+        });
+        Loader.search("OperationalStatistics", {
+            dateFrom: currentPeriod.begin,
+            dateTill: currentPeriod.end
+        }, function (data) {
+            $scope.pages.push(data);
+        });
+        Loader.search("OperationalStatistics", {
+            dateFrom: nextPeriod.begin,
+            dateTill: nextPeriod.end
+        }, function (data) {
+            $scope.pages.push(data);
         });
 
         //            if (!$scope.hasFutureData()) {

@@ -64,6 +64,13 @@ myApp.controller('VisitsController', function ($scope, $filter, $location, Loade
         return visit.length != 0;
     }
     
+    /**
+     *
+     * @ngdoc method
+     * @name myApp.controller:VisitsController#updatePages
+     * @methodOf myApp.controller:VisitsController
+     * @description Метод для заполнения данными прошлой, текущей и будущей страниц.
+     */
     function updatePages() {
         $scope.prevdate = DateHelper.getPrevPeriod($scope.date, DateHelper.steps.DAY).begin;
         $scope.nextdate = DateHelper.getNextPeriod($scope.date, DateHelper.steps.DAY).end;
