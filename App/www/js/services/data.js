@@ -29,8 +29,8 @@ myApp.factory('OperationalStatisticsData', function (DateHelper) {
         while (day < dateTill || day.toDateString() == dateTill.toDateString()) {
             var stastics = {};
             var a = getRandom(1000, 10000);
-            stastics.dateFrom = day;
-            stastics.dateTill = till;
+            stastics.date = day;
+            stastics.step = step;
             stastics.proceeds = a;
             stastics.profit = getRandom(-1000, 5000);
             stastics.clients = Math.round(getRandom(3, 50));
@@ -43,7 +43,7 @@ myApp.factory('OperationalStatisticsData', function (DateHelper) {
                 stastics.financeStat = {};
             stastics.id = Math.round(getRandom(1, 100));
             statisticsForPeriod.push(stastics);
-            
+
             period = DateHelper.getNextPeriod(day, step);
             day = period.begin;
             till = period.end;

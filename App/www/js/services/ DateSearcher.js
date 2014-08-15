@@ -1,7 +1,7 @@
 /**
  * @ngdoc service
  * @description Сервис, который занимается:1. Индексированием дат;2. Построением запроса по датам (больше меньше)
- * @name myApp.service:Finder
+ * @name myApp.service:DateSearcher
  */
 myApp.factory('DateSearcher', function (Loader) {
 

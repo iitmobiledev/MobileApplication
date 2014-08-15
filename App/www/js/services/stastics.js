@@ -123,8 +123,8 @@
 myApp.factory('OperationalStatistics', function (Model, DateHelper, FinanceStatistics) {
     return Model("OperationalStatistics", {
         deserialize: function (self, data) {
-            self.dateFrom = new Date(data.dateFrom);
-            self.dateTill = new Date(data.dateTill);
+            self.date = new Date(data.date);
+            self.step = data.step;
             self.proceeds = data.proceeds;
             self.profit = data.profit;
             self.clients = data.clients;
@@ -136,7 +136,11 @@ myApp.factory('OperationalStatistics', function (Model, DateHelper, FinanceStati
             var data = angular.extend({}, self);
             return data;
         },
-        primary: ['dateFrom', 'dateTill']
+        primary: ['date', 'step'],
+        indexes: {
+            date: false,
+            step: false
+        }
     });
 });
 
@@ -145,7 +149,7 @@ myApp.factory('OperationalStatistics', function (Model, DateHelper, FinanceStati
 myApp.factory('GetOpStatObjects', function (Model, OperationalStatistics, DateHelper) {
     return function (statisticsForPeriod) {
         var statObjs = [];
-        for (var i = 0; i < statisticsForPeriod.length; i++) 
+        for (var i = 0; i < statisticsForPeriod.length; i++)
             statObjs.push(new OperationalStatistics(statisticsForPeriod[i]));
         return statObjs;
     }

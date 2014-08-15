@@ -30,24 +30,16 @@ myApp.factory('Storage', function () {
      */
     function open(callback) {
         var request = indexedDB.open(dbName, dbVersion);
+        //пересоздаются ли объекты при изменении версии!?
         request.onupgradeneeded = function (event) {
             console.log("update store");
-
             var db = event.target.result;
-            var objectStore = db.createObjectStore("visit", {
-                keyPath: "__primary__"
-            });
 
-            objectStore = db.createObjectStore("operationalstatistics", {
-                keyPath: "__primary__"
-            });
-            objectStore.createIndex("dateFrom", "dateFrom", {
-                unique: false
-            });
-            objectStore.createIndex("dateTill", "dateTill", {
-                unique: false
-            });
-            //            objectStore.createIndex("perPeriod", ["dateFrom", "dateTill"]);
+
+
+            var $inj = angular.injector(['myApp']);
+            var serv = $inj.get('OperationalStatistics');
+            serv.initializeIndexedDb(db);
         };
 
         request.onsuccess = function (event) {
@@ -56,7 +48,7 @@ myApp.factory('Storage', function () {
         };
 
         request.onerror = function (event) { // Если ошибка
-            alert("Что-то с IndexedDB пошло не так!");
+            console.log("Что-то с IndexedDB пошло не так!");
         };
     }
 
@@ -126,11 +118,9 @@ myApp.factory('Storage', function () {
         if (db.objectStoreNames.contains(objClass)) {
             var trans = db.transaction([objClass], "readwrite");
             var store = trans.objectStore(objClass); //найдем хранилище для объектов данного класса
-            var pr = [];
-            for (var i in primary) {
-                pr.push(primary[i].toString());
-            }
-            var request = store.get(pr.join(":"));
+            //инжектором найти класс и проделать для него гетКей
+
+            var request = store.get();
             request.onerror = function (event) {
                 //make something
             };
@@ -148,6 +138,21 @@ myApp.factory('Storage', function () {
         return null;
     });
 
+
+    var search = waitDatabase(function (className, params, callback) {
+        var db = database;
+        var objClass = className.toLowerCase(); //получим класс объекта
+        if (db.objectStoreNames.contains(objClass)) {
+            var trans = db.transaction([objClass], "readwrite");
+            var store = trans.objectStore(objClass); //найдем хранилище для объектов данного класса
+
+            var obj;
+            obj.searchIndexedDb(db, callback);
+
+        }
+
+        return null;
+    });
     /**
      *
      * @ngdoc method
