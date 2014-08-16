@@ -1,3 +1,5 @@
+//indexedDB.deleteDatabase("storage")
+
 /**
  * @ngdoc service
  * @description Сервис для кэширования данных

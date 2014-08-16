@@ -274,6 +274,7 @@ myApp.factory("Model", function () {
         clz.prototype = {
             __class__: className,
             __primary__: options.primary,
+            indexes: options.indexes,
             /**
              *  @ngdoc method
              *  @name getKey
@@ -304,7 +305,7 @@ myApp.factory("Model", function () {
         clz.__class__ = className;
 
         clz.getIndexes = function () {
-            return clz.indexes;
+            return this.prototype.indexes;
         };
 
         clz.initializeIndexedDb = function (db) {
@@ -312,7 +313,7 @@ myApp.factory("Model", function () {
                 keyPath: "__primary__"
             });
             
-            console.log("indexes ", clz.getIndexes());
+//            console.log("indexes ", clz.getIndexes());
             
             angular.forEach(clz.getIndexes(), function (value, name) {
                 objectStore.createIndex(name, name, {
