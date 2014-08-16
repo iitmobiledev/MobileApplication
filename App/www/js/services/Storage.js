@@ -30,12 +30,11 @@ myApp.factory('Storage', function () {
      */
     function open(callback) {
         var request = indexedDB.open(dbName, dbVersion);
+
         //пересоздаются ли объекты при изменении версии!?
         request.onupgradeneeded = function (event) {
             console.log("update store");
             var db = event.target.result;
-
-
 
             var $inj = angular.injector(['myApp']);
             var serv = $inj.get('OperationalStatistics');
@@ -120,22 +119,38 @@ myApp.factory('Storage', function () {
             var store = trans.objectStore(objClass); //найдем хранилище для объектов данного класса
             //инжектором найти класс и проделать для него гетКей
 
-            var request = store.get();
+            //            var request = store.get();
+            //            request.onerror = function (event) {
+            //                //make something
+            //            };
+            //            request.onsuccess = function (event) {
+            //                if (request.result) {
+            //                    console.log("obj get:", request.result);
+            //                    callback(request.result);
+            //                    //                    return request.result;
+            //                } else {
+            //                    console.log("object not found!", request.result);
+            //                    callback(null);
+            //                }
+            //            };
+            //        }
+            //        return null;
+
+            var pr = [];
+            for (var i in primary) {
+                pr.push(primary[i].toString());
+            }
+            var request = store.get(pr.join(":"));
             request.onerror = function (event) {
                 //make something
             };
             request.onsuccess = function (event) {
                 if (request.result) {
-                    console.log("obj get:", request.result);
                     callback(request.result);
-                    //                    return request.result;
-                } else {
-                    console.log("object not found!", request.result);
-                    callback(null);
                 }
             };
         }
-        return null;
+        callback(null);
     });
 
 

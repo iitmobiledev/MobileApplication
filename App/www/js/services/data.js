@@ -24,7 +24,6 @@ myApp.factory('OperationalStatisticsData', function (DateHelper) {
         //Вычислять step здесь по 2 датам
         var period = DateHelper.getPeriod(dateFrom, step);
         var day = period.begin;
-        var till = period.end;
         var statisticsForPeriod = [];
         while (day < dateTill || day.toDateString() == dateTill.toDateString()) {
             var stastics = {};
@@ -38,7 +37,7 @@ myApp.factory('OperationalStatisticsData', function (DateHelper) {
             //финансовую статистику надо показывать только, 
             //если период равен дню
             if (step == DateHelper.steps.DAY)
-                stastics.financeStat = getFinanceStatistics(stastics.dateFrom);
+                stastics.financeStat = getFinanceStatistics(stastics.day);
             else
                 stastics.financeStat = {};
             stastics.id = Math.round(getRandom(1, 100));
@@ -46,7 +45,6 @@ myApp.factory('OperationalStatisticsData', function (DateHelper) {
 
             period = DateHelper.getNextPeriod(day, step);
             day = period.begin;
-            till = period.end;
         }
         return statisticsForPeriod;
     }

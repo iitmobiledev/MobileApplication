@@ -9,6 +9,18 @@
     <date-changer step='"day"' date='date' steps='["day"]' has-future-data='hasFutureData()' has-prev-data='hasPrevData()' index='pageIndex'></date-changer>
     <ul id='carousel' rn-carousel rn-carousel-index="pageIndex" style="height: 100%">
         <li ng-repeat="page in pages">
+<!--
+            <ul class="list inset">
+                <li ng-repeat="status in allVisits(page)" id="visitsPerTime">
+                    {{status}}
+                </li>
+            </ul>
+-->
+            <div>
+                <span></span>
+            </div>
+
+
             <ul class="list inset">
                 <li ng-repeat="visit in page" id="visitsPerTime">
                     {{getVisitInfo(visit)}}

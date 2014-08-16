@@ -24,12 +24,11 @@ myApp.service("Loader", ["$http", "OperationalStatisticsData", "GetOpStatObjects
                 //преобразовали их в объекты
                 var data = [];
                 if (primaryKey.dateFrom && primaryKey.dateTill) {
-                    data = classes[modelClass].getData.forPeriod(primaryKey.dateFrom, primaryKey.dateTill);
+                    data = classes[modelClass].getData.forPeriod(primaryKey.dateFrom, primaryKey.dateTill, primaryKey.step);
                 } else {
                     data = classes[modelClass].getData.byID(primaryKey.id);
                 }
                 var objs = classes[modelClass].getObjects(data);
-                console.log("objs in loader.get:", objs);
                 for (var i in objs) {
                     Storage.update(objs[i]);
                 }
@@ -52,8 +51,9 @@ myApp.service("Loader", ["$http", "OperationalStatisticsData", "GetOpStatObjects
                 //                    pk.push(primaryKey[i]);
                 //                }
                 var loader = this;
-                var objs = Storage.get(className, primaryKey, function (data) {
-                    if (objs == null) {
+                Storage.open();
+                Storage.get(className, primaryKey, function (data) {
+                    if (data == null) {
                         loader.get(className, primaryKey, callback);
                     } else
                         callback(objs);

@@ -293,10 +293,6 @@ myApp.factory("Model", function () {
             json: function () {
                 return options.serialize(this);
             }
-
-
-
-
         };
 
         Object.defineProperty(clz.prototype, "__primary__", {
@@ -308,13 +304,16 @@ myApp.factory("Model", function () {
         clz.__class__ = className;
 
         clz.getIndexes = function () {
-            return options.indexes;
+            return clz.indexes;
         };
 
         clz.initializeIndexedDb = function (db) {
             var objectStore = db.createObjectStore(clz.__class__, {
                 keyPath: "__primary__"
             });
+            
+            console.log("indexes ", clz.getIndexes());
+            
             angular.forEach(clz.getIndexes(), function (value, name) {
                 objectStore.createIndex(name, name, {
                     unique: value

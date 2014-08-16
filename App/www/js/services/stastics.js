@@ -149,6 +149,7 @@ myApp.factory('OperationalStatistics', function (Model, DateHelper, FinanceStati
 myApp.factory('GetOpStatObjects', function (Model, OperationalStatistics, DateHelper) {
     return function (statisticsForPeriod) {
         var statObjs = [];
+        console.log("OpStat ", OperationalStatistics(statisticsForPeriod[0]));
         for (var i = 0; i < statisticsForPeriod.length; i++)
             statObjs.push(new OperationalStatistics(statisticsForPeriod[i]));
         return statObjs;

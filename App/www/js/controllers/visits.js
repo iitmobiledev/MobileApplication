@@ -34,6 +34,15 @@ myApp.controller('VisitsController', function ($scope, $filter, $location, Loade
         return true;
         //        return $scope.date > minDate;
     };
+    
+    $scope.allVisits = function(visitsForDay){
+        var statuses = [];
+        for (var i = 0; i < visitsForDay.length; i++){
+            statuses.push(visitsForDay[i].status);
+        }
+        console.log("statuses ", statuses);
+        return statuses;
+    };
 
     /**
      *

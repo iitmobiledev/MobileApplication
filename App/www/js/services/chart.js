@@ -28,8 +28,9 @@ myApp.factory('ChartDataLoader', function (DateHelper, Loader) {
         var goodData = [];
         var today = new Date();
         Loader.search("OperationalStatistics", {
-            dateFrom: today,
-            dateTill: new Date(today.getFullYear() - 1, today.getMonth(), today.getDate())
+            dateFrom: new Date(today.getFullYear() - 1, today.getMonth(), today.getDate()),
+            dateTill: today,
+            step: DateHelper.steps.DAY
         }, function (data) {
             for (var i = 0; i < data.length; i++) {
                 var item = [];
