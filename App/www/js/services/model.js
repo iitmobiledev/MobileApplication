@@ -275,6 +275,7 @@ myApp.factory("Model", function () {
             __class__: className,
             __primary__: options.primary,
             indexes: options.indexes,
+            searchIndexedDb: options.searchIndexedDb,
             /**
              *  @ngdoc method
              *  @name getKey

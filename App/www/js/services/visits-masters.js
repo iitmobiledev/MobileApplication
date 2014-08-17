@@ -63,6 +63,7 @@ myApp.factory('Service', function (Model, Master) {
             self.endTime = data.endTime;
             self.master = new Master(data.master);
             self.cost = data.cost;
+            self.employeeSalary = data.employeeSalary;
         },
         serialize: function (self) {
             self.constructor.prototype.call(self)
@@ -76,7 +77,15 @@ myApp.factory('Service', function (Model, Master) {
 
 
 myApp.factory('Visit', function (Model, Client, Service) {
-    return Model("Visit", {
+
+    var statuses = {
+        NEW: "Новая запись",
+        NOTCOME: "Клиент не пришел",
+        COME: "Клиент пришел",
+        CONFIRMED: "Подтверждена"
+    }
+
+    var createObject = Model("Visit", {
         deserialize: function (self, data) {
             self.id = data.id;
             self.client = data.client;
@@ -97,6 +106,11 @@ myApp.factory('Visit', function (Model, Client, Service) {
         },
         primary: ['id']
     });
+
+    return {
+        statuses: statuses,
+        createObject: createObject
+    }
 });
 
 
@@ -108,7 +122,7 @@ myApp.factory('GetVisitsObjects', function (Visit) {
             var visitsDay = allVisits[i];
             var tempResult = [];
             for (var j = 0; j < visitsDay.length; j++) {
-                var visit = new Visit(visitsDay[j]);
+                var visit = new Visit.createObject(visitsDay[j]);
                 tempResult.push(visit);
             }
             result.push(tempResult);

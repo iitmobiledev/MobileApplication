@@ -119,3 +119,8 @@ function getUsers() {
 function getCurrentUser() {
     return new User("Анна", "Петровна", "Касатникова", "kasatnik@gmail.com", "kasatnik", "12345");
 }
+
+function Status() {
+    this.count = 0;
+    this.amount = 0;
+}

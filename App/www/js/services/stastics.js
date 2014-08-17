@@ -130,6 +130,8 @@ myApp.factory('OperationalStatistics', function (Model, DateHelper, FinanceStati
             self.clients = data.clients;
             self.workload = data.workload;
             self.financeStat = new FinanceStatistics(data.financeStat);
+            self.searchIndexedDb = function(){
+            };
 
             Object.defineProperty(self, "searchIndexedDb", {
                 get: function (store, params, callback) {

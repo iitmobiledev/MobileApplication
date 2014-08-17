@@ -65,6 +65,8 @@ myApp.factory('VisitsData', function (DateHelper) {
     function byID(id) {
         var sList = [];
         var hours = Math.round(getRandom(8, 21));
+        var serviceCost = Math.round(getRandom(500, 10000));
+        var salary = serviceCost - Math.round(getRandom(0, serviceCost / 2));
         var service = {
             description: "Стрижка",
             startTime: new Date(2014, 8, 11, hours, Math.round(getRandom(0, 59))),
@@ -75,7 +77,8 @@ myApp.factory('VisitsData', function (DateHelper) {
                 middleName: "Петрович",
                 lastName: "Сидоров"
             },
-            cost: getRandom(500, 10000)
+            cost: serviceCost,
+            employeeSalary: salary
         };
         sList.push(service);
         var visit = {};
@@ -123,6 +126,8 @@ myApp.factory('VisitsData', function (DateHelper) {
             var visitsDay = [];
             var sList = [];
             var hours = Math.round(getRandom(8, 21));
+            var serviceCost = Math.round(getRandom(500, 10000));
+            var salary = serviceCost - Math.round(getRandom(0, serviceCost / 2));
             var service = {
                 description: "Стрижка",
                 startTime: new Date(day.getFullYear(), day.getMonth(), day.getDate(), hours, Math.round(getRandom(0, 59))),
@@ -133,7 +138,8 @@ myApp.factory('VisitsData', function (DateHelper) {
                     middleName: "Петрович",
                     lastName: "Сидоров"
                 },
-                cost: getRandom(500, 10000)
+                cost: serviceCost,
+                employeeSalary: salary
             };
             sList.push(service);
             var visit = {};
@@ -155,6 +161,8 @@ myApp.factory('VisitsData', function (DateHelper) {
 
             sList = [];
             hours = Math.round(getRandom(8, 21));
+            serviceCost = Math.round(getRandom(500, 10000));
+            salary = serviceCost - Math.round(getRandom(0, serviceCost / 2));
             service = {
                 description: "Мелирование",
                 startTime: new Date(day.getFullYear(), day.getMonth(), day.getDate(), hours, Math.round(getRandom(0, 59))),
@@ -165,7 +173,8 @@ myApp.factory('VisitsData', function (DateHelper) {
                     middleName: "Федоровна",
                     lastName: "Касатникова"
                 },
-                cost: getRandom(500, 10000)
+                cost: serviceCost,
+                employeeSalary: salary
             };
             sList.push(service);
             var visit = {};

@@ -13,7 +13,7 @@
  * @requires myApp.service:VisitsLoader
  * @requires myApp.service:DateHelper
  */
-myApp.controller('VisitsController', function ($scope, $filter, $location, Loader, DateHelper) {
+myApp.controller('VisitsController', function ($scope, $filter, $location, Loader, DateHelper, Visit) {
     //    var minDate = VisitsLoader.getMinDate();
     //    var maxDate = VisitsLoader.getMaxDate();
 
@@ -34,15 +34,41 @@ myApp.controller('VisitsController', function ($scope, $filter, $location, Loade
         return true;
         //        return $scope.date > minDate;
     };
-    
-    $scope.allVisits = function(visitsForDay){
-        var statuses = [];
-        for (var i = 0; i < visitsForDay.length; i++){
-            statuses.push(visitsForDay[i].status);
-        }
-        console.log("statuses ", statuses);
-        return statuses;
-    };
+
+    $scope.statuses = Visit.statuses;
+
+//    $scope.calculateStatuses = function (visitsForDay) {
+//        $scope.statuses = {
+//            newRecord: new Status(),
+//            notCome: new Status(),
+//            come: new Status(),
+//            confirmed: new Status()
+//        };
+//        $scope.salary = 0;
+//
+//        for (var i = 0; i < visitsForDay.length; i++) {
+//            $scope.salary += getEmployeeSalary(visitsForDay[i].serviceList);
+//
+//            switch (visitsForDay[i].status) {
+//            case Visit.statuses.NEW:
+//                $scope.statuses.newRecord.count++;
+//                $scope.statuses.newRecord.amount = getServicesCost(visitsForDay[i].serviceList);
+//                break;
+//            case Visit.statuses.NOTCOME:
+//                $scope.statuses.notCome.count++;
+//                $scope.statuses.notCome.amount = getServicesCost(visitsForDay[i].serviceList);
+//                break;
+//            case Visit.statuses.COME:
+//                $scope.statuses.come.count++;
+//                $scope.statuses.come.amount = getServicesCost(visitsForDay[i].serviceList);
+//                break;
+//            case Visit.statuses.CONFIRMED:
+//                $scope.statuses.confirmed.count++;
+//                $scope.statuses.confirmed.amount = getServicesCost(visitsForDay[i].serviceList);
+//                break;
+//            }
+//        }
+//    }
 
     /**
      *
@@ -72,7 +98,7 @@ myApp.controller('VisitsController', function ($scope, $filter, $location, Loade
     $scope.hasVisits = function (visit) {
         return visit.length != 0;
     }
-    
+
     /**
      *
      * @ngdoc method
