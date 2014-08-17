@@ -130,6 +130,25 @@ myApp.factory('OperationalStatistics', function (Model, DateHelper, FinanceStati
             self.clients = data.clients;
             self.workload = data.workload;
             self.financeStat = new FinanceStatistics(data.financeStat);
+
+            Object.defineProperty(self, "searchIndexedDb", {
+                get: function (store, params, callback) {
+                    var period = DateHelper.getPeriod(params.date, params.step);
+                    var keyRange = IDBKeyRange.bound(period.begin, period.end);
+                    console.log(keyRange);
+                    var request = store.index(params.index).get(keyRange);
+                    request.onerror = function (event) {
+                        //make something
+                    };
+                    request.onsuccess = function (event) {
+                        if (request.result) {
+                            console.log("good searhing:", request.result);
+                            callback(request.result);
+                        }
+                    };
+                },
+                configurable: true
+            });
         },
         serialize: function (self) {
             self.constructor.prototype.call(self);
@@ -149,7 +168,7 @@ myApp.factory('OperationalStatistics', function (Model, DateHelper, FinanceStati
 myApp.factory('GetOpStatObjects', function (Model, OperationalStatistics, DateHelper) {
     return function (statisticsForPeriod) {
         var statObjs = [];
-        console.log("OpStat ", OperationalStatistics(statisticsForPeriod[0]));
+        //        console.log("OpStat ", OperationalStatistics(statisticsForPeriod[0]));
         for (var i = 0; i < statisticsForPeriod.length; i++)
             statObjs.push(new OperationalStatistics(statisticsForPeriod[i]));
         return statObjs;

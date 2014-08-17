@@ -23,40 +23,32 @@ myApp.service("Loader", ["$http", "OperationalStatisticsData", "GetOpStatObjects
                 //получили нужные данные
                 //преобразовали их в объекты
                 var data = [];
-                if (primaryKey.dateFrom && primaryKey.dateTill) {
-                    data = classes[modelClass].getData.forPeriod(primaryKey.dateFrom, primaryKey.dateTill, primaryKey.step);
+                if (primaryKey.date && primaryKey.step) {
+                    data = classes[modelClass].getData.forPeriod(primaryKey.date, primaryKey.step);
                 } else {
                     data = classes[modelClass].getData.byID(primaryKey.id);
                 }
                 var objs = classes[modelClass].getObjects(data);
-//                for (var i in objs) {
-//                    Storage.update(objs[i]);
-//                }
+
+                for (var i in objs) {
+                    Storage.update(objs[i]);
+                }
                 callback(objs);
-
-                //тут должна быть запись в хранилище
-                //вместо return
-                //                return objs;
-
-                //callback(statObjs);
             },
-            search: function (className, primaryKey, callback) {
+            search: function (className, params, callback) {
                 //пытаемся найти объект в хранилище
                 // если не нашли,то вызываем get()
                 //снова обращается к хранилище, 
                 //если данных вновь нет, то
                 // возвращаем null
-                //                var pk = [];
-                //                for (var i in primaryKey) {
-                //                    pk.push(primaryKey[i]);
-                //                }
                 var loader = this;
-                Storage.open();
-                Storage.get(className, primaryKey, function (data) {
-                    if (data == null) {
-                        loader.get(className, primaryKey, callback);
+                console.log("search params in loader:", params);
+
+                Storage.search(className, params, function (data) {
+                    if (data == null) { //если в базе ничего не нашли
+                        loader.get(className, params, callback);
                     } else
-                        callback(objs);
+                        callback(data);
                 });
             }
         }

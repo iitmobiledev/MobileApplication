@@ -5,11 +5,11 @@
  */
 myApp.factory('Finder', function (Loader) {
 
-    var getPerDates = function (date1, date2, step, className, callback) {
+    var getPerDates = function (date, step, indexName, className, callback) {
         var periodObj = {
-            dateFrom: date1,
-            dateTill: date2,
-            step: step
+            date: date,
+            step: step,
+            index: indexName
         }
         Loader.search(className, periodObj, callback);
     }

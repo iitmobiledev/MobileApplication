@@ -5,7 +5,7 @@
  * @description Сервис для кэширования данных
  * @name myApp.service:Storage
  */
-myApp.factory('Storage', function () {
+myApp.factory('Storage', function (DateHelper) {
 
     var dbName = "storage";
     var database = null;
@@ -87,7 +87,7 @@ myApp.factory('Storage', function () {
      */
     var update = waitDatabase(function (obj) {
         var db = database;
-        var objClass = obj.getClass().toLowerCase(); //получим класс объекта
+        var objClass = obj.getClass(); //получим класс объекта
         var trans = db.transaction([objClass], "readwrite");
         var store = trans.objectStore(objClass); //найдем хранилище для объектов данного класса
         //        обновление объекта: https: //developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API/Using_IndexedDB#Getting_data_from_the_database
@@ -115,34 +115,11 @@ myApp.factory('Storage', function () {
      */
     var get = waitDatabase(function (className, primary, callback) {
         var db = database;
-        var objClass = className.toLowerCase(); //получим класс объекта
-        if (db.objectStoreNames.contains(objClass)) {
-            var trans = db.transaction([objClass], "readwrite");
-            var store = trans.objectStore(objClass); //найдем хранилище для объектов данного класса
-            //инжектором найти класс и проделать для него гетКей
+        if (db.objectStoreNames.contains(className)) {
+            var trans = db.transaction([className], "readwrite");
+            var store = trans.objectStore(className); //найдем хранилище для объектов данного класса
 
-            //            var request = store.get();
-            //            request.onerror = function (event) {
-            //                //make something
-            //            };
-            //            request.onsuccess = function (event) {
-            //                if (request.result) {
-            //                    console.log("obj get:", request.result);
-            //                    callback(request.result);
-            //                    //                    return request.result;
-            //                } else {
-            //                    console.log("object not found!", request.result);
-            //                    callback(null);
-            //                }
-            //            };
-            //        }
-            //        return null;
-
-            var pr = [];
-            for (var i in primary) {
-                pr.push(primary[i].toString());
-            }
-            var request = store.get(pr.join(":"));
+            var request = store.get(primary);
             request.onerror = function (event) {
                 //make something
             };
@@ -155,21 +132,45 @@ myApp.factory('Storage', function () {
         callback(null);
     });
 
-
+    /**
+     *
+     * @ngdoc method
+     * @name myApp.service:Storage#search
+     * @methodOf myApp.service:Storage
+     * @param {String} className имя класса определенного с помощью angular.factory
+     * @param {Array|String|Number} params параметры поиска
+     * @param {Function} callback функция callback
+     * @return {Object} экземпляр класса  className
+     * @description Ищет объект по параметрам в базе данных
+     */
     var search = waitDatabase(function (className, params, callback) {
         var db = database;
-        var objClass = className.toLowerCase(); //получим класс объекта
-        if (db.objectStoreNames.contains(objClass)) {
-            var trans = db.transaction([objClass], "readwrite");
-            var store = trans.objectStore(objClass); //найдем хранилище для объектов данного класса
+        if (db.objectStoreNames.contains(className)) {
+            var trans = db.transaction([className], "readwrite");
+            var store = trans.objectStore(className); //найдем хранилище для объектов данного класса
 
-            var obj;
-            obj.searchIndexedDb(db, callback);
-
+            var period = DateHelper.getPeriod(params.date, params.step);
+            var keyRange = IDBKeyRange.bound(period.begin, period.end);
+            var request = store.index(params.index).get(keyRange);
+            request.onerror = function (event) {
+                //make something
+            };
+            request.onsuccess = function (event) {
+                if (request.result) {
+                    console.log("good searhing:", request.result);
+                    callback(request.result);
+                }
+            };
+            //должно быть так:
+            //            var $inj = angular.injector(['myApp']);
+            //            var serv = $inj.get(className);
+            //            console.log("serv", serv.searchIndexedDb);
+            //            serv.searchIndexedDb(store, params, callback);
         }
-
-        return null;
+        callback(null);
     });
+
+
     /**
      *
      * @ngdoc method
@@ -180,7 +181,7 @@ myApp.factory('Storage', function () {
      */
     var del = waitDatabase(function (obj) {
         var db = database;
-        var objClass = obj.getClass().toLowerCase(); //получим класс объекта
+        var objClass = obj.getClass();
         var trans = db.transaction([objClass], "readwrite");
         var store = trans.objectStore(objClass); //найдем хранилище для объектов данного класса
 
@@ -199,6 +200,7 @@ myApp.factory('Storage', function () {
         open: open,
         update: update,
         get: get,
+        search: search,
         checkSupport: checkSupport
     };
 });
