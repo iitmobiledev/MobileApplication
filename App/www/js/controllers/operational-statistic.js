@@ -68,11 +68,10 @@ myApp.controller('OperationalStatisticController', function ($scope, $location, 
         var nextPeriod = DateHelper.getNextPeriod($scope.date, $scope.step);
         $scope.pages = [];
 
-        Finder.getPerDates(prevPeriod.begin, prevPeriod.end, $scope.step, "date", "OperationalStatistics", function (data) {
-            var list = [];
-            list.push(data)
-            console.log("list of data in ctrl:", list);
-            $scope.pages = list;
+        Finder.getPerDates(prevPeriod.begin, nextPeriod.end, $scope.step, "date", "OperationalStatistics", function (data) {
+            console.log("pages ", data);
+            $scope.pages = data;
+            $scope.pageIndex = 1;
         });
         //            if (!$scope.hasFutureData()) {
         //

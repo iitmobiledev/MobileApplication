@@ -10,6 +10,7 @@
         <ul id='carousel' rn-carousel rn-carousel-index="pageIndex">
 
             <li ng-repeat="page in pages">
+                {{page.date}}
                 <table id="statisticTable">
                     <tr>
                         <td class="sCell" ng-click="toChart('proceeds')">

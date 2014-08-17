@@ -1,4 +1,4 @@
-myApp.directive('status-statistics', function (Visit) {
+myApp.directive('statusStatistics', function (Visit) {
     return {
         restrict: 'E',
         replace: true,
@@ -13,8 +13,6 @@ myApp.directive('status-statistics', function (Visit) {
                 come: new Status(),
                 confirmed: new Status()
             };
-            
-            updateStatus();
 
             var updateStatus = function () {
                 visits = scope.$eval(attrs.visits);
@@ -70,7 +68,7 @@ myApp.directive('status-statistics', function (Visit) {
                 }
                 return salary;
             }
-
+            updateStatus();
         },
         templateUrl: 'views/statuses-statistics.html'
     }

@@ -29,7 +29,7 @@ myApp.service("Loader", ["$http", "OperationalStatisticsData", "GetOpStatObjects
                     data = classes[modelClass].getData.byID(primaryKey.id);
                 }
                 var objs = classes[modelClass].getObjects(data);
-
+                
                 for (var i in objs) {
                     Storage.update(objs[i]);
                 }
@@ -45,6 +45,8 @@ myApp.service("Loader", ["$http", "OperationalStatisticsData", "GetOpStatObjects
                 console.log("search params in loader:", params);
 
                 Storage.search(className, params, function (data) {
+                    console.log("search ", data);
+                    
                     if (data == null) { //если в базе ничего не нашли
                         loader.get(className, params, callback);
                     } else

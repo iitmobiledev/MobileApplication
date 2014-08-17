@@ -408,9 +408,9 @@ angular.module('angular-carousel').run(['$templateCache',
                                 }
                             }
                             scroll();
-                            if (i != 1 && animate === undefined) {
-                                goToSlide(1, true);
-                            }
+//                            if (i != 1 && animate === undefined) {
+//                                goToSlide(1, true);
+//                            }
 
                         }
 

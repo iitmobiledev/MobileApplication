@@ -152,6 +152,7 @@ myApp.factory('Storage', function (DateHelper) {
             //            console.log(keyRange);
             var request = store.index(params.index).get(keyRange);
             request.onerror = function (event) {
+                callback(null);
                 //make something
             };
             request.onsuccess = function (event) {
@@ -159,6 +160,8 @@ myApp.factory('Storage', function (DateHelper) {
                     console.log("good searhing:", request.result);
                     callback(request.result);
                 }
+                else
+                    callback(null);
             };
             //должно быть так:
             //            var $inj = angular.injector(['myApp']);
@@ -166,7 +169,6 @@ myApp.factory('Storage', function (DateHelper) {
             //            console.log("serv", serv.prototype);
             //            serv.searchIndexedDb(store, params, callback);
         }
-        callback(null);
     });
 
 
