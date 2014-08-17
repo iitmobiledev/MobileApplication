@@ -275,7 +275,6 @@ myApp.factory("Model", function () {
             __class__: className,
             __primary__: options.primary,
             indexes: options.indexes,
-            searchIndexedDb: options.searchIndexedDb,
             /**
              *  @ngdoc method
              *  @name getKey
@@ -309,13 +308,17 @@ myApp.factory("Model", function () {
             return this.prototype.indexes;
         };
 
+        //        clz.searchIndexedDb = function () {
+        //            return options.searchIndexedDb;
+        //        }
+
         clz.initializeIndexedDb = function (db) {
             var objectStore = db.createObjectStore(clz.__class__, {
                 keyPath: "__primary__"
             });
-            
-//            console.log("indexes ", clz.getIndexes());
-            
+
+            //            console.log("indexes ", clz.getIndexes());
+
             angular.forEach(clz.getIndexes(), function (value, name) {
                 objectStore.createIndex(name, name, {
                     unique: value

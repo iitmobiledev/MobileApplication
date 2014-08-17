@@ -20,10 +20,8 @@ myApp.factory('OperationalStatisticsData', function (DateHelper) {
         return item;
     }
 
-    function forPeriod(date, step) {
-        //Вычислять step здесь по 2 датам
-        var period = DateHelper.getPeriod(date, step);
-        var dateTill = period.end;
+    function forPeriod(dateFrom, dateTill, step) {
+        var period = DateHelper.getPeriod(dateFrom, step);
         var day = period.begin;
         var statisticsForPeriod = [];
         while (day < dateTill || day.toDateString() == dateTill.toDateString()) {

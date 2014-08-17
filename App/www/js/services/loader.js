@@ -23,8 +23,8 @@ myApp.service("Loader", ["$http", "OperationalStatisticsData", "GetOpStatObjects
                 //получили нужные данные
                 //преобразовали их в объекты
                 var data = [];
-                if (primaryKey.date && primaryKey.step) {
-                    data = classes[modelClass].getData.forPeriod(primaryKey.date, primaryKey.step);
+                if (primaryKey.dateFrom && primaryKey.dateTill && primaryKey.step) {
+                    data = classes[modelClass].getData.forPeriod(primaryKey.dateFrom, primaryKey.dateTill, primaryKey.step);
                 } else {
                     data = classes[modelClass].getData.byID(primaryKey.id);
                 }
