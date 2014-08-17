@@ -90,7 +90,6 @@ myApp.factory('Storage', function (DateHelper) {
         var objClass = obj.getClass(); //получим класс объекта
         var trans = db.transaction([objClass], "readwrite");
         var store = trans.objectStore(objClass); //найдем хранилище для объектов данного класса
-        //        обновление объекта: https: //developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API/Using_IndexedDB#Getting_data_from_the_database
         var request = store.put(obj); //положим в хранилище
 
         request.onsuccess = function (e) { //если транзакт прошел успешно
@@ -149,8 +148,8 @@ myApp.factory('Storage', function (DateHelper) {
             var trans = db.transaction([className], "readwrite");
             var store = trans.objectStore(className); //найдем хранилище для объектов данного класса
 
-            var period = DateHelper.getPeriod(params.date, params.step);
-            var keyRange = IDBKeyRange.bound(period.begin, period.end);
+            var keyRange = IDBKeyRange.bound(params.dateFrom, params.dateTill);
+            //            console.log(keyRange);
             var request = store.index(params.index).get(keyRange);
             request.onerror = function (event) {
                 //make something
@@ -164,7 +163,7 @@ myApp.factory('Storage', function (DateHelper) {
             //должно быть так:
             //            var $inj = angular.injector(['myApp']);
             //            var serv = $inj.get(className);
-            //            console.log("serv", serv.searchIndexedDb);
+            //            console.log("serv", serv.prototype);
             //            serv.searchIndexedDb(store, params, callback);
         }
         callback(null);

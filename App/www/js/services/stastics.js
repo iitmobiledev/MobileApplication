@@ -130,13 +130,26 @@ myApp.factory('OperationalStatistics', function (Model, DateHelper, FinanceStati
             self.clients = data.clients;
             self.workload = data.workload;
             self.financeStat = new FinanceStatistics(data.financeStat);
-            self.searchIndexedDb = function(){
-            };
+            //            self.searchIndexedDb = function (store, params, callback) {
+            //                var period = DateHelper.getPeriod(params.date, params.step);
+            //                var keyRange = IDBKeyRange.bound(period.begin, period.end);
+            //                console.log(keyRange);
+            //                var request = store.index(params.index).get(keyRange);
+            //                request.onerror = function (event) {
+            //                    //make something
+            //                };
+            //                request.onsuccess = function (event) {
+            //                    if (request.result) {
+            //                        console.log("good searhing:", request.result);
+            //                        callback(request.result);
+            //                    }
+            //                };
+            //            };
 
             Object.defineProperty(self, "searchIndexedDb", {
-                get: function (store, params, callback) {
-                    var period = DateHelper.getPeriod(params.date, params.step);
-                    var keyRange = IDBKeyRange.bound(period.begin, period.end);
+                value: function (store, params, callback) {
+                    console.log("params", params);
+                    var keyRange = IDBKeyRange.bound(params.dateFrom, params.dateTill);
                     console.log(keyRange);
                     var request = store.index(params.index).get(keyRange);
                     request.onerror = function (event) {
