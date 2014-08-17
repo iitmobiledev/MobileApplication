@@ -29,10 +29,10 @@ myApp.service("Loader", ["$http", "OperationalStatisticsData", "GetOpStatObjects
                     data = classes[modelClass].getData.byID(primaryKey.id);
                 }
                 var objs = classes[modelClass].getObjects(data);
-                
-                for (var i in objs) {
-                    Storage.update(objs[i]);
-                }
+                console.log("objs ", objs);
+//                for (var i in objs) {
+//                    Storage.update(objs[i]);
+//                }
                 callback(objs);
             },
             search: function (className, params, callback) {

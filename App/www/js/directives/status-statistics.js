@@ -41,8 +41,8 @@ myApp.directive('statusStatistics', function (Visit) {
                     }
                 }
                 
-                element.find('#newRocordCount').html(statuses.newRecord.count);
-                element.find('#newRocordAmount').html(statuses.newRecord.amount);
+                element.find('#newRecordCount').html(statuses.newRecord.count);
+                element.find('#newRecordAmount').html(statuses.newRecord.amount);
                 element.find('#notComeCount').html(statuses.notCome.count);
                 element.find('#notComeAmount').html(statuses.notCome.amount);
                 element.find('#comeCount').html(statuses.come.count);

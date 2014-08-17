@@ -169,6 +169,8 @@ myApp.factory('Storage', function (DateHelper) {
             //            console.log("serv", serv.prototype);
             //            serv.searchIndexedDb(store, params, callback);
         }
+        else
+            callback(null);
     });
 
 
