@@ -125,6 +125,8 @@ myApp.factory('Storage', function (DateHelper) {
             request.onsuccess = function (event) {
                 if (request.result) {
                     callback(request.result);
+                } else {
+                    callback(null);
                 }
             };
         }
@@ -146,33 +148,10 @@ myApp.factory('Storage', function (DateHelper) {
         var db = database;
         if (db.objectStoreNames.contains(className)) {
             var trans = db.transaction([className], "readwrite");
-            var store = trans.objectStore(className); //найдем хранилище для объектов данного класса
-
-            var keyRange = IDBKeyRange.upperBound(new Date("19/1/2014")); //bound(new Date(params.dateFrom), new Date(params.dateTill));
-            console.log(keyRange);
-            var request = store.index(params.index).openCursor(keyRange);
-            request.onerror = function (event) {
-                callback(null);
-                //make something
-            };
-            request.onsuccess = function (event) {
-                var cursor = event.target.result;
-                if (cursor) {
-                    console.log("good searhing:", cursor);
-                    // Do something with the matches.
-                    cursor.continue();
-                }
-                //                if (request.result) {
-                //                    console.log("good searhing:", request.result);
-                //                    callback(request.result);
-                //                } else
-                //                    callback(null);
-            };
-            //должно быть так:
-            //                        var $inj = angular.injector(['myApp']);
-            //                        var serv = $inj.get(className);
-            //                        console.log("serv", serv.prototype);
-            //                        serv.searchIndexedDb(store, params, callback);
+            var $inj = angular.injector(['myApp']);
+            var serv = $inj.get(className);
+            console.log("serv", serv.prototype);
+            serv.searchIndexedDb(trans, params, callback);
         } else
             callback(null);
     });

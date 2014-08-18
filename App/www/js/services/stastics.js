@@ -121,7 +121,8 @@
 //});
 
 myApp.factory('OperationalStatistics', function (Model, DateHelper, FinanceStatistics) {
-    return Model("OperationalStatistics", {
+
+    var opStat = new Model("OperationalStatistics", {
         deserialize: function (self, data) {
             self.date = new Date(data.date);
             self.step = data.step;
@@ -130,39 +131,7 @@ myApp.factory('OperationalStatistics', function (Model, DateHelper, FinanceStati
             self.clients = data.clients;
             self.workload = data.workload;
             self.financeStat = new FinanceStatistics(data.financeStat);
-            self.searchIndexedDb = function (store, params, callback) {
-                var period = DateHelper.getPeriod(params.date, params.step);
-                var keyRange = IDBKeyRange.bound(period.begin, period.end);
-                console.log(keyRange);
-                var request = store.index(params.index).get(keyRange);
-                request.onerror = function (event) {
-                    //make something
-                };
-                request.onsuccess = function (event) {
-                    if (request.result) {
-                        console.log("good searhing:", request.result);
-                        callback(request.result);
-                    }
-                };
-            };
 
-            //            Object.defineProperty(self, "searchIndexedDb", {
-            //                value: function (store, params, callback) {
-            //                    console.log("params", params);
-            //                    var keyRange = IDBKeyRange.bound(params.dateFrom, params.dateTill);
-            //                    console.log(keyRange);
-            //                    var request = store.index(params.index).get(keyRange);
-            //                    request.onerror = function (event) {
-            //                        //make something
-            //                    };
-            //                    request.onsuccess = function (event) {
-            //                        if (request.result) {
-            //                            console.log("good searhing:", request.result);
-            //                            callback(request.result);
-            //                        }
-            //                    };
-            //                }
-            //            });
         },
         serialize: function (self) {
             self.constructor.prototype.call(self);
@@ -175,6 +144,31 @@ myApp.factory('OperationalStatistics', function (Model, DateHelper, FinanceStati
             step: false
         }
     });
+
+    opStat.searchIndexedDb = function (trans, params, callback) {
+        var result = [];
+        var store = trans.objectStore("OperationalStatistics"); //найдем хранилище для объектов данного класса
+        var keyRange = IDBKeyRange.bound(new Date(params.dateFrom), new Date(params.dateTill));
+        console.log(keyRange);
+        var request = store.index(params.index).openCursor(keyRange);
+        request.onerror = function (event) {
+            callback(null);
+        };
+        request.onsuccess = function (event) {
+            var cursor = event.target.result;
+            if (cursor) {
+                result.push(cursor.value);
+                cursor.continue();
+            }
+        };
+
+        trans.oncomplete = function (e) {
+            if (result.length != 0) {
+                callback(result);
+            }
+        }
+    }
+    return opStat;
 });
 
 
