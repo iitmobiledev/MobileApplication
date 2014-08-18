@@ -49,9 +49,47 @@ myApp.service("Loader", ["$http", "OperationalStatisticsData", "GetOpStatObjects
 
                     if (data == null) { //если в базе ничего не нашли
                         loader.get(className, params, callback);
-                    } else
+                    } else {
+                        var period = DateHelper.getPeriod(params.dateFrom, params.step);
+                        var day = period.begin;
+                        var missingDates = [];
+                        while (day < params.dateTill || day.toDateString() == params.dateTill.toDateString()) {
+                            var hasObject = false;
+                            for (var i = 0; i < data.length; i++) {
+                                if (day.toDateString() == data[i].date.toDateString())
+                                    hasObject = true;
+                            }
+                            if (!hasObject)
+                                missingDates.push(day);
+                            period = DateHelper.getNextPeriod(day, params.step);
+                            day = period.begin;
+                        }
+
+                        var i = 0;
+                        while ( i < missingDates.length) {
+                            var primary = {
+                                dateFrom: missingDates[i],
+                                dateTill: DateHelper.getPeriod(missingDates[i], params.step).end,
+                                step: params.step,
+                                index: params.indexName
+                            }
+                            loader.get(className, primary, function (misObj) {
+                                data = data.concat(misObj);
+                                i++;
+                            });
+                        }
+                        data.sort(compareByData);
+
                         callback(data);
+                    }
                 });
             }
         }
             }]);
+
+
+function compareByData(a, b) {
+    if (a.date > b.date) return 1;
+    if (a.date < b.DATABASE_ERR) return -1;
+    return 0;
+};
