@@ -164,8 +164,10 @@ myApp.factory('OperationalStatistics', function (Model, DateHelper, FinanceStati
 
         trans.oncomplete = function (e) {
             if (result.length != 0) {
+                console.log("find objs in db:", result);
                 callback(result);
-            }
+            } else
+                callback(null);
         }
     }
     return opStat;
