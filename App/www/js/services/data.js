@@ -27,7 +27,7 @@ myApp.factory('OperationalStatisticsData', function (DateHelper) {
         while (day < dateTill || day.toDateString() == dateTill.toDateString()) {
             var stastics = {};
             var a = getRandom(1000, 10000);
-            stastics.date = day;
+            stastics.date = new Date(day);
             stastics.step = step;
             stastics.proceeds = a;
             stastics.profit = getRandom(-1000, 5000);

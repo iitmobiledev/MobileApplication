@@ -130,40 +130,39 @@ myApp.factory('OperationalStatistics', function (Model, DateHelper, FinanceStati
             self.clients = data.clients;
             self.workload = data.workload;
             self.financeStat = new FinanceStatistics(data.financeStat);
-            //            self.searchIndexedDb = function (store, params, callback) {
-            //                var period = DateHelper.getPeriod(params.date, params.step);
-            //                var keyRange = IDBKeyRange.bound(period.begin, period.end);
-            //                console.log(keyRange);
-            //                var request = store.index(params.index).get(keyRange);
-            //                request.onerror = function (event) {
-            //                    //make something
-            //                };
-            //                request.onsuccess = function (event) {
-            //                    if (request.result) {
-            //                        console.log("good searhing:", request.result);
-            //                        callback(request.result);
-            //                    }
-            //                };
-            //            };
+            self.searchIndexedDb = function (store, params, callback) {
+                var period = DateHelper.getPeriod(params.date, params.step);
+                var keyRange = IDBKeyRange.bound(period.begin, period.end);
+                console.log(keyRange);
+                var request = store.index(params.index).get(keyRange);
+                request.onerror = function (event) {
+                    //make something
+                };
+                request.onsuccess = function (event) {
+                    if (request.result) {
+                        console.log("good searhing:", request.result);
+                        callback(request.result);
+                    }
+                };
+            };
 
-            Object.defineProperty(self, "searchIndexedDb", {
-                value: function (store, params, callback) {
-                    console.log("params", params);
-                    var keyRange = IDBKeyRange.bound(params.dateFrom, params.dateTill);
-                    console.log(keyRange);
-                    var request = store.index(params.index).get(keyRange);
-                    request.onerror = function (event) {
-                        //make something
-                    };
-                    request.onsuccess = function (event) {
-                        if (request.result) {
-                            console.log("good searhing:", request.result);
-                            callback(request.result);
-                        }
-                    };
-                },
-                configurable: true
-            });
+            //            Object.defineProperty(self, "searchIndexedDb", {
+            //                value: function (store, params, callback) {
+            //                    console.log("params", params);
+            //                    var keyRange = IDBKeyRange.bound(params.dateFrom, params.dateTill);
+            //                    console.log(keyRange);
+            //                    var request = store.index(params.index).get(keyRange);
+            //                    request.onerror = function (event) {
+            //                        //make something
+            //                    };
+            //                    request.onsuccess = function (event) {
+            //                        if (request.result) {
+            //                            console.log("good searhing:", request.result);
+            //                            callback(request.result);
+            //                        }
+            //                    };
+            //                }
+            //            });
         },
         serialize: function (self) {
             self.constructor.prototype.call(self);
