@@ -38,7 +38,7 @@ myApp.factory('Storage', function (DateHelper) {
             console.log("update store");
             var db = event.target.result;
 
-            var models = ['Visit']; //'OperationalStatistics', 
+            var models = ['OperationalStatistics', 'Visit']; //'OperationalStatistics', 
             var $inj = angular.injector(['myApp']);
             for (var i in models) {
                 var serv = $inj.get(models[i]);
