@@ -37,39 +37,6 @@ myApp.controller('VisitsController', function ($scope, $filter, $location, Loade
 
     $scope.statuses = Visit.statuses;
 
-//    $scope.calculateStatuses = function (visitsForDay) {
-//        $scope.statuses = {
-//            newRecord: new Status(),
-//            notCome: new Status(),
-//            come: new Status(),
-//            confirmed: new Status()
-//        };
-//        $scope.salary = 0;
-//
-//        for (var i = 0; i < visitsForDay.length; i++) {
-//            $scope.salary += getEmployeeSalary(visitsForDay[i].serviceList);
-//
-//            switch (visitsForDay[i].status) {
-//            case Visit.statuses.NEW:
-//                $scope.statuses.newRecord.count++;
-//                $scope.statuses.newRecord.amount = getServicesCost(visitsForDay[i].serviceList);
-//                break;
-//            case Visit.statuses.NOTCOME:
-//                $scope.statuses.notCome.count++;
-//                $scope.statuses.notCome.amount = getServicesCost(visitsForDay[i].serviceList);
-//                break;
-//            case Visit.statuses.COME:
-//                $scope.statuses.come.count++;
-//                $scope.statuses.come.amount = getServicesCost(visitsForDay[i].serviceList);
-//                break;
-//            case Visit.statuses.CONFIRMED:
-//                $scope.statuses.confirmed.count++;
-//                $scope.statuses.confirmed.amount = getServicesCost(visitsForDay[i].serviceList);
-//                break;
-//            }
-//        }
-//    }
-
     /**
      *
      * @ngdoc method
@@ -147,12 +114,11 @@ myApp.controller('VisitsController', function ($scope, $filter, $location, Loade
         $scope.visitInfo = {};
         $scope.visitInfo.id = visit.id;
         $scope.visitInfo.status = visit.status;
-        //$('#status').css('background-color', 'blue');
         $scope.visitInfo.client = visit.client.lastName + ' ' + visit.client.firstName;
         $scope.visitInfo.time = $filter('date')(Math.min.apply(null, startTimes), "HH:mm") + '-' +
             $filter('date')(Math.max.apply(null, endTimes), "HH:mm");
         $scope.visitInfo.masters = masters.join(",");
-        $scope.visitInfo.services = services.join(",");
+        $scope.visitInfo.services = services.join(", ");
         $scope.visitInfo.cost = coast + ' р.';
     }
 });

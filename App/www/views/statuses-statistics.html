@@ -1,31 +1,39 @@
-<table style="width:100%; margin:10px; border-top: 1px solid gray">
-    <tr>
+<table style="width:100%; margin-left:10px; border-top: 1px solid #F0F0F0; background-color: #F8F8F8; padding-bottom:10px; padding-top:10px;">
+    <tr height="23px">
         <td></td>
-        <td style="text-align:center;">шт.</td>
-        <td style="text-align:center;">Σ, руб.</td>
+        <td></td>
+        <td style="text-align:center; color:#A8A8A8;">шт.</td>
+        <td style="text-align:center; color:#A8A8A8;">Σ, руб.</td>
     </tr>
-    <tr>
-        <td>Новая запись:</td>
-        <td style="text-align:center; font-weight:bold" id="newRocordCount">{{statuses.newRecord.count}}</td>
-        <td style="text-align:center; font-weight:bold;" id="newRecordAmount">{{statuses.newRecord.amount}}</td>
+    <tr height="23px">
+        <td width="20px">
+        <div style="width:15px; background-color:#FFCC66; height:15px;"></div></td>
+        <td style="color:#A8A8A8;">Новая запись:</td>
+        <td style="text-align:center; font-weight:bold" id="newRecordCount">{{statuses.newRecord.count}}</td>
+        <td width="120px" style="text-align:center; font-weight:bold;" id="newRecordAmount">{{statuses.newRecord.amount}}</td>
     </tr>
-    <tr>
-        <td>Клиент не пришел:</td>
+    <tr height="23px">
+        <td width="20px">
+        <div style="width:15px; background-color:#FF9F9F; height:15px"></div></td>
+        <td style="color:#A8A8A8;">Клиент не пришел:</td>
         <td style="text-align:center; font-weight:bold;" id="notComeCount">{{statuses.notCome.count}}</td>
         <td style="text-align:center; font-weight:bold;" id="notComeAmount">{{statuses.notCome.amount}}</td>
     </tr>
-    <tr>
-        <td>Клиент пришел:</td>
+    <tr height="23px">
+        <td width="20px"><div style="width:15px; background-color:#77CC33; height:15px"></div></td>
+        <td style="color:#A8A8A8;">Клиент пришел:</td>
         <td style="text-align:center; font-weight:bold;" id="comeCount">{{statuses.come.count}}</td>
         <td style="text-align:center; font-weight:bold;" id="comeAmount">{{statuses.come.amount}}</td>
     </tr>
-    <tr>
-        <td>Подтверждена:</td>
+    <tr height="23px">
+        <td width="20px"><div style="width:15px; background-color:#33BBFF; height:15px"></div></td>
+        <td style="color:#A8A8A8;">Подтверждена:</td>
         <td style="text-align:center; font-weight:bold;" id="confirmedCount">{{statuses.confirmed.count}}</td>
         <td style="text-align:center; font-weight:bold;" id="confirmedAmount">{{statuses.confirmed.amount}}</td>
     </tr>
-    <tr>
-        <td>Зарплата сотрудников:</td>
+    <tr height="23px">
+        <td></td>
+        <td style="color:#A8A8A8;">Зарплата сотрудников:</td>
         <td></td>
         <td style="text-align:center; font-weight:bold;" id="salary"></td>
     </tr>

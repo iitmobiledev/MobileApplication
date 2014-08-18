@@ -79,10 +79,19 @@ myApp.factory('Service', function (Model, Master) {
 myApp.factory('Visit', function (Model, Client, Service) {
 
     var statuses = {
-        NEW: "Новая запись",
-        NOTCOME: "Клиент не пришел",
-        COME: "Клиент пришел",
-        CONFIRMED: "Подтверждена"
+        titles: {
+            NEW: "Новая запись",
+            NOTCOME: "Клиент не пришел",
+            COME: "Клиент пришел",
+            CONFIRMED: "Подтверждена"
+        },
+        classesNames: {
+            NEW: "new",
+            NOTCOME: "not-come",
+            COME: "come",
+            CONFIRMED: "confirm"
+        }
+
     }
 
     var createObject = Model("Visit", {
@@ -278,10 +287,12 @@ myApp.factory('MastersLoader', function (DateHelper, Loader) {
      */
     function getAllMastersPerDay(period, callback) {
         Loader.search("Visits", {
-            dateFrom: period.end,
-            dateTill: period.begin,
+            dateFrom: period.begin,
+            dateTill: period.end,
             step: DateHelper.steps.DAY
         }, function (data) {
+            console.log("data in MasterLoader ", data);
+            
             var mastersForPeriod = [];
             for (var k = 0; k < data.length; k++) {
                 var mastersForDay = [];

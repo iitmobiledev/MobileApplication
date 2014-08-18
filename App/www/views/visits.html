@@ -17,20 +17,19 @@
                     {{getVisitInfo(visit)}}
                     <a href="#/visit/{{visitInfo.id}}">
                         <div>
-                            <visit-status classes='["new", "not-come", "confirm", "come"]' status='visitInfo.status' statuses='statuses'></visit-status>
-
+                            <visit-status status='visitInfo.status'></visit-status>
                             <div>
                                 <span style="text-align:right; width:35%;">
                                     {{visitInfo.time}}
                                 </span>
-                                <span style="float:left;  width:65%;white-space:nowrap;text-overflow:ellipsis;overflow: hidden; font-size:18px; font-weight:bold; margin-bottom:5px;">
+                                <span style="float:left;  width:65%;white-space:nowrap;text-overflow:ellipsis;overflow: hidden; font-size:18px; font-weight:500; margin-bottom:5px;">
                                     {{visitInfo.client}}
                                 </span>
 
                             </div>
                             <div>
                                 <span style="text-align:left;width:65%;white-space:nowrap;text-overflow:ellipsis;overflow: hidden;">
-                                    {{visitInfo.cost}} {{visitInfo.services}}
+                                   {{visitInfo.services}} — {{visitInfo.cost}} 
                                 </span>
                             </div>
                         </div>

@@ -3,44 +3,42 @@ myApp.directive('statusStatistics', function (Visit) {
         restrict: 'E',
         replace: true,
         link: function (scope, element, attrs) {
-            console.log("in directive");
-            
-            var visits = scope.$eval(attrs.visits);
-            var salary = 0;
-            var statuses = {
-                newRecord: new Status(),
-                notCome: new Status(),
-                come: new Status(),
-                confirmed: new Status()
-            };
+            var visits, salary = 0;
 
             var updateStatus = function () {
                 visits = scope.$eval(attrs.visits);
                 salary = 0;
 
+                var statuses = {
+                    newRecord: new Status(),
+                    notCome: new Status(),
+                    come: new Status(),
+                    confirmed: new Status()
+                };
+
                 for (var i = 0; i < visits.length; i++) {
                     salary += getEmployeeSalary(visits[i].serviceList);
 
                     switch (visits[i].status) {
-                    case Visit.statuses.NEW:
+                    case Visit.statuses.titles.NEW:
                         statuses.newRecord.count++;
                         statuses.newRecord.amount = getServicesCost(visits[i].serviceList);
                         break;
-                    case Visit.statuses.NOTCOME:
+                    case Visit.statuses.titles.NOTCOME:
                         statuses.notCome.count++;
                         statuses.notCome.amount = getServicesCost(visits[i].serviceList);
                         break;
-                    case Visit.statuses.COME:
+                    case Visit.statuses.titles.COME:
                         statuses.come.count++;
                         statuses.come.amount = getServicesCost(visits[i].serviceList);
                         break;
-                    case Visit.statuses.CONFIRMED:
+                    case Visit.statuses.titles.CONFIRMED:
                         statuses.confirmed.count++;
                         statuses.confirmed.amount = getServicesCost(visits[i].serviceList);
                         break;
                     }
                 }
-                
+
                 element.find('#newRecordCount').html(statuses.newRecord.count);
                 element.find('#newRecordAmount').html(statuses.newRecord.amount);
                 element.find('#notComeCount').html(statuses.notCome.count);
