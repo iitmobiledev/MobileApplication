@@ -1,31 +1,5 @@
 myApp.factory('Client', function (Model) {
     return Model("Client", {
-        //        deserialize: function (self, data) {
-        //            Object.defineProperty(self, "firstName", {
-        //                value: data.firstName,
-        //                writable: true
-        //            });
-        //            Object.defineProperty(self, "middleName", {
-        //                value: data.middleName,
-        //                writable: true
-        //            });
-        //            Object.defineProperty(self, "lastName", {
-        //                value: data.lastName,
-        //                writable: true
-        //            });
-        //            Object.defineProperty(self, "phoneNumber", {
-        //                value: data.phoneNumber,
-        //                writable: true
-        //            });
-        //            Object.defineProperty(self, "balance", {
-        //                value: data.balance,
-        //                writable: true
-        //            });
-        //            Object.defineProperty(self, "discount", {
-        //                value: data.discount,
-        //                writable: true
-        //            });
-        //        },
         serialize: function (self) {
             self.constructor.prototype.call(self)
             var data = angular.extend({}, self);
@@ -113,13 +87,41 @@ myApp.factory('Visit', function (Model, Client, Service) {
             var data = angular.extend({}, self);
             return data;
         },
-        primary: ['id']
+        primary: ['id'],
+        indexes: {
+            date: false,
+            step: false,
+            master: false
+        }
     });
 
-    return {
-        statuses: statuses,
-        createObject: createObject
+    createObject.searchIndexedDb = function (trans, params, callback) {
+        var result = [];
+        var store = trans.objectStore("Visit"); //найдем хранилище для объектов данного класса
+        var keyRange = IDBKeyRange.bound(new Date(params.dateFrom), new Date(params.dateTill));
+        console.log(keyRange);
+        var request = store.index(params.index).openCursor(keyRange);
+        request.onerror = function (event) {
+            callback(null);
+        };
+        request.onsuccess = function (event) {
+            var cursor = event.target.result;
+            if (cursor) {
+                result.push(cursor.value);
+                cursor.continue();
+            }
+        };
+
+        trans.oncomplete = function (e) {
+            if (result.length != 0) {
+                callback(result);
+            }
+        }
     }
+
+    return createObject;
+    //        statuses: statuses,
+
 });
 
 
@@ -292,7 +294,7 @@ myApp.factory('MastersLoader', function (DateHelper, Loader) {
             step: DateHelper.steps.DAY
         }, function (data) {
             console.log("data in MasterLoader ", data);
-            
+
             var mastersForPeriod = [];
             for (var k = 0; k < data.length; k++) {
                 var mastersForDay = [];

@@ -122,7 +122,7 @@
 
 myApp.factory('OperationalStatistics', function (Model, DateHelper, FinanceStatistics) {
 
-    var opStat = new Model("OperationalStatistics", {
+    var opStat = Model("OperationalStatistics", {
         deserialize: function (self, data) {
             self.date = new Date(data.date);
             self.step = data.step;

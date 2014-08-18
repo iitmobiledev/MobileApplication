@@ -38,9 +38,13 @@ myApp.factory('Storage', function (DateHelper) {
             console.log("update store");
             var db = event.target.result;
 
+            var models = ['Visit']; //'OperationalStatistics', 
             var $inj = angular.injector(['myApp']);
-            var serv = $inj.get('OperationalStatistics');
-            serv.initializeIndexedDb(db);
+            for (var i in models) {
+                var serv = $inj.get(models[i]);
+                console.log(serv);
+                serv.initializeIndexedDb(db);
+            }
         };
 
         request.onsuccess = function (event) {
@@ -49,7 +53,7 @@ myApp.factory('Storage', function (DateHelper) {
         };
 
         request.onerror = function (event) { // Если ошибка
-            console.log("Что-то с IndexedDB пошло не так!");
+            console.log("open(): Error", event);
         };
     }
 
@@ -96,8 +100,11 @@ myApp.factory('Storage', function (DateHelper) {
             console.log("obj in db!");
         };
 
+        trans.onerror = function (e) { //если что-то пошло не так
+            console.log("update() transaction: Error", event);
+        };
         request.onerror = function (e) { //если что-то пошло не так
-            console.log(e.value);
+            console.log("update(): Error", event);
         };
 
     });
