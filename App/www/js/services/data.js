@@ -24,6 +24,7 @@ myApp.factory('OperationalStatisticsData', function (DateHelper) {
         var period = DateHelper.getPeriod(dateFrom, step);
         var day = period.begin;
         var statisticsForPeriod = [];
+        console.log("step ", step);
         while (day < dateTill || day.toDateString() == dateTill.toDateString()) {
             var stastics = {};
             var a = getRandom(1000, 10000);
@@ -35,8 +36,9 @@ myApp.factory('OperationalStatisticsData', function (DateHelper) {
             stastics.workload = getRandom(50, 100);
             //финансовую статистику надо показывать только, 
             //если период равен дню
+            console.log(step, DateHelper.steps.DAY);
             if (step == DateHelper.steps.DAY)
-                stastics.financeStat = getFinanceStatistics(stastics.day);
+                stastics.financeStat = getFinanceStatistics(new Date(day));
             else
                 stastics.financeStat = {};
             stastics.id = Math.round(getRandom(1, 100));

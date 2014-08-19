@@ -35,7 +35,7 @@ myApp.factory('Storage', function (DateHelper) {
 
         //пересоздаются ли объекты при изменении версии!?
         request.onupgradeneeded = function (event) {
-            console.log("update store");
+//            console.log("update store");
             var db = event.target.result;
 
             var models = ['OperationalStatistics', 'Visit']; //'OperationalStatistics', 
@@ -49,11 +49,11 @@ myApp.factory('Storage', function (DateHelper) {
 
         request.onsuccess = function (event) {
             database = request.result;
-            console.log("db in myApp.service.Storage.open: ", database);
+//            console.log("db in myApp.service.Storage.open: ", database);
         };
 
         request.onerror = function (event) { // Если ошибка
-            console.log("open(): Error", event);
+//            console.log("open(): Error", event);
         };
     }
 
@@ -79,8 +79,6 @@ myApp.factory('Storage', function (DateHelper) {
     };
 
 
-
-
     /**
      *
      * @ngdoc method
@@ -97,14 +95,14 @@ myApp.factory('Storage', function (DateHelper) {
         var request = store.put(obj); //положим в хранилище
 
         request.onsuccess = function (e) { //если транзакт прошел успешно
-            console.log("obj in db!");
+//            console.log("obj in db!");
         };
 
         trans.onerror = function (e) { //если что-то пошло не так
-            console.log("update() transaction: Error", event);
+//            console.log("update() transaction: Error", event);
         };
         request.onerror = function (e) { //если что-то пошло не так
-            console.log("update(): Error", event);
+//            console.log("update(): Error", event);
         };
 
     });
@@ -157,7 +155,7 @@ myApp.factory('Storage', function (DateHelper) {
             var trans = db.transaction([className], "readwrite");
             var $inj = angular.injector(['myApp']);
             var serv = $inj.get(className);
-            console.log("serv", serv.prototype);
+//            console.log("serv", serv.prototype);
             serv.searchIndexedDb(trans, params, callback);
         } else
             callback(null);

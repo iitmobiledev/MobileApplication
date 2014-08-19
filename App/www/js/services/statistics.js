@@ -149,7 +149,7 @@ myApp.factory('OperationalStatistics', function (Model, DateHelper, FinanceStati
         var result = [];
         var store = trans.objectStore("OperationalStatistics"); //найдем хранилище для объектов данного класса
         var keyRange = IDBKeyRange.bound(new Date(params.dateFrom), new Date(params.dateTill));
-        console.log(keyRange);
+//        console.log(keyRange);
         var request = store.index(params.index).openCursor(keyRange);
         request.onerror = function (event) {
             callback(null);
@@ -164,7 +164,7 @@ myApp.factory('OperationalStatistics', function (Model, DateHelper, FinanceStati
 
         trans.oncomplete = function (e) {
             if (result.length != 0) {
-                console.log("find objs in db:", result);
+//                console.log("find objs in db:", result);
                 callback(result);
             } else
                 callback(null);
