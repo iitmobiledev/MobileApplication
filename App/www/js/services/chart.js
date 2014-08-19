@@ -4,7 +4,7 @@
  * @name myApp.service:ChartDataLoader
  * @requires myApp.service:OperatonalStatisticsDataSumming
  */
-myApp.factory('ChartDataLoader', function (DateHelper, Loader) {
+myApp.factory('ChartDataLoader', function (DateHelper, Finder) {
     /**
      *
      * @ngdoc method
@@ -27,14 +27,27 @@ myApp.factory('ChartDataLoader', function (DateHelper, Loader) {
     function getGoodData(needValue, period, callback) {
         var goodData = [];
         var today = new Date();
-        Loader.search("OperationalStatistics", {
-            dateFrom: new Date(today.getFullYear() - 1, today.getMonth(), today.getDate()),
-            dateTill: today,
-            step: DateHelper.steps.DAY
-        }, function (data) {
+        //        Loader.search("OperationalStatistics", {
+        //            dateFrom: new Date(today.getFullYear() - 1, today.getMonth(), today.getDate()),
+        //            dateTill: today,
+        //            step: DateHelper.steps.DAY
+        //        }, function (data) {
+        //            for (var i = 0; i < data.length; i++) {
+        //                var item = [];
+        //                item.push(Date.UTC(data[i].dateFrom.getFullYear(), data[i].dateFrom.getMonth(), data[i].dateFrom.getDate()));
+        //                item.push(data[i][needValue.toString()]);
+        //                goodData.push(item);
+        //            }
+        //            goodData = goodData.sort();
+        //            setTimeout(function () {
+        //                callback(goodData);
+        //            }, 5000);
+        //        });
+
+        Finder.getPerDates(new Date(today.getFullYear() - 1, today.getMonth(), today.getDate()), today, DateHelper.steps.DAY, "date", "OperationalStatistics", function (data) {
             for (var i = 0; i < data.length; i++) {
                 var item = [];
-                item.push(Date.UTC(data[i].dateFrom.getFullYear(), data[i].dateFrom.getMonth(), data[i].dateFrom.getDate()));
+                item.push(Date.UTC(data[i].date.getFullYear(), data[i].date.getMonth(), data[i].date.getDate()));
                 item.push(data[i][needValue.toString()]);
                 goodData.push(item);
             }
