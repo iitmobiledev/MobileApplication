@@ -9,6 +9,7 @@
 }
 #statisticTable .sCell {
     border: 1px solid #D3D3D3;
+    padding: 5% 0;
     text-align: center;
 }
 #financeTable {
@@ -64,7 +65,8 @@
     font-size: 16pt;
 }
 /*Visits page*/
-#status{
+
+#status {
     text-align: center;
     color: white;
     font-size: 15px;
@@ -72,7 +74,7 @@
     height: 20px;
     margin-bottom: 5px;
 }
-.not-come{
+.not-come {
     width: 140px;
     background-color: #FF9F9F;
     text-align: center;
@@ -82,7 +84,7 @@
     height: 20px;
     margin-bottom: 5px;
 }
-.new{
+.new {
     width: 110px;
     background-color: #FFCC66;
     text-align: center;
@@ -92,7 +94,7 @@
     height: 20px;
     margin-bottom: 5px;
 }
-.confirm{
+.confirm {
     width: 120px;
     background-color: #33BBFF;
     text-align: center;
@@ -102,7 +104,7 @@
     height: 20px;
     margin-bottom: 5px;
 }
-.come{
+.come {
     width: 120px;
     background-color: #77CC33;
     text-align: center;

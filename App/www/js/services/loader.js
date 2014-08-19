@@ -20,6 +20,7 @@ myApp.service("Loader", ["$http", "OperationalStatisticsData", "GetOpStatObjects
                         getObjects: GetExpendituresObjects
                     }
                 };
+
                 //получили нужные данные
                 //преобразовали их в объекты
                 var data = [];
