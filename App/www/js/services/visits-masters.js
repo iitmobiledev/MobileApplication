@@ -52,23 +52,7 @@ myApp.factory('Service', function (Model, Master) {
 
 myApp.factory('Visit', function (Model, Client, Service) {
 
-    var statuses = {
-        titles: {
-            NEW: "Новая запись",
-            NOTCOME: "Клиент не пришел",
-            COME: "Клиент пришел",
-            CONFIRMED: "Подтверждена"
-        },
-        classesNames: {
-            NEW: "new",
-            NOTCOME: "not-come",
-            COME: "come",
-            CONFIRMED: "confirm"
-        }
-
-    }
-
-    var createObject = Model("Visit", {
+    var visitConstructor = Model("Visit", {
         deserialize: function (self, data) {
             self.id = data.id;
             self.client = data.client;
@@ -95,7 +79,7 @@ myApp.factory('Visit', function (Model, Client, Service) {
         }
     });
 
-    createObject.searchIndexedDb = function (trans, params, callback) {
+    visitConstructor.searchIndexedDb = function (trans, params, callback) {
         var result = [];
         var store = trans.objectStore("Visit"); //найдем хранилище для объектов данного класса
         var keyRange = IDBKeyRange.bound(new Date(params.dateFrom), new Date(params.dateTill));
@@ -108,7 +92,8 @@ myApp.factory('Visit', function (Model, Client, Service) {
             var cursor = event.target.result;
             if (cursor) {
                 result.push(cursor.value);
-                cursor.continue();
+                cursor.
+                continue ();
             }
         };
 
@@ -119,8 +104,23 @@ myApp.factory('Visit', function (Model, Client, Service) {
         }
     }
 
-    return createObject;
-    //        statuses: statuses,
+    visitConstructor.statuses = {
+        titles: {
+            NEW: "Новая запись",
+            NOTCOME: "Клиент не пришел",
+            COME: "Клиент пришел",
+            CONFIRMED: "Подтверждена"
+        },
+        classesNames: {
+            NEW: "new",
+            NOTCOME: "not-come",
+            COME: "come",
+            CONFIRMED: "confirm"
+        }
+
+    }
+
+    return visitConstructor;
 
 });
 
@@ -133,7 +133,7 @@ myApp.factory('GetVisitsObjects', function (Visit) {
             var visitsDay = allVisits[i];
             var tempResult = [];
             for (var j = 0; j < visitsDay.length; j++) {
-                var visit = new Visit.createObject(visitsDay[j]);
+                var visit = new Visit(visitsDay[j]);
                 tempResult.push(visit);
             }
             result.push(tempResult);
@@ -269,6 +269,15 @@ myApp.factory('MastersLoader', function (DateHelper, Loader) {
         return null;
     }
 
+    function checkVisitInList(visit, visits) {
+        for (var i = 0; i < visits.length; i++) {
+            if (visit.id === visits[i].id) {
+                return i;
+            }
+        }
+        return null;
+    }
+
     function perMaster(master, visit) {
         this.master = master;
         this.visList = [];
@@ -302,7 +311,8 @@ myApp.factory('MastersLoader', function (DateHelper, Loader) {
                     for (var j = 0; j < data[k][i].serviceList.length; j++) {
                         var usl = checkMasterInList(data[k][i].serviceList[j].master, mastersForDay);
                         if (usl !== null) {
-                            mastersForDay[usl].visList.push(data[k][i]);
+                            if (checkVisitInList(data[k][i], mastersForDay[usl].visList) == null)
+                                mastersForDay[usl].visList.push(data[k][i]);
                         } else {
                             mastersForDay.push(new perMaster(data[k][i].serviceList[j].master, data[k][i]));
                         }
@@ -318,6 +328,8 @@ myApp.factory('MastersLoader', function (DateHelper, Loader) {
                 });
                 mastersForPeriod.push(mastersForDay);
             }
+            console.log("mastersForPeriod ", mastersForPeriod);
+
             callback(mastersForPeriod);
         });
     }

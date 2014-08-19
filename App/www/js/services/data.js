@@ -195,10 +195,11 @@ myApp.factory('VisitsData', function (DateHelper, Visit) {
             hours = Math.round(getRandom(8, 21));
             serviceCost = Math.round(getRandom(500, 10000));
             salary = serviceCost - Math.round(getRandom(0, serviceCost / 2));
+            var endTime = new Date(day.getFullYear(), day.getMonth(), day.getDate(), hours + 2, Math.round(getRandom(0, 59)));
             service = {
                 description: "Стрижка волос",
                 startTime: new Date(day.getFullYear(), day.getMonth(), day.getDate(), hours, Math.round(getRandom(0, 59))),
-                endTime: new Date(day.getFullYear(), day.getMonth(), day.getDate(), hours + 2, Math.round(getRandom(0, 59))),
+                endTime: endTime,
                 master: {
                     id: 3,
                     firstName: "Алена",
@@ -214,8 +215,8 @@ myApp.factory('VisitsData', function (DateHelper, Visit) {
             salary = serviceCost - Math.round(getRandom(0, serviceCost / 2));
             service = {
                 description: "Ламинирование",
-                startTime: new Date(day.getFullYear(), day.getMonth(), day.getDate(), hours, Math.round(getRandom(0, 59))),
-                endTime: new Date(day.getFullYear(), day.getMonth(), day.getDate(), hours + 2, Math.round(getRandom(0, 59))),
+                startTime: endTime,
+                endTime: new Date(day.getFullYear(), day.getMonth(), day.getDate(), endTime.getHours() + 1, Math.round(getRandom(0, 59))),
                 master: {
                     id: 3,
                     firstName: "Алена",

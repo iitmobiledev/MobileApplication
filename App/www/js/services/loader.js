@@ -31,7 +31,11 @@ myApp.service("Loader", ["$http", "OperationalStatisticsData", "GetOpStatObjects
                 var objs = classes[modelClass].getObjects(data);
                 console.log("objs ", objs);
                 for (var i in objs) {
-                    Storage.update(objs[i]);
+                    if (objs[i] instanceof Array) {
+                        for (var j in objs[i])
+                            Storage.update(objs[i][j]);
+                    } else
+                        Storage.update(objs[i]);
                 }
                 callback(objs);
             },
@@ -66,7 +70,7 @@ myApp.service("Loader", ["$http", "OperationalStatisticsData", "GetOpStatObjects
                         }
 
                         var i = 0;
-                        while ( i < missingDates.length) {
+                        while (i < missingDates.length) {
                             var primary = {
                                 dateFrom: missingDates[i],
                                 dateTill: DateHelper.getPeriod(missingDates[i], params.step).end,

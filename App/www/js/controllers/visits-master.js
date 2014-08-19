@@ -152,5 +152,8 @@ myApp.controller('VisitsMasterController', function ($scope, $filter, $location,
         $scope.masterVisitInfo.service = services.join(",");
         $scope.masterVisitInfo.cost = coast + ' р.';
     }
+    
+    $scope.getVisits = function(page){
+    }
 
 });
