@@ -18,32 +18,9 @@ myApp.factory('ChartDataLoader', function (DateHelper, Finder) {
      * обработки всех данных.
      * @returns {Array} Массив из объектов `OperationalStatistics`,
      */
-    //     * @param {
-    //        Number
-    //    }
-    //    step Количество дней, за которые суммируются
-    //     * данные.
-    //     * суммированных по шагу `step`.
     function getGoodData(needValue, period, callback) {
         var goodData = [];
         var today = new Date();
-        //        Loader.search("OperationalStatistics", {
-        //            dateFrom: new Date(today.getFullYear() - 1, today.getMonth(), today.getDate()),
-        //            dateTill: today,
-        //            step: DateHelper.steps.DAY
-        //        }, function (data) {
-        //            for (var i = 0; i < data.length; i++) {
-        //                var item = [];
-        //                item.push(Date.UTC(data[i].dateFrom.getFullYear(), data[i].dateFrom.getMonth(), data[i].dateFrom.getDate()));
-        //                item.push(data[i][needValue.toString()]);
-        //                goodData.push(item);
-        //            }
-        //            goodData = goodData.sort();
-        //            setTimeout(function () {
-        //                callback(goodData);
-        //            }, 5000);
-        //        });
-
         Finder.getPerDates(new Date(today.getFullYear() - 1, today.getMonth(), today.getDate()), today, DateHelper.steps.DAY, "date", "OperationalStatistics", function (data) {
             for (var i = 0; i < data.length; i++) {
                 var item = [];
@@ -57,50 +34,6 @@ myApp.factory('ChartDataLoader', function (DateHelper, Finder) {
             }, 5000);
         });
 
-        //        var statistics = OperationalStatisticLoader.getDataForChart(new Date());
-        //        for (var i = 0; i < statistics.length; i++) {
-        //            var item = [];
-        //            item.push(Date.UTC(statistics[i].dateFrom.getFullYear(), statistics[i].dateFrom.getMonth(), statistics[i].dateFrom.getDate()));
-        //            item.push(statistics[i][needValue.toString()]);
-        //            goodData.push(item);
-        //        }
-        //        goodData = goodData.sort();
-
-        //        var nowDay = new Date();
-        //        var endDay = new Date(nowDay.getFullYear(), nowDay.getMonth() - period, nowDay.getDate());
-        //        for (var day = nowDay; day > endDay; day = DateHelper.getPrevPeriod(day, 'day').begin) {
-        //            var item = [];
-        //            item.push(Date.UTC(day.getFullYear(), day.getMonth(), day.getDate()));
-        //            item.push(OperationalStatisticLoader.getData(day)[needValue.toString()]);
-        //            goodData.push(item);
-        //        }
-
-
-
-        //        var tempData = [];
-        //        for (i = 0; i < manyData.length; i++) {
-        //            if (manyData[i].date >= endDay && manyData[i].date <= nowDay) {
-        //                tempData.push(manyData[i]);
-        //                if (tempData.length % step == 0 && i != 0) {
-        //                    summedData.push(OperatonalStatisticsDataSumming(tempData));
-        //                    tempData = [];
-        //                }
-        //            }
-        //        }
-        //        if (tempData.length != 0) {
-        //            summedData.push(OperatonalStatisticsDataSumming(tempData));
-        //            tempData = [];
-        //        }
-        //        for (i = 0; i < manyData.length; i++) {
-        //            var item = [];
-        //            item.push(Date.UTC(manyData[i].dateFrom.getFullYear(), manyData[i].dateFrom.getMonth(), manyData[i].dateFrom.getDate()));
-        //            item.push(manyData[i][needValue]);
-        //            goodData.push(item);
-        //        }
-        //        goodData = goodData.sort();
-        //        setTimeout(function () {
-        //            callback(goodData);
-        //        }, 5000);
     }
     return {
         getGoodData: getGoodData
