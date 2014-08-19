@@ -130,7 +130,14 @@ myApp.factory('OperationalStatistics', function (Model, DateHelper, FinanceStati
             self.profit = data.profit;
             self.clients = data.clients;
             self.workload = data.workload;
-            self.financeStat = new FinanceStatistics(data.financeStat);
+            //            self.financeStat = new FinanceStatistics(data.financeStat);
+            self.financeStat = {
+                date: data.financeStat.date,
+                tillMoney: data.financeStat.tillMoney,
+                morningMoney: data.financeStat.morningMoney,
+                credit: data.financeStat.credit,
+                debit: data.financeStat.debit
+            };
 
         },
         serialize: function (self) {
@@ -149,7 +156,7 @@ myApp.factory('OperationalStatistics', function (Model, DateHelper, FinanceStati
         var result = [];
         var store = trans.objectStore("OperationalStatistics"); //найдем хранилище для объектов данного класса
         var keyRange = IDBKeyRange.bound(new Date(params.dateFrom), new Date(params.dateTill));
-//        console.log(keyRange);
+        //        console.log(keyRange);
         var request = store.index(params.index).openCursor(keyRange);
         request.onerror = function (event) {
             callback(null);
@@ -158,13 +165,13 @@ myApp.factory('OperationalStatistics', function (Model, DateHelper, FinanceStati
             var cursor = event.target.result;
             if (cursor) {
                 result.push(cursor.value);
-                cursor.continue();
+                cursor.
+                continue ();
             }
         };
 
         trans.oncomplete = function (e) {
             if (result.length != 0) {
-//                console.log("find objs in db:", result);
                 callback(result);
             } else
                 callback(null);

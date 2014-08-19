@@ -42,7 +42,6 @@ myApp.factory('Storage', function (DateHelper) {
             var $inj = angular.injector(['myApp']);
             for (var i in models) {
                 var serv = $inj.get(models[i]);
-                console.log(serv);
                 serv.initializeIndexedDb(db);
             }
         };
@@ -92,6 +91,7 @@ myApp.factory('Storage', function (DateHelper) {
         var objClass = obj.getClass(); //получим класс объекта
         var trans = db.transaction([objClass], "readwrite");
         var store = trans.objectStore(objClass); //найдем хранилище для объектов данного класса
+        
         var request = store.put(obj); //положим в хранилище
 
         request.onsuccess = function (e) { //если транзакт прошел успешно

@@ -51,7 +51,6 @@ myApp.service("Loader", ["$http", "OperationalStatisticsData", "GetOpStatObjects
                     if (data == null) { //если в базе ничего не нашли
                         loader.get(className, params, callback);
                     } else {
-                        console.log("data ", data);
                         var objs = classes[className].getObjects(data);
                         var period = DateHelper.getPeriod(params.dateFrom, params.step);
                         var day = period.begin;

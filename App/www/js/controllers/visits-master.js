@@ -17,7 +17,7 @@ myApp.controller('VisitsMasterController', function ($scope, $filter, $location,
     var today = new Date();
     $scope.date = new Date(today.getFullYear(), today.getMonth(), today.getDate());
 
-    $scope.pageIndex = 1;
+    $scope.pageIndex = 0;
 
     /**
      *
@@ -92,8 +92,23 @@ myApp.controller('VisitsMasterController', function ($scope, $filter, $location,
         };
         MastersLoader.getAllMastersPerDay(period, function (masters) {
             $scope.pages = masters;
+            $scope.calculateVisitsPerDay();
         });
     });
+
+
+    $scope.calculateVisitsPerDay = function () {
+        $scope.visits = [];
+        for (var i = 0; i < $scope.pages.length; i++) {
+            var dayVisits = [];
+            for (var j = 0; j < $scope.pages[i].length; j++) {
+                if ($scope.pages[i][j].visList)
+                    dayVisits = dayVisits.concat($scope.pages[i][j].visList);
+
+            }
+            $scope.visits.push(dayVisits);
+        }
+    }
 
 
     /**

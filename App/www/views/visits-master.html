@@ -11,8 +11,7 @@
         <li ng-repeat="page in pages">
 
             <ul>
-<!--                <status-statistics visits="page[0].visList.concat(page[1].visList.concat(page[2].visList))"></status-statistics>-->
-<!--                <status-statistics visits="visits"></status-statistics>-->
+                <status-statistics visits="visits[pages.indexOf(page)]"></status-statistics>
                 <li ng-repeat="masterVis in page" id="visitsPerMasters">
 
                     <ul class="list inset">

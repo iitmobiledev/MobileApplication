@@ -41,7 +41,8 @@ module.exports = function (config) {
             'js/services/visits-masters.js',
             'js/services/expenditures.js',
             'js/controllers/operational-statistic.js',
-            'tests/loader.js'
+            'tests/loader.js',
+            'tests/storage.js'
         ],
 
 
