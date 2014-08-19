@@ -24,7 +24,32 @@ myApp.controller('OperationalStatisticController', function ($scope, $location, 
 
     $scope.step = DateHelper.steps.DAY;
 
-    $scope.pageIndex = 1;
+    var steps = [DateHelper.steps.DAY, DateHelper.steps.WEEK, DateHelper.steps.MONTH];
+    var titles = ["За день", "За неделю", "За месяц"];
+
+    for (var i = 0; i < steps.length; i++) {
+        var classValue = "button widget uib_w_6 d-margins";
+        if (i == 0)
+            classValue += ' active';
+        $("#periodButtons").append(
+            $("<a>", {
+                "class": classValue,
+                "data-uib": "app_framework/button",
+                "data-ver": "1",
+                text: titles[i],
+                "id": steps[i],
+                click: function () {
+                    $scope.step = this.id;
+                    $scope.$apply();
+                    for (var j = 0; j < steps.length; j++)
+                        $("#" + steps[j]).removeClass('active');
+                    $(this).addClass("active");
+                }
+            })
+        );
+    }
+
+    //    $scope.pageIndex = 1;
 
     /**
      *
@@ -35,10 +60,10 @@ myApp.controller('OperationalStatisticController', function ($scope, $location, 
      * @description Метод для проверки наличия данных за прошлый
      * период.
      */
-    $scope.hasPrevData = function () {
-        return true;
-        //return $scope.date > minDate;
+    $scope.hasPrevData = function (date) {
+        return date > minDate;
     };
+
 
     /**
      *
@@ -49,48 +74,97 @@ myApp.controller('OperationalStatisticController', function ($scope, $location, 
      * @description Метод для проверки наличия данных за будущий
      * период.
      */
-    $scope.hasFutureData = function () {
-        return true;
-        //        var period = DateHelper.getPeriod($scope.date, $scope.step);
-        //        return period.end < maxDate && period.end.toDateString() != maxDate.toDateString();
+    $scope.hasFutureData = function (date) {
+        var period = DateHelper.getPeriod(date, $scope.step);
+        return period.end < maxDate && period.end.toDateString() != maxDate.toDateString();
     };
 
-    /**
-     *
-     * @ngdoc method
-     * @name myApp.controller:OperationalStatisticController#updatePages
-     * @methodOf myApp.controller:OperationalStatisticController
-     * @description Метод для обновления данных статистики на
-     * текущей, левой и правой страницах.
-     */
-    function updatePages() {
-        var prevPeriod = DateHelper.getPrevPeriod($scope.date, $scope.step);
-        var nextPeriod = DateHelper.getNextPeriod($scope.date, $scope.step);
-        $scope.pages = [];
+    $scope.updatePages = function (date, forward, count) {
+        var resultArr = [];
 
-        Finder.getPerDates(prevPeriod.begin, nextPeriod.end, $scope.step, "date", "OperationalStatistics", function (data) {
-            console.log("pages ", data);
+        if (!date)
+            date = $scope.date;
+        var beginDate = date,
+            endDate = date;
+        if (!$scope.hasPrevData(date) || !$scope.hasFutureData(date))
+            return resultArr;
+
+        for (var i = 0; i < count; i++) {
+            if (forward) {
+                endDate = DateHelper.getNextPeriod(endDate, $scope.step).end;
+                // resultArr.push(getStatistic(date, $scope.step));
+                if (!$scope.hasFutureData(date))
+                    break;
+                // return resultArr;
+            } else {
+                beginDate = DateHelper.getPrevPeriod(beginDate, $scope.step).end;
+                // resultArr.push(getStatistic(date, $scope.step));
+                if (!$scope.hasPrevData(date))
+                    break;
+                // return resultArr;
+            }
+        }
+
+        Finder.getPerDates(beginDate, endDate, $scope.step, "date", "OperationalStatistics", function (data) {
             $scope.pages = data;
-            $scope.pageIndex = 1;
         });
-        //            if (!$scope.hasFutureData()) {
-        //
-        //            }
-        //            $scope.pages = [getStatistic($scope.prevdate, $scope.step), getStatistic($scope.date, $scope.step)];
-        //            $scope.pageIndex = 1;
-        //        } else {
-        //            if ($scope.hasPrevData()) {
-        //                $scope.pages = [getStatistic($scope.prevdate, $scope.step), getStatistic($scope.date, $scope.step), getStatistic($scope.nextdate, $scope.step)];
-        //                //                $scope.pageIndex = 1;
-        //            } else {
-        //                $scope.date = OperationalStatisticLoader.getMinDate();
-        //            }
-        //        }
-    }
 
-    $scope.$watch('date.toDateString()', updatePages);
+    };
 
-    $scope.$watch('step', updatePages);
+//    /**
+//     *
+//     * @ngdoc method
+//     * @name myApp.controller:OperationalStatisticController#updatePages
+//     * @methodOf myApp.controller:OperationalStatisticController
+//     * @description Метод для обновления данных статистики на
+//     * текущей, левой и правой страницах.
+//     */
+//    function updatePages() {
+//        var prevPeriod = DateHelper.getPrevPeriod($scope.date, $scope.step);
+//        var nextPeriod = DateHelper.getNextPeriod($scope.date, $scope.step);
+//        $scope.pages = [];
+//
+//        Finder.getPerDates(prevPeriod.begin, nextPeriod.end, $scope.step, "date", "OperationalStatistics", function (data) {
+//            console.log("pages ", data);
+//            $scope.pages = data;
+//            $scope.pageIndex = 1;
+//        });
+//        //            if (!$scope.hasFutureData()) {
+//        //
+//        //            }
+//        //            $scope.pages = [getStatistic($scope.prevdate, $scope.step), getStatistic($scope.date, $scope.step)];
+//        //            $scope.pageIndex = 1;
+//        //        } else {
+//        //            if ($scope.hasPrevData()) {
+//        //                $scope.pages = [getStatistic($scope.prevdate, $scope.step), getStatistic($scope.date, $scope.step), getStatistic($scope.nextdate, $scope.step)];
+//        //                //                $scope.pageIndex = 1;
+//        //            } else {
+//        //                $scope.date = OperationalStatisticLoader.getMinDate();
+//        //            }
+//        //        }
+//    }
+
+//    $scope.$watch('date.toDateString()', updatePages);
+
+    $scope.page = getStatistic($scope.date, $scope.step);
+
+    $scope.$watch('step', function (newValue, oldValue) {
+        var period = DateHelper.getPeriod($scope.date, $scope.step);
+        if (oldValue == DateHelper.steps.WEEK) {
+            if (period.end < new Date()) {
+                $scope.date = new Date(period.end.getFullYear(), period.end.getMonth(),
+                    period.end.getDate());
+            } else {
+                $scope.date = new Date();
+            }
+        } else {
+            $scope.date = new Date(period.begin.getFullYear(), period.begin.getMonth(),
+                period.begin.getDate());
+            //        $scope.$apply();
+        }
+
+        $scope.page = getStatistic($scope.date, $scope.step);
+    });
 
     /**
      *

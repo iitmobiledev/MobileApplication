@@ -11,6 +11,7 @@
     <link rel="stylesheet" type="text/css" href="css/styles.css">
     <link rel="stylesheet" type="text/css" href="css/angular-carousel.min.css">
     <link rel="stylesheet" type="text/css" href="css/index_main.less.css" class="main-less">
+    <link rel="stylesheet" type="text/css" href="slick/slick.css">
     <title>Арника</title>
     <meta http-equiv="Content-type" content="text/html; charset=utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=0">
@@ -35,7 +36,7 @@
     <script src="intelxdk.js"></script>
     <script type="text/javascript">
         /* Intel native bridge is available */
-        var onDeviceReady = function () {
+        var onDeviceReady = function() {
             //hide splash screen
             intel.xdk.device.hideSplashScreen();
             //     intel.xdk.device.hideStatusBar();            
@@ -86,6 +87,7 @@
     <script src="js/directives/visit-status.js"></script>
     <script src="js/directives/password.js"></script>
     <script src="js/directives/status-statistics.js"></script>
+    <script src="js/directives/slider.js"></script>
 </head>
 
 <body id="afui" ng-app="myApp">
@@ -120,6 +122,8 @@
     </div>
     <!--    </div>-->
     <!-- /uwrap -->
+    
+    <script src="slick/slick.min.js"></script>
 </body>
 
 </html>

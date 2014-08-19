@@ -1,6 +1,7 @@
 var myApp = angular.module('myApp', ['ngRoute', 'ngAnimate', 'angular-carousel', 'ngTouch']);
 
-myApp.run(function (Storage) {
+myApp.run(function (Storage, $templateCache) {
+    $templateCache.put('statistic-content');
     if (!Storage.checkSupport()) {
         alert("indexedDB not support!");
         //        var master = new Master(1, "Петр", "Михайлович", "Яковлев");
