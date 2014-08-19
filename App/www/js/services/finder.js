@@ -18,3 +18,31 @@ myApp.factory('Finder', function (Loader) {
         getPerDates: getPerDates,
     };
 });
+
+
+
+//$scope.getData = function (date, forward, count) {
+//    if (!date)
+//        date = $scope.date;
+//    var beginDate = date,
+//        endDate = date;
+//    if (!$scope.hasPrevData(date) || !$scope.hasFutureData(date))
+//        return resultArr;
+//
+//    for (var i = 0; i < count; i++) {
+//        if (forward) {
+//            endDate = DateHelper.getNextPeriod(endDate, $scope.step).end;
+//            if (!$scope.hasFutureData(date))
+//                break;
+//        } else {
+//            beginDate = DateHelper.getPrevPeriod(beginDate, $scope.step).end;
+//            if (!$scope.hasPrevData(date))
+//                break;
+//        }
+//    }
+//
+//    Finder.getPerDates(beginDate, endDate, $scope.step, "date", "OperationalStatistics", function (data) {
+//        //        return data;
+//    });
+//
+//};
