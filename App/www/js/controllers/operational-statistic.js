@@ -49,6 +49,49 @@ myApp.controller('OperationalStatisticController', function ($scope, $location, 
         );
     }
 
+
+    $scope.getData = function (key, quantity, forward, callback) {
+        var resultArr = [];
+        var date;
+        if (key) {
+
+            //TODO get date by key
+            if (forward) {
+                date = DateHelper.getNextPeriod(date, $scope.step).end;
+            } else {
+                date = DateHelper.getPrevPeriod(date, $scope.step).end;
+            }
+        } else {
+            date = new Date();
+        }
+        if (!$scope.hasPrevData(date) || !$scope.hasFutureData(date))
+            return resultArr;
+
+        var beginDate = date,
+            endDate = date;
+        for (var i = 0; i < count; i++) {
+            if (forward) {
+                endDate = DateHelper.getNextPeriod(endDate, $scope.step).end;
+                if (!$scope.hasFutureData(date))
+                    break;
+            } else {
+                beginDate = DateHelper.getPrevPeriod(beginDate, $scope.step).end;
+                if (!$scope.hasPrevData(date))
+                    break;
+            }
+        }
+
+        Finder.getPerDates(beginDate, endDate, $scope.step, "date", "OperationalStatistics", function {
+            callback(data);
+        });
+
+        
+    };
+
+    $scope.getKey = function (obj) {
+        return obj && obj.getKey();
+    }
+
     //    $scope.pageIndex = 1;
 
     /**
@@ -79,72 +122,40 @@ myApp.controller('OperationalStatisticController', function ($scope, $location, 
         return period.end < maxDate && period.end.toDateString() != maxDate.toDateString();
     };
 
-    $scope.updatePages = function (date, forward, count) {
-        var resultArr = [];
+    //    /**
+    //     *
+    //     * @ngdoc method
+    //     * @name myApp.controller:OperationalStatisticController#updatePages
+    //     * @methodOf myApp.controller:OperationalStatisticController
+    //     * @description Метод для обновления данных статистики на
+    //     * текущей, левой и правой страницах.
+    //     */
+    //    function updatePages() {
+    //        var prevPeriod = DateHelper.getPrevPeriod($scope.date, $scope.step);
+    //        var nextPeriod = DateHelper.getNextPeriod($scope.date, $scope.step);
+    //        $scope.pages = [];
+    //
+    //        Finder.getPerDates(prevPeriod.begin, nextPeriod.end, $scope.step, "date", "OperationalStatistics", function (data) {
+    //            console.log("pages ", data);
+    //            $scope.pages = data;
+    //            $scope.pageIndex = 1;
+    //        });
+    //        //            if (!$scope.hasFutureData()) {
+    //        //
+    //        //            }
+    //        //            $scope.pages = [getStatistic($scope.prevdate, $scope.step), getStatistic($scope.date, $scope.step)];
+    //        //            $scope.pageIndex = 1;
+    //        //        } else {
+    //        //            if ($scope.hasPrevData()) {
+    //        //                $scope.pages = [getStatistic($scope.prevdate, $scope.step), getStatistic($scope.date, $scope.step), getStatistic($scope.nextdate, $scope.step)];
+    //        //                //                $scope.pageIndex = 1;
+    //        //            } else {
+    //        //                $scope.date = OperationalStatisticLoader.getMinDate();
+    //        //            }
+    //        //        }
+    //    }
 
-        if (!date)
-            date = $scope.date;
-        var beginDate = date,
-            endDate = date;
-        if (!$scope.hasPrevData(date) || !$scope.hasFutureData(date))
-            return resultArr;
-
-        for (var i = 0; i < count; i++) {
-            if (forward) {
-                endDate = DateHelper.getNextPeriod(endDate, $scope.step).end;
-                // resultArr.push(getStatistic(date, $scope.step));
-                if (!$scope.hasFutureData(date))
-                    break;
-                // return resultArr;
-            } else {
-                beginDate = DateHelper.getPrevPeriod(beginDate, $scope.step).end;
-                // resultArr.push(getStatistic(date, $scope.step));
-                if (!$scope.hasPrevData(date))
-                    break;
-                // return resultArr;
-            }
-        }
-
-        Finder.getPerDates(beginDate, endDate, $scope.step, "date", "OperationalStatistics", function (data) {
-            $scope.pages = data;
-        });
-
-    };
-
-//    /**
-//     *
-//     * @ngdoc method
-//     * @name myApp.controller:OperationalStatisticController#updatePages
-//     * @methodOf myApp.controller:OperationalStatisticController
-//     * @description Метод для обновления данных статистики на
-//     * текущей, левой и правой страницах.
-//     */
-//    function updatePages() {
-//        var prevPeriod = DateHelper.getPrevPeriod($scope.date, $scope.step);
-//        var nextPeriod = DateHelper.getNextPeriod($scope.date, $scope.step);
-//        $scope.pages = [];
-//
-//        Finder.getPerDates(prevPeriod.begin, nextPeriod.end, $scope.step, "date", "OperationalStatistics", function (data) {
-//            console.log("pages ", data);
-//            $scope.pages = data;
-//            $scope.pageIndex = 1;
-//        });
-//        //            if (!$scope.hasFutureData()) {
-//        //
-//        //            }
-//        //            $scope.pages = [getStatistic($scope.prevdate, $scope.step), getStatistic($scope.date, $scope.step)];
-//        //            $scope.pageIndex = 1;
-//        //        } else {
-//        //            if ($scope.hasPrevData()) {
-//        //                $scope.pages = [getStatistic($scope.prevdate, $scope.step), getStatistic($scope.date, $scope.step), getStatistic($scope.nextdate, $scope.step)];
-//        //                //                $scope.pageIndex = 1;
-//        //            } else {
-//        //                $scope.date = OperationalStatisticLoader.getMinDate();
-//        //            }
-//        //        }
-//    }
-
-//    $scope.$watch('date.toDateString()', updatePages);
+    //    $scope.$watch('date.toDateString()', updatePages);
 
     $scope.page = getStatistic($scope.date, $scope.step);
 

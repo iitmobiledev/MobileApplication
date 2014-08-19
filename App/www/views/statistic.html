@@ -19,10 +19,10 @@
 
     </div>
 
-        <slider content-id="statistic-content"></slider>
+        <slider dataCallback='getData' keyExpression='getKey'></slider>
         
         <script type="text/ng-template" id="statistic-content">
-            <div id="statisticContent" contentDate={{page.date.toDateString()}}>
+            <div id="statisticContent">
                 <date-changer date='page.date' step='step' has-future-data='hasFutureData(page.date)' has-prev-data='hasPrevData(page.date)'></date-changer>
                 <table id="statisticTable">
                     <tr>
