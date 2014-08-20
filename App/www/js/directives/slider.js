@@ -1,3 +1,16 @@
+/**
+ * @description Директива добавляет на страницу приложения "слайдер",
+ * который позволяет листать страницы заданные шаблоном
+ * `<script type="text/ng-template" id="content-id">...</script>`
+ * Так же необходимо указать id шаблона: 
+ * ```  myApp.run(function ($templateCache) {
+ *      $templateCache.put('content-id');```
+ * @ngdoc directive
+ * @name myApp.directive:slider
+ * @restrict E
+ * @param {function} dataCallback Заголовок окна, отображаемый в хедере
+ * @param {function} keyExpression Указание необходимости отображения кнопки "Назад".
+ */
 myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateCache) {
     return {
         restrict: 'E',
@@ -15,6 +28,13 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
 
             initSlider();
 
+            /**
+             * @ngdoc method
+             * @name myApp.directive:slider#toSlick
+             * @methodOf myApp.directive:slider
+             * @description Функция объявляет что div - элемент с классом `my-slider`
+             * является слайдером, библиотеки slick
+             */
             function toSlick() {
                 $('.my-slider').slick({
                     infinite: false,
@@ -40,6 +60,12 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
                 });
             }
 
+            /**
+             * @ngdoc method
+             * @name myApp.directive:slider#initSlider
+             * @methodOf myApp.directive:slider
+             * @description Первоначальная инициализация слайдера, добавляются первые данные
+             */
             function initSlider() {
 //                compiled(scope, function (clonedElement, scope) {
 //                    $('.my-slider').html(clonedElement);
@@ -49,13 +75,23 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
                 dataCallback(getCurrentKey(), 5, true, addFutureData);
             }
 
+            /**
+             *
+             * @ngdoc method
+             * @name myApp.directive:slider#addPastData
+             * @methodOf myApp.directive:slider
+             * @description Функция, добавляет слайды в начало, слайдера
+             * @param {Array} contentData Список объектов, чьи данные будут отображаться на слайдах
+             */
             function addPastData(contentData) {
                 var oldScope = scope;
                 for (var i = 0; i < contentData.length; i++) {
                     scope = $rootScope.$new();
                     scope.page = contentData[i];
                     
-                    //
+                    // костыль, до тех пор пока разраб библиотеки slick
+                    // не реализует эту фичу
+                    // (оставаться на текущем слайде при добавлении слайда в начало)
                     compiled(scope, function (clonedElement, scope) {
                         var ind = slider.slickCurrentSlide();
                         $('.my-slider').unslick();
@@ -71,6 +107,14 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
                 scope = oldScope;
             }
 
+            /**
+             *
+             * @ngdoc method
+             * @name myApp.directive:slider#addFutureData
+             * @methodOf myApp.directive:slider
+             * @description Функция, добавляет слайды в конец, слайдера
+             * @param {Array} contentData Список объектов, чьи данные будут отображаться на слайдах
+             */
             function addFutureData(contentData) {
                 var oldScope = scope;
                 for (var i = 0; i < contentData.length; i++) {
@@ -99,6 +143,14 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
                 initSlider();
             })
             
+            /**
+             * @ngdoc method
+             * @name myApp.directive:slider#getCurrentKey
+             * @methodOf myApp.directive:slider
+             * @description Функция, возвращает ключ объекта, 
+             * чьи данные отображаеются на текущем слайде
+             * @returns {Number} ключ объекта
+             */
             function getCurrentKey() {
                 return $('.my-slider').getSlick().$slides[$('.my-slider').slickCurrentSlide()].getAttribute("contentKey").value;
             }
