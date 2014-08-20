@@ -6,11 +6,9 @@
 
         <date-changer step='step' date='date' steps='["day", "week", "month"]' titles='["За день", "За неделю", "За месяц"]' has-future-data='hasFutureData()' has-prev-data='hasPrevData()' index='pageIndex'></date-changer>
 
-
         <ul id='carousel' rn-carousel rn-carousel-index="pageIndex">
 
             <li ng-repeat="page in pages">
-                {{page.date}}
                 <table id="statisticTable">
                     <tr>
                         <td class="sCell" ng-click="toChart('proceeds')">

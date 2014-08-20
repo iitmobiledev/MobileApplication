@@ -20,17 +20,15 @@ myApp.service("Loader", ["$http", "OperationalStatisticsData", "GetOpStatObjects
         };
         return {
             get: function (modelClass, primaryKey, callback) {
-
-                //получили нужные данные
-                //преобразовали их в объекты
                 var data = [];
                 if (primaryKey.dateFrom && primaryKey.dateTill && primaryKey.step) {
                     data = classes[modelClass].getData.forPeriod(primaryKey.dateFrom, primaryKey.dateTill, primaryKey.step);
                 } else {
                     data = classes[modelClass].getData.byID(primaryKey.id);
                 }
+                
                 var objs = classes[modelClass].getObjects(data);
-                //                console.log("objs ", objs);
+                
                 for (var i in objs) {
                     if (objs[i] instanceof Array) {
                         for (var j in objs[i])
@@ -41,9 +39,6 @@ myApp.service("Loader", ["$http", "OperationalStatisticsData", "GetOpStatObjects
                 callback(objs);
             },
             search: function (className, params, callback) {
-                //                var classes = {
-                //                    "OperationalStatistics": GetOpStatObjects
-                //                };
                 var loader = this;
                 //                console.log("search params in loader:", params);
 

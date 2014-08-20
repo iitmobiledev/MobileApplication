@@ -69,23 +69,9 @@ myApp.controller('OperationalStatisticController', function ($scope, $location, 
         $scope.pages = [];
 
         Finder.getPerDates(prevPeriod.begin, nextPeriod.end, $scope.step, "date", "OperationalStatistics", function (data) {
-            console.log("pages ", data);
             $scope.pages = data;
             $scope.pageIndex = 1;
         });
-        //            if (!$scope.hasFutureData()) {
-        //
-        //            }
-        //            $scope.pages = [getStatistic($scope.prevdate, $scope.step), getStatistic($scope.date, $scope.step)];
-        //            $scope.pageIndex = 1;
-        //        } else {
-        //            if ($scope.hasPrevData()) {
-        //                $scope.pages = [getStatistic($scope.prevdate, $scope.step), getStatistic($scope.date, $scope.step), getStatistic($scope.nextdate, $scope.step)];
-        //                //                $scope.pageIndex = 1;
-        //            } else {
-        //                $scope.date = OperationalStatisticLoader.getMinDate();
-        //            }
-        //        }
     }
 
     $scope.$watch('date.toDateString()', updatePages);
