@@ -36,7 +36,7 @@ myApp.factory('OperationalStatisticsData', function (DateHelper) {
             //финансовую статистику надо показывать только, 
             //если период равен дню
             if (step == DateHelper.steps.DAY)
-                stastics.financeStat = getFinanceStatistics(stastics.day);
+                stastics.financeStat = getFinanceStatistics(new Date(day));
             else
                 stastics.financeStat = {};
             stastics.id = Math.round(getRandom(1, 100));

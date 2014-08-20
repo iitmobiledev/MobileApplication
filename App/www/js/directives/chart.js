@@ -71,14 +71,14 @@ myApp.directive('chart', function () {
                                     y2: 1
                                 },
                                 stops: [
-                            [0, Highcharts.Color("#9513B9").setOpacity(0.2).get('rgba')],
+                            [0, Highcharts.Color("#F38B7D").setOpacity(0.5).get('rgba')],
                             [1, Highcharts.Color("#ffffff").setOpacity(0.2).get('rgba')]
                         ]
                             },
                             lineWidth: 0.5,
-                            lineColor: '#9513B9',
+                            lineColor: '#F38B7D',
                             marker: {
-                                fillColor: '#9513B9',
+                                fillColor: '#F38B7D',
                             }
                         }
                     },

@@ -9,35 +9,31 @@
     <date-changer step='"day"' date='date' steps='["day"]' has-future-data='hasFutureData()' has-prev-data='hasPrevData()' index='pageIndex'></date-changer>
     <ul id='carousel' rn-carousel rn-carousel-index="pageIndex" style="height: 100%">
         <li ng-repeat="page in pages">
-            
-<!--            <status-statistics visits='page'></status-statistics>-->
-            
+
             <ul>
+                <status-statistics visits="visits[pages.indexOf(page)]"></status-statistics>
                 <li ng-repeat="masterVis in page" id="visitsPerMasters">
 
                     <ul class="list inset">
-                        <li class="divider" ng-click="toMaster(masterVis.master.id)" style="font-size:15pt">
+                        <li class="divider" ng-click="toMaster(masterVis.master.id)">
                             {{getMasterInfo(masterVis.master)}}
                         </li>
                         <li ng-repeat="visit in masterVis.visList">
                             {{getVisitByMasterInfo(visit)}}
                             <a href="#/visit/{{visit.id}}">
                                 <div>
-                                    <div>{{masterVisitInfo.status}}</div>
-                                    <div style="font-weight:bold;">
-                                        <span style="float:left;  width:65%;white-space:nowrap;text-overflow:ellipsis;overflow: hidden;">
+                                    <visit-status status='masterVisitInfo.status'></visit-status>
+                                    <div>
+                                        <span style="width:65%;white-space:nowrap;text-overflow:ellipsis;overflow: hidden; font-size:18px; font-weight:500;">
                                             {{masterVisitInfo.client}}
                                         </span>
-                                        <span style=" text-align:right; width:35%;white-space:nowrap;text-overflow:ellipsis">
+                                        <span style="text-align:right; width:35%;white-space:nowrap;text-overflow:ellipsis">
                                             {{masterVisitInfo.time}}
                                         </span>
                                     </div>
                                     <div>
-                                        <span style="float:left;  width:65%;white-space:nowrap;text-overflow:ellipsis;overflow: hidden;">
-                                            {{masterVisitInfo.service}}
-                                        </span>
-                                        <span style=" text-align:right; width:35%;white-space:nowrap;text-overflow:ellipsis">
-                                            {{masterVisitInfo.cost}}
+                                        <span style="float:left; width:65%;white-space:nowrap;text-overflow:ellipsis;overflow: hidden;">
+                                            {{masterVisitInfo.service}} — {{masterVisitInfo.cost}}
                                         </span>
                                     </div>
                                 </div>

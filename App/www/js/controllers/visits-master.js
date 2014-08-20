@@ -17,7 +17,7 @@ myApp.controller('VisitsMasterController', function ($scope, $filter, $location,
     var today = new Date();
     $scope.date = new Date(today.getFullYear(), today.getMonth(), today.getDate());
 
-    $scope.pageIndex = 1;
+    $scope.pageIndex = 0;
 
     /**
      *
@@ -90,20 +90,25 @@ myApp.controller('VisitsMasterController', function ($scope, $filter, $location,
             begin: $scope.prevdate,
             end: $scope.nextdate
         };
-        MastersLoader.getAllMastersPerDay(period, function(masters){
+        MastersLoader.getAllMastersPerDay(period, function (masters) {
             $scope.pages = masters;
+            $scope.calculateVisitsPerDay();
         });
-
-        //        if (!$scope.hasFutureData()) {
-        //            $scope.pages = [MastersLoader.getAllMastersPerDay($scope.prevdate), MastersPerDayLoader.getAllMastersPerDay($scope.date)];
-        //            //            $scope.pageIndex = 1;
-        //        } else {
-        //            if ($scope.hasPrevData()) {
-        //                $scope.pages = [MastersPerDayLoader.getAllMastersPerDay($scope.prevdate), MastersPerDayLoader.getAllMastersPerDay($scope.date), MastersPerDayLoader.getAllMastersPerDay($scope.nextdate)];
-        //                //                $scope.pageIndex = 1;
-        //            }
-        //        }
     });
+
+
+    $scope.calculateVisitsPerDay = function () {
+        $scope.visits = [];
+        for (var i = 0; i < $scope.pages.length; i++) {
+            var dayVisits = [];
+            for (var j = 0; j < $scope.pages[i].length; j++) {
+                if ($scope.pages[i][j].visList)
+                    dayVisits = dayVisits.concat($scope.pages[i][j].visList);
+
+            }
+            $scope.visits.push(dayVisits);
+        }
+    }
 
 
     /**
@@ -118,7 +123,7 @@ myApp.controller('VisitsMasterController', function ($scope, $filter, $location,
     $scope.getMasterInfo = function (master) {
         $scope.masterId = master.id;
         return master.lastName + " " + master.firstName;
-    }
+    };
 
     /**
      *
@@ -147,13 +152,19 @@ myApp.controller('VisitsMasterController', function ($scope, $filter, $location,
         $scope.masterVisitInfo.id = visit.id;
         $scope.masterVisitInfo.status = visit.status;
         $scope.masterVisitInfo.client = visit.client.lastName + ' ' + visit.client.firstName;
-        $scope.masterVisitInfo.time = $filter('date')(Math.min.apply(null, startTimes), "HH:mm") + '-' +
-            $filter('date')(Math.max.apply(null, endTimes), "HH:mm");
-        $scope.masterVisitInfo.service = services.join(",");
+        $scope.masterVisitInfo.time = $filter('date')(Math.min.apply(null, startTimes), "HH:mm") + '—' + $filter('date')(Math.max.apply(null, endTimes), "HH:mm");
+        $scope.masterVisitInfo.service = services.join(", ");
         $scope.masterVisitInfo.cost = coast + ' р.';
-    }
-    
-    $scope.getVisits = function(page){
-    }
+    };
 
+    $scope.visits = [];
+    $scope.getVisits = function (page) {
+        console.log("getVisits ", page);
+        $scope.visits = [];
+        for (var i = 0; i < page.length; i++) {
+            if (page[i].visList)
+                $scope.visits = $scope.visits.concat(page[i].visList);
+        }
+        return $scope.visits;
+    };
 });

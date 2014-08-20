@@ -5,9 +5,10 @@ myApp.directive('statusStatistics', function (Visit) {
         link: function (scope, element, attrs) {
             var visits, salary = 0;
 
-            var updateStatus = function () {
+            var updateStatus = function () { 
+//                console.log("attrs.visits ", attrs.visits);
+//                console.log("scope.$eval(attrs.visits) ", scope.$eval(attrs.visits));
                 visits = scope.$eval(attrs.visits);
-                console.log("visits in directive ", visits);
                 salary = 0;
 
                 var statuses = {
@@ -50,7 +51,7 @@ myApp.directive('statusStatistics', function (Visit) {
                 element.find('#confirmedAmount').html(statuses.confirmed.amount);
                 element.find('#salary').html(salary);
             }
-            scope.$watch(attrs.visits, updateStatus);
+//            scope.$watch(attrs.visits, updateStatus);
 
             function getServicesCost(services) {
                 var amount = 0;
