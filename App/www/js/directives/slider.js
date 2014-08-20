@@ -16,7 +16,7 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
         restrict: 'E',
         replace: true,
         link: function (scope, element, attrs) {
-            var dataCallback = scope.$eval(attrs.dataCallback);
+            var dataCallback = scope.$eval(attrs.getData);
             console.log("dc", scope.$eval(attrs.dataCallback))
             var keyFunc = scope.$eval(attrs.keyExpression);
             console.log("kf", scope.$eval(attrs.keyExpression))
@@ -95,10 +95,10 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
                     // не реализует эту фичу
                     // (оставаться на текущем слайде при добавлении слайда в начало)
                     compiled(scope, function (clonedElement, scope) {
-                        var ind = slider.slickCurrentSlide();
+                        var ind = $('.my-slider').slickCurrentSlide();
                         $('.my-slider').unslick();
 
-                        clonedElement.attr("contentKey", keyFunc(data[i]));
+                        clonedElement.attr("contentKey", keyFunc(contentData[i]));
                         $('.my-slider').prepend(clonedElement);
                         
                         toSlick();
@@ -123,7 +123,7 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
                     scope = $rootScope.$new();
                     scope.page = contentData[i];
                     compiled(scope, function (clonedElement, scope) {
-                        clonedElement.attr("contentKey", keyFunc(data[i]));
+                        clonedElement.attr("contentKey", keyFunc(contentData[i]));
                         $(('.my-slider')).slickAdd(clonedElement);
                     });
                 }
