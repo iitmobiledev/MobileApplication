@@ -104,7 +104,8 @@ myApp.controller('OperationalStatisticController', function ($scope, $location, 
      * период.
      */
     $scope.hasPrevData = function (date) {
-        return date > minDate;
+//        return date > minDate;
+        return true;
     };
 
 
@@ -118,8 +119,9 @@ myApp.controller('OperationalStatisticController', function ($scope, $location, 
      * период.
      */
     $scope.hasFutureData = function (date) {
-        var period = DateHelper.getPeriod(date, $scope.step);
-        return period.end < maxDate && period.end.toDateString() != maxDate.toDateString();
+//        var period = DateHelper.getPeriod(date, $scope.step);
+//        return period.end < maxDate && period.end.toDateString() != maxDate.toDateString();
+        return true;
     };
 
     $scope.$watch('step', function (newValue, oldValue) {
