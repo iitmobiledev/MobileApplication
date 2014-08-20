@@ -14,7 +14,7 @@
  * @requires myApp.service:OperationalStatisticLoader
  * @requires myApp.service:DateHelper
  */
-myApp.controller('OperationalStatisticController', function ($scope, $location, DateHelper, Loader, Finder) {
+myApp.controller('OperationalStatisticController', function ($scope, $location, DateHelper, Loader, Finder, Storage) {
     //    var getStatistic = OperationalStatisticLoader.getData;
     //    var minDate = OperationalStatisticLoader.getMinDate();
     //    var maxDate = OperationalStatisticLoader.getMaxDate();
@@ -29,7 +29,7 @@ myApp.controller('OperationalStatisticController', function ($scope, $location, 
 
     for (var i = 0; i < steps.length; i++) {
         var classValue = "button widget uib_w_6 d-margins";
-        if (i == 0)
+        if (i === 0)
             classValue += ' active';
         $("#periodButtons").append(
             $("<a>", {
@@ -54,7 +54,7 @@ myApp.controller('OperationalStatisticController', function ($scope, $location, 
         var resultArr = [];
         var date;
         if (key) {
-            var obj = Storage.get(key)
+            var obj = Storage.get(key);
             date = obj.date;
             if (forward) {
                 date = DateHelper.getNextPeriod(date, $scope.step).end;
@@ -64,33 +64,25 @@ myApp.controller('OperationalStatisticController', function ($scope, $location, 
         } else {
             date = new Date();
         }
-//        if (!$scope.hasPrevData(date) || !$scope.hasFutureData(date))
-//            return resultArr;
+        //        if (!$scope.hasPrevData(date) || !$scope.hasFutureData(date))
+        //            return resultArr;
 
         var beginDate = date,
             endDate = date;
-        for (var i = 0; i < count; i++) {
+        for (var i = 0; i < quantity; i++) {
             if (forward) {
                 endDate = DateHelper.getNextPeriod(endDate, $scope.step).end;
-                if (!$scope.hasFutureData(date))
-                    break;
             } else {
-                beginDate = DateHelper.getPrevPeriod(beginDate, $scope.step).end;
-                if (!$scope.hasPrevData(date))
-                    break;
+                beginDate = DateHelper.getPrevPeriod(beginDate, $scope.step).begin;
             }
         }
 
-        Finder.getPerDates(beginDate, endDate, $scope.step, "date", "OperationalStatistics", function(data) {
-            callback(data);
-        });
-
-        
+        Finder.getPerDates(beginDate, endDate, $scope.step, "date", "OperationalStatistics", callback);
     };
 
     $scope.getKey = function (obj) {
         return obj && obj.getKey();
-    }
+    };
 
     //    $scope.pageIndex = 1;
 
@@ -104,7 +96,7 @@ myApp.controller('OperationalStatisticController', function ($scope, $location, 
      * период.
      */
     $scope.hasPrevData = function (date) {
-//        return date > minDate;
+        //        return date > minDate;
         return true;
     };
 
@@ -119,8 +111,8 @@ myApp.controller('OperationalStatisticController', function ($scope, $location, 
      * период.
      */
     $scope.hasFutureData = function (date) {
-//        var period = DateHelper.getPeriod(date, $scope.step);
-//        return period.end < maxDate && period.end.toDateString() != maxDate.toDateString();
+        //        var period = DateHelper.getPeriod(date, $scope.step);
+        //        return period.end < maxDate && period.end.toDateString() != maxDate.toDateString();
         return true;
     };
 
@@ -139,7 +131,7 @@ myApp.controller('OperationalStatisticController', function ($scope, $location, 
             //        $scope.$apply();
         }
 
-//        $scope.page = getStatistic($scope.date, $scope.step);
+        //        $scope.page = getStatistic($scope.date, $scope.step);
     });
 
     /**
@@ -152,7 +144,7 @@ myApp.controller('OperationalStatisticController', function ($scope, $location, 
      */
     $scope.toChart = function (type) {
         $location.path('chart/' + type);
-    }
+    };
 
 
     /**
@@ -164,13 +156,13 @@ myApp.controller('OperationalStatisticController', function ($scope, $location, 
      */
     $scope.toExpenditures = function () {
         $location.path('expenditures');
-    }
+    };
 
     $scope.hasFinance = function (statistics) {
         if (statistics.financeStat) {
             return typeof (statistics.financeStat.credit) !== 'undefined';
         }
         return false;
-    }
+    };
 
 });

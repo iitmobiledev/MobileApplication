@@ -17,7 +17,9 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
         replace: true,
         link: function (scope, element, attrs) {
             var dataCallback = scope.$eval(attrs.dataCallback);
+            console.log("dc", scope.$eval(attrs.dataCallback))
             var keyFunc = scope.$eval(attrs.keyExpression);
+            console.log("kf", scope.$eval(attrs.keyExpression))
 
             var contentID = attrs.contentId;
             var content = $templateCache.get(contentID);
