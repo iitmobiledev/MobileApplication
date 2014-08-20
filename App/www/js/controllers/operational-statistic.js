@@ -64,8 +64,8 @@ myApp.controller('OperationalStatisticController', function ($scope, $location, 
         } else {
             date = new Date();
         }
-        if (!$scope.hasPrevData(date) || !$scope.hasFutureData(date))
-            return resultArr;
+//        if (!$scope.hasPrevData(date) || !$scope.hasFutureData(date))
+//            return resultArr;
 
         var beginDate = date,
             endDate = date;
@@ -81,7 +81,7 @@ myApp.controller('OperationalStatisticController', function ($scope, $location, 
             }
         }
 
-        Finder.getPerDates(beginDate, endDate, $scope.step, "date", "OperationalStatistics", function {
+        Finder.getPerDates(beginDate, endDate, $scope.step, "date", "OperationalStatistics", function(data) {
             callback(data);
         });
 
@@ -122,43 +122,6 @@ myApp.controller('OperationalStatisticController', function ($scope, $location, 
         return period.end < maxDate && period.end.toDateString() != maxDate.toDateString();
     };
 
-    //    /**
-    //     *
-    //     * @ngdoc method
-    //     * @name myApp.controller:OperationalStatisticController#updatePages
-    //     * @methodOf myApp.controller:OperationalStatisticController
-    //     * @description Метод для обновления данных статистики на
-    //     * текущей, левой и правой страницах.
-    //     */
-    //    function updatePages() {
-    //        var prevPeriod = DateHelper.getPrevPeriod($scope.date, $scope.step);
-    //        var nextPeriod = DateHelper.getNextPeriod($scope.date, $scope.step);
-    //        $scope.pages = [];
-    //
-    //        Finder.getPerDates(prevPeriod.begin, nextPeriod.end, $scope.step, "date", "OperationalStatistics", function (data) {
-    //            console.log("pages ", data);
-    //            $scope.pages = data;
-    //            $scope.pageIndex = 1;
-    //        });
-    //        //            if (!$scope.hasFutureData()) {
-    //        //
-    //        //            }
-    //        //            $scope.pages = [getStatistic($scope.prevdate, $scope.step), getStatistic($scope.date, $scope.step)];
-    //        //            $scope.pageIndex = 1;
-    //        //        } else {
-    //        //            if ($scope.hasPrevData()) {
-    //        //                $scope.pages = [getStatistic($scope.prevdate, $scope.step), getStatistic($scope.date, $scope.step), getStatistic($scope.nextdate, $scope.step)];
-    //        //                //                $scope.pageIndex = 1;
-    //        //            } else {
-    //        //                $scope.date = OperationalStatisticLoader.getMinDate();
-    //        //            }
-    //        //        }
-    //    }
-
-    //    $scope.$watch('date.toDateString()', updatePages);
-
-    $scope.page = getStatistic($scope.date, $scope.step);
-
     $scope.$watch('step', function (newValue, oldValue) {
         var period = DateHelper.getPeriod($scope.date, $scope.step);
         if (oldValue == DateHelper.steps.WEEK) {
@@ -174,7 +137,7 @@ myApp.controller('OperationalStatisticController', function ($scope, $location, 
             //        $scope.$apply();
         }
 
-        $scope.page = getStatistic($scope.date, $scope.step);
+//        $scope.page = getStatistic($scope.date, $scope.step);
     });
 
     /**
