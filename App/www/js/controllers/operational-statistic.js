@@ -54,8 +54,8 @@ myApp.controller('OperationalStatisticController', function ($scope, $location, 
         var resultArr = [];
         var date;
         if (key) {
-
-            //TODO get date by key
+            var obj = Storage.get(key)
+            date = obj.date;
             if (forward) {
                 date = DateHelper.getNextPeriod(date, $scope.step).end;
             } else {

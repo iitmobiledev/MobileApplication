@@ -71,7 +71,7 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
 //                    $('.my-slider').html(clonedElement);
 //                });
                 toSlick($('.my-slider'));
-                dataCallback(null, 5, false, addPastData);
+                dataCallback(getCurrentKey(), 5, false, addPastData);
                 dataCallback(getCurrentKey(), 5, true, addFutureData);
             }
 
@@ -152,7 +152,14 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
              * @returns {Number} ключ объекта
              */
             function getCurrentKey() {
-                return $('.my-slider').getSlick().$slides[$('.my-slider').slickCurrentSlide()].getAttribute("contentKey").value;
+                var key = $('.my-slider').getSlick().$slides[$('.my-slider').slickCurrentSlide()].getAttribute("contentKey");
+                if (key)
+                {
+                    return key.value;
+                }
+                else{
+                    return null;
+                }
             }
 
 
