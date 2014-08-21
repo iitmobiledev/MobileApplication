@@ -1,3 +1,4 @@
+<!--
 <header-content title="'Настройки'" show-back-button="false" show="true"></header-content>
 <footer-content show="true"></footer-content>
 <div id="settingssub" class="upage-content">
@@ -17,13 +18,30 @@
 
                 </div>
                 <span class="uib_shim"></span>
-                <div class="widget-container content-area vertical-col">
-
-                    <a class="button widget uib_w_32 d-margins" data-uib="app_framework/button" data-ver="1" ng-click="exit()">Выход</a>
-                    <span class="uib_shim"></span>
-                </div>
+                <ul class="list" data-appbuilder-object="list" data-position="static">
+                    <li>
+                        <a href="#about">О программе</a>
+                    </li>
+                </ul>
+                <a class="button widget uib_w_32 d-margins" data-uib="app_framework/button" data-ver="1" ng-click="exit()">Выйти</a>
             </div>
         </div>
         <span class="uib_shim"></span>
     </div>
+</div>-->
+<div>
+    <p></p>
+    <h3>{{user.firstname}} {{user.lastname}}</h3>
+    <p></p>
+    <p>{{user.email}}</p>
+</div>
+
+<ul class="list" data-appbuilder-object="list" data-position="static">
+    <li>
+        <a href="#about" style="font-weight:bold;font-size:13pt">О программе</a>
+    </li>
+</ul>
+<div style="height:100%;width:100%;">
+    <!--    align="center"-->
+    <a class="exitButton" ng-click="exit()">Выйти</a>
 </div>
