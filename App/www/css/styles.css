@@ -53,16 +53,25 @@
 
 #clientInfo .clientName {
     padding: 0 10% 0 10%;
-    font-size: 22pt;
+    font-size: 15pt;
     font-style: normal;
 }
 #clientInfo .phone {
+    text-decoration: none;
+    font-size: 15pt;
     padding: 3%;
 }
 #clientInfo .disBalance {
     width: 100%;
     padding: 0% 10% 5% 10%;
     font-size: 16pt;
+}
+.comment {
+    padding: 5%;
+    width: 100%;
+    border: 1px solid #969696;
+    border-radius: 10px;
+    font-size: 12pt;
 }
 /*Visits page*/
 
@@ -75,7 +84,7 @@
     margin-bottom: 5px;
 }
 .not-come {
-    width: 140px;
+    /*    width: 140px;*/
     background-color: #FF9F9F;
     text-align: center;
     color: white;
@@ -85,7 +94,7 @@
     margin-bottom: 5px;
 }
 .new {
-    width: 110px;
+    /*    width: 110px;*/
     background-color: #FFCC66;
     text-align: center;
     color: white;
@@ -95,7 +104,7 @@
     margin-bottom: 5px;
 }
 .confirm {
-    width: 120px;
+    /*    width: 120px;*/
     background-color: #33BBFF;
     text-align: center;
     color: white;
@@ -105,7 +114,7 @@
     margin-bottom: 5px;
 }
 .come {
-    width: 120px;
+    /*    width: 120px;*/
     background-color: #77CC33;
     text-align: center;
     color: white;

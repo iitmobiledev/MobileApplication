@@ -82,6 +82,7 @@ myApp.controller('VisitsController', function ($scope, $filter, $location, Loade
             step: DateHelper.steps.DAY
         }, function (data) {
             $scope.pages = data;
+            console.log(data);
         });
     }
 
