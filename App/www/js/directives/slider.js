@@ -2,7 +2,7 @@
  * @description Директива добавляет на страницу приложения "слайдер",
  * который позволяет листать страницы заданные шаблоном
  * `<script type="text/ng-template" id="content-id">...</script>`
- * Так же необходимо указать id шаблона: 
+ * Так же необходимо указать id шаблона:
  * ```  myApp.run(function ($templateCache) {
  *      $templateCache.put('content-id');```
  * @ngdoc directive
@@ -17,9 +17,7 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
         replace: true,
         link: function (scope, element, attrs) {
             var dataCallback = scope.$eval(attrs.getData);
-            console.log("dc", scope.$eval(attrs.dataCallback))
             var keyFunc = scope.$eval(attrs.keyExpression);
-            console.log("kf", scope.$eval(attrs.keyExpression))
 
             var contentID = attrs.contentId;
             var content = $templateCache.get(contentID);
@@ -27,6 +25,9 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
 
             var contentData;
             var step = DateHelper.steps.DAY;
+
+
+            var ready = false;
 
             initSlider();
 
@@ -45,12 +46,12 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
                     slidesToScroll: 1,
                     onAfterChange: function () {
                         //                        console.log($('.my-slider').getSlick());
-                                                console.log(getCurrentKey());
-                        if ($('.my-slider').slickCurrentSlide() == 0) {
-                            dataCallback(getCurrentKey(), 5, false, addPastData);
-                        } else if ($('.my-slider').slickCurrentSlide() == ($('.my-slider').getSlick().slideCount - 1)) {
-                            dataCallback(getCurrentKey(), 5, true, addFutureData);
-                        }
+                        //                                                console.log(getCurrentKey());
+                        //                        if ($('.my-slider').slickCurrentSlide() == 0) {
+                        //                            dataCallback(getCurrentKey(), 5, false, addPastData);
+                        //                        } else if ($('.my-slider').slickCurrentSlide() == ($('.my-slider').getSlick().slideCount - 1)) {
+                        //                            dataCallback(getCurrentKey(), 5, true, addFutureData);
+                        //                        }
                     },
                     responsive: [{
                         breakpoint: 480,
@@ -69,12 +70,28 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
              * @description Первоначальная инициализация слайдера, добавляются первые данные
              */
             function initSlider() {
-//                compiled(scope, function (clonedElement, scope) {
-//                    $('.my-slider').html(clonedElement);
-//                });
+                //                compiled(scope, function (clonedElement, scope) {
+                //                    $('.my-slider').html(clonedElement);
+                //                });
+                //                $('.my-slider').html('<div><h1>saasdasdsadad</h1></div>')
                 toSlick($('.my-slider'));
-                dataCallback(getCurrentKey(), 5, false, addPastData);
-                dataCallback(getCurrentKey(), 5, true, addFutureData);
+                dataCallback(null, 0, true, addCurrentDayData);
+
+                goloop()
+                function goloop() {
+                    if (ready) {
+                        console.log("key1", getCurrentKey())
+                        dataCallback(getCurrentKey(), 5, true, addFutureData);
+                    } else {
+                        console.log("key2", getCurrentKey())
+                        setTimeout(goloop, 100);
+                    }
+                }
+
+                //                dataCallback(getCurrentKey(), 5, false, addPastData);
+//                console.log("key", getCurrentKey())
+//
+//                dataCallback(getCurrentKey(), 5, true, addFutureData);
             }
 
             /**
@@ -87,23 +104,26 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
              */
             function addPastData(contentData) {
                 var oldScope = scope;
-                for (var i = 0; i < contentData.length; i++) {
+                for (var i = contentData.length - 1; i >= 0; i--) {
                     scope = $rootScope.$new();
                     scope.page = contentData[i];
-                    
+                    scope.step = oldScope.step;
                     // костыль, до тех пор пока разраб библиотеки slick
                     // не реализует эту фичу
                     // (оставаться на текущем слайде при добавлении слайда в начало)
                     compiled(scope, function (clonedElement, scope) {
                         var ind = $('.my-slider').slickCurrentSlide();
+                        console.log("ind", ind, $('.my-slider').getSlick().slideCount);
+                        if ($('.my-slider').getSlick().slideCount !== 0) {
+                            count = 1;
+                        } else {
+                            count = 0;
+                        }
                         $('.my-slider').unslick();
-
-                        clonedElement.attr("contentKey", keyFunc(contentData[i]));
                         $('.my-slider').prepend(clonedElement);
-                        
                         toSlick();
-
-                        $('.my-slider').slickSetOption('speed', 0).slickGoTo(ind + 1).slickSetOption('speed', 300);
+                        $('.my-slider').slickSetOption('speed', 0).slickGoTo(ind + count).slickSetOption('speed', 300);
+                        $('.my-slider').getSlick().$slides[0].setAttribute("contentKey", keyFunc(tmpData));
                     });
                 }
                 scope = oldScope;
@@ -118,16 +138,55 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
              * @param {Array} contentData Список объектов, чьи данные будут отображаться на слайдах
              */
             function addFutureData(contentData) {
+                console.log("contentData", contentData)
                 var oldScope = scope;
                 for (var i = 0; i < contentData.length; i++) {
                     scope = $rootScope.$new();
                     scope.page = contentData[i];
+                    scope.step = oldScope.step;
                     compiled(scope, function (clonedElement, scope) {
-                        clonedElement.attr("contentKey", keyFunc(contentData[i]));
                         $(('.my-slider')).slickAdd(clonedElement);
+                        $('.my-slider').getSlick().$slides[$('.my-slider').getSlick().slideCount - 1].setAttribute("contentKey", keyFunc(tmpData));
                     });
                 }
                 scope = oldScope;
+            }
+
+            /**
+             *
+             * @ngdoc method
+             * @name myApp.directive:slider#addCurrentDayData
+             * @methodOf myApp.directive:slider
+             * @description Функция, добавляет слайды в конец, слайдера
+             * @param {Array} contentData Список объектов, чьи данные будут отображаться на слайдах
+             */
+            function addCurrentDayData(contentData) {
+                ready = false;
+                if (contentData.length == 1) {
+
+                    tmpData = contentData[0];
+                    var oldScope = scope;
+                    scope = $rootScope.$new();
+                    scope.page = tmpData;
+                    scope.step = oldScope.step;
+                    compiled(scope, function (clonedElement, scope) {
+                        //                        clonedElement.attr("contentKey", keyFunc(tmpData));
+                        $('.my-slider').html(clonedElement);
+                        $('.my-slider').getSlick().$slides[0].setAttribute("contentKey", keyFunc(tmpData));
+                    });
+
+                    scope = oldScope;
+                    
+                }
+                tryKey()
+                function tryKey() {
+                    if (getCurrentKey()) {
+                        console.log("k", getCurrentKey())
+                        ready = true;
+                    } else {
+                        setTimeout(tryKey, 100);
+                    }
+                }
             }
 
 
@@ -140,26 +199,26 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
             });
 
 
-            scope.$watch('step', function () {
-                $('.my-slider').unslick();
-                initSlider();
+            scope.$watch('step', function (newValue, oldValue) {
+                console.log("watch step", newValue, oldValue)
+                if (oldValue != newValue) {
+                    $('.my-slider').unslick();
+                    initSlider();
+                }
             })
-            
+
             /**
              * @ngdoc method
              * @name myApp.directive:slider#getCurrentKey
              * @methodOf myApp.directive:slider
-             * @description Функция, возвращает ключ объекта, 
+             * @description Функция, возвращает ключ объекта,
              * чьи данные отображаеются на текущем слайде
              * @returns {Number} ключ объекта
              */
             function getCurrentKey() {
-                var key = $('.my-slider').getSlick().$slides[$('.my-slider').slickCurrentSlide()].getAttribute("contentKey");
-                if (key)
-                {
-                    return key.value;
-                }
-                else{
+                if ($('.my-slider').getSlick().slideCount !== 0) {
+                    return $('.my-slider').getSlick().$slides[$('.my-slider').slickCurrentSlide()].getAttribute("contentKey");
+                } else {
                     return null;
                 }
             }

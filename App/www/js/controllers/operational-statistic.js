@@ -54,34 +54,46 @@ myApp.controller('OperationalStatisticController', function ($scope, $location, 
         var resultArr = [];
         var date;
         if (key) {
-            var obj = Storage.get(key);
-            date = obj.date;
-            if (forward) {
-                date = DateHelper.getNextPeriod(date, $scope.step).end;
-            } else {
-                date = DateHelper.getPrevPeriod(date, $scope.step).end;
-            }
+            console.log("kehyzzzz", key)
+            Storage.get("OperationalStatistics", key, function (obj) {
+                if (obj) {
+                    console.log("obj", obj)
+                    date = obj.date;
+                    if (forward) {
+                        date = DateHelper.getNextPeriod(date, $scope.step).end;
+                    } else {
+                        date = DateHelper.getPrevPeriod(date, $scope.step).end;
+                    }
+                    var beginDate = date,
+                        endDate = date;
+                    for (var i = 0; i < quantity; i++) {
+                        if (forward) {
+                            endDate = DateHelper.getNextPeriod(endDate, $scope.step).end;
+                        } else {
+                            beginDate = DateHelper.getPrevPeriod(beginDate, $scope.step).begin;
+                        }
+                    }
+                    Finder.getPerDates(beginDate, endDate, $scope.step, "date", "OperationalStatistics", callback);
+                }
+            });
+
         } else {
             date = new Date();
-        }
-        //        if (!$scope.hasPrevData(date) || !$scope.hasFutureData(date))
-        //            return resultArr;
-
-        var beginDate = date,
-            endDate = date;
-        for (var i = 0; i < quantity; i++) {
-            if (forward) {
-                endDate = DateHelper.getNextPeriod(endDate, $scope.step).end;
-            } else {
-                beginDate = DateHelper.getPrevPeriod(beginDate, $scope.step).begin;
+            var beginDate = date,
+                endDate = date;
+            for (var i = 0; i < quantity; i++) {
+                if (forward) {
+                    endDate = DateHelper.getNextPeriod(endDate, $scope.step).end;
+                } else {
+                    beginDate = DateHelper.getPrevPeriod(beginDate, $scope.step).begin;
+                }
             }
-        }
-
-        Finder.getPerDates(beginDate, endDate, $scope.step, "date", "OperationalStatistics", callback);
-    };
+            Finder.getPerDates(beginDate, endDate, $scope.step, "date", "OperationalStatistics", callback);
+        };
+    }
 
     $scope.getKey = function (obj) {
-        return obj && obj.getKey();
+        return obj && obj.__primary__;
     };
 
     //    $scope.pageIndex = 1;

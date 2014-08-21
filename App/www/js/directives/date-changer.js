@@ -26,46 +26,18 @@ myApp.directive('dateChanger', function (DateHelper, $filter) {
         restrict: 'E',
         replace: true,
         link: function (scope, element, attrs) {
-            var date, step, steps, titleSteps, hasFutureData, hasPrevData, index;
-
-            /**
-             *
-             * @ngdoc method
-             * @name myApp.directive:dateChanger#updateIndex
-             * @methodOf myApp.directive:dateChanger
-             * @description Метод для обновления и обработки индекса. В
-             * зависимости от нового значения индекса бдует
-             * вызвана функция `setNewDate` с нужным параметром. 
-             */
-            var updateIndex = function () {
-                var prevIndex = index;
-                index = scope.$eval(attrs.index);
-                if (index !== 1) {
-                    switch (index) {
-                    case 2:
-                        setNewDate(1);
-                        break;
-                    case 0:
-                        if (hasPrevData)
-                            setNewDate(-1);
-                        break;
-                    }
-                } else {
-                    if (!hasPrevData && prevIndex == 0 && index == 1) {
-                        setNewDate(1);
-                    }
-                }
-            };
-            scope.$watch(attrs.index, updateIndex);
-            updateIndex();
+            var date, step, hasFutureData, hasPrevData, index;
+            step = DateHelper.steps.DAY;
 
             var updateDate = function () {
                 date = scope.$eval(attrs.date);
             };
             scope.$watch(attrs.date, updateDate);
             updateDate();
+            
 
             var updateStep = function () {
+                console.log("watch", scope.$eval(attrs.step))
                 step = scope.$eval(attrs.step);
             };
             scope.$watch(attrs.step, updateStep);
@@ -80,21 +52,21 @@ myApp.directive('dateChanger', function (DateHelper, $filter) {
              * если параметр директивы `steps` содержит больше 1
              * елемента или скроет в противном случае.
              */
-            var updateSteps = function () {
-                steps = scope.$eval(attrs.steps);
-                if (steps.length > 1)
-                    element.find('#periodChanger').css('display', 'block');
-                else
-                    element.find('#periodChanger').css('display', 'none');
-            };
-            scope.$watch(attrs.steps, updateSteps);
-            updateSteps();
-
-            var updateTitleSteps = function () {
-                titleSteps = scope.$eval(attrs.titles) || "";
-            };
-            scope.$watch(attrs.titleSteps, updateTitleSteps);
-            updateTitleSteps();
+//            var updateSteps = function () {
+//                steps = scope.$eval(attrs.steps);
+//                if (steps.length > 1)
+//                    element.find('#periodChanger').css('display', 'block');
+//                else
+//                    element.find('#periodChanger').css('display', 'none');
+//            };
+//            scope.$watch(attrs.steps, updateSteps);
+//            updateSteps();
+//
+//            var updateTitleSteps = function () {
+//                titleSteps = scope.$eval(attrs.titles) || "";
+//            };
+//            scope.$watch(attrs.titleSteps, updateTitleSteps);
+//            updateTitleSteps();
 
             /**
              *
@@ -135,11 +107,7 @@ myApp.directive('dateChanger', function (DateHelper, $filter) {
             scope.$watch(attrs.hasPrevData, updateHasPrevData);
             updateHasPrevData();
 
-            scope.$watch('step', function () {
-                var period = DateHelper.getPeriod(date, step);
-                scope[attrs.date] = new Date(period.begin.getFullYear(), period.begin.getMonth(),
-                    period.begin.getDate());
-            });
+
 
             scope.$watch('date', function () {
                 element.find('#Date').html(getDateString());
@@ -198,6 +166,7 @@ myApp.directive('dateChanger', function (DateHelper, $filter) {
             function getDateString() {
                 element.find('#Title').html(addTitle());
                 if (step == DateHelper.steps.DAY) {
+                    
                     return (date.getDate() + ' ' + DateHelper.getMonthTitle(date.getMonth(), step) + ' ' + date.getFullYear() + ', ' + DateHelper.getWeekDayTitle(date.getDay()));
                 }
                 if (step == DateHelper.steps.WEEK) {
@@ -243,27 +212,7 @@ myApp.directive('dateChanger', function (DateHelper, $filter) {
                 return "";
             }
 
-            for (var i = 0; i < steps.length; i++) {
-                var classValue = "button widget uib_w_6 d-margins";
-                if (i == 0)
-                    classValue += ' active';
-                element.find("#periodButtons").append(
-                    $("<a>", {
-                        "class": classValue,
-                        "data-uib": "app_framework/button",
-                        "data-ver": "1",
-                        text: titleSteps[i],
-                        "id": "" + steps[i],
-                        click: function () {
-                            scope[attrs.step] = this.id;
-                            scope.$apply();
-                            for (var j = 0; j < steps.length; j++)
-                                element.find("#"+steps[j]).removeClass('active');
-                             $(this).addClass("active");
-                        }
-                    })
-                );
-            }
+//            
         },
         templateUrl: 'views/date-navigation.html'
     }
