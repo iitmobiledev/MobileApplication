@@ -47,11 +47,13 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
                     onAfterChange: function () {
                         //                        console.log($('.my-slider').getSlick());
                         //                                                console.log(getCurrentKey());
-                        //                        if ($('.my-slider').slickCurrentSlide() == 0) {
-                        //                            dataCallback(getCurrentKey(), 5, false, addPastData);
-                        //                        } else if ($('.my-slider').slickCurrentSlide() == ($('.my-slider').getSlick().slideCount - 1)) {
-                        //                            dataCallback(getCurrentKey(), 5, true, addFutureData);
-                        //                        }
+                        if (ready) {
+                            if ($('.my-slider').slickCurrentSlide() == 0) {
+                                dataCallback(getCurrentKey(), 5, false, addPastData);
+                            } else if ($('.my-slider').slickCurrentSlide() == ($('.my-slider').getSlick().slideCount - 1)) {
+                                dataCallback(getCurrentKey(), 5, true, addFutureData);
+                            }
+                        }
                     },
                     responsive: [{
                         breakpoint: 480,
@@ -103,6 +105,7 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
              * @param {Array} contentData Список объектов, чьи данные будут отображаться на слайдах
              */
             function addPastData(contentData) {
+                ready = false;
                 var oldScope = scope;
                 for (var i = contentData.length - 1; i >= 0; i--) {
                     scope = $rootScope.$new();
@@ -128,6 +131,7 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
                     });
                 }
                 scope = oldScope;
+                tryKey();
             }
 
             /**
@@ -139,6 +143,7 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
              * @param {Array} contentData Список объектов, чьи данные будут отображаться на слайдах
              */
             function addFutureData(contentData) {
+                ready = false;
                 console.log("contentData", contentData)
                 var oldScope = scope;
                 for (var i = 0; i < contentData.length; i++) {
@@ -156,6 +161,7 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
                 }
                 //                console.log("conte", $('.my-slider').html())
                 scope = oldScope;
+                tryKey();
             }
 
             /**
@@ -187,15 +193,16 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
                     scope.$apply();
 
                 }
-                tryKey()
+                tryKey();
 
-                function tryKey() {
-                    if (getCurrentKey()) {
-                        console.log("k", getCurrentKey())
-                        ready = true;
-                    } else {
-                        setTimeout(tryKey, 100);
-                    }
+
+            }
+
+            function tryKey() {
+                if (getCurrentKey()) {
+                    ready = true;
+                } else {
+                    setTimeout(tryKey, 100);
                 }
             }
 
