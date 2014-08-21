@@ -5,14 +5,11 @@
  * @name myApp.controller:VisitController
  * @requires myApp.service:VisitLoader
  */
-myApp.controller('VisitController', function ($scope, $filter, $routeParams, Loader) {
-    Loader.search("Visit", {
-        id: $routeParams.id
-    }, function (data) {
+myApp.controller('VisitController', function ($scope, $filter, $routeParams, Storage, Visit) {
+    Storage.get("Visit", $routeParams.id, function (data) {
+        console.log("dataVisit:", data, "id:", $routeParams.id);
         $scope.visit = data;
     });
-    //$scope.visit = VisitLoader($routeParams.id);
-    $scope.id = $routeParams.id;
 
     /**
      *
@@ -23,7 +20,8 @@ myApp.controller('VisitController', function ($scope, $filter, $routeParams, Loa
      * визите.
      */
     $scope.showVisit = function () {
-        if ($scope.visit !== null) {
+        console.log("showVisit()-Visit:", $scope.visit);
+        if ($scope.visit) {
             $scope.status = $scope.visit.status;
             $scope.date = $scope.visit.date;
             $scope.clientName = $scope.visit.client.lastName + " " + $scope.visit.client.firstName + " " + $scope.visit.client.middleName;
@@ -50,7 +48,7 @@ myApp.controller('VisitController', function ($scope, $filter, $routeParams, Loa
             }
             $scope.comment = $scope.visit.comment;
         }
-    }
+    };
 
     $scope.$watch('visit', function () {
         $scope.showVisit();

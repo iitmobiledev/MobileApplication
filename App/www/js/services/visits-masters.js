@@ -93,7 +93,7 @@ myApp.factory('Visit', function (Model, Client, Service) {
             if (cursor) {
                 result.push(cursor.value);
                 cursor.
-                continue ();
+                continue();
             }
         };
 
