@@ -14,17 +14,90 @@
  * @requires myApp.service:OperationalStatisticLoader
  * @requires myApp.service:DateHelper
  */
-myApp.controller('OperationalStatisticController', function ($scope, $location, DateHelper, Loader, Finder) {
+myApp.controller('OperationalStatisticController', function ($scope, $location, DateHelper, Loader, Finder, Storage) {
     //    var getStatistic = OperationalStatisticLoader.getData;
     //    var minDate = OperationalStatisticLoader.getMinDate();
     //    var maxDate = OperationalStatisticLoader.getMaxDate();
 
     var today = new Date();
+    console.log("OperationalStatisticController")
     $scope.date = new Date(today.getFullYear(), today.getMonth(), today.getDate());
 
     $scope.step = DateHelper.steps.DAY;
 
-    $scope.pageIndex = 1;
+    var steps = [DateHelper.steps.DAY, DateHelper.steps.WEEK, DateHelper.steps.MONTH];
+    var titles = ["За день", "За неделю", "За месяц"];
+
+    for (var i = 0; i < steps.length; i++) {
+        var classValue = "button widget uib_w_6 d-margins";
+        if (i === 0)
+            classValue += ' active';
+        $("#periodButtons").append(
+            $("<a>", {
+                "class": classValue,
+                "data-uib": "app_framework/button",
+                "data-ver": "1",
+                text: titles[i],
+                "id": steps[i],
+                click: function () {
+                    $scope.step = this.id;
+                    $scope.$apply();
+                    for (var j = 0; j < steps.length; j++)
+                        $("#" + steps[j]).removeClass('active');
+                    $(this).addClass("active");
+                }
+            })
+        );
+    }
+
+
+    $scope.getData = function (key, quantity, forward, callback) {
+        var resultArr = [];
+        var date;
+        if (key) {
+            console.log("kehyzzzz", key)
+            Storage.get("OperationalStatistics", key, function (obj) {
+                if (obj) {
+                    console.log("obj", obj)
+                    date = obj.date;
+                    if (forward) {
+                        date = DateHelper.getNextPeriod(date, $scope.step).end;
+                    } else {
+                        date = DateHelper.getPrevPeriod(date, $scope.step).end;
+                    }
+                    var beginDate = date,
+                        endDate = date;
+                    for (var i = 0; i < quantity; i++) {
+                        if (forward) {
+                            endDate = DateHelper.getNextPeriod(endDate, $scope.step).end;
+                        } else {
+                            beginDate = DateHelper.getPrevPeriod(beginDate, $scope.step).begin;
+                        }
+                    }
+                    Finder.getPerDates(beginDate, endDate, $scope.step, "date", "OperationalStatistics", callback);
+                }
+            });
+
+        } else {
+            date = new Date();
+            var beginDate = date,
+                endDate = date;
+            for (var i = 0; i < quantity; i++) {
+                if (forward) {
+                    endDate = DateHelper.getNextPeriod(endDate, $scope.step).end;
+                } else {
+                    beginDate = DateHelper.getPrevPeriod(beginDate, $scope.step).begin;
+                }
+            }
+            Finder.getPerDates(beginDate, endDate, $scope.step, "date", "OperationalStatistics", callback);
+        };
+    }
+
+    $scope.getKey = function (obj) {
+        return obj && obj.__primary__;
+    };
+
+    //    $scope.pageIndex = 1;
 
     /**
      *
@@ -35,10 +108,11 @@ myApp.controller('OperationalStatisticController', function ($scope, $location, 
      * @description Метод для проверки наличия данных за прошлый
      * период.
      */
-    $scope.hasPrevData = function () {
+    $scope.hasPrevData = function (date) {
+        //        return date > minDate;
         return true;
-        //return $scope.date > minDate;
     };
+
 
     /**
      *
@@ -49,34 +123,29 @@ myApp.controller('OperationalStatisticController', function ($scope, $location, 
      * @description Метод для проверки наличия данных за будущий
      * период.
      */
-    $scope.hasFutureData = function () {
-        return true;
-        //        var period = DateHelper.getPeriod($scope.date, $scope.step);
+    $scope.hasFutureData = function (date) {
+        //        var period = DateHelper.getPeriod(date, $scope.step);
         //        return period.end < maxDate && period.end.toDateString() != maxDate.toDateString();
+        return true;
     };
 
-    /**
-     *
-     * @ngdoc method
-     * @name myApp.controller:OperationalStatisticController#updatePages
-     * @methodOf myApp.controller:OperationalStatisticController
-     * @description Метод для обновления данных статистики на
-     * текущей, левой и правой страницах.
-     */
-    function updatePages() {
-        var prevPeriod = DateHelper.getPrevPeriod($scope.date, $scope.step);
-        var nextPeriod = DateHelper.getNextPeriod($scope.date, $scope.step);
-        $scope.pages = [];
+    $scope.$watch('step', function (newValue, oldValue) {
+        var period = DateHelper.getPeriod($scope.date, $scope.step);
+        if (oldValue == DateHelper.steps.WEEK) {
+            if (period.end < new Date()) {
+                $scope.date = new Date(period.end.getFullYear(), period.end.getMonth(),
+                    period.end.getDate());
+            } else {
+                $scope.date = new Date();
+            }
+        } else {
+            $scope.date = new Date(period.begin.getFullYear(), period.begin.getMonth(),
+                period.begin.getDate());
+            //        $scope.$apply();
+        }
 
-        Finder.getPerDates(prevPeriod.begin, nextPeriod.end, $scope.step, "date", "OperationalStatistics", function (data) {
-            $scope.pages = data;
-            $scope.pageIndex = 1;
-        });
-    }
-
-    $scope.$watch('date.toDateString()', updatePages);
-
-    $scope.$watch('step', updatePages);
+        //        $scope.page = getStatistic($scope.date, $scope.step);
+    });
 
     /**
      *
@@ -88,7 +157,7 @@ myApp.controller('OperationalStatisticController', function ($scope, $location, 
      */
     $scope.toChart = function (type) {
         $location.path('chart/' + type);
-    }
+    };
 
 
     /**
@@ -100,13 +169,13 @@ myApp.controller('OperationalStatisticController', function ($scope, $location, 
      */
     $scope.toExpenditures = function () {
         $location.path('expenditures');
-    }
+    };
 
     $scope.hasFinance = function (statistics) {
         if (statistics.financeStat) {
             return typeof (statistics.financeStat.credit) !== 'undefined';
         }
         return false;
-    }
+    };
 
 });

@@ -37,7 +37,7 @@ myApp.directive('headerContent', function () {
                         $("#header").show();
                     }
                 } else {
-                    setTimeout(show, 100);
+                    setTimeout(showHeader, 100);
                 }
             }
 
