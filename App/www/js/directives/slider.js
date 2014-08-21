@@ -80,10 +80,9 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
                 goloop()
                 function goloop() {
                     if (ready) {
-                        console.log("key1", getCurrentKey())
+                        dataCallback(getCurrentKey(), 5, false, addPastData);
                         dataCallback(getCurrentKey(), 5, true, addFutureData);
                     } else {
-                        console.log("key2", getCurrentKey())
                         setTimeout(goloop, 100);
                     }
                 }
@@ -108,6 +107,7 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
                     scope = $rootScope.$new();
                     scope.page = contentData[i];
                     scope.step = oldScope.step;
+                    scope.$apply();
                     // костыль, до тех пор пока разраб библиотеки slick
                     // не реализует эту фичу
                     // (оставаться на текущем слайде при добавлении слайда в начало)
@@ -144,11 +144,16 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
                     scope = $rootScope.$new();
                     scope.page = contentData[i];
                     scope.step = oldScope.step;
+                    scope.$apply();
                     compiled(scope, function (clonedElement, scope) {
-                        $(('.my-slider')).slickAdd(clonedElement);
+//                        console.log("clonedElement", clonedElement.html())
+                        $('.my-slider').slickAdd(clonedElement);
                         $('.my-slider').getSlick().$slides[$('.my-slider').getSlick().slideCount - 1].setAttribute("contentKey", keyFunc(tmpData));
+                        
                     });
+                    
                 }
+//                console.log("conte", $('.my-slider').html())
                 scope = oldScope;
             }
 
@@ -169,13 +174,16 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
                     scope = $rootScope.$new();
                     scope.page = tmpData;
                     scope.step = oldScope.step;
+                    scope.$apply();
                     compiled(scope, function (clonedElement, scope) {
                         //                        clonedElement.attr("contentKey", keyFunc(tmpData));
+                        console.log("clonedElement", scope)
                         $('.my-slider').html(clonedElement);
                         $('.my-slider').getSlick().$slides[0].setAttribute("contentKey", keyFunc(tmpData));
                     });
 
                     scope = oldScope;
+                    scope.$apply();
                     
                 }
                 tryKey()
