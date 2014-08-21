@@ -78,6 +78,7 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
                 dataCallback(null, 0, true, addCurrentDayData);
 
                 goloop()
+
                 function goloop() {
                     if (ready) {
                         dataCallback(getCurrentKey(), 5, false, addPastData);
@@ -88,9 +89,9 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
                 }
 
                 //                dataCallback(getCurrentKey(), 5, false, addPastData);
-//                console.log("key", getCurrentKey())
-//
-//                dataCallback(getCurrentKey(), 5, true, addFutureData);
+                //                console.log("key", getCurrentKey())
+                //
+                //                dataCallback(getCurrentKey(), 5, true, addFutureData);
             }
 
             /**
@@ -146,14 +147,14 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
                     scope.step = oldScope.step;
                     scope.$apply();
                     compiled(scope, function (clonedElement, scope) {
-//                        console.log("clonedElement", clonedElement.html())
+                        //                        console.log("clonedElement", clonedElement.html())
                         $('.my-slider').slickAdd(clonedElement);
                         $('.my-slider').getSlick().$slides[$('.my-slider').getSlick().slideCount - 1].setAttribute("contentKey", keyFunc(tmpData));
-                        
+
                     });
-                    
+
                 }
-//                console.log("conte", $('.my-slider').html())
+                //                console.log("conte", $('.my-slider').html())
                 scope = oldScope;
             }
 
@@ -184,9 +185,10 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
 
                     scope = oldScope;
                     scope.$apply();
-                    
+
                 }
                 tryKey()
+
                 function tryKey() {
                     if (getCurrentKey()) {
                         console.log("k", getCurrentKey())
