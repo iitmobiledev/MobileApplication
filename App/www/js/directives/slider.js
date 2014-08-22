@@ -166,7 +166,7 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
              * @param {Array} contentData Список объектов, чьи данные будут отображаться на слайдах
              */
             function addCurrentDayData(contentData) {
-                console.log(contentData);
+                console.log("contentData ", contentData);
                 ready = false;
 
                 tmpData = contentData[0];
