@@ -17,9 +17,9 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
         replace: true,
         link: function (scope, element, attrs) {
             var dataCallback = scope.$eval(attrs.getData);
-            console.log(scope.$eval(attrs.getData))
             var keyFunc = scope.$eval(attrs.keyExpression);
-
+            var getChildScope = scope.$eval(attrs.getChildScope);
+            
             var contentID = attrs.contentId;
             var content = $templateCache.get(contentID);
             var compiled = $compile(angular.element(content));
@@ -78,7 +78,6 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
                 //                });
                 //                $('.my-slider').html('<div><h1>saasdasdsadad</h1></div>')
                 toSlick($('.my-slider'));
-                console.log(dataCallback, keyFunc);
                 dataCallback(null, 0, true, addCurrentDayData);
 
                 goloop()
@@ -108,18 +107,15 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
              */
             function addPastData(contentData) {
                 ready = false;
-                var oldScope = scope;
                 for (var i = contentData.length - 1; i >= 0; i--) {
-                    scope = $rootScope.$new();
-                    scope.page = contentData[i];
-                    scope.step = oldScope.step;
-                    scope.$apply();
+                    newscope = getChildScope();
+                    newscope.page = contentData[i];
+                    newscope.$apply();
                     // костыль, до тех пор пока разраб библиотеки slick
                     // не реализует эту фичу
                     // (оставаться на текущем слайде при добавлении слайда в начало)
-                    compiled(scope, function (clonedElement, scope) {
+                    compiled(newscope, function (clonedElement, scope) {
                         var ind = $('.my-slider').slickCurrentSlide();
-                        console.log("ind", ind, $('.my-slider').getSlick().slideCount);
                         if ($('.my-slider').getSlick().slideCount !== 0) {
                             count = 1;
                         } else {
@@ -132,7 +128,6 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
                         $('.my-slider').getSlick().$slides[0].setAttribute("contentKey", keyFunc(tmpData));
                     });
                 }
-                scope = oldScope;
                 tryKey();
             }
 
@@ -146,14 +141,11 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
              */
             function addFutureData(contentData) {
                 ready = false;
-                console.log("contentData", contentData)
-                var oldScope = scope;
                 for (var i = 0; i < contentData.length; i++) {
-                    scope = $rootScope.$new();
-                    scope.page = contentData[i];
-                    scope.step = oldScope.step;
-                    scope.$apply();
-                    compiled(scope, function (clonedElement, scope) {
+                    newscope = getChildScope();
+                    newscope.page = contentData[i];
+                    newscope.$apply();
+                    compiled(newscope, function (clonedElement, scope) {
                         //                        console.log("clonedElement", clonedElement.html())
                         $('.my-slider').slickAdd(clonedElement);
                         $('.my-slider').getSlick().$slides[$('.my-slider').getSlick().slideCount - 1].setAttribute("contentKey", keyFunc(tmpData));
@@ -161,8 +153,6 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
                     });
 
                 }
-                //                console.log("conte", $('.my-slider').html())
-                scope = oldScope;
                 tryKey();
             }
 
@@ -179,21 +169,15 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
                 if (contentData.length == 1) {
 
                     tmpData = contentData[0];
-                    var oldScope = scope;
-                    scope = $rootScope.$new();
-                    scope.page = tmpData;
-                    scope.step = oldScope.step;
-                    scope.$apply();
-                    compiled(scope, function (clonedElement, scope) {
+                    newscope = getChildScope();
+                    newscope.page = tmpData;
+                    newscope.$apply();
+                    compiled(newscope, function (clonedElement, scope) {
                         //                        clonedElement.attr("contentKey", keyFunc(tmpData));
                         console.log("clonedElement", scope)
                         $('.my-slider').html(clonedElement);
                         $('.my-slider').getSlick().$slides[0].setAttribute("contentKey", keyFunc(tmpData));
                     });
-
-                    scope = oldScope;
-                    scope.$apply();
-
                 }
                 tryKey();
 

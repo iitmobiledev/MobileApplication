@@ -20,7 +20,6 @@ myApp.controller('OperationalStatisticController', function ($scope, $location, 
     //    var maxDate = OperationalStatisticLoader.getMaxDate();
 
     var today = new Date();
-    console.log("OperationalStatisticController")
     $scope.date = new Date(today.getFullYear(), today.getMonth(), today.getDate());
 
     $scope.step = DateHelper.steps.DAY;
@@ -49,16 +48,24 @@ myApp.controller('OperationalStatisticController', function ($scope, $location, 
             })
         );
     }
+    
+    
+    
+    
+    $scope.getChildScope = function (){
+        var childScope = $scope.$new();
+        childScope.step = $scope.step;
+        childScope.toChart = $scope.toChart;
+        return childScope;
+    };
 
 
     $scope.getData = function (key, quantity, forward, callback) {
         var resultArr = [];
         var date;
         if (key) {
-            console.log("kehyzzzz", key)
             Storage.get("OperationalStatistics", key, function (obj) {
                 if (obj) {
-                    console.log("obj", obj)
                     date = obj.date;
                     if (forward) {
                         date = DateHelper.getNextPeriod(date, $scope.step).end;
