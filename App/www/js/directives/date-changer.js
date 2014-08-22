@@ -37,7 +37,6 @@ myApp.directive('dateChanger', function (DateHelper, $filter) {
             
 
             var updateStep = function () {
-                console.log("watch", scope.$eval(attrs.step))
                 step = scope.$eval(attrs.step);
             };
             scope.$watch(attrs.step, updateStep);
