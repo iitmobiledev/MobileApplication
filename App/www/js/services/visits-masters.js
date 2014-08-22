@@ -65,6 +65,7 @@ myApp.factory('Visit', function (Model, Client, Service) {
             self.serviceList = serviceList;
 
             self.date = new Date(data.date);
+            self.paid=data.paid;
         },
         serialize: function (self) {
             self.constructor.prototype.call(self)

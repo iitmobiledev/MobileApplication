@@ -1,7 +1,7 @@
-<header-content title="'Визиты'" show-back-button="false" show="true"></header-content>
+<header-content title="'Визиты'" show-back-button="false" show="false"></header-content>
 <orient orientation="'portrait'"></orient>
 <div class="upage-content">
-    <div class="button-grouped flex widget uib_w_24 d-margins" data-uib="app_framework/button_group" data-ver="1">
+    <div class="button-grouped flex widget uib_w_24" data-uib="app_framework/button_group" data-ver="1">
         <a id="timeButton" class="button widget uib_w_25 d-margins active" data-uib="app_framework/button" data-ver="1">По времени</a>
         <a ng-click="onMasters()" class="button widget uib_w_26 d-margins" data-uib="app_framework/button" data-ver="1">По мастерам</a>
     </div>
@@ -17,7 +17,7 @@
                     {{getVisitInfo(visit)}}
                     <a href="#/visit/{{visitInfo.id}}">
                         <div>
-                            <visit-status status='visitInfo.status' style="width:auto;"></visit-status>
+                            <visit-status status='visitInfo.status' style="width:50%;"></visit-status>
                             <div>
                                 <span style="text-align:right; width:35%;">
                                     {{visitInfo.time}}

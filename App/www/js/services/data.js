@@ -89,6 +89,7 @@ myApp.factory('VisitsData', function (DateHelper, Visit) {
             balance: getRandom(-1000, 10000),
             discount: Math.round(getRandom(3, 30))
         };
+        visit.paid = getRandom(-1000, 10000);
         visit.serviceList = sList;
         visit.comment = "Забыла деньги дома. Обещала принести чуть позже."
         visit.date = new Date(2014, 8, 11, hours + Math.round(getRandom(-2, 1)), Math.round(getRandom(0, 59)));
@@ -150,6 +151,7 @@ myApp.factory('VisitsData', function (DateHelper, Visit) {
                 balance: getRandom(-1000, 10000),
                 discount: Math.round(getRandom(3, 30))
             };
+            visit.paid = getRandom(-1000, 10000);
             visit.serviceList = sList;
             visit.comment = "Забыла деньги дома. Обещала принести чуть позже."
             visit.date = new Date(day.getFullYear(), day.getMonth(), day.getDate(), hours + Math.round(getRandom(-2, 1)), Math.round(getRandom(0, 59)));
@@ -186,11 +188,12 @@ myApp.factory('VisitsData', function (DateHelper, Visit) {
                 discount: Math.round(getRandom(3, 30))
             };
             visit.serviceList = sList;
+            visit.paid = getRandom(-1000, 10000);
             visit.comment = "Может опоздать"
             visit.date = new Date(day.getFullYear(), day.getMonth(), day.getDate(), hours + Math.round(getRandom(-2, 1)), Math.round(getRandom(0, 59)));
             visit.status = Visit.statuses.titles.NEW;
             visitsDay.push(visit);
-            
+
             sList = [];
             hours = Math.round(getRandom(8, 21));
             serviceCost = Math.round(getRandom(500, 10000));
@@ -210,7 +213,7 @@ myApp.factory('VisitsData', function (DateHelper, Visit) {
                 employeeSalary: salary
             };
             sList.push(service);
-            
+            visit.paid = getRandom(-1000, 10000);
             serviceCost = Math.round(getRandom(500, 10000));
             salary = serviceCost - Math.round(getRandom(0, serviceCost / 2));
             service = {
@@ -238,11 +241,12 @@ myApp.factory('VisitsData', function (DateHelper, Visit) {
                 discount: Math.round(getRandom(3, 30))
             };
             visit.serviceList = sList;
+            visit.paid = getRandom(-1000, 10000);
             visit.comment = "Может опоздать"
             visit.date = new Date(day.getFullYear(), day.getMonth(), day.getDate(), hours + Math.round(getRandom(-2, 1)), Math.round(getRandom(0, 59)));
             visit.status = Visit.statuses.titles.NOTCOME;
             visitsDay.push(visit);
-            
+
             sList = [];
             hours = Math.round(getRandom(8, 21));
             serviceCost = Math.round(getRandom(500, 10000));
@@ -272,6 +276,7 @@ myApp.factory('VisitsData', function (DateHelper, Visit) {
                 discount: Math.round(getRandom(3, 30))
             };
             visit.serviceList = sList;
+            visit.paid = getRandom(-1000, 10000);
             visit.comment = "Может опоздать"
             visit.date = new Date(day.getFullYear(), day.getMonth(), day.getDate(), hours + Math.round(getRandom(-2, 1)), Math.round(getRandom(0, 59)));
             visit.status = Visit.statuses.titles.CONFIRMED;

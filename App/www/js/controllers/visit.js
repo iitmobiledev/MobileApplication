@@ -21,7 +21,7 @@ myApp.controller('VisitController', function ($scope, $filter, $routeParams, Sto
         }
         $scope.clientBalance = $scope.visit.client.balance;
         $scope.clientDiscount = $scope.visit.client.discount + "%"
-
+        $scope.paid=$scope.visit.paid;
         $scope.servList = [];
         $scope.sum = 0;
         for (var i = 0; i < $scope.visit.serviceList.length; i++) {
