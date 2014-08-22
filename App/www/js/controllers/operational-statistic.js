@@ -48,11 +48,11 @@ myApp.controller('OperationalStatisticController', function ($scope, $location, 
             })
         );
     }
-    
-    
-    
-    
-    $scope.getChildScope = function (){
+
+
+
+
+    $scope.getChildScope = function () {
         var childScope = $scope.$new();
         childScope.step = $scope.step;
         childScope.toChart = $scope.toChart;
@@ -81,12 +81,18 @@ myApp.controller('OperationalStatisticController', function ($scope, $location, 
                             beginDate = DateHelper.getPrevPeriod(beginDate, $scope.step).begin;
                         }
                     }
+                    if (beginDate == endDate && $scope.step != DateHelper.steps.DAY) {
+                        var period = DateHelper.getPeriod(beginDate, $scope.step);
+                        beginDate = period.begin;
+                        endDate = period.end;
+                    }
+                    console.log("begend", beginDate, endDate)
                     Finder.getPerDates(beginDate, endDate, $scope.step, "date", "OperationalStatistics", callback);
                 }
             });
 
         } else {
-            date = new Date();
+            date = $scope.date;
             var beginDate = date,
                 endDate = date;
             for (var i = 0; i < quantity; i++) {
@@ -96,6 +102,13 @@ myApp.controller('OperationalStatisticController', function ($scope, $location, 
                     beginDate = DateHelper.getPrevPeriod(beginDate, $scope.step).begin;
                 }
             }
+            if (beginDate == endDate && $scope.step != DateHelper.steps.DAY) {
+                var period = DateHelper.getPeriod(beginDate, $scope.step);
+                beginDate = period.begin;
+                endDate = period.end;
+
+            }
+            console.log("begend", beginDate, endDate)
             Finder.getPerDates(beginDate, endDate, $scope.step, "date", "OperationalStatistics", callback);
         };
     }

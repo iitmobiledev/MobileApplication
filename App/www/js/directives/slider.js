@@ -1,15 +1,27 @@
 /**
  * @description Директива добавляет на страницу приложения "слайдер",
  * который позволяет листать страницы заданные шаблоном
- * `<script type="text/ng-template" id="content-id">...</script>`
- * Так же необходимо указать id шаблона:
- * ```  myApp.run(function ($templateCache) {
- *      $templateCache.put('content-id');```
+ * <pre><script type="text/ng-template" id="content-id">...</script></pre>
+ * Так же необходимо указать id шаблона (routes.js):
+ * <pre>myApp.run(function ($templateCache) {
+ *      $templateCache.put('content-id');</pre>
  * @ngdoc directive
  * @name myApp.directive:slider
  * @restrict E
- * @param {function} dataCallback Заголовок окна, отображаемый в хедере
- * @param {function} keyExpression Указание необходимости отображения кнопки "Назад".
+ * @param {function} dataCallback Получение данных, функция имеет следующий вид:
+ * <pre>
+ * function (key, quantity, forward, callback){...} // где:
+ * // key - ключ объкта, от которого получаем новые данные
+ * // quantity - количество, получаемых данных
+ * // forward - направление, в котором движемся, если `true`, то вперед, иначе назад
+ * // callback - колбек. В него передаются полученные данные
+ * </pre>
+ * @param {function} keyExpression Функция, возвращающая ключ объекта, который передается в функцию параметром.
+ * <pre>function (obj) {
+ *      return obj && obj.__primary__;
+ *  };
+ *  </pre>
+ * @param {function} getChildScope Функция, возвращающая scope, являющийся потомком скоупа контроллера.
  */
 myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateCache) {
     return {
@@ -149,22 +161,23 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
              * @ngdoc method
              * @name myApp.directive:slider#addCurrentDayData
              * @methodOf myApp.directive:slider
-             * @description Функция, добавляет слайды в конец, слайдера
+             * @description Функция, добавляет первый слайд на слайдер,
+             * используется для первоначальной инициализации слайдера
              * @param {Array} contentData Список объектов, чьи данные будут отображаться на слайдах
              */
             function addCurrentDayData(contentData) {
+                console.log(contentData);
                 ready = false;
-                if (contentData.length == 1) {
 
-                    tmpData = contentData[0];
-                    newscope = getChildScope();
-                    newscope.page = tmpData;
-                    newscope.$apply();
-                    compiled(newscope, function (clonedElement, scope) {
-                        $('.my-slider').html(clonedElement);
-                        $('.my-slider').getSlick().$slides[0].setAttribute("contentKey", keyFunc(tmpData));
-                    });
-                }
+                tmpData = contentData[0];
+                newscope = getChildScope();
+                newscope.page = tmpData;
+                newscope.$apply();
+                compiled(newscope, function (clonedElement, scope) {
+                    $('.my-slider').html(clonedElement);
+                    $('.my-slider').html(clonedElement);
+                    $('.my-slider').getSlick().$slides[0].setAttribute("contentKey", keyFunc(tmpData));
+                });
                 tryKey();
 
 
@@ -191,6 +204,7 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
             scope.$watch('step', function (newValue, oldValue) {
                 if (oldValue != newValue) {
                     $('.my-slider').unslick();
+                    $('.my-slider').html("")
                     initSlider();
                 }
             })
