@@ -1,5 +1,5 @@
-myApp.service("Loader", ["$http", "OperationalStatisticsData", "GetOpStatObjects", "VisitsData", "GetVisitsObjects", "DateHelper", "GetVisitObjects", "Storage", "ExpendituresData", "GetExpendituresObjects",
-    function ($http, OperationalStatisticsData, GetOpStatObjects, VisitsData, GetVisitsObjects, DateHelper, GetVisitObjects, Storage, ExpendituresData, GetExpendituresObjects) {
+myApp.service("Loader", ["$http", "OperationalStatisticsData", "GetOpStatObjects", "VisitsData", "GetVisitsObjects", "DateHelper", "GetVisitObjects", "Storage", "ExpendituresData", "GetExpendituresObjects", "Server",
+    function ($http, OperationalStatisticsData, GetOpStatObjects, VisitsData, GetVisitsObjects, DateHelper, GetVisitObjects, Storage, ExpendituresData, GetExpendituresObjects, Server) {
         var classes = {
             "OperationalStatistics": {
                 getData: OperationalStatisticsData,
@@ -26,9 +26,9 @@ myApp.service("Loader", ["$http", "OperationalStatisticsData", "GetOpStatObjects
                 } else {
                     data = classes[modelClass].getData.byID(primaryKey.id);
                 }
-                
+
                 var objs = classes[modelClass].getObjects(data);
-                
+
                 for (var i in objs) {
                     if (objs[i] instanceof Array) {
                         for (var j in objs[i])
@@ -39,8 +39,24 @@ myApp.service("Loader", ["$http", "OperationalStatisticsData", "GetOpStatObjects
                 callback(objs);
             },
             search: function (className, params, callback) {
+//                var query = ["OperationalStatistics", "Visit", "Expenditures"];
+//                console.log("lastModified: ", Storage.lastModified(query));
+//
+//                query = [{
+//                    "type": "OperationalStatistics",
+//                    "field": "date"
+//                        }, {
+//                    "type": "Visit",
+//                    "field": "id"
+//                        }, {
+//                    "type": "Expenditures",
+//                    "field": "date"
+//                        }];
+//                Storage.getFieldStat(query, function(result){
+//                    console.log("getFieldStat ", result);
+//                });
+
                 var loader = this;
-                //                console.log("search params in loader:", params);
 
                 Storage.search(className, params, function (data) {
                     if (data == null) { //если в базе ничего не нашли
@@ -82,7 +98,7 @@ myApp.service("Loader", ["$http", "OperationalStatisticsData", "GetOpStatObjects
                 });
             }
         }
-            }]);
+    }]);
 
 
 function compareByDate(a, b) {

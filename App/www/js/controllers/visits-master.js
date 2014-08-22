@@ -66,7 +66,7 @@ myApp.controller('VisitsMasterController', function ($scope, $filter, $location,
      * @description Метод для перехода на страницу мастера.
      */
     $scope.toMaster = function (id) {
-        $location.path('master/' + id + "/" + $scope.date);
+//        $location.path('master/' + id + "/" + $scope.date);
     }
 
     /**

@@ -10,7 +10,70 @@ myApp.factory('Storage', function (DateHelper) {
     var dbName = "storage";
     var database = null;
     var dbVersion = 1.0;
+
+    var classesLastModified = {
+        "OperationalStatistics": "2014-06-01 15:00:00",
+        "Visit": "2014-07-01 15:15:00",
+        "Expenditures": "2014-08-01 15:30:00"
+    }
+
+    var classesFieldStat = {
+        "OperationalStatistics": {
+            "date": {
+                min: "2013-01-01 09:00:00",
+                max: "2014-01-01 15:15:00"
+            }
+        },
+        "Visit": {
+            "id": {
+                min: "2013-01-01 13:00:00",
+                max: "2014-01-01 17:15:00"
+            }
+        },
+        "Expenditures": {
+            "date": {
+                min: "2013-01-01 15:00:00",
+                max: "2014-01-01 19:15:00"
+            }
+        }
+    };
+
     open();
+
+    var lastModified = function (query) {
+        var result = {};
+        for (var i in query)
+            result[query[i]] = classesLastModified[query[i]];
+        return result;
+
+    };
+
+    /**
+     *
+     * @ngdoc method
+     * @name myApp.service:Storage#getFieldStat
+     * @methodOf myApp.service:Storage
+     * @description Проверяет поддержку indexedDB платформой
+     * @param {Array} query 
+     * @param {Function} callback 
+     * @return {Object} экземпляр класса  className
+     */
+    var getFieldStat = function (query, callback) {
+        var result = [];
+        for (var i in query) {
+            var resType = classesFieldStat[query[i].type];
+            var resField = resType[query[i].field];
+            result.push({
+                type: query[i].type,
+                field: query[i].field,
+                min: resField.min,
+                max: resField.max
+            });
+        }
+        callback(result);
+    };
+
+
     /**
      *
      * @ngdoc method
@@ -126,7 +189,8 @@ myApp.factory('Storage', function (DateHelper) {
             var request = store.get(primary);
             request.onerror = function (event) {
                 //make something
-            };request.onsuccess = function (event) {
+            };
+            request.onsuccess = function (event) {
                 if (request.result) {
                     callback(request.result);
                 } else {
@@ -191,6 +255,8 @@ myApp.factory('Storage', function (DateHelper) {
         update: update,
         get: get,
         search: search,
-        checkSupport: checkSupport
+        checkSupport: checkSupport,
+        lastModified: lastModified,
+        getFieldStat: getFieldStat
     };
 });
