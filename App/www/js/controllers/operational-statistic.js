@@ -87,7 +87,7 @@ myApp.controller('OperationalStatisticController', function ($scope, $location, 
                         endDate = period.end;
                     }
                     console.log("begend", beginDate, endDate)
-                    Storage.search("OperationalStatistics", {
+                    Loader.search("OperationalStatistics", {
                         dateFrom: beginDate,
                         dateTill: endDate,
                         step: $scope.step,
@@ -114,7 +114,7 @@ myApp.controller('OperationalStatisticController', function ($scope, $location, 
 
             }
             console.log("begend", beginDate, endDate)
-            Storage.search("OperationalStatistics", {
+            Loader.search("OperationalStatistics", {
                 dateFrom: beginDate,
                 dateTill: endDate,
                 step: $scope.step,

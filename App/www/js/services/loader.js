@@ -36,70 +36,53 @@ myApp.service("Loader", ["$http", "OperationalStatisticsData", "GetOpStatObjects
                     } else
                         Storage.update(objs[i]);
                 }
+                console.log("objs", objs);
                 callback(objs);
             },
             search: function (className, params, callback) {
-                //                var query = ["OperationalStatistics", "Visit", "Expenditures"];
-                //                console.log("lastModified: ", Storage.lastModified(query));
-                //
-                //                query = [{
-                //                    "type": "OperationalStatistics",
-                //                    "field": "date"
-                //                        }, {
-                //                    "type": "Visit",
-                //                    "field": "id"
-                //                        }, {
-                //                    "type": "Expenditures",
-                //                    "field": "date"
-                //                        }];
-                //                Storage.getFieldStat(query, function(result){
-                //                    console.log("getFieldStat ", result);
-                //                });
-
                 var loader = this;
 
                 Storage.search(className, params, function (data) {
-                    loader.get(className, params, callback);
-                    //                    if (data == null) { //если в базе ничего не нашли
-                    //                        loader.get(className, params, callback);
-                    //                    } else {
-                    //                        //                        var objs = classes[className].getObjects(data);
-                    //                        //                        var period = DateHelper.getPeriod(params.dateFrom, params.step);
-                    //                        //                        var day = period.begin;
-                    //                        //                        var missingDates = [];
-                    //                        //                        while (day < params.dateTill || day.toDateString() == params.dateTill.toDateString()) {
-                    //                        //                            var hasObject = false;
-                    //                        //                            for (var i = 0; i < objs.length; i++) {
-                    //                        //                                if (day.toDateString() == objs[i].date.toDateString())
-                    //                        //                                    hasObject = true;
-                    //                        //                            }
-                    //                        //                            if (!hasObject)
-                    //                        //                                missingDates.push(day);
-                    //                        //                            period = DateHelper.getNextPeriod(day, params.step);
-                    //                        //                            day = period.begin;
-                    //                        //                        }
-                    //                        //
-                    //                        //                        var i = 0;
-                    //                        //                        while (i < missingDates.length) {
-                    //                        //                            var primary = {
-                    //                        //                                dateFrom: missingDates[i],
-                    //                        //                                dateTill: DateHelper.getPeriod(missingDates[i], params.step).end,
-                    //                        //                                step: params.step,
-                    //                        //                                index: params.indexName
-                    //                        //                            }
-                    //                        //                            loader.get(className, primary, function (misObj) {
-                    //                        //                                objs = objs.concat(misObj);
-                    //                        //                                i++;
-                    //                        //                            });
-                    //                        //                        }
-                    //                        //                        objs.sort(compareByDate);
-                    //
-                    //                        callback(data);
-                    //                    }
+                    if (data == null) { //если в базе ничего не нашли
+                        loader.get(className, params, callback);
+                    } else {
+                        //                        //                        var objs = classes[className].getObjects(data);
+                        //                        //                        var period = DateHelper.getPeriod(params.dateFrom, params.step);
+                        //                        //                        var day = period.begin;
+                        //                        //                        var missingDates = [];
+                        //                        //                        while (day < params.dateTill || day.toDateString() == params.dateTill.toDateString()) {
+                        //                        //                            var hasObject = false;
+                        //                        //                            for (var i = 0; i < objs.length; i++) {
+                        //                        //                                if (day.toDateString() == objs[i].date.toDateString())
+                        //                        //                                    hasObject = true;
+                        //                        //                            }
+                        //                        //                            if (!hasObject)
+                        //                        //                                missingDates.push(day);
+                        //                        //                            period = DateHelper.getNextPeriod(day, params.step);
+                        //                        //                            day = period.begin;
+                        //                        //                        }
+                        //                        //
+                        //                        //                        var i = 0;
+                        //                        //                        while (i < missingDates.length) {
+                        //                        //                            var primary = {
+                        //                        //                                dateFrom: missingDates[i],
+                        //                        //                                dateTill: DateHelper.getPeriod(missingDates[i], params.step).end,
+                        //                        //                                step: params.step,
+                        //                        //                                index: params.indexName
+                        //                        //                            }
+                        //                        //                            loader.get(className, primary, function (misObj) {
+                        //                        //                                objs = objs.concat(misObj);
+                        //                        //                                i++;
+                        //                        //                            });
+                        //                        //                        }
+                        //                        //                        objs.sort(compareByDate);
+                        //
+                        callback(data);
+                    }
                 });
             }
         }
-    }]);
+            }]);
 
 
 function compareByDate(a, b) {
