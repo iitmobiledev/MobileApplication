@@ -108,26 +108,28 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
              */
             function addPastData(contentData) {
                 ready = false;
-                for (var i = contentData.length - 1; i >= 0; i--) {
-                    newscope = getChildScope();
-                    newscope.page = contentData[i];
-                    newscope.$apply();
-                    // костыль, до тех пор пока разраб библиотеки slick
-                    // не реализует эту фичу
-                    // (оставаться на текущем слайде при добавлении слайда в начало)
-                    compiled(newscope, function (clonedElement, scope) {
-                        var ind = $('.my-slider').slickCurrentSlide();
-                        if ($('.my-slider').getSlick().slideCount !== 0) {
-                            count = 1;
-                        } else {
-                            count = 0;
-                        }
-                        $('.my-slider').unslick();
-                        $('.my-slider').prepend(clonedElement);
-                        toSlick();
-                        $('.my-slider').slickSetOption('speed', 0).slickGoTo(ind + count).slickSetOption('speed', 300);
-                        $('.my-slider').getSlick().$slides[0].setAttribute("contentKey", keyFunc(contentData[i]));
-                    });
+                if (contentData) {
+                    for (var i = contentData.length - 1; i >= 0; i--) {
+                        newscope = getChildScope();
+                        newscope.page = contentData[i];
+                        newscope.$apply();
+                        // костыль, до тех пор пока разраб библиотеки slick
+                        // не реализует эту фичу
+                        // (оставаться на текущем слайде при добавлении слайда в начало)
+                        compiled(newscope, function (clonedElement, scope) {
+                            var ind = $('.my-slider').slickCurrentSlide();
+                            if ($('.my-slider').getSlick().slideCount !== 0) {
+                                count = 1;
+                            } else {
+                                count = 0;
+                            }
+                            $('.my-slider').unslick();
+                            $('.my-slider').prepend(clonedElement);
+                            toSlick();
+                            $('.my-slider').slickSetOption('speed', 0).slickGoTo(ind + count).slickSetOption('speed', 300);
+                            $('.my-slider').getSlick().$slides[0].setAttribute("contentKey", keyFunc(contentData[i]));
+                        });
+                    }
                 }
                 tryKey();
             }
@@ -142,16 +144,18 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
              */
             function addFutureData(contentData) {
                 ready = false;
-                for (var i = 0; i < contentData.length; i++) {
-                    newscope = getChildScope();
-                    newscope.page = contentData[i];
-                    newscope.$apply();
-                    compiled(newscope, function (clonedElement, scope) {
-                        $('.my-slider').slickAdd(clonedElement);
-                        $('.my-slider').getSlick().$slides[$('.my-slider').getSlick().slideCount - 1].setAttribute("contentKey", keyFunc(contentData[i]));
+                if (contentData) {
+                    for (var i = 0; i < contentData.length; i++) {
+                        newscope = getChildScope();
+                        newscope.page = contentData[i];
+                        newscope.$apply();
+                        compiled(newscope, function (clonedElement, scope) {
+                            $('.my-slider').slickAdd(clonedElement);
+                            $('.my-slider').getSlick().$slides[$('.my-slider').getSlick().slideCount - 1].setAttribute("contentKey", keyFunc(contentData[i]));
 
-                    });
+                        });
 
+                    }
                 }
                 tryKey();
             }

@@ -114,7 +114,12 @@ myApp.controller('OperationalStatisticController', function ($scope, $location, 
 
             }
             console.log("begend", beginDate, endDate)
-            Finder.getPerDates(beginDate, endDate, $scope.step, "date", "OperationalStatistics", callback);
+            Storage.search("OperationalStatistics", {
+                dateFrom: beginDate,
+                dateTill: endDate,
+                step: $scope.step,
+                index: "date"
+            }, callback);
         };
     }
 
