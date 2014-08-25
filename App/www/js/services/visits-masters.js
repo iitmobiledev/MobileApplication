@@ -100,6 +100,7 @@ myApp.factory('Visit', function (Model, Client, Service) {
 
     visitConstructor.searchIndexedDb = function (trans, params, callback) {
         var result = [];
+        var dates = [];
         var store = trans.objectStore("Visit"); //найдем хранилище для объектов данного класса
         var keyRange = IDBKeyRange.bound(new Date(params.dateFrom), new Date(params.dateTill));
         console.log(keyRange);
@@ -111,7 +112,8 @@ myApp.factory('Visit', function (Model, Client, Service) {
         request.onsuccess = function (event) {
             var cursor = event.target.result;
             if (cursor) {
-                console.log(cursor.value);
+                //                console.log(cursor.value);
+                //                dates.push(new Date(cursor.value.date.getFullYear(),cursor.value.date.getMonth(),cursor.value.date.getDate()));
                 result.push(cursor.value);
                 cursor.continue();
             }
@@ -119,7 +121,7 @@ myApp.factory('Visit', function (Model, Client, Service) {
 
         trans.oncomplete = function (e) {
             if (result.length != 0) {
-                console.log("visits finded in db:", result);
+                //                console.log("dates in db:", dates);
                 callback(result);
             } else
                 callback(null);
