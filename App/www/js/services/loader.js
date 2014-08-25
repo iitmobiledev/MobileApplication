@@ -48,14 +48,14 @@ myApp.service("Loader", ["Storage", "ModelConverter", "Server",
                                 } else
                                     Storage.update(objs[i]);
                             }
-                            console.log("objs from server ", objs);
                             callback(objs);
                         });
                     } else {
                         var neededData = [];
                         for (var i = 0; i < data.length; i++) {
-                            if (data[i].step == params.step)
+                            if (data[i].step == params.step) {
                                 neededData.push(data[i]);
+                            }
                         }
                         if (neededData.length == 0) {
                             Server.search(className, params, function (result) {
@@ -63,20 +63,12 @@ myApp.service("Loader", ["Storage", "ModelConverter", "Server",
 
                                 //потом будет в синхронизаторе
                                 for (var i = 0; i < objs.length; i++) {
-                                    //                                    if (objs[i] instanceof Array) {
-                                    //                                        for (var j = 0; j < objs[i].length; j++) {
-                                    //                                            Storage.update(objs[i][j]);
-                                    //                                        }
-                                    //                                    } else
                                     Storage.update(objs[i]);
                                 }
-                                console.log("objs from server2 ", objs);
                                 callback(objs);
                             });
                         } else {
-                            var objs = ModelConverter.getObjects(className, data);
-
-                            console.log("objs from db ", objs);
+                            var objs = ModelConverter.getObjects(className, neededData);
                             callback(objs);
                         }
                     }

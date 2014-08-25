@@ -8,26 +8,11 @@
 myApp.factory('FinanceStatistics', function (Model, DateHelper) {
     return Model("FinanceStatistics", {
         deserialize: function (self, data) {
-            Object.defineProperty(self, "date", {
-                value: new Date(data.date),
-                writable: true
-            });
-            Object.defineProperty(self, "tillMoney", {
-                value: data.tillMoney,
-                writable: true
-            });
-            Object.defineProperty(self, "morningMoney", {
-                value: data.morningMoney,
-                writable: true
-            });
-            Object.defineProperty(self, "credit", {
-                value: data.credit,
-                writable: true
-            });
-            Object.defineProperty(self, "debit", {
-                value: data.debit,
-                writable: true
-            });
+            self.date = new Date(data.date);
+            self.tillMoney = data.tillMoney;
+            self.morningMoney = data.morningMoney;
+            self.credit = data.credit;
+            self.debit = data.debit;
         },
         serialize: function (self) {
             self.constructor.prototype.call(self)
@@ -57,6 +42,8 @@ myApp.factory('OperationalStatistics', function (Model, FinanceStatistics) {
             self.clients = data.clients;
             self.workload = data.workload;
             self.financeStat = new FinanceStatistics(data.financeStat);
+//             self.financeStat = {
+//             };
         },
         serialize: function (self) {
             self.constructor.prototype.call(self);
