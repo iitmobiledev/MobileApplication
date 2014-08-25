@@ -1,3 +1,10 @@
+/**
+ * @ngdoc service
+ * @description Сервис - конструктор класса Клиент
+ * @name myApp.service:Client
+ * @requires myApp.service:Model 
+ * @param {Object} data Данные в формате ключ: значение.
+ */
 myApp.factory('Client', function (Model) {
     return Model("Client", {
         serialize: function (self) {
@@ -9,6 +16,13 @@ myApp.factory('Client', function (Model) {
     });
 });
 
+/**
+ * @ngdoc service
+ * @description Сервис - конструктор класса Мастер
+ * @name myApp.service:Master
+ * @requires myApp.service:Model 
+ * @param {Object} data Данные в формате ключ: значение.
+ */
 myApp.factory('Master', function (Model) {
     return Model("Master", {
         serialize: function (self) {
@@ -20,7 +34,13 @@ myApp.factory('Master', function (Model) {
     });
 });
 
-
+/**
+ * @ngdoc service
+ * @description Сервис - конструктор класса Услуга
+ * @name myApp.service:Client
+ * @requires myApp.service:Model 
+ * @param {Object} data Данные в формате ключ: значение.
+ */
 myApp.factory('Service', function (Model, Master) {
     return Model("Service", {
         deserialize: function (self, data) {
@@ -41,7 +61,13 @@ myApp.factory('Service', function (Model, Master) {
 });
 
 
-
+/**
+ * @ngdoc service
+ * @description Сервис - конструктор класса Визит
+ * @name myApp.service:Client
+ * @requires myApp.service:Model 
+ * @param {Object} data Данные в формате ключ: значение.
+ */
 myApp.factory('Visit', function (Model, Client, Service) {
 
     var visitConstructor = Model("Visit", {
@@ -212,29 +238,3 @@ myApp.factory('MastersLoader', function (DateHelper, Loader) {
         getAllMastersPerDay: getAllMastersPerDay
     };
 });
-
-
-/**
- * @ngdoc service
- * @description Сервис для получения визита по указанному id
- * @name myApp.service:VisitLoader
- * @param {Number} neededID Идентификатор визита.
- * @returns {Visit} Объект "Визит" или null, если такой id не был найден.
-// */
-//myApp.factory('VisitLoader', function () {
-//    return function (neededID) {
-//        Loader.search("Visit", {
-//            id: neededID
-//        }, function (data) {
-//            return data;
-//        }             
-////        var getedData = getVisits();
-////        getedData = getedData.filter(function (visit) {
-////            return (visit.id == neededID);
-////        });
-////        if (getedData.length == 1)
-////            return getedData[0];
-////        else
-////            return null;
-//    };
-//});

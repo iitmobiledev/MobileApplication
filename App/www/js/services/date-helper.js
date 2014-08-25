@@ -15,8 +15,8 @@ myApp.factory('DateHelper', function () {
      * @ngdoc method
      * @name myApp.service:DateHelper#getPrev
      * @methodOf myApp.service:DateHelper
-     * @param {Date} date Дата, для которой будет вычислена предыдущая
-     * дата.
+     * @param {Date} date Дата, для которой будет вычислена
+     * предыдущая дата.
      * @param {String} step Указание периода, для которого будет
      * вычсилена предыдущая дата. Валидные значения параметра
      * прописаны в `DateHelper.steps`.  

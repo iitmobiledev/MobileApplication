@@ -1,12 +1,27 @@
 /**
  * @ngdoc service
- * @description Сервис для получения данных из хранилища или, при отсутствии кэшированных данных, с сервера по первичному ключу или за период.
+ * @description Сервис для получения данных из хранилища или,
+ * при отсутствии кэшированных данных, с сервера по
+ * первичному ключу или за период и для типизирования
+ * этих данных.
  * @name myApp.service:Loader
  */
 myApp.service("Loader", ["Storage", "ModelConverter", "Server",
     function (Storage, ModelConverter, Server) {
         return {
-            //получение объектов по первичному ключу
+            /**
+             * @ngdoc method
+             * @name myApp.service:Loader#get
+             * @methodOf myApp.service:Loader
+             * @param {String} className Класс, объект которого
+             * необходимо получить.
+             * @param {String} primaryKey Первичный ключ.
+             * @param {Function} callback Функция, в которую
+             * параметром будет передан полученный объект,
+             * будет вызвана после получения объекта.
+             * @description Метод предназначен для получения
+             * объекта по первичному ключу.
+             */
             get: function (className, primaryKey, callback) {
                 Storage.get(className, primaryKey, function (result) {
                     if (result == null) {
@@ -33,12 +48,37 @@ myApp.service("Loader", ["Storage", "ModelConverter", "Server",
                                 } else
                                     Storage.update(objs[i]);
                             }
-
+                            console.log("objs from server ", objs);
                             callback(objs);
                         });
                     } else {
-                        var objs = ModelConverter.getObjects(className, data);
-                        callback(objs);
+                        var neededData = [];
+                        for (var i = 0; i < data.length; i++) {
+                            if (data[i].step == params.step)
+                                neededData.push(data[i]);
+                        }
+                        if (neededData.length == 0) {
+                            Server.search(className, params, function (result) {
+                                var objs = ModelConverter.getObjects(className, result);
+
+                                //потом будет в синхронизаторе
+                                for (var i = 0; i < objs.length; i++) {
+                                    //                                    if (objs[i] instanceof Array) {
+                                    //                                        for (var j = 0; j < objs[i].length; j++) {
+                                    //                                            Storage.update(objs[i][j]);
+                                    //                                        }
+                                    //                                    } else
+                                    Storage.update(objs[i]);
+                                }
+                                console.log("objs from server2 ", objs);
+                                callback(objs);
+                            });
+                        } else {
+                            var objs = ModelConverter.getObjects(className, data);
+
+                            console.log("objs from db ", objs);
+                            callback(objs);
+                        }
                     }
                 });
             }
