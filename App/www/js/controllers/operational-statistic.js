@@ -23,7 +23,7 @@ myApp.controller('OperationalStatisticController', function ($scope, $location, 
     $scope.date = new Date(today.getFullYear(), today.getMonth(), today.getDate());
 
     $scope.step = DateHelper.steps.DAY;
-
+    $scope.loading = true;
     var steps = [DateHelper.steps.DAY, DateHelper.steps.WEEK, DateHelper.steps.MONTH];
     var titles = ["За день", "За неделю", "За месяц"];
 
