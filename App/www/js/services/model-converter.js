@@ -11,7 +11,6 @@ myApp.service("ModelConverter", ["OperationalStatistics", "Visit", "Expenditures
     function (OperationalStatistics, Visit, Expenditures) {
         var classes = {
             "OperationalStatistics": OperationalStatistics,
-            "Visits": Visit,
             "Visit": Visit,
             "Expenditures": Expenditures
         };

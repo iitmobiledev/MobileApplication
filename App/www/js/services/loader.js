@@ -37,6 +37,7 @@ myApp.service("Loader", ["Storage", "ModelConverter", "Server",
                 Storage.search(className, params, function (data) {
                     if (data == null) { //если в базе ничего не нашли
                         Server.search(className, params, function (result) {
+                            console.log("server.search", result);
                             var objs = ModelConverter.getObjects(className, result);
 
                             //потом будет в синхронизаторе
@@ -51,26 +52,27 @@ myApp.service("Loader", ["Storage", "ModelConverter", "Server",
                             callback(objs);
                         });
                     } else {
-                        var neededData = [];
-                        for (var i = 0; i < data.length; i++) {
-                            if (data[i].step == params.step) {
-                                neededData.push(data[i]);
-                            }
-                        }
-                        if (neededData.length == 0) {
-                            Server.search(className, params, function (result) {
-                                var objs = ModelConverter.getObjects(className, result);
-
-                                //потом будет в синхронизаторе
-                                for (var i = 0; i < objs.length; i++) {
-                                    Storage.update(objs[i]);
-                                }
-                                callback(objs);
-                            });
-                        } else {
-                            var objs = ModelConverter.getObjects(className, neededData);
-                            callback(objs);
-                        }
+                        //                        var neededData = [];
+                        //                        for (var i = 0; i < data.length; i++) {
+                        //                            if (data[i].step == params.step) {
+                        //                                neededData.push(data[i]);
+                        //                            }
+                        //                        }
+                        //                        console.log("loader-search result:", neededData);
+                        //                        if (neededData.length == 0) {
+                        //                            Server.search(className, params, function (result) {
+                        //                                var objs = ModelConverter.getObjects(className, result);
+                        //
+                        //                                //потом будет в синхронизаторе
+                        //                                for (var i = 0; i < objs.length; i++) {
+                        //                                    Storage.update(objs[i]);
+                        //                                }
+                        //                                callback(objs);
+                        //                            });
+                        //                        } else {
+                        var objs = ModelConverter.getObjects(className, data);
+                        callback(objs);
+                        //                        }
                     }
                 });
             }

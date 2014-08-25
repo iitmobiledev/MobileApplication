@@ -91,7 +91,6 @@ myApp.controller('OperationalStatisticController', function ($scope, $location, 
                         dateFrom: beginDate,
                         dateTill: endDate,
                         step: $scope.step,
-                        index: "date"
                     }, callback);
                 }
             });

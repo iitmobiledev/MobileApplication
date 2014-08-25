@@ -2,7 +2,7 @@
  * @ngdoc service
  * @description Сервис - конструктор класса Клиент
  * @name myApp.service:Client
- * @requires myApp.service:Model 
+ * @requires myApp.service:Model
  * @param {Object} data Данные в формате ключ: значение.
  */
 myApp.factory('Client', function (Model) {
@@ -20,7 +20,7 @@ myApp.factory('Client', function (Model) {
  * @ngdoc service
  * @description Сервис - конструктор класса Мастер
  * @name myApp.service:Master
- * @requires myApp.service:Model 
+ * @requires myApp.service:Model
  * @param {Object} data Данные в формате ключ: значение.
  */
 myApp.factory('Master', function (Model) {
@@ -38,7 +38,7 @@ myApp.factory('Master', function (Model) {
  * @ngdoc service
  * @description Сервис - конструктор класса Услуга
  * @name myApp.service:Client
- * @requires myApp.service:Model 
+ * @requires myApp.service:Model
  * @param {Object} data Данные в формате ключ: значение.
  */
 myApp.factory('Service', function (Model, Master) {
@@ -65,7 +65,7 @@ myApp.factory('Service', function (Model, Master) {
  * @ngdoc service
  * @description Сервис - конструктор класса Визит
  * @name myApp.service:Client
- * @requires myApp.service:Model 
+ * @requires myApp.service:Model
  * @param {Object} data Данные в формате ключ: значение.
  */
 myApp.factory('Visit', function (Model, Client, Service) {
@@ -83,7 +83,7 @@ myApp.factory('Visit', function (Model, Client, Service) {
             self.serviceList = serviceList;
 
             self.date = new Date(data.date);
-            self.paid=data.paid;
+            self.paid = data.paid;
         },
         serialize: function (self) {
             self.constructor.prototype.call(self)
@@ -104,13 +104,14 @@ myApp.factory('Visit', function (Model, Client, Service) {
         var keyRange = IDBKeyRange.bound(new Date(params.dateFrom), new Date(params.dateTill));
         console.log(keyRange);
         var request = store.index(params.index).openCursor(keyRange);
-        
+
         request.onerror = function (event) {
             callback(null);
         };
         request.onsuccess = function (event) {
             var cursor = event.target.result;
             if (cursor) {
+                console.log(cursor.value);
                 result.push(cursor.value);
                 cursor.continue();
             }
@@ -118,9 +119,9 @@ myApp.factory('Visit', function (Model, Client, Service) {
 
         trans.oncomplete = function (e) {
             if (result.length != 0) {
+                console.log("visits finded in db:", result);
                 callback(result);
-            }
-            else
+            } else
                 callback(null);
         }
     }

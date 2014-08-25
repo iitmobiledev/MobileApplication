@@ -76,7 +76,7 @@ myApp.controller('VisitsController', function ($scope, $filter, $location, Loade
     function updatePages() {
         $scope.prevdate = DateHelper.getPrevPeriod($scope.date, DateHelper.steps.DAY).begin;
         $scope.nextdate = DateHelper.getNextPeriod($scope.date, DateHelper.steps.DAY).end;
-        Loader.search("Visits", {
+        Loader.search("Visit", {
             dateFrom: $scope.prevdate,
             dateTill: $scope.nextdate,
             step: DateHelper.steps.DAY,

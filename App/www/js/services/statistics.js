@@ -2,7 +2,7 @@
  * @ngdoc service
  * @description Сервис - конструктор класса Визит
  * @name myApp.service:FinanceStatistics
- * @requires myApp.service:Model 
+ * @requires myApp.service:Model
  * @param {Object} data Данные в формате ключ: значение.
  */
 myApp.factory('FinanceStatistics', function (Model, DateHelper) {
@@ -27,8 +27,8 @@ myApp.factory('FinanceStatistics', function (Model, DateHelper) {
  * @ngdoc service
  * @description Сервис - конструктор класса Визит
  * @name myApp.service:OperationalStatistics
- * @requires myApp.service:Model 
- * @requires myApp.service:FinanceStatistics 
+ * @requires myApp.service:Model
+ * @requires myApp.service:FinanceStatistics
  * @param {Object} data Данные в формате ключ: значение.
  */
 myApp.factory('OperationalStatistics', function (Model, FinanceStatistics) {
@@ -42,8 +42,6 @@ myApp.factory('OperationalStatistics', function (Model, FinanceStatistics) {
             self.clients = data.clients;
             self.workload = data.workload;
             self.financeStat = new FinanceStatistics(data.financeStat);
-//             self.financeStat = {
-//             };
         },
         serialize: function (self) {
             self.constructor.prototype.call(self);
@@ -52,16 +50,18 @@ myApp.factory('OperationalStatistics', function (Model, FinanceStatistics) {
         },
         primary: ['date', 'step'],
         indexes: {
-            date: false,
-            step: false
+            step: false,
+            date: false
+
         }
     });
 
     opStat.searchIndexedDb = function (trans, params, callback) {
         var result = [];
         var store = trans.objectStore("OperationalStatistics"); //найдем хранилище для объектов данного класса
-        var keyRange = IDBKeyRange.bound(new Date(params.dateFrom), new Date(params.dateTill));
-        var request = store.index(params.index).openCursor(keyRange);
+        var keyRange = IDBKeyRange.bound([params.step, new Date(params.dateFrom)], [params.step, new Date(params.dateTill)]);
+        console.log(keyRange);
+        var request = store.index("step:date").openCursor(keyRange);
         request.onerror = function (event) {
             callback(null);
         };
@@ -70,7 +70,7 @@ myApp.factory('OperationalStatistics', function (Model, FinanceStatistics) {
             if (cursor) {
                 result.push(cursor.value);
                 cursor.
-                continue ();
+                continue();
             }
         };
 

@@ -1,6 +1,6 @@
 /**
  * @ngdoc service
- * @description Сервис для генерации данных. 
+ * @description Сервис для генерации данных.
  * @name myApp.service:Server
  * @requires myApp.service:DateHelper
  * @requires myApp.service:Visit
@@ -58,6 +58,7 @@ myApp.service("Server", ["DateHelper", "Visit",
                 visit.comment = "Забыла деньги дома. Обещала принести чуть позже."
                 visit.date = new Date(day.getFullYear(), day.getMonth(), day.getDate(), hours + Math.round(getRandom(-2, 1)), Math.round(getRandom(0, 59)));
                 visit.status = Visit.statuses.titles.COME;
+                return visit;
             },
             "Visits": function (params) {
                 var day = params.day || new Date();

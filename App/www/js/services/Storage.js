@@ -101,10 +101,9 @@ myApp.factory('Storage', function (DateHelper) {
 
         //пересоздаются ли объекты при изменении версии!?
         request.onupgradeneeded = function (event) {
-            //            console.log("update store");
             var db = event.target.result;
 
-            var models = ['OperationalStatistics', 'Visit']; //'OperationalStatistics', 
+            var models = ['OperationalStatistics', 'Visit'];
             var $inj = angular.injector(['myApp']);
             for (var i in models) {
                 var serv = $inj.get(models[i]);
@@ -220,7 +219,6 @@ myApp.factory('Storage', function (DateHelper) {
             var trans = db.transaction([className], "readwrite");
             var $inj = angular.injector(['myApp']);
             var serv = $inj.get(className);
-            //            console.log("serv", serv.prototype);
             serv.searchIndexedDb(trans, params, callback);
         } else
             callback(null);

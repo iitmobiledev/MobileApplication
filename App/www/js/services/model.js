@@ -314,11 +314,19 @@ myApp.factory("Model", function () {
                 keyPath: "__primary__"
             });
 
+            var indexes = [];
             angular.forEach(clz.getIndexes(), function (value, name) {
                 objectStore.createIndex(name, name, {
                     unique: value
                 });
-            })
+                this.push(name.toString());
+            }, indexes);
+            console.log(indexes);
+
+            objectStore.createIndex(indexes.join(":"), indexes, {
+                unique: false
+            });
+
         }
 
         /**
