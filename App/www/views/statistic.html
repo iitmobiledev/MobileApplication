@@ -50,9 +50,7 @@
                         </td>
                     </tr>
                 </table>
-
-                <table id="financeTable">
-                    <!--            <tr ng-controller="FinanceStatisticsController">-->
+        <table id="financeTable" ng-show='hasFinance(page)'>
                     <tr>
                         <td class="financeCell">
                             <h1>{{page.financeStat.tillMoney}} р.</h1>
@@ -68,6 +66,8 @@
 
                     </tr>
                 </table>
+
+                
             </div>
         </script>
         

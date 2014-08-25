@@ -101,11 +101,8 @@ myApp.controller('OperationalStatisticController', function ($scope, $location, 
             var beginDate = date,
                 endDate = date;
             for (var i = 0; i < quantity; i++) {
-                if (forward) {
-                    endDate = DateHelper.getNextPeriod(endDate, $scope.step).end;
-                } else {
-                    beginDate = DateHelper.getPrevPeriod(beginDate, $scope.step).begin;
-                }
+                endDate = DateHelper.getNextPeriod(endDate, $scope.step).end;
+                beginDate = DateHelper.getPrevPeriod(beginDate, $scope.step).begin;
             }
             if (beginDate == endDate && $scope.step != DateHelper.steps.DAY) {
                 var period = DateHelper.getPeriod(beginDate, $scope.step);
