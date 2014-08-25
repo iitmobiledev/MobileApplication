@@ -118,9 +118,10 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
                             $('.my-slider').prepend(clonedElement);
                             toSlick();
                             $('.my-slider').slickSetOption('speed', 0).slickGoTo(ind + c).slickSetOption('speed', 300);
-                            $('.my-slider').getSlick().$slides[0].setAttribute("contentKey", keyFunc(contentData[i]));
+                            $('.my-slider').getSlick().$slides[0].setAttribute("contentkey", keyFunc(contentData[i]));
                         });
                     }
+                    newscope.$apply();
                 }
                 tryKey();
             }
@@ -142,11 +143,12 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
                         newscope.$apply();
                         compiled(newscope, function (clonedElement, scope) {
                             $('.my-slider').slickAdd(clonedElement);
-                            $('.my-slider').getSlick().$slides[$('.my-slider').getSlick().slideCount - 1].setAttribute("contentKey", keyFunc(contentData[i]));
+                            $('.my-slider').getSlick().$slides[$('.my-slider').getSlick().slideCount - 1].setAttribute("contentkey", keyFunc(contentData[i]));
 
                         });
 
                     }
+                    newscope.$apply();
                 }
                 tryKey();
             }
@@ -175,18 +177,28 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
                         }
                         newscope = getChildScope();
                         newscope.page = contentData[i];
+                        console.log(i, contentData[i])
                         newscope.$apply();
                         compiled(newscope, function (clonedElement, scope) {
                             $('.my-slider').slickAdd(clonedElement);
-                            if (i == 0)
-                            {
+                            if (i == 0) {
                                 $('.my-slider').slickRemove(true);
                             }
-                            $('.my-slider').getSlick().$slides[$('.my-slider').getSlick().slideCount - 1].setAttribute("contentKey", keyFunc(contentData[i]));
-                            $('.my-slider').unslick();
-                            toSlick();
+                            loop();
+                            function loop (){
+                                if ($('.my-slider').getSlick().$slides[$('.my-slider').getSlick().slideCount - 1]) {
+                                    $('.my-slider').getSlick().$slides[$('.my-slider').getSlick().slideCount - 1].setAttribute("contentkey", keyFunc(contentData[i]));
+                                    $('.my-slider').unslick();
+                                    toSlick();
+                                } else {
+                                    setTimeout(loop, 10);
+                                }
+                            }
+                            //                            newscope.$apply(); 
                         });
                     }
+//                    newscope = getChildScope();
+                    newscope.$apply();
                     $('.my-slider').slickSetOption('speed', 0).slickGoTo(curIndex).slickSetOption('speed', 300);
                     tryKey();
                 }
@@ -195,6 +207,7 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
             function tryKey() {
                 if (getCurrentKey()) {
                     ready = true;
+                    console.log($('.my-slider').getSlick());
                 } else {
                     setTimeout(tryKey, 100);
                 }
@@ -228,7 +241,7 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
              */
             function getCurrentKey() {
                 if ($('.my-slider').getSlick().slideCount !== 0) {
-                    return $('.my-slider').getSlick().$slides[$('.my-slider').slickCurrentSlide()].getAttribute("contentKey");
+                    return $('.my-slider').getSlick().$slides[$('.my-slider').slickCurrentSlide()].getAttribute("contentkey");
                 } else {
                     return null;
                 }
