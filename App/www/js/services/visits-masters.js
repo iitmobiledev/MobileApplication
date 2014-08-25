@@ -202,7 +202,7 @@ myApp.factory('MastersLoader', function (DateHelper, Loader) {
      * @param {Function} callback Функция, в которую будут переданы полученные мастера.
      */
     function getAllMastersPerDay(period, callback) {
-        Loader.search("Visits", {
+        Loader.search("Visit", {
             dateFrom: period.begin,
             dateTill: period.end,
             step: DateHelper.steps.DAY

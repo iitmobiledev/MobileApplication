@@ -23,206 +23,6 @@ myApp.service("Server", ["DateHelper", "Visit",
                     data.financeStat = {};
                 return data;
             },
-            "Visit": function (params) {
-                var day = params.day || new Date();
-                var sList = [];
-                var hours = Math.round(getRandom(8, 21));
-                var serviceCost = Math.round(getRandom(500, 10000));
-                var salary = serviceCost - Math.round(getRandom(0, serviceCost / 2));
-                var service = {
-                    description: "Маникюр",
-                    startTime: new Date(day.getFullYear(), day.getMonth(), day.getDate(), hours, Math.round(getRandom(0, 59))),
-                    endTime: new Date(day.getFullYear(), day.getMonth(), day.getDate(), hours + 2, Math.round(getRandom(0, 59))),
-                    master: {
-                        id: 1,
-                        firstName: "Оксана",
-                        middleName: "Георгиевна",
-                        lastName: "Ромашкина"
-                    },
-                    cost: serviceCost,
-                    employeeSalary: salary
-                };
-                sList.push(service);
-                var visit = {};
-                visit.id = params.id || 1;
-                visit.client = {
-                    firstName: "Марина",
-                    middleName: "Андреевна",
-                    lastName: "Пекарская",
-                    phoneNumber: "+79021565814",
-                    balance: getRandom(-1000, 10000),
-                    discount: Math.round(getRandom(3, 30))
-                };
-                visit.paid = getRandom(-1000, 10000);
-                visit.serviceList = sList;
-                visit.comment = "Забыла деньги дома. Обещала принести чуть позже."
-                visit.date = new Date(day.getFullYear(), day.getMonth(), day.getDate(), hours + Math.round(getRandom(-2, 1)), Math.round(getRandom(0, 59)));
-                visit.status = Visit.statuses.titles.COME;
-                return visit;
-            },
-            "Visits": function (params) {
-                var day = params.day || new Date();
-                var visitsDay = [];
-                var sList = [];
-                var hours = Math.round(getRandom(8, 21));
-                var serviceCost = Math.round(getRandom(500, 10000));
-                var salary = serviceCost - Math.round(getRandom(0, serviceCost / 2));
-                var service = {
-                    description: "Стрижка",
-                    startTime: new Date(day.getFullYear(), day.getMonth(), day.getDate(), hours, Math.round(getRandom(0, 59))),
-                    endTime: new Date(day.getFullYear(), day.getMonth(), day.getDate(), hours + 2, Math.round(getRandom(0, 59))),
-                    master: {
-                        id: 1,
-                        firstName: "Владимир",
-                        middleName: "Петрович",
-                        lastName: "Сидоров"
-                    },
-                    cost: serviceCost,
-                    employeeSalary: salary
-                };
-                sList.push(service);
-                var visit = {};
-                visit.id = Math.round(getRandom(0, 500));
-                visit.client = {
-                    firstName: "Марина",
-                    middleName: "Андреевна",
-                    lastName: "Пекарская",
-                    phoneNumber: "+79021565814",
-                    balance: getRandom(-1000, 10000),
-                    discount: Math.round(getRandom(3, 30))
-                };
-                visit.paid = getRandom(-1000, 10000);
-                visit.serviceList = sList;
-                visit.comment = "Забыла деньги дома. Обещала принести чуть позже."
-                visit.date = new Date(day.getFullYear(), day.getMonth(), day.getDate(), hours + Math.round(getRandom(-2, 1)), Math.round(getRandom(0, 59)));
-                visit.status = Visit.statuses.titles.COME;
-                visitsDay.push(visit);
-
-                sList = [];
-                hours = Math.round(getRandom(8, 21));
-                serviceCost = Math.round(getRandom(500, 10000));
-                salary = serviceCost - Math.round(getRandom(0, serviceCost / 2));
-                service = {
-                    description: "Мелирование",
-                    startTime: new Date(day.getFullYear(), day.getMonth(), day.getDate(), hours, Math.round(getRandom(0, 59))),
-                    endTime: new Date(day.getFullYear(), day.getMonth(), day.getDate(), hours + 2, Math.round(getRandom(0, 59))),
-                    master: {
-                        id: 2,
-                        firstName: "Наталья",
-                        middleName: "Федоровна",
-                        lastName: "Касатникова"
-                    },
-                    cost: serviceCost,
-                    employeeSalary: salary
-                };
-                sList.push(service);
-                var visit = {};
-                visit.id = 2;
-                visit.client = {
-                    firstName: "Елена",
-                    middleName: "Андреевна",
-                    lastName: "Бурлакова",
-                    phoneNumber: "+79021565814",
-                    balance: getRandom(-1000, 10000),
-                    discount: Math.round(getRandom(3, 30))
-                };
-                visit.serviceList = sList;
-                visit.paid = getRandom(-1000, 10000);
-                visit.comment = "Может опоздать"
-                visit.date = new Date(day.getFullYear(), day.getMonth(), day.getDate(), hours + Math.round(getRandom(-2, 1)), Math.round(getRandom(0, 59)));
-                visit.status = Visit.statuses.titles.NEW;
-                visitsDay.push(visit);
-
-                sList = [];
-                hours = Math.round(getRandom(8, 21));
-                serviceCost = Math.round(getRandom(500, 10000));
-                salary = serviceCost - Math.round(getRandom(0, serviceCost / 2));
-                var endTime = new Date(day.getFullYear(), day.getMonth(), day.getDate(), hours + 2, Math.round(getRandom(0, 59)));
-                service = {
-                    description: "Стрижка волос",
-                    startTime: new Date(day.getFullYear(), day.getMonth(), day.getDate(), hours, Math.round(getRandom(0, 59))),
-                    endTime: endTime,
-                    master: {
-                        id: 3,
-                        firstName: "Алена",
-                        middleName: "Федоровна",
-                        lastName: "Алевская"
-                    },
-                    cost: serviceCost,
-                    employeeSalary: salary
-                };
-                sList.push(service);
-                visit.paid = getRandom(-1000, 10000);
-                serviceCost = Math.round(getRandom(500, 10000));
-                salary = serviceCost - Math.round(getRandom(0, serviceCost / 2));
-                service = {
-                    description: "Ламинирование",
-                    startTime: endTime,
-                    endTime: new Date(day.getFullYear(), day.getMonth(), day.getDate(), endTime.getHours() + 1, Math.round(getRandom(0, 59))),
-                    master: {
-                        id: 3,
-                        firstName: "Алена",
-                        middleName: "Федоровна",
-                        lastName: "Алевская"
-                    },
-                    cost: serviceCost,
-                    employeeSalary: salary
-                };
-                sList.push(service);
-                var visit = {};
-                visit.id = 3;
-                visit.client = {
-                    firstName: "Константин",
-                    middleName: "Борисович",
-                    lastName: "Варнавский",
-                    phoneNumber: "+79021565814",
-                    balance: getRandom(-1000, 10000),
-                    discount: Math.round(getRandom(3, 30))
-                };
-                visit.serviceList = sList;
-                visit.paid = getRandom(-1000, 10000);
-                visit.comment = "Может опоздать"
-                visit.date = new Date(day.getFullYear(), day.getMonth(), day.getDate(), hours + Math.round(getRandom(-2, 1)), Math.round(getRandom(0, 59)));
-                visit.status = Visit.statuses.titles.NOTCOME;
-                visitsDay.push(visit);
-
-                sList = [];
-                hours = Math.round(getRandom(8, 21));
-                serviceCost = Math.round(getRandom(500, 10000));
-                salary = serviceCost - Math.round(getRandom(0, serviceCost / 2));
-                service = {
-                    description: "Массаж",
-                    startTime: new Date(day.getFullYear(), day.getMonth(), day.getDate(), hours, Math.round(getRandom(0, 59))),
-                    endTime: new Date(day.getFullYear(), day.getMonth(), day.getDate(), hours + 2, Math.round(getRandom(0, 59))),
-                    master: {
-                        id: 3,
-                        firstName: "Алена",
-                        middleName: "Федоровна",
-                        lastName: "Алевская"
-                    },
-                    cost: serviceCost,
-                    employeeSalary: salary
-                };
-                sList.push(service);
-                var visit = {};
-                visit.id = 4;
-                visit.client = {
-                    firstName: "Светлана",
-                    middleName: "Андреевна",
-                    lastName: "Игнашевич",
-                    phoneNumber: "+79021565814",
-                    balance: getRandom(-1000, 10000),
-                    discount: Math.round(getRandom(3, 30))
-                };
-                visit.serviceList = sList;
-                visit.paid = getRandom(-1000, 10000);
-                visit.comment = "Может опоздать"
-                visit.date = new Date(day.getFullYear(), day.getMonth(), day.getDate(), hours + Math.round(getRandom(-2, 1)), Math.round(getRandom(0, 59)));
-                visit.status = Visit.statuses.titles.CONFIRMED;
-                visitsDay.push(visit);
-
-                return visitsDay;
-            },
             "Expenditures": function (params) {
                 var expenditures = {};
                 var expItemsList = [];
@@ -255,6 +55,169 @@ myApp.service("Server", ["DateHelper", "Visit",
              * @description Метод для получения данных за период.
              */
             search: function (className, params, callback) {
+                classes["Visit"] = function (params) {
+                        var day = params.day || new Date();
+                        var visitsDay = [];
+                        var sList = [];
+                        var hours = Math.round(getRandom(8, 21));
+                        var serviceCost = Math.round(getRandom(500, 10000));
+                        var salary = serviceCost - Math.round(getRandom(0, serviceCost / 2));
+                        var service = {
+                            description: "Стрижка",
+                            startTime: new Date(day.getFullYear(), day.getMonth(), day.getDate(), hours, Math.round(getRandom(0, 59))),
+                            endTime: new Date(day.getFullYear(), day.getMonth(), day.getDate(), hours + 2, Math.round(getRandom(0, 59))),
+                            master: {
+                                id: 1,
+                                firstName: "Владимир",
+                                middleName: "Петрович",
+                                lastName: "Сидоров"
+                            },
+                            cost: serviceCost,
+                            employeeSalary: salary
+                        };
+                        sList.push(service);
+                        var visit = {};
+                        visit.id = Math.round(getRandom(0, 500));
+                        visit.client = {
+                            firstName: "Марина",
+                            middleName: "Андреевна",
+                            lastName: "Пекарская",
+                            phoneNumber: "+79021565814",
+                            balance: getRandom(-1000, 10000),
+                            discount: Math.round(getRandom(3, 30))
+                        };
+                        visit.paid = getRandom(-1000, 10000);
+                        visit.serviceList = sList;
+                        visit.comment = "Забыла деньги дома. Обещала принести чуть позже."
+                        visit.date = new Date(day.getFullYear(), day.getMonth(), day.getDate(), hours + Math.round(getRandom(-2, 1)), Math.round(getRandom(0, 59)));
+                        visit.status = Visit.statuses.titles.COME;
+                        visitsDay.push(visit);
+
+                        sList = [];
+                        hours = Math.round(getRandom(8, 21));
+                        serviceCost = Math.round(getRandom(500, 10000));
+                        salary = serviceCost - Math.round(getRandom(0, serviceCost / 2));
+                        service = {
+                            description: "Мелирование",
+                            startTime: new Date(day.getFullYear(), day.getMonth(), day.getDate(), hours, Math.round(getRandom(0, 59))),
+                            endTime: new Date(day.getFullYear(), day.getMonth(), day.getDate(), hours + 2, Math.round(getRandom(0, 59))),
+                            master: {
+                                id: 2,
+                                firstName: "Наталья",
+                                middleName: "Федоровна",
+                                lastName: "Касатникова"
+                            },
+                            cost: serviceCost,
+                            employeeSalary: salary
+                        };
+                        sList.push(service);
+                        var visit = {};
+                        visit.id = 2;
+                        visit.client = {
+                            firstName: "Елена",
+                            middleName: "Андреевна",
+                            lastName: "Бурлакова",
+                            phoneNumber: "+79021565814",
+                            balance: getRandom(-1000, 10000),
+                            discount: Math.round(getRandom(3, 30))
+                        };
+                        visit.serviceList = sList;
+                        visit.paid = getRandom(-1000, 10000);
+                        visit.comment = "Может опоздать"
+                        visit.date = new Date(day.getFullYear(), day.getMonth(), day.getDate(), hours + Math.round(getRandom(-2, 1)), Math.round(getRandom(0, 59)));
+                        visit.status = Visit.statuses.titles.NEW;
+                        visitsDay.push(visit);
+
+                        sList = [];
+                        hours = Math.round(getRandom(8, 21));
+                        serviceCost = Math.round(getRandom(500, 10000));
+                        salary = serviceCost - Math.round(getRandom(0, serviceCost / 2));
+                        var endTime = new Date(day.getFullYear(), day.getMonth(), day.getDate(), hours + 2, Math.round(getRandom(0, 59)));
+                        service = {
+                            description: "Стрижка волос",
+                            startTime: new Date(day.getFullYear(), day.getMonth(), day.getDate(), hours, Math.round(getRandom(0, 59))),
+                            endTime: endTime,
+                            master: {
+                                id: 3,
+                                firstName: "Алена",
+                                middleName: "Федоровна",
+                                lastName: "Алевская"
+                            },
+                            cost: serviceCost,
+                            employeeSalary: salary
+                        };
+                        sList.push(service);
+                        visit.paid = getRandom(-1000, 10000);
+                        serviceCost = Math.round(getRandom(500, 10000));
+                        salary = serviceCost - Math.round(getRandom(0, serviceCost / 2));
+                        service = {
+                            description: "Ламинирование",
+                            startTime: endTime,
+                            endTime: new Date(day.getFullYear(), day.getMonth(), day.getDate(), endTime.getHours() + 1, Math.round(getRandom(0, 59))),
+                            master: {
+                                id: 3,
+                                firstName: "Алена",
+                                middleName: "Федоровна",
+                                lastName: "Алевская"
+                            },
+                            cost: serviceCost,
+                            employeeSalary: salary
+                        };
+                        sList.push(service);
+                        var visit = {};
+                        visit.id = 3;
+                        visit.client = {
+                            firstName: "Константин",
+                            middleName: "Борисович",
+                            lastName: "Варнавский",
+                            phoneNumber: "+79021565814",
+                            balance: getRandom(-1000, 10000),
+                            discount: Math.round(getRandom(3, 30))
+                        };
+                        visit.serviceList = sList;
+                        visit.paid = getRandom(-1000, 10000);
+                        visit.comment = "Может опоздать"
+                        visit.date = new Date(day.getFullYear(), day.getMonth(), day.getDate(), hours + Math.round(getRandom(-2, 1)), Math.round(getRandom(0, 59)));
+                        visit.status = Visit.statuses.titles.NOTCOME;
+                        visitsDay.push(visit);
+
+                        sList = [];
+                        hours = Math.round(getRandom(8, 21));
+                        serviceCost = Math.round(getRandom(500, 10000));
+                        salary = serviceCost - Math.round(getRandom(0, serviceCost / 2));
+                        service = {
+                            description: "Массаж",
+                            startTime: new Date(day.getFullYear(), day.getMonth(), day.getDate(), hours, Math.round(getRandom(0, 59))),
+                            endTime: new Date(day.getFullYear(), day.getMonth(), day.getDate(), hours + 2, Math.round(getRandom(0, 59))),
+                            master: {
+                                id: 3,
+                                firstName: "Алена",
+                                middleName: "Федоровна",
+                                lastName: "Алевская"
+                            },
+                            cost: serviceCost,
+                            employeeSalary: salary
+                        };
+                        sList.push(service);
+                        var visit = {};
+                        visit.id = 4;
+                        visit.client = {
+                            firstName: "Светлана",
+                            middleName: "Андреевна",
+                            lastName: "Игнашевич",
+                            phoneNumber: "+79021565814",
+                            balance: getRandom(-1000, 10000),
+                            discount: Math.round(getRandom(3, 30))
+                        };
+                        visit.serviceList = sList;
+                        visit.paid = getRandom(-1000, 10000);
+                        visit.comment = "Может опоздать"
+                        visit.date = new Date(day.getFullYear(), day.getMonth(), day.getDate(), hours + Math.round(getRandom(-2, 1)), Math.round(getRandom(0, 59)));
+                        visit.status = Visit.statuses.titles.CONFIRMED;
+                        visitsDay.push(visit);
+
+                        return visitsDay;
+                };
                 var result = [];
                 var day = params.dateFrom;
                 while (day < params.dateTill || day.toDateString() == params.dateTill.toDateString()) {
@@ -281,6 +244,43 @@ myApp.service("Server", ["DateHelper", "Visit",
              * первичному ключу.
              */
             get: function (className, primary, callback) {
+                classes["Visit"] = function (params) {
+                    var day = params.day || new Date();
+                    var sList = [];
+                    var hours = Math.round(getRandom(8, 21));
+                    var serviceCost = Math.round(getRandom(500, 10000));
+                    var salary = serviceCost - Math.round(getRandom(0, serviceCost / 2));
+                    var service = {
+                        description: "Маникюр",
+                        startTime: new Date(day.getFullYear(), day.getMonth(), day.getDate(), hours, Math.round(getRandom(0, 59))),
+                        endTime: new Date(day.getFullYear(), day.getMonth(), day.getDate(), hours + 2, Math.round(getRandom(0, 59))),
+                        master: {
+                            id: 1,
+                            firstName: "Оксана",
+                            middleName: "Георгиевна",
+                            lastName: "Ромашкина"
+                        },
+                        cost: serviceCost,
+                        employeeSalary: salary
+                    };
+                    sList.push(service);
+                    var visit = {};
+                    visit.id = params.id || 1;
+                    visit.client = {
+                        firstName: "Марина",
+                        middleName: "Андреевна",
+                        lastName: "Пекарская",
+                        phoneNumber: "+79021565814",
+                        balance: getRandom(-1000, 10000),
+                        discount: Math.round(getRandom(3, 30))
+                    };
+                    visit.paid = getRandom(-1000, 10000);
+                    visit.serviceList = sList;
+                    visit.comment = "Забыла деньги дома. Обещала принести чуть позже."
+                    visit.date = new Date(day.getFullYear(), day.getMonth(), day.getDate(), hours + Math.round(getRandom(-2, 1)), Math.round(getRandom(0, 59)));
+                    visit.status = Visit.statuses.titles.COME;
+                    return visit;
+                };
                 var params;
                 primary = primary.split(':');
                 if (primary.length == 1)
