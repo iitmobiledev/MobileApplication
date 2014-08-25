@@ -11,14 +11,6 @@ myApp.factory('Client', function (Model) {
 
 myApp.factory('Master', function (Model) {
     return Model("Master", {
-        //        deserialize: function (self, data) {
-        //            console.log("parent ", parent);
-        //            Parent.call(self, data)
-        //            self.id = data.id;
-        //            self.firstName = data.firstName;
-        //            self.middleName = data.middleName;
-        //            self.lastName = data.lastName;
-        //        },
         serialize: function (self) {
             self.constructor.prototype.call(self)
             var data = angular.extend({}, self);
@@ -86,6 +78,7 @@ myApp.factory('Visit', function (Model, Client, Service) {
         var keyRange = IDBKeyRange.bound(new Date(params.dateFrom), new Date(params.dateTill));
         console.log(keyRange);
         var request = store.index(params.index).openCursor(keyRange);
+        
         request.onerror = function (event) {
             callback(null);
         };
@@ -93,8 +86,7 @@ myApp.factory('Visit', function (Model, Client, Service) {
             var cursor = event.target.result;
             if (cursor) {
                 result.push(cursor.value);
-                cursor.
-                continue();
+                cursor.continue();
             }
         };
 
@@ -102,6 +94,8 @@ myApp.factory('Visit', function (Model, Client, Service) {
             if (result.length != 0) {
                 callback(result);
             }
+            else
+                callback(null);
         }
     }
 
@@ -122,124 +116,7 @@ myApp.factory('Visit', function (Model, Client, Service) {
     }
 
     return visitConstructor;
-
 });
-
-
-
-myApp.factory('GetVisitsObjects', function (Visit) {
-    return function (allVisits) {
-        var result = [];
-        for (var i = 0; i < allVisits.length; i++) {
-            var visitsDay = allVisits[i];
-            var tempResult = [];
-            for (var j = 0; j < visitsDay.length; j++) {
-                var visit = new Visit(visitsDay[j]);
-                tempResult.push(visit);
-            }
-            result.push(tempResult);
-        }
-        var objsList = [];
-        if (result.length != 0) {
-            for (var i = 0; i < result.length; i++) {
-                objsList.push(result[i].sort(function (a, b) {
-                    return new Date(a.date).getTime() - new Date(b.date).getTime()
-                }));
-            }
-        }
-        return objsList;
-    }
-});
-
-myApp.factory('GetVisitObjects', function (Visit) {
-    return function (visit) {
-        return new Visit(visit);
-    }
-});
-
-/**
- * @ngdoc service
- * @description Сервис для загрузки данных о визитах.
- * @name myApp.service:VisitsLoader
- */
-//myApp.factory('VisitsLoader', function (Model, Visit) {
-//    var statuses = ["Новая запись", "Клиент не пришел", "Подтверждена", "Клиент пришел"];
-//    /**
-//     *
-//     * @ngdoc method
-//     * @name myApp.service:VisitsLoader#getData
-//     * @methodOf myApp.service:VisitsLoader
-//     * @description Метод для получения визитом за выбранный день.
-//     * @param {Date} date Дата, за которую нужно получить список визитов.
-//     * @returns {Array} Список визитов за нужную дату или [], если
-//     * визитов за эту дату нет.
-//     */
-//    function getData(date) {
-//        var getedData = getVisits();
-//        var result = [];
-//        for (var i = 0; i < getedData.length; i++) {
-//            var item = new Visit(getedData[i]);
-//            result.push(item);
-//        }
-//        result = result.filter(function (visit) {
-//            return (visit.date.toDateString() == date.toDateString());
-//        });
-//        if (result.length != 0) {
-//            return result.sort(function (a, b) {
-//                return new Date(a.date).getTime() - new Date(b.date).getTime()
-//            });
-//        }
-//        return [];
-//    }
-//
-//
-//    /**
-//     *
-//     * @ngdoc method
-//     * @name myApp.service:VisitsLoader#getMinDate
-//     * @methodOf myApp.service:VisitsLoader
-//     * @description Функция для получения минимальной даты (самой
-//     * прошлой), за которую есть данные по визитам.
-//     * @returns {Date} Дата самых ранних данных по визитам.
-//     */
-////    function getMinDate() {
-////        var data = getVisits();
-////        var minDate = new Date();
-////        for (var i = 0; i < data.length; i++) {
-////            if (data[i].date < minDate)
-////                minDate = new Date(data[i].date.getFullYear(), data[i].date.getMonth(), data[i].date.getDate());
-////        }
-////        return minDate;
-////    }
-//
-//    /**
-//     *
-//     * @ngdoc method
-//     * @name myApp.service:VisitsLoader#getMaxDate
-//     * @methodOf myApp.service:VisitsLoader
-//     * @description Функция для получения максимальной даты (самой
-//     * будущей), за которую есть данные по визитам.
-//     * @returns {Date} Дата, за которую внесены максимально будущие
-//     * данные по визитам.
-//     */
-////    function getMaxDate() {
-////        var data = getVisits();
-////        var maxDate = new Date();
-////        for (var i = 0; i < data.length; i++) {
-////            if (data[i].date > maxDate)
-////                maxDate = new Date(data[i].date.getFullYear(), data[i].date.getMonth(), data[i].date.getDate());
-////        }
-////        return maxDate;
-////    }
-//
-//
-//    return {
-//        getData: getData,
-//        getMinDate: getMinDate,
-//        getMaxDate: getMaxDate,
-//        statuses: statuses
-//    };
-//});
 
 
 /**
@@ -303,8 +180,6 @@ myApp.factory('MastersLoader', function (DateHelper, Loader) {
             dateTill: period.end,
             step: DateHelper.steps.DAY
         }, function (data) {
-            console.log("data in MasterLoader ", data);
-
             var mastersForPeriod = [];
             for (var k = 0; k < data.length; k++) {
                 var mastersForDay = [];
@@ -329,7 +204,6 @@ myApp.factory('MastersLoader', function (DateHelper, Loader) {
                 });
                 mastersForPeriod.push(mastersForDay);
             }
-            console.log("mastersForPeriod ", mastersForPeriod);
 
             callback(mastersForPeriod);
         });

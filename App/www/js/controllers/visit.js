@@ -5,9 +5,9 @@
  * @name myApp.controller:VisitController
  * @requires myApp.service:VisitLoader
  */
-myApp.controller('VisitController', function ($scope, $filter, $routeParams, Storage, Visit) {
+myApp.controller('VisitController', function ($scope, $filter, $routeParams, Loader, Visit) {
     $scope.fff = false;
-    Storage.get("Visit", $routeParams.id, function (data) {
+    Loader.get("Visit", $routeParams.id, function (data) {
         $scope.visit = data;
         console.log($scope.visit.status);
         $scope.status = $scope.visit.status;

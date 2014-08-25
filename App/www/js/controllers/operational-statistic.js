@@ -14,7 +14,7 @@
  * @requires myApp.service:OperationalStatisticLoader
  * @requires myApp.service:DateHelper
  */
-myApp.controller('OperationalStatisticController', function ($scope, $location, DateHelper, Loader, Finder, Storage) {
+myApp.controller('OperationalStatisticController', function ($scope, $location, DateHelper, Loader) {
     //    var getStatistic = OperationalStatisticLoader.getData;
     //    var minDate = OperationalStatisticLoader.getMinDate();
     //    var maxDate = OperationalStatisticLoader.getMaxDate();
@@ -64,7 +64,7 @@ myApp.controller('OperationalStatisticController', function ($scope, $location, 
         var resultArr = [];
         var date;
         if (key) {
-            Storage.get("OperationalStatistics", key, function (obj) {
+            Loader.get("OperationalStatistics", key, function (obj) {
                 if (obj) {
                     date = obj.date;
                     if (forward) {

@@ -130,15 +130,7 @@ myApp.factory('OperationalStatistics', function (Model, DateHelper, FinanceStati
             self.profit = data.profit;
             self.clients = data.clients;
             self.workload = data.workload;
-            //            self.financeStat = new FinanceStatistics(data.financeStat);
-            self.financeStat = {
-                date: data.financeStat.date,
-                tillMoney: data.financeStat.tillMoney,
-                morningMoney: data.financeStat.morningMoney,
-                credit: data.financeStat.credit,
-                debit: data.financeStat.debit
-            };
-
+            self.financeStat = new FinanceStatistics(data.financeStat);
         },
         serialize: function (self) {
             self.constructor.prototype.call(self);
@@ -156,7 +148,6 @@ myApp.factory('OperationalStatistics', function (Model, DateHelper, FinanceStati
         var result = [];
         var store = trans.objectStore("OperationalStatistics"); //найдем хранилище для объектов данного класса
         var keyRange = IDBKeyRange.bound(new Date(params.dateFrom), new Date(params.dateTill));
-        //        console.log(keyRange);
         var request = store.index(params.index).openCursor(keyRange);
         request.onerror = function (event) {
             callback(null);
@@ -179,31 +170,3 @@ myApp.factory('OperationalStatistics', function (Model, DateHelper, FinanceStati
     }
     return opStat;
 });
-
-
-
-myApp.factory('GetOpStatObjects', function (Model, OperationalStatistics, DateHelper) {
-    return function (statisticsForPeriod) {
-        var statObjs = [];
-        for (var i = 0; i < statisticsForPeriod.length; i++)
-            statObjs.push(new OperationalStatistics(statisticsForPeriod[i]));
-        return statObjs;
-    }
-});
-
-//myApp.factory('GetStatisticsForChart', function (Model, OperationalStatistics, DateHelper) {
-//    return function (dateFrom, dateTill) {
-//        var data = getOperationalStatisticsData(DateHelper.getPeriod);
-//        var result = [];
-//        for (var i = 0; i < data.length; i++) {
-//            var opstat = new OperationalStatistics(data[i]);
-//            result.push(opstat);
-//        }
-//        if (dateFrom && dateTill) {
-//            result = result.filter(function (statistic) {
-//                return (statistic.dateFrom < dateFrom || statistic.dateFrom.toDateString() == dateFrom.toDateString() && statistic.dateTill > dateTill || statistic.dateTill.toDateString() == dateTill.toDateString());
-//            });
-//        }
-//        return result;
-//    }
-//});

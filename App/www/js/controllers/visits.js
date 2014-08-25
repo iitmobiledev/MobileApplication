@@ -79,10 +79,10 @@ myApp.controller('VisitsController', function ($scope, $filter, $location, Loade
         Loader.search("Visits", {
             dateFrom: $scope.prevdate,
             dateTill: $scope.nextdate,
-            step: DateHelper.steps.DAY
+            step: DateHelper.steps.DAY,
+            index: "date"
         }, function (data) {
             $scope.pages = data;
-            console.log(data);
         });
     }
 

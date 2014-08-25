@@ -53,9 +53,12 @@ myApp.factory('Storage', function (DateHelper) {
      * @ngdoc method
      * @name myApp.service:Storage#getFieldStat
      * @methodOf myApp.service:Storage
-     * @description Проверяет поддержку indexedDB платформой
-     * @param {Array} query 
-     * @param {Function} callback 
+     * @description Метод для получения статистики
+     * определенного поля у указанного класса. В данный
+     * момент указывает максимальную и минимальную даты,
+     * за которые еще есть данные.
+     * @param {Array} query
+     * @param {Function} callback
      * @return {Object} экземпляр класса  className
      */
     var getFieldStat = function (query, callback) {
@@ -158,7 +161,6 @@ myApp.factory('Storage', function (DateHelper) {
         var request = store.put(obj); //положим в хранилище
 
         request.onsuccess = function (e) { //если транзакт прошел успешно
-            //            console.log("obj in db!");
         };
 
         trans.onerror = function (e) { //если что-то пошло не так

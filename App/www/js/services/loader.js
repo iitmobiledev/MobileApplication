@@ -1,92 +1,63 @@
-myApp.service("Loader", ["$http", "OperationalStatisticsData", "GetOpStatObjects", "VisitsData", "GetVisitsObjects", "DateHelper", "GetVisitObjects", "Storage", "ExpendituresData", "GetExpendituresObjects",
-    function ($http, OperationalStatisticsData, GetOpStatObjects, VisitsData, GetVisitsObjects, DateHelper, GetVisitObjects, Storage, ExpendituresData, GetExpendituresObjects) {
-        var classes = {
-            "OperationalStatistics": {
-                getData: OperationalStatisticsData,
-                getObjects: GetOpStatObjects
-            },
-            "Visits": {
-                getData: VisitsData,
-                getObjects: GetVisitsObjects
-            },
-            "Visit": {
-                getData: VisitsData,
-                getObjects: GetVisitObjects
-            },
-            "Expenditures": {
-                getData: ExpendituresData,
-                getObjects: GetExpendituresObjects
-            }
-        };
+/**
+ * @ngdoc service
+ * @description Сервис для получения данных из хранилища или, при отсутствии кэшированных данных, с сервера по первичному ключу или за период.
+ * @name myApp.service:Loader
+ */
+myApp.service("Loader", ["Storage", "ModelConverter", "Server",
+    function (Storage, ModelConverter, Server) {
         return {
-            get: function (modelClass, primaryKey, callback) {
-                var data = [];
-                if (primaryKey.dateFrom && primaryKey.dateTill && primaryKey.step) {
-                    data = classes[modelClass].getData.forPeriod(primaryKey.dateFrom, primaryKey.dateTill, primaryKey.step);
-                } else {
-                    data = classes[modelClass].getData.byID(primaryKey.id);
-                }
-
-                var objs = classes[modelClass].getObjects(data);
-
-                for (var i in objs) {
-                    if (objs[i] instanceof Array) {
-                        for (var j in objs[i])
-                            Storage.update(objs[i][j]);
+            //получение объектов по первичному ключу
+            get: function (className, primaryKey, callback) {
+                Storage.get(className, primaryKey, function (result) {
+                    if (result == null) {
+                        Server.get(className, primaryKey, function (data) {
+                            callback(ModelConverter.getObject(className, data))
+                        });
                     } else
-                        Storage.update(objs[i]);
-                }
-                console.log("objs", objs);
-                callback(objs);
+                        callback(ModelConverter.getObject(className, result));
+                });
             },
+            //получение объектов за период
             search: function (className, params, callback) {
-                var loader = this;
-
                 Storage.search(className, params, function (data) {
                     if (data == null) { //если в базе ничего не нашли
-                        loader.get(className, params, callback);
+                        Server.search(className, params, function (result) {
+                            var objs = ModelConverter.getObjects(className, result);
+
+                            //потом будет в синхронизаторе
+                            for (var i = 0; i < objs.length; i++) {
+                                if (objs[i] instanceof Array) {
+                                    for (var j = 0; j < objs[i].length; j++) {
+                                        Storage.update(objs[i][j]);
+                                    }
+                                } else
+                                    Storage.update(objs[i]);
+                            }
+
+                            callback(objs);
+                        });
                     } else {
-                        //                        //                        var objs = classes[className].getObjects(data);
-                        //                        //                        var period = DateHelper.getPeriod(params.dateFrom, params.step);
-                        //                        //                        var day = period.begin;
-                        //                        //                        var missingDates = [];
-                        //                        //                        while (day < params.dateTill || day.toDateString() == params.dateTill.toDateString()) {
-                        //                        //                            var hasObject = false;
-                        //                        //                            for (var i = 0; i < objs.length; i++) {
-                        //                        //                                if (day.toDateString() == objs[i].date.toDateString())
-                        //                        //                                    hasObject = true;
-                        //                        //                            }
-                        //                        //                            if (!hasObject)
-                        //                        //                                missingDates.push(day);
-                        //                        //                            period = DateHelper.getNextPeriod(day, params.step);
-                        //                        //                            day = period.begin;
-                        //                        //                        }
-                        //                        //
-                        //                        //                        var i = 0;
-                        //                        //                        while (i < missingDates.length) {
-                        //                        //                            var primary = {
-                        //                        //                                dateFrom: missingDates[i],
-                        //                        //                                dateTill: DateHelper.getPeriod(missingDates[i], params.step).end,
-                        //                        //                                step: params.step,
-                        //                        //                                index: params.indexName
-                        //                        //                            }
-                        //                        //                            loader.get(className, primary, function (misObj) {
-                        //                        //                                objs = objs.concat(misObj);
-                        //                        //                                i++;
-                        //                        //                            });
-                        //                        //                        }
-                        //                        //                        objs.sort(compareByDate);
-                        //
-                        callback(data);
+                        var objs = ModelConverter.getObjects(className, data);
+                        callback(objs);
                     }
                 });
             }
         }
-            }]);
+    }]);
 
-
-function compareByDate(a, b) {
-    if (a.date > b.date) return 1;
-    if (a.date < b.date) return -1;
-    return 0;
-};
+//                var query = ["OperationalStatistics", "Visit", "Expenditures"];
+//                console.log("lastModified: ", Storage.lastModified(query));
+//
+//                query = [{
+//                    "type": "OperationalStatistics",
+//                    "field": "date"
+//                        }, {
+//                    "type": "Visit",
+//                    "field": "id"
+//                        }, {
+//                    "type": "Expenditures",
+//                    "field": "date"
+//                        }];
+//                Storage.getFieldStat(query, function(result){
+//                    console.log("getFieldStat ", result);
+//                });
