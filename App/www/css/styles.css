@@ -10,6 +10,7 @@
 #statisticTable .sCell {
     border: 1px solid #D3D3D3;
     padding: 5% 0;
+    width: 50%;
     text-align: center;
 }
 #financeTable {
@@ -22,6 +23,9 @@
 }
 #financeTable .financeCell {
     text-align: center;
+}
+#financeTable .financeCellLeft {
+    text-align: left;
 }
 /*Data navigation*/
 
