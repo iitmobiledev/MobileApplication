@@ -38,13 +38,11 @@
     <script src="intelxdk.js"></script>
     <script type="text/javascript">
         /* Intel native bridge is available */
-        var onDeviceReady = function () {
+        var onDeviceReady = function() {
             //hide splash screen
             intel.xdk.device.hideSplashScreen();
             //     intel.xdk.device.hideStatusBar();            
             $.ui.useInternalRouting = false;
-
-            //$('#Statistics').addClass('pressed');
         };
 
         document.addEventListener("intel.xdk.device.ready", onDeviceReady, false);
@@ -66,6 +64,7 @@
     <script src="js/services/data.js"></script>
     <script src="js/services/finder.js"></script>
     <script src="js/services/model-converter.js"></script>
+    <script src="js/services/synchronizer.js"></script>
     <script src="js/controllers/operational-statistic.js"></script>
     <script src="js/services/finance-statistics.js"></script>
     <script src="js/controllers/settings.js"></script>

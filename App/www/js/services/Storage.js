@@ -12,9 +12,9 @@ myApp.factory('Storage', function (DateHelper) {
     var dbVersion = 1.0;
 
     var classesLastModified = {
-        "OperationalStatistics": "2014-06-01 15:00:00",
-        "Visit": "2014-07-01 15:15:00",
-        "Expenditures": "2014-08-01 15:30:00"
+        "OperationalStatistics": "2014-08-25 21:00:00",
+        "Visit": "2014-08-25 21:44:00",
+        "Expenditures": "2014-08-25 21:44:00"
     }
 
     var classesFieldStat = {
@@ -41,10 +41,11 @@ myApp.factory('Storage', function (DateHelper) {
     open();
 
     var lastModified = function (query) {
-        var result = {};
-        for (var i in query)
-            result[query[i]] = classesLastModified[query[i]];
-        return result;
+        return classesLastModified[query];
+//        var result = {};
+//        for (var i in query)
+//            result[query[i]] = classesLastModified[query[i]];
+//        return result;
 
     };
 
@@ -257,6 +258,7 @@ myApp.factory('Storage', function (DateHelper) {
         search: search,
         checkSupport: checkSupport,
         lastModified: lastModified,
-        getFieldStat: getFieldStat
+        getFieldStat: getFieldStat,
+        classesLastModified: classesLastModified
     };
 });
