@@ -24,7 +24,9 @@
 body {
     overflow-x: hidden;
     -webkit-text-size-adjust: none;
-    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-family: 'HelveticaNeueCyr';
+    src: url(css/fonts/helveticaneuecyr-roman.ttf)
+    /*    , HelveticaNeueCyr, Arial, sans-serif;*/
     color: #000;
     font-size: 14px;
     display: -webkit-box;
@@ -254,7 +256,7 @@ textarea {
     height: 43px;
     overflow: hidden;
     font-size: 12px;
-    font-weight: normal;
+    font-weight: lighter;
     text-decoration: none;
     color: gray;
     text-align: center;
@@ -1270,8 +1272,8 @@ only screen and (min-width: 768px) {
     display: inline-block;
     padding: 12px 12px;
     margin: 8px 0;
-    font-weight: normal;
-    font-size: 16px;
+    font-weight: lighter;
+    /*    font-size: 16px;*/
     color: gray;
     text-align: center;
     vertical-align: top;
