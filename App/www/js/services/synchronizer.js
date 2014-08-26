@@ -46,8 +46,8 @@ var $inj = angular.injector(['myApp']);
 var synchronizer = $inj.get('Synchronizer');
 var storage = $inj.get('Storage');
 synchronizer.updateData("OperationalStatistics", 10, 0, function () {
-//    console.log("synch end");
+    console.log("synch end");
 });
 setInterval(synchronizer.updateData, 120000, "OperationalStatistics", 10, 0, function () {
-//    console.log("synch end");
+    console.log("synch end");
 });

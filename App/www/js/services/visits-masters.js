@@ -114,7 +114,8 @@ myApp.factory('Visit', function (Model, Client, Service) {
             if (cursor) {
                 //                console.log(cursor.value);
                 result.push(cursor.value);
-                cursor.continue();
+                cursor.
+                continue ();
             }
         };
 
@@ -127,6 +128,7 @@ myApp.factory('Visit', function (Model, Client, Service) {
     }
 
     visitConstructor.statuses = {
+        titlesArray: ["Новая запись", "Клиент не пришел", "Клиент пришел", "Подтверждена"],
         titles: {
             NEW: "Новая запись",
             NOTCOME: "Клиент не пришел",
