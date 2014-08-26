@@ -54,7 +54,7 @@ myApp.config(['$routeProvider',
             templateUrl: 'views/about.html'
         }).
         otherwise({
-            redirectTo: '/visits'
+            redirectTo: 'index'
             //            '/authorization'
         });
     }]);
