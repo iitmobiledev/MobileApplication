@@ -21,7 +21,6 @@
  *      return obj && obj.__primary__;
  *  };
  *  </pre>
- * @param {function} getChildScope Функция, возвращающая scope, являющийся потомком скоупа контроллера.
  */
 myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateCache) {
     return {
@@ -30,7 +29,6 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
         link: function (scope, element, attrs) {
             var dataCallback = scope.$eval(attrs.getData);
             var keyFunc = scope.$eval(attrs.keyExpression);
-            var getChildScope = scope.$eval(attrs.getChildScope);
 
             var contentID = attrs.contentId;
             var content = $templateCache.get(contentID);
@@ -70,7 +68,7 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
                             }
                         }
                     },
-                    onBeforeChange: function(){
+                    onBeforeChange: function () {
                         if (ready) {
                             var key = getCurrentKey();
                             if ($('.my-slider').slickCurrentSlide() == 1) {
@@ -116,9 +114,8 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
                 //                $('.my-slider').slickRemove(true);
                 if (contentData) {
                     for (var i = contentData.length - 1; i >= 0; i--) {
-                        newscope = getChildScope();
+                        newscope = scope.$new();
                         newscope.page = contentData[i];
-                        newscope.$apply();
                         // костыль, до тех пор пока разраб библиотеки slick
                         // не реализует эту фичу
                         // (оставаться на текущем слайде при добавлении слайда в начало)
@@ -135,18 +132,10 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
                             $('.my-slider').slickSetOption('speed', 0).slickGoTo(ind + c).slickSetOption('speed', 300);
                             $('.my-slider').getSlick().$slides[0].setAttribute("contentkey", keyFunc(contentData[i]));
                         });
+                        newscope.$apply();
                     }
-                    newscope.$apply();
                 }
                 tryKey();
-                scope.loading = false;
-                scope.$apply();
-                //                loadBar(scope, function (clonedElement, scope) {
-                //                    $('.my-slider').unslick();
-                //                    $('.my-slider').prepend(clonedElement);
-                //                    toSlick();
-                //                    $('.my-slider').slickSetOption('speed', 0).slickGoTo(ind + c).slickSetOption('speed', 300);
-                //                });
             }
 
             /**
@@ -162,24 +151,18 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
                 //                $('.my-slider').slickRemove(false);
                 if (contentData) {
                     for (var i = 0; i < contentData.length; i++) {
-                        newscope = getChildScope();
+                        newscope = scope.$new();
                         newscope.page = contentData[i];
-                        newscope.$apply();
+
                         compiled(newscope, function (clonedElement, scope) {
                             $('.my-slider').slickAdd(clonedElement);
                             $('.my-slider').getSlick().$slides[$('.my-slider').getSlick().slideCount - 1].setAttribute("contentkey", keyFunc(contentData[i]));
 
                         });
-
+                        newscope.$apply();
                     }
-                    //                    loadBar(scope, function (clonedElement, scope) {
-                    //                        $('.my-slider').slickAdd(clonedElement);
-                    //                    });
-                    newscope.$apply();
                 }
                 tryKey();
-                scope.loading = false;
-                scope.$apply();
             }
 
             /**
@@ -204,10 +187,9 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
                         if (contentData[i].date && curDate.toDateString() == today.toDateString()) {
                             curIndex = i;
                         }
-                        newscope = getChildScope();
+                        newscope = scope.$new();
                         newscope.page = contentData[i];
                         console.log(i, contentData[i])
-                        newscope.$apply();
                         compiled(newscope, function (clonedElement, scope) {
                             $('.my-slider').slickAdd(clonedElement);
                             if (i == 0) {
@@ -226,23 +208,19 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
                             }
                             //                            newscope.$apply(); 
                         });
+                        newscope.$apply();
                     }
-                    //                    newscope = getChildScope();
-                    newscope.$apply();
+
                     $('.my-slider').slickSetOption('speed', 0).slickGoTo(curIndex).slickSetOption('speed', 300);
                     tryKey();
-                    scope.loading = false;
-                    scope.$apply();
-                    //                    loadBar(scope, function (clonedElement, scope) {
-                    //                        $('.my-slider').slickAdd(clonedElement);
-                    //                    });
                 }
             }
 
             function tryKey() {
                 if (getCurrentKey()) {
+                    scope.loading = false;
+                    scope.$apply();
                     ready = true;
-                    console.log($('.my-slider').getSlick());
                 } else {
                     setTimeout(tryKey, 100);
                 }
@@ -259,6 +237,7 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
 
 
             scope.$watch('step', function (newValue, oldValue) {
+                scope.loading = true;
                 if (oldValue != newValue) {
                     $('.my-slider').unslick();
                     $('.my-slider').html("")

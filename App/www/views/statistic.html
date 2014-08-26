@@ -19,31 +19,31 @@
 
     </div>
         <load-bar z-index="100" style="position: absolute; height: 100%" param-name="loading"></load-bar>
-        <slider content-id="statistic-content" get-data='getData' key-expression='getKey' get-child-scope="getChildScope"></slider>
+        <slider content-id="statistic-content" get-data='getData' key-expression='getKey'></slider>
         
         <script type="text/ng-template" id="statistic-content">
             <div id="statisticContent">
-                <date-changer date='page.date' step='step' has-future-data='hasFutureData(page.date)' has-prev-data='hasPrevData(page.date)'></date-changer>
+                <date-changer date='page.date' step='$parent.step' has-future-data='hasFutureData(page.date)' has-prev-data='hasPrevData(page.date)'></date-changer>
                 <table id="statisticTable">
                     <tr>
-                        <td class="sCell" ng-click="toChart('proceeds')">
+                        <td class="sCell" ng-click="$parent.toChart('proceeds')">
                             <img src="images/proceeds.PNG" style="margin:5px;">
                             <h1>{{page.proceeds}} р.</h1>
                             <p>Выручка</p>
                         </td>
-                        <td class="sCell" ng-click="toChart('profit')">
+                        <td class="sCell" ng-click="$parent.toChart('profit')">
                             <img src="images/profit.PNG" style="margin:5px">
                             <h1>{{page.profit}} р.</h1>
                             <p>Прибыль</p>
                         </td>
                     </tr>
                     <tr>
-                        <td class="sCell" ng-click="toChart('clients')">
+                        <td class="sCell" ng-click="$parent.toChart('clients')">
                             <img src="images/clients.PNG" style="margin:5px">
                             <h1>{{page.clients}}</h1>
                             <p>Клиента</p>
                         </td>
-                        <td class="sCell" ng-click="toChart('workload')">
+                        <td class="sCell" ng-click="$parent.toChart('workload')">
                             <img src="images/workload.PNG" style="margin:5px">
                             <h1>{{page.workload}}%</h1>
                             <p>Загруженность</p>

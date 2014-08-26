@@ -48,18 +48,7 @@ myApp.controller('OperationalStatisticController', function ($scope, $location, 
             })
         );
     }
-
-
-
-
-    $scope.getChildScope = function () {
-        var childScope = $scope.$new();
-        childScope.step = $scope.step;
-        childScope.toChart = $scope.toChart;
-        return childScope;
-    };
-
-
+    
     $scope.getData = function (key, quantity, forward, callback) {
         var resultArr = [];
         var date;
