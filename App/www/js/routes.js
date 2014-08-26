@@ -4,14 +4,7 @@ myApp.run(function ($templateCache) {
     $templateCache.put('statistic-content');
     //    if (!Storage.checkSupport()) {
     //        alert("indexedDB not support!");
-    //        var master = new Master(1, "Петр", "Михайлович", "Яковлев");
-    //        var serviceList = [];
-    //        var client = new Client("Марина", "Андреевна", "Иванова", "+79227062050", 2000, 0);
-    //        serviceList.push(new Service("Мелирование", new Date(2014, 6, 20, 15, 00), new Date(2014, 6, 20, 16, 00), master, 2000));
-    //        var visit = new Visit(3, client, serviceList, "Очень плохие волосы", new Date(2014, 6, 20, 16, 00), "Клиент опаздывает");
-    //        Storage.update(visit);
-    //        Storage.get("visit", 3);
-    //        Storage.del("3");
+    //    }
 });
 
 myApp.config(['$routeProvider',
@@ -58,11 +51,10 @@ myApp.config(['$routeProvider',
             controller: 'AuthentificationController'
         }).
         when('/about', {
-            templateUrl: 'views/about.html',
-//            controller: 'LoginController'
+            templateUrl: 'views/about.html'
         }).
         otherwise({
-            redirectTo: 'index'
+            redirectTo: '/visits'
             //            '/authorization'
         });
     }]);
