@@ -332,7 +332,7 @@ myApp.service("Server", ["DateHelper", "Visit",
                     visit.date = new Date(day.getFullYear(), day.getMonth(), day.getDate(), hours + Math.round(getRandom(-2, 1)), Math.round(getRandom(0, 59)));
                     visit.status = Visit.statuses.titles.CONFIRMED;
                     visitsDay.push(visit);
-
+					
                     return visitsDay;
                 };
                 var result = [];
