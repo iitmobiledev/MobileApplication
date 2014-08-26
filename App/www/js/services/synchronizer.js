@@ -45,13 +45,13 @@ myApp.service("Synchronizer", ["Storage", "Server", "ModelConverter",
     }
 ]);
 
-var $inj = angular.injector(['myApp']);
-var synchronizer = $inj.get('Synchronizer');
-var storage = $inj.get('Storage');
-synchronizer.updateData("OperationalStatistics", 10, 0, function () {
-    console.log("synch end0");
-});
-setInterval(synchronizer.updateData, 60000, "OperationalStatistics", 10, 0, function () {
-    console.log("synch end");
-    //    console.log("storage modify ", storage.lastModified("OperationalStatistics"));
-});
+//var $inj = angular.injector(['myApp']);
+//var synchronizer = $inj.get('Synchronizer');
+//var storage = $inj.get('Storage');
+//synchronizer.updateData("OperationalStatistics", 10, 0, function () {
+//    console.log("synch end0");
+//});
+//setInterval(synchronizer.updateData, 60000, "OperationalStatistics", 10, 0, function () {
+//    console.log("synch end");
+//    //    console.log("storage modify ", storage.lastModified("OperationalStatistics"));
+//});
