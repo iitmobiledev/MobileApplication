@@ -39,6 +39,7 @@ myApp.service("Loader", ["Storage", "ModelConverter", "Server",
                         Server.searchForPeriod(className, params, function (result) {
                             console.log("server.search", result);
                             var objs = ModelConverter.getObjects(className, result);
+                            callback(objs);
                         });
                     } else {
                         console.log("Storage.search ", data);

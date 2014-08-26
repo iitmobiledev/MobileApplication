@@ -113,7 +113,6 @@ myApp.factory('Visit', function (Model, Client, Service) {
             var cursor = event.target.result;
             if (cursor) {
                 //                console.log(cursor.value);
-                dates.push(new Date(cursor.value.date.getFullYear(), cursor.value.date.getMonth(), cursor.value.date.getDate()));
                 result.push(cursor.value);
                 cursor.continue();
             }
@@ -121,14 +120,6 @@ myApp.factory('Visit', function (Model, Client, Service) {
 
         trans.oncomplete = function (e) {
             if (result.length != 0) {
-                console.log("dates in db:", dates);
-                dates.sort(function (a, b) {
-                    return new Date(b.date) - new Date(a.date);
-                });
-                dates = $.grep(dates, function (v, k) {
-                    return $.inArray(v, dates) === k;
-                });
-                console.log("dates.sort in db:", dates);
                 callback(result);
             } else
                 callback(null);
