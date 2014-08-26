@@ -6,6 +6,7 @@ myApp.service("Synchronizer", ["Storage", "Server", "ModelConverter",
                 "count": count,
                 "offset": offset
             }, function (data) {
+//                console.log("data part from server ", data);
                 if (data == null || data.length < count ) {
                     Server.lastModified(className, function (date) {
                         if (date == lastServerModified) {
@@ -30,7 +31,7 @@ myApp.service("Synchronizer", ["Storage", "Server", "ModelConverter",
             updateData: function (className, count, offset, callback) {
                 var lastLocalModified = Storage.lastModified(className);
                 Server.lastModified(className, function (lastServerModified) {
-                    console.log(lastLocalModified, lastServerModified);
+//                    console.log(lastLocalModified, lastServerModified);
                     if (lastLocalModified == lastServerModified) {
                         callback();
                     } else
@@ -45,8 +46,8 @@ var $inj = angular.injector(['myApp']);
 var synchronizer = $inj.get('Synchronizer');
 var storage = $inj.get('Storage');
 synchronizer.updateData("OperationalStatistics", 10, 0, function () {
-    console.log("synch end");
+//    console.log("synch end");
 });
-setInterval(synchronizer.updateData, 60000, "OperationalStatistics", 10, 0, function () {
-    console.log("synch end");
+setInterval(synchronizer.updateData, 120000, "OperationalStatistics", 10, 0, function () {
+//    console.log("synch end");
 });

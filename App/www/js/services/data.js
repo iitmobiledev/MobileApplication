@@ -145,16 +145,16 @@ myApp.service("Server", ["DateHelper", "Visit",
 
             search: function (className, params, callback) {
                 setTimeout(function () {
-                }, 2000);
-                var allObjects = objects[className]();
-                var end = params.offset + params.count;
-                if (end > allObjects.length)
-                    end = allObjects.length;
-                var neededObjs = [];
-                for (var i = params.offset; i < end; i++) {
-                    neededObjs.push(allObjects[i]);
-                }
-                callback(neededObjs);
+                    var allObjects = objects[className]();
+                    var end = params.offset + params.count;
+                    if (end > allObjects.length)
+                        end = allObjects.length;
+                    var neededObjs = [];
+                    for (var i = params.offset; i < end; i++) {
+                        neededObjs.push(allObjects[i]);
+                    }
+                    callback(neededObjs);
+                }, 1000);
             },
 
             /**

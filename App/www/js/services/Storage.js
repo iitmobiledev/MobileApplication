@@ -46,7 +46,6 @@ myApp.factory('Storage', function (DateHelper) {
 //        for (var i in query)
 //            result[query[i]] = classesLastModified[query[i]];
 //        return result;
-
     };
 
     /**
