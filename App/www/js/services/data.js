@@ -144,16 +144,16 @@ myApp.service("Server", ["DateHelper", "Visit",
             },
 
             search: function (className, params, callback) {
+                setTimeout(function () {
+                }, 2000);
                 var allObjects = objects[className]();
                 var end = params.offset + params.count;
                 if (end > allObjects.length)
                     end = allObjects.length;
                 var neededObjs = [];
                 for (var i = params.offset; i < end; i++) {
-                    //                    if (typeof (allObjects[i]) != 'undefined')
                     neededObjs.push(allObjects[i]);
                 }
-
                 callback(neededObjs);
             },
 
@@ -347,6 +347,7 @@ myApp.service("Server", ["DateHelper", "Visit",
                 }
                 callback(result);
             },
+
             /**
              * @ngdoc method
              * @name myApp.service:Server#get

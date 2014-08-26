@@ -1,14 +1,12 @@
 myApp.service("Synchronizer", ["Storage", "Server", "ModelConverter",
     function (Storage, Server, ModelConverter) {
         function update(className, count, offset, callback, lastLocalModified, lastServerModified) {
-            console.log("modify different, offset = ", offset);
             Server.search(className, {
                 "modifiedSince": lastLocalModified,
                 "count": count,
                 "offset": offset
             }, function (data) {
-                console.log("server data part ", data);
-                if (data == null || data.length == 0) {
+                if (data == null || data.length < count ) {
                     Server.lastModified(className, function (date) {
                         if (date == lastServerModified) {
                             Storage.classesLastModified[className] = lastServerModified;
@@ -30,12 +28,10 @@ myApp.service("Synchronizer", ["Storage", "Server", "ModelConverter",
 
         return {
             updateData: function (className, count, offset, callback) {
-                console.log("in update");
                 var lastLocalModified = Storage.lastModified(className);
                 Server.lastModified(className, function (lastServerModified) {
                     console.log(lastLocalModified, lastServerModified);
                     if (lastLocalModified == lastServerModified) {
-                        console.log("db modify == server");
                         callback();
                     } else
                         update(className, count, offset, callback, lastLocalModified, lastServerModified);
@@ -45,13 +41,12 @@ myApp.service("Synchronizer", ["Storage", "Server", "ModelConverter",
     }
 ]);
 
-//var $inj = angular.injector(['myApp']);
-//var synchronizer = $inj.get('Synchronizer');
-//var storage = $inj.get('Storage');
-//synchronizer.updateData("OperationalStatistics", 10, 0, function () {
-//    console.log("synch end0");
-//});
-//setInterval(synchronizer.updateData, 60000, "OperationalStatistics", 10, 0, function () {
-//    console.log("synch end");
-//    //    console.log("storage modify ", storage.lastModified("OperationalStatistics"));
-//});
+var $inj = angular.injector(['myApp']);
+var synchronizer = $inj.get('Synchronizer');
+var storage = $inj.get('Storage');
+synchronizer.updateData("OperationalStatistics", 10, 0, function () {
+    console.log("synch end");
+});
+setInterval(synchronizer.updateData, 60000, "OperationalStatistics", 10, 0, function () {
+    console.log("synch end");
+});
