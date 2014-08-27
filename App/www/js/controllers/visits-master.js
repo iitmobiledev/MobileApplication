@@ -60,18 +60,6 @@ myApp.controller('VisitsMasterController', function ($scope, $filter, $location,
     /**
      *
      * @ngdoc method
-     * @name myApp.controller:VisitsMasterController#toMaster
-     * @methodOf myApp.controller:VisitsMasterController
-     * @param {String} id идентификатор мастера.
-     * @description Метод для перехода на страницу мастера.
-     */
-    $scope.toMaster = function (id) {
-//        $location.path('master/' + id + "/" + $scope.date);
-    }
-
-    /**
-     *
-     * @ngdoc method
      * @name myApp.controller:VisitsMasterController#hasVisits
      * @methodOf myApp.controller:VisitsMasterController
      * @param {Array} visits визиты всех мастеров за выбранный день.
@@ -93,6 +81,7 @@ myApp.controller('VisitsMasterController', function ($scope, $filter, $location,
         MastersLoader.getAllMastersPerDay(period, function (masters) {
             $scope.pages = masters;
             $scope.calculateVisitsPerDay();
+            $scope.$apply();
         });
     });
 

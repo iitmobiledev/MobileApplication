@@ -113,7 +113,7 @@ myApp.factory('Visit', function (Model, Client, Service) {
                 //                console.log(cursor.value);
                 result.push(cursor.value);
                 cursor.
-                continue ();
+                continue();
             }
         };
 
@@ -205,8 +205,25 @@ myApp.factory('MastersLoader', function (DateHelper, Loader) {
         Loader.search("Visit", {
             dateFrom: period.begin,
             dateTill: period.end,
-            step: DateHelper.steps.DAY
-        }, function (data) {
+            step: DateHelper.steps.DAY,
+            index: "date"
+        }, function (visits) {
+            var visitsByDate = {};
+            angular.forEach(visits, function (visit) {
+                var key = visit.date.toDateString();
+                if (!visitsByDate[key]) {
+                    visitsByDate[key] = [];
+                }
+                visitsByDate[key].push(visit);
+            });
+            var list = [];
+            for (var date = period.begin; date < period.end || date.toDateString() == period.end.toDateString(); date.setDate(date.getDate() + 1)) {
+                if (visitsByDate[date.toDateString()]) {
+                    list.push(visitsByDate[date.toDateString()]);
+                }
+            }
+            var data = list;
+
             var mastersForPeriod = [];
             for (var k = 0; k < data.length; k++) {
                 var mastersForDay = [];
@@ -231,7 +248,6 @@ myApp.factory('MastersLoader', function (DateHelper, Loader) {
                 });
                 mastersForPeriod.push(mastersForDay);
             }
-
             callback(mastersForPeriod);
         });
     }

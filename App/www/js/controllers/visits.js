@@ -21,7 +21,7 @@ myApp.controller('VisitsController', function ($scope, $filter, $location, Loade
     $scope.date = new Date(today.getFullYear(), today.getMonth(), today.getDate());
 
     $scope.pageIndex = 1;
-    //    updatePages();
+    //        updatePages();
     /**
      *
      * @ngdoc method
@@ -84,7 +84,6 @@ myApp.controller('VisitsController', function ($scope, $filter, $location, Loade
         }, function (data) {
             var visitsByDate = {};
             angular.forEach(data, function (visit) {
-                //                console.log("visit", visit);
                 var key = visit.date.toDateString();
                 if (!visitsByDate[key]) {
                     visitsByDate[key] = [];
@@ -94,10 +93,8 @@ myApp.controller('VisitsController', function ($scope, $filter, $location, Loade
             console.log(visitsByDate);
             var list = [];
             for (var date = $scope.prevdate; date < $scope.nextdate || date.toDateString() == $scope.nextdate.toDateString(); date.setDate(date.getDate() + 1)) {
-                console.log("date ", date);
                 list.push(visitsByDate[date.toDateString()]);
             }
-            console.log(list);
             $scope.pages = list;
             $scope.$apply();
         });
