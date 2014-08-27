@@ -107,7 +107,7 @@ myApp.service("Server", ["DateHelper", "Visit",
                         };
                         sList.push(service);
                         var visit = {};
-                        visit.id = getRandom(1, 500);
+                        visit.id =j*4 + i;
                         visit.client = {
                             firstName: "Марина",
                             middleName: "Андреевна",

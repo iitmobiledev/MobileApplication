@@ -78,7 +78,7 @@ myApp.controller('VisitsController', function ($scope, $filter, $location, Loade
         $scope.nextdate = DateHelper.getNextPeriod($scope.date, DateHelper.steps.DAY).end;
         Loader.search("Visit", {
             dateFrom: $scope.prevdate,
-            dateTill: $scope.nextdate,
+            dateTill: DateHelper.getNextPeriod($scope.nextdate, DateHelper.steps.DAY).end,
             step: DateHelper.steps.DAY,
             index: "date"
         }, function (data) {
@@ -93,8 +93,8 @@ myApp.controller('VisitsController', function ($scope, $filter, $location, Loade
             });
             console.log(visitsByDate);
             var list = [];
-            for (var date = $scope.prevdate; date < $scope.nextdate; date.setDate(date.getDate() + 1)) {
-                console.log("date", date);
+            for (var date = $scope.prevdate; date < $scope.nextdate || date.toDateString() == $scope.nextdate.toDateString(); date.setDate(date.getDate() + 1)) {
+                console.log("date ", date);
                 list.push(visitsByDate[date.toDateString()]);
             }
             console.log(list);
