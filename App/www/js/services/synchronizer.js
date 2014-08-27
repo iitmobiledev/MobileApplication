@@ -31,7 +31,7 @@ myApp.service("Synchronizer", ["Storage", "Server", "ModelConverter",
 
         return {
             updateData: function (className, count, offset, callback) {
-                Storage.lastModified(["OperationalStatistics", "Visit", "Expenditures"], function (lastLocalModified) {
+                Storage.lastModified(["OperationalStatistics", "Visit", "Expenditures"], function(lastLocalModified) {
                     Server.lastModified(className, function (lastServerModified) {
                         console.log(lastLocalModified[className], lastServerModified);
                         if (lastLocalModified[className] == lastServerModified) {
@@ -40,8 +40,6 @@ myApp.service("Synchronizer", ["Storage", "Server", "ModelConverter",
                             update(className, count, offset, callback, lastLocalModified, lastServerModified);
                     });
                 });
-
-
             }
         };
     }

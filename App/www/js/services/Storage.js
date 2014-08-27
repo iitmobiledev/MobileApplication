@@ -43,15 +43,16 @@ myApp.factory('Storage', function (DateHelper) {
 
     open();
 
-    var lastModified = function (query, callback) {
+    var lastModified = function (query, callbacK) {
         get("classesLastModified", "primary", function (data) {
             if (data == null) {
                 setTimeout(lastModified(query), 500);
+            } else {
+                var result = new ClassesLastModified();
+                for (var i in query)
+                    result[query[i]] = data[query[i]];
+                callbacK(result);
             }
-            var result = new ClassesLastModified();
-            for (var i in query)
-                result[query[i]] = data[query[i]];
-            callback(result);
         });
     };
 
