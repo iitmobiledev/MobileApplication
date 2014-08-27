@@ -88,7 +88,7 @@
     margin-bottom: 5px;
 }
 .not-come {
-    /*    width: 140px;*/
+    width: 140px;
     background-color: #FF9F9F;
     text-align: center;
     color: white;
@@ -98,7 +98,7 @@
     margin-bottom: 5px;
 }
 .new {
-    /*    width: 110px;*/
+    width: 110px;
     background-color: #FFCC66;
     text-align: center;
     color: white;
@@ -108,7 +108,7 @@
     margin-bottom: 5px;
 }
 .confirm {
-    /*    width: 120px;*/
+    width: 120px;
     background-color: #33BBFF;
     text-align: center;
     color: white;
@@ -118,7 +118,7 @@
     margin-bottom: 5px;
 }
 .come {
-    /*    width: 120px;*/
+    width: 120px;
     background-color: #77CC33;
     text-align: center;
     color: white;

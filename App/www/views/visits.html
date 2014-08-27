@@ -16,13 +16,12 @@
                 <li ng-repeat="visit in page" id="visitsPerTime">
                     {{getVisitInfo(visit)}}
                     <a href="#/visit/{{visitInfo.id}}">
-                        <div>
-                            <visit-status status='visitInfo.status' style="width:50%;"></visit-status>
+                        <div style="width:100%">
+                            <visit-status status='visitInfo.status' style=""></visit-status>
+                            <img style="float:right;top:-25px;position:relative;left: -95px;" src="images/time.png">
+                            <span style="float:right;top:-25px;position:relative">{{visitInfo.time}}</span>
                             <div>
-                                <span style="text-align:right; width:35%;">
-                                    {{visitInfo.time}}
-                                </span>
-                                <span style="float:left; width:65%;white-space:nowrap;text-overflow:ellipsis;overflow: hidden; font-size:18px; font-weight:500; margin-bottom:5px;">
+                                <span style="width:65%;white-space:nowrap;text-overflow:ellipsis;overflow: hidden; font-size:18px; font-weight:500; margin-bottom:5px;">
                                     {{visitInfo.client}}
                                 </span>
 

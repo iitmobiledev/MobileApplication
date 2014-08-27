@@ -1029,7 +1029,7 @@ only screen and (min-width: 768px) {
     margin: 10px;
 }
 #afui .list.inset li:first-child {
-    border-top: none;
+    /*    border-top: none;*/
 }
 #afui .list.inset li:last-child {
     border-bottom: none;

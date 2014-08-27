@@ -1,7 +1,7 @@
-<header-content title="'Визиты'" show-back-button="false" show="true"></header-content>
+<header-content title="'Визиты'" show-back-button="false" show="false"></header-content>
 <orient orientation="'portrait'"></orient>
 <div class="upage-content">
-    <div class="button-grouped flex widget uib_w_24 d-margins" data-uib="app_framework/button_group" data-ver="1">
+    <div class="button-grouped flex widget uib_w_24" data-uib="app_framework/button_group" data-ver="1">
         <a ng-click="onTime()" class="button widget uib_w_25 d-margins" data-uib="app_framework/button" data-ver="1">По времени</a>
         <a id="mastersButton" class="button widget uib_w_26 d-margins active" data-uib="app_framework/button" data-ver="1">По мастерам</a>
     </div>
@@ -9,11 +9,9 @@
     <date-changer step='"day"' date='date' steps='["day"]' has-future-data='hasFutureData()' has-prev-data='hasPrevData()' index='pageIndex'></date-changer>
     <ul id='carousel' rn-carousel rn-carousel-index="pageIndex" style="height: 100%">
         <li ng-repeat="page in pages">
-
             <ul>
-                <status-statistics visits="visits[pages.indexOf(page)]"></status-statistics>
                 <li ng-repeat="masterVis in page" id="visitsPerMasters">
-
+                    <status-statistics visits="visits[pages.indexOf(page)]"></status-statistics>
                     <ul class="list inset">
                         <li class="divider" ng-click="toMaster(masterVis.master.id)">
                             {{getMasterInfo(masterVis.master)}}
@@ -23,16 +21,19 @@
                             <a href="#/visit/{{visit.id}}">
                                 <div>
                                     <visit-status status='masterVisitInfo.status' style="width:50%;"></visit-status>
+                                    <span style="float:right; width:35%;top:-25px;position:relative;white-space:nowrap;text-overflow:ellipsis">{{masterVisitInfo.time}}</span>
                                     <div>
                                         <span style="width:65%;white-space:nowrap;text-overflow:ellipsis;overflow: hidden; font-size:18px; font-weight:500;">
                                             {{masterVisitInfo.client}}
                                         </span>
+                                        <!--
                                         <span style="text-align:right; width:35%;white-space:nowrap;text-overflow:ellipsis">
                                             {{masterVisitInfo.time}}
                                         </span>
+-->
                                     </div>
                                     <div>
-                                        <span style="float:left; width:65%;white-space:nowrap;text-overflow:ellipsis;overflow: hidden;">
+                                        <span style="width:65%;white-space:nowrap;text-overflow:ellipsis;overflow: hidden;">
                                             {{masterVisitInfo.service}} — {{masterVisitInfo.cost}}
                                         </span>
                                     </div>
