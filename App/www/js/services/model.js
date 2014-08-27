@@ -323,9 +323,12 @@ myApp.factory("Model", function () {
             }, indexes);
             console.log(indexes);
 
-            objectStore.createIndex(indexes.join(":"), indexes, {
-                unique: false
-            });
+            var compositeIndex = indexes.join(":");
+            if (compositeIndex != indexes) {
+                objectStore.createIndex(compositeIndex, indexes, {
+                    unique: false
+                });
+            }
 
         }
 

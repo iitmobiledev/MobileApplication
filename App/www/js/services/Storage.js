@@ -11,11 +11,14 @@ myApp.factory('Storage', function (DateHelper) {
     var database = null;
     var dbVersion = 1.0;
 
-    var classesLastModified = {
-        "OperationalStatistics": "2014-08-25 21:00:00",
-        "Visit": "2014-08-25 21:44:00",
-        "Expenditures": "2014-08-25 21:44:00"
+    function ClassesLastModified() {
+        this.primary = "primary";
+        this.OperationalStatistics = "2000-08-25 21:00:00";
+        this.Visit = "2000-08-25 21:00:00";
+        this.Expenditures = "2000-08-25 21:00:00";
     }
+
+    var classesLastModified = new ClassesLastModified();
 
     var classesFieldStat = {
         "OperationalStatistics": {
@@ -40,12 +43,16 @@ myApp.factory('Storage', function (DateHelper) {
 
     open();
 
-    var lastModified = function (query) {
-        return classesLastModified[query];
-//        var result = {};
-//        for (var i in query)
-//            result[query[i]] = classesLastModified[query[i]];
-//        return result;
+    var lastModified = function (query, callback) {
+        get("classesLastModified", "primary", function (data) {
+            if (data == null) {
+                setTimeout(lastModified(query), 500);
+            }
+            var result = new ClassesLastModified();
+            for (var i in query)
+                result[query[i]] = data[query[i]];
+            callback(result);
+        });
     };
 
     /**
@@ -88,6 +95,27 @@ myApp.factory('Storage', function (DateHelper) {
         return window.indexedDB;
     }
 
+    var saveLastModify = waitDatabase(function (obj, callback) {
+        var db = database;
+        var trans = db.transaction(["classesLastModified"], "readwrite");
+        var store = trans.objectStore("classesLastModified"); //найдем хранилище для объектов данного класса
+
+        var request = store.put(obj); //положим в хранилище
+
+        request.onsuccess = function (e) { //если транзакт прошел успешно
+            //            console.log("onsuccess");
+        };
+
+        trans.onerror = function (e) { //если что-то пошло не так
+            //                        console.log("update() transaction: Error", event);
+        };
+        request.onerror = function (e) { //если что-то пошло не так
+            //                        console.log("update(): Error", event);
+        };
+        callback();
+
+    });
+
 
     /**
      *
@@ -103,12 +131,17 @@ myApp.factory('Storage', function (DateHelper) {
         request.onupgradeneeded = function (event) {
             var db = event.target.result;
 
-            var models = ['OperationalStatistics', 'Visit'];
+            var models = ['OperationalStatistics', 'Visit', 'Expenditures'];
             var $inj = angular.injector(['myApp']);
             for (var i in models) {
                 var serv = $inj.get(models[i]);
                 serv.initializeIndexedDb(db);
             }
+            db.createObjectStore("classesLastModified", {
+                keyPath: "primary"
+            });
+
+            saveLastModify(classesLastModified, function () {});
         };
 
         request.onsuccess = function (event) {
@@ -258,6 +291,7 @@ myApp.factory('Storage', function (DateHelper) {
         checkSupport: checkSupport,
         lastModified: lastModified,
         getFieldStat: getFieldStat,
-        classesLastModified: classesLastModified
+        classesLastModified: classesLastModified,
+        saveLastModify: saveLastModify
     };
 });

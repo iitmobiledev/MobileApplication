@@ -13,8 +13,8 @@
  * @requires myApp.service:DateHelper
  */
 myApp.controller('ExpendituresController', function ($scope, $filter, Loader, DateHelper) {
-//    var minDate = ExpendituresLoader.getMinDate();
-//    var maxDate = ExpendituresLoader.getMaxDate();
+    //    var minDate = ExpendituresLoader.getMinDate();
+    //    var maxDate = ExpendituresLoader.getMaxDate();
 
     var today = new Date();
     $scope.date = new Date(today.getFullYear(), today.getMonth(), today.getDate());
@@ -32,7 +32,7 @@ myApp.controller('ExpendituresController', function ($scope, $filter, Loader, Da
      */
     $scope.hasPrevData = function () {
         return true;
-//        return $scope.date > minDate;
+        //        return $scope.date > minDate;
     };
 
     /**
@@ -46,7 +46,7 @@ myApp.controller('ExpendituresController', function ($scope, $filter, Loader, Da
      */
     $scope.hasFutureData = function () {
         return true;
-//        return $scope.date < maxDate && $scope.date.toDateString() != maxDate.toDateString();
+        //        return $scope.date < maxDate && $scope.date.toDateString() != maxDate.toDateString();
     };
 
     /**
@@ -56,25 +56,19 @@ myApp.controller('ExpendituresController', function ($scope, $filter, Loader, Da
      * @methodOf myApp.controller:ExpendituresController
      */
     function updatePages() {
+        console.log("updatePages");
         $scope.prevdate = DateHelper.getPrevPeriod($scope.date, DateHelper.steps.DAY).begin;
         $scope.nextdate = DateHelper.getNextPeriod($scope.date, DateHelper.steps.DAY).end;
+        $scope.pages = ["Data null"];
         Loader.search("Expenditures", {
             dateFrom: $scope.prevdate,
             dateTill: $scope.nextdate,
-            step: DateHelper.steps.DAY
+            step: DateHelper.steps.DAY,
+            index: "date"
         }, function (data) {
             $scope.pages = data;
+            $scope.$apply();
         });
-
-//        if (!$scope.hasFutureData()) {
-//            $scope.pages = [ExpendituresLoader.getData($scope.prevdate), ExpendituresLoader.getData($scope.date)];
-//            //            $scope.pageIndex = 1;
-//        } else {
-//            if ($scope.hasPrevData()) {
-//                $scope.pages = [ExpendituresLoader.getData($scope.prevdate), ExpendituresLoader.getData($scope.date), ExpendituresLoader.getData($scope.nextdate)];
-//                //                $scope.pageIndex = 1;
-//            }
-//        }
     }
 
     $scope.$watch('date.toDateString()', updatePages);
@@ -87,7 +81,7 @@ myApp.controller('ExpendituresController', function ($scope, $filter, Loader, Da
      * @name myApp.controller:ExpendituresController#hasExpenditures
      * @methodOf myApp.controller:ExpendituresController
      */
-    $scope.hasExpenditures = function (expendit) {
-        return expendit.length != 0;
+    $scope.hasExpenditures = function (page) {
+        return page.expenditureList.length != 0;
     }
 });

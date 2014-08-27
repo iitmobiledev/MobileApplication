@@ -92,9 +92,7 @@ myApp.factory('Visit', function (Model, Client, Service) {
         },
         primary: ['id'],
         indexes: {
-            date: false,
-            step: false,
-            master: false
+            date: false
         }
     });
 

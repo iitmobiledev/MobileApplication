@@ -3,18 +3,17 @@
 <footer-content show="true"></footer-content>
 <div class="upage-content" id="mainsub">
     <date-changer step="'day'" date='date' steps='["day"]' has-future-data='hasFutureData()' has-prev-data='hasPrevData()' index='pageIndex'></date-changer>
-    <ul id='carousel' rn-carousel rn-carousel-index="pageIndex" style="height: 100%">
-        <li ng-repeat="expenList in pages">
-
-            <ul class="list inset" ng-repeat="item in expenList">
-                <li style="font-size: 11pt;">
-                    <span style="float:left;  width:85%;white-space:nowrap;text-overflow:ellipsis;overflow: hidden;">{{item.description}}</span>
-                    <span style='text-align: right;'>{{item.cost}}</span>
-                </li>
-            </ul>
-            <ul class="list inset" ng-hide="hasExpenditures(expenList)">
-                <li style='text-align: center; font-size: 14pt'>Нет расходов</li>
-            </ul>
-        </li>
-    </ul>
+<ul id='carousel' rn-carousel rn-carousel-index="pageIndex" style="height: 100%">
+    <li ng-repeat="page in pages">
+        <ul class="list inset" ng-repeat="item in page.expenditureList">
+            <li style="font-size: 11pt;">
+                <span style="float:left;  width:85%;white-space:nowrap;text-overflow:ellipsis;overflow: hidden;">{{item.description}}</span>
+                <span style='text-align: right;'>{{item.cost}}</span>
+            </li>
+        </ul>
+        <ul class="list inset" ng-hide="hasExpenditures(page)">
+            <li style='text-align: center; font-size: 14pt'>Нет расходов</li>
+        </ul>
+    </li>
+</ul>
 </div>

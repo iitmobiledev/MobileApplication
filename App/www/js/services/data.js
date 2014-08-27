@@ -36,9 +36,9 @@ myApp.service("Server", ["DateHelper", "Visit",
 
         var objects = {
             "OperationalStatistics": function () {
-                var dayCount = 365;
+                var dayCount = 380;
                 var allObjects = [];
-                var day = new Date(2014, 8, 15);
+                var day = new Date(2014, 9, 26);
                 var currentDay = new Date(day.getFullYear(), day.getMonth(), day.getDate() - dayCount);
                 for (var i = 0; i <= dayCount; i++) {
                     var data = {};
@@ -82,8 +82,74 @@ myApp.service("Server", ["DateHelper", "Visit",
 
                 return allObjects;
             },
-            "Visit": "2014-07-01 15:15:00",
-            "Expenditures": "2014-08-01 15:30:00"
+            "Visit": function () {
+                var dayCount = 100;
+                var visits = [];
+                var day = new Date(2014, 9, 30);
+                for (var j = 0; j <= dayCount; j++) {
+                    for (var i = 0; i < 4; i++) {
+                        var sList = [];
+                        var hours = Math.round(getRandom(8, 21));
+                        var serviceCost = Math.round(getRandom(500, 10000));
+                        var salary = serviceCost - Math.round(getRandom(0, serviceCost / 2));
+                        var service = {
+                            description: "Маникюр",
+                            startTime: new Date(day.getFullYear(), day.getMonth(), day.getDate(), hours, Math.round(getRandom(0, 59))),
+                            endTime: new Date(day.getFullYear(), day.getMonth(), day.getDate(), hours + 2, Math.round(getRandom(0, 59))),
+                            master: {
+                                id: 1,
+                                firstName: "Оксана",
+                                middleName: "Георгиевна",
+                                lastName: "Ромашкина"
+                            },
+                            cost: serviceCost,
+                            employeeSalary: salary
+                        };
+                        sList.push(service);
+                        var visit = {};
+                        visit.id = getRandom(1, 500);
+                        visit.client = {
+                            firstName: "Марина",
+                            middleName: "Андреевна",
+                            lastName: "Пекарская",
+                            phoneNumber: "+79021565814",
+                            balance: getRandom(-1000, 10000),
+                            discount: Math.round(getRandom(3, 30))
+                        };
+                        visit.paid = getRandom(-1000, 10000);
+                        visit.serviceList = sList;
+                        visit.comment = "Забыла деньги дома. Обещала принести чуть позже."
+                        visit.date = new Date(day.getFullYear(), day.getMonth(), day.getDate(), hours + Math.round(getRandom(-2, 1)), Math.round(getRandom(0, 59)));
+                        visit.status = Visit.statuses.titlesArray[i];
+                        visits.push(visit);
+                    }
+                    day = new Date(day.getFullYear(), day.getMonth(), day.getDate() - 1);
+                }
+
+                return visits;
+            },
+            "Expenditures": function () {
+                var allObjs = [];
+                var dayCount = 100;
+                var day = new Date(2014, 9, 30);
+                for (var j = 0; j <= dayCount; j++) {
+                    var expenditures = {};
+                    var expItemsList = [];
+                    expItemsList.push({
+                        description: "Покупка расходных материалов",
+                        cost: -1500
+                    });
+                    expItemsList.push({
+                        description: "Покупка нового кресла",
+                        cost: -5000
+                    });
+                    expenditures.expenditureList = expItemsList;
+                    expenditures.date = day;
+                    allObjs.push(expenditures);
+                    day = new Date(day.getFullYear(), day.getMonth(), day.getDate() - 1);
+                }
+                return allObjs;
+            }
         };
 
 
@@ -154,7 +220,7 @@ myApp.service("Server", ["DateHelper", "Visit",
                         neededObjs.push(allObjects[i]);
                     }
                     callback(neededObjs);
-                }, 1000);
+                }, 500);
             },
 
             /**

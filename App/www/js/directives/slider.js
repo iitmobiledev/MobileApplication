@@ -189,7 +189,7 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
                         }
                         newscope = scope.$new();
                         newscope.page = contentData[i];
-                        console.log(i, contentData[i])
+//                        console.log(i, contentData[i])
                         compiled(newscope, function (clonedElement, scope) {
                             $('.my-slider').slickAdd(clonedElement);
                             if (i == 0) {
