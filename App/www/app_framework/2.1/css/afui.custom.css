@@ -25,7 +25,7 @@ body {
     overflow-x: hidden;
     -webkit-text-size-adjust: none;
     font-family: 'HelveticaNeueCyr';
-    src: url(css/fonts/helveticaneuecyr-roman.ttf)
+    src: url(css/fonts/helveticaneuecyr-roman.ttf);
     /*    , HelveticaNeueCyr, Arial, sans-serif;*/
     color: #000;
     font-size: 14px;
