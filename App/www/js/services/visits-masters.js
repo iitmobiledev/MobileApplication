@@ -221,7 +221,17 @@ myApp.factory('MastersLoader', function (DateHelper, Loader) {
                     list.push(visitsByDate[date.toDateString()]);
                 }
             }
-            var data = list;
+
+            var result = [];
+            for (var i in list) {
+                console.log(list[i]);
+                if (list[i].length != 0) {
+                    result.push(list[i].sort(function (a, b) {
+                        return new Date(a.date).getTime() - new Date(b.date).getTime()
+                    }));
+                }
+            }
+            var data = result;
 
             var mastersForPeriod = [];
             for (var k = 0; k < data.length; k++) {

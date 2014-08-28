@@ -90,12 +90,23 @@ myApp.controller('VisitsController', function ($scope, $filter, $location, Loade
                 }
                 visitsByDate[key].push(visit);
             });
-            console.log(visitsByDate);
+
             var list = [];
             for (var date = $scope.prevdate; date < $scope.nextdate || date.toDateString() == $scope.nextdate.toDateString(); date.setDate(date.getDate() + 1)) {
                 list.push(visitsByDate[date.toDateString()]);
             }
-            $scope.pages = list;
+            //            console.log("list", list);
+            var result = [];
+            for (var i in list) {
+                console.log(list[i]);
+                if (list[i].length != 0) {
+                    result.push(list[i].sort(function (a, b) {
+                        return new Date(a.date).getTime() - new Date(b.date).getTime()
+                    }));
+                }
+            }
+            //            console.log("result", result);
+            $scope.pages = result;
             $scope.$apply();
         });
     }
