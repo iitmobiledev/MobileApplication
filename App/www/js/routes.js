@@ -2,6 +2,7 @@ var myApp = angular.module('myApp', ['ngRoute', 'ngAnimate']);
 
 myApp.run(function ($templateCache) {
     $templateCache.put('statistic-content');
+    $templateCache.put('visits');
     //    if (!Storage.checkSupport()) {
     //        alert("indexedDB not support!");
     //    }

@@ -19,7 +19,7 @@ myApp.controller('VisitsController', function ($scope, $filter, $location, Loade
 
     var today = new Date();
     $scope.date = new Date(today.getFullYear(), today.getMonth(), today.getDate());
-
+    $scope.step = DateHelper.steps.DAY;
     $scope.pageIndex = 1;
     //        updatePages();
     /**
@@ -52,7 +52,7 @@ myApp.controller('VisitsController', function ($scope, $filter, $location, Loade
 
     $scope.onMasters = function () {
         $location.path('visits-master');
-    }
+    };
     /**
      *
      * @ngdoc method
@@ -63,55 +63,113 @@ myApp.controller('VisitsController', function ($scope, $filter, $location, Loade
      * @description Метод для проверки существования визита
      */
     $scope.hasVisits = function (visit) {
-        return visit.length != 0;
-    }
+        return visit.length !== 0;
+    };
 
-    /**
-     *
-     * @ngdoc method
-     * @name myApp.controller:VisitsController#updatePages
-     * @methodOf myApp.controller:VisitsController
-     * @description Метод для заполнения данными прошлой, текущей и будущей страниц.
-     */
-    function updatePages() {
-        $scope.prevdate = DateHelper.getPrevPeriod($scope.date, DateHelper.steps.DAY).begin;
-        $scope.nextdate = DateHelper.getNextPeriod($scope.date, DateHelper.steps.DAY).end;
-        Loader.search("Visit", {
-            dateFrom: $scope.prevdate,
-            dateTill: DateHelper.getNextPeriod($scope.nextdate, DateHelper.steps.DAY).end,
-            step: DateHelper.steps.DAY,
-            index: "date"
-        }, function (data) {
-            var visitsByDate = {};
-            angular.forEach(data, function (visit) {
-                var key = visit.date.toDateString();
-                if (!visitsByDate[key]) {
-                    visitsByDate[key] = [];
+    var VisitsPage = function (date, list) {
+        this.date = new Date(date);
+        this.list = list;
+    };
+
+    $scope.getData = function (key, quantity, forward, callback) {
+        var resultArr = [];
+        var date;
+        if (key) {
+            Loader.get("OperationalStatistics", key, function (obj) {
+                if (obj) {
+                    date = new Date(key);
+                    if (forward) {
+                        date = DateHelper.getNextPeriod(date, $scope.step).end;
+                    } else {
+                        date = DateHelper.getPrevPeriod(date, $scope.step).end;
+                    }
+                    var beginDate = date,
+                        endDate = date;
+                    for (var i = 0; i < quantity; i++) {
+                        if (forward) {
+                            endDate = DateHelper.getNextPeriod(endDate, $scope.step).end;
+                        } else {
+                            beginDate = DateHelper.getPrevPeriod(beginDate, $scope.step).begin;
+                        }
+                    }
+                    if (beginDate == endDate && $scope.step != DateHelper.steps.DAY) {
+                        var period = DateHelper.getPeriod(beginDate, $scope.step);
+                        beginDate = period.begin;
+                        endDate = period.end;
+                    }
+                    Loader.search("Visit", {
+                        dateFrom: beginDate,
+                        dateTill: endDate,
+                        step: DateHelper.steps.DAY,
+                        index: "date"
+                    }, function (data) {
+                        var visitsByDate = {};
+                        angular.forEach(data, function (visit) {
+                            //                console.log("visit", visit);
+                            var key = visit.date.toDateString();
+                            if (!visitsByDate[key]) {
+                                visitsByDate[key] = [];
+                            }
+                            visitsByDate[key].push(visit);
+                        });
+                        var list = [];
+                        for (var tmpdate = new Date(beginDate); tmpdate < endDate || tmpdate.toDateString() == endDate.toDateString(); tmpdate.setDate(tmpdate.getDate() + 1)) {
+                            console.log("date ", tmpdate);
+                            var page = new VisitsPage(new Date(tmpdate), visitsByDate[tmpdate.toDateString()].sort(function (a, b) {
+                                return new Date(a.date).getTime() - new Date(b.date).getTime();
+                            }));
+                            list.push(page);
+                        }
+                        callback(list);
+                    });
                 }
-                visitsByDate[key].push(visit);
             });
-
-            var list = [];
-            for (var date = $scope.prevdate; date < $scope.nextdate || date.toDateString() == $scope.nextdate.toDateString(); date.setDate(date.getDate() + 1)) {
-                list.push(visitsByDate[date.toDateString()]);
+        } else {
+            date = $scope.date;
+            var beginDate = date,
+                endDate = date;
+            for (var i = 0; i < quantity; i++) {
+                endDate = DateHelper.getNextPeriod(endDate, $scope.step).end;
+                beginDate = DateHelper.getPrevPeriod(beginDate, $scope.step).begin;
             }
-            //            console.log("list", list);
-            var result = [];
-            for (var i in list) {
-                console.log(list[i]);
-                if (list[i].length != 0) {
-                    result.push(list[i].sort(function (a, b) {
-                        return new Date(a.date).getTime() - new Date(b.date).getTime()
-                    }));
+            if (beginDate == endDate && $scope.step != DateHelper.steps.DAY) {
+                var period = DateHelper.getPeriod(beginDate, $scope.step);
+                beginDate = period.begin;
+                endDate = period.end;
+
+            }
+            Loader.search("Visit", {
+                dateFrom: beginDate,
+                dateTill: endDate,
+                step: DateHelper.steps.DAY,
+                index: "date"
+            }, function (data) {
+                var visitsByDate = {};
+                angular.forEach(data, function (visit) {
+                    //                console.log("visit", visit);
+                    var key = visit.date.toDateString();
+                    if (!visitsByDate[key]) {
+                        visitsByDate[key] = [];
+                    }
+                    visitsByDate[key].push(visit);
+                });
+                var list = [];
+                for (var tmpdate = new Date(beginDate); tmpdate < endDate || tmpdate.toDateString() == endDate.toDateString(); tmpdate.setDate(tmpdate.getDate() + 1)) {
+                    console.log("date ", tmpdate);
+                     var page = new VisitsPage(new Date(tmpdate), visitsByDate[tmpdate.toDateString()].sort(function (a, b) {
+                                return new Date(a.date).getTime() - new Date(b.date).getTime();
+                            }));
+                    list.push(page);
                 }
-            }
-            //            console.log("result", result);
-            $scope.pages = result;
-            $scope.$apply();
-        });
-    }
+                callback(list);
+            });
+        }
+    };
 
-    $scope.$watch('date.toDateString()', updatePages);
+
+    $scope.getKey = function (obj) {
+        return obj && obj.date.toDateString();
+    };
 
     /**
      *
@@ -146,5 +204,5 @@ myApp.controller('VisitsController', function ($scope, $filter, $location, Loade
         $scope.visitInfo.masters = masters.join(",");
         $scope.visitInfo.services = services.join(", ");
         $scope.visitInfo.cost = coast + ' р.';
-    }
+    };
 });

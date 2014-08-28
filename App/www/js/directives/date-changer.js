@@ -30,7 +30,7 @@ myApp.directive('dateChanger', function (DateHelper, $filter) {
             step = DateHelper.steps.DAY;
 
             var updateDate = function () {
-                date = scope.$eval(attrs.date);
+                date = new Date(scope.$eval(attrs.date));
             };
             scope.$watch(attrs.date, updateDate);
             updateDate();

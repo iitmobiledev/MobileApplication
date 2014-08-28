@@ -5,41 +5,44 @@
         <a id="timeButton" class="button widget uib_w_25 d-margins active" data-uib="app_framework/button" data-ver="1">По времени</a>
         <a ng-click="onMasters()" class="button widget uib_w_26 d-margins" data-uib="app_framework/button" data-ver="1">По мастерам</a>
     </div>
-
-    <date-changer step='"day"' date='date' steps='["day"]' has-future-data='hasFutureData()' has-prev-data='hasPrevData()' index='pageIndex'></date-changer>
-    <ul id='carousel' rn-carousel rn-carousel-index="pageIndex" style="height: 100%">
-        <li ng-repeat="page in pages">
-
-            <status-statistics visits='page'></status-statistics>
-
-            <ul class="list inset">
-                <li ng-repeat="visit in page" id="visitsPerTime">
-                    {{getVisitInfo(visit)}}
+    
+    <load-bar z-index="100" style="position: absolute; height: 100%" param-name="loading"></load-bar>
+    <slider content-id="visits" get-data='getData' key-expression='getKey'></slider>
+    <!-- 
+-->
+    <script type="text/ng-template" id="visits">
+        <div id="visitsContent">
+            <date-changer date='page.date' step='$parent.step' has-future-data='hasFutureData(page.date)' has-prev-data='hasPrevData(page.date)'></date-changer>
+            <status-statistics visits='page.list'></status-statistics>
+<ul class="list inset">
+                <li ng-repeat="visit in page.list" id="visitsPerTime">
+                    {{$parent.getVisitInfo(visit)}}
                     <a href="#/visit/{{visitInfo.id}}">
                         <div style="width:100%">
                             <visit-status status='visitInfo.status' style=""></visit-status>
                             <img style="float:right;top:-25px;position:relative;left: -95px;" src="images/time.png">
                             <span style="float:right;top:-25px;position:relative">{{visitInfo.time}}</span>
                             <div>
-                                <span style="width:65%;white-space:nowrap;text-overflow:ellipsis;overflow: hidden; font-size:18px; font-weight:normal; margin-bottom:5px;">
+                                <span style="width:65%;white-space:nowrap;text-overflow:ellipsis;overflow: hidden; font-size:18px; font-weight:500; margin-bottom:5px;">
                                     {{visitInfo.client}}
                                 </span>
 
                             </div>
                             <div>
-                                <span style="text-align:left;width:65%;white-space:nowrap;text-overflow:ellipsis;overflow: hidden;font-weight:lighter">
+                                <span style="text-align:left;width:65%;white-space:nowrap;text-overflow:ellipsis;overflow: hidden;">
                                    {{visitInfo.services}} — {{visitInfo.cost}} 
                                 </span>
                             </div>
                         </div>
                     </a>
                 </li>
-                <ul class="list inset" ng-hide="hasVisits(page)">
+                </ul>
+                <ul class="list inset" ng-hide="hasVisits(page.list)">
                     <li style='text-align: center; font-size: 14pt;'>Нет визитов</li>
                 </ul>
-            </ul>
-        </li>
-    </ul>
+            
+        </div>
+    </script>
 
 </div>
 <footer-content show="true"></footer-content>

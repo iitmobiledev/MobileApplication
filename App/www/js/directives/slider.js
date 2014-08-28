@@ -97,6 +97,8 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
              * @description Первоначальная инициализация слайдера, добавляются первые данные
              */
             function initSlider() {
+                $('.my-slider').unslick();
+                $('.my-slider').html("")
                 toSlick($('.my-slider'));
                 dataCallback(null, count, true, addCurrentDayData);
             }
@@ -176,21 +178,21 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
              */
             function addCurrentDayData(contentData) {
                 ready = false;
-                console.log("contentData ", contentData);
                 var curIndex = 0;
                 if (contentData) {
                     for (var i = 0; i < contentData.length; i++) {
                         var now = new Date()
                         var today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-                        var curDate = contentData[i].date;
+                        var curDate = new Date(contentData[i].date);
                         curDate = new Date(curDate.getFullYear(), curDate.getMonth(), curDate.getDate());
                         if (contentData[i].date && curDate.toDateString() == today.toDateString()) {
                             curIndex = i;
                         }
                         newscope = scope.$new();
                         newscope.page = contentData[i];
-//                        console.log(i, contentData[i])
+                        //                        console.log(i, contentData[i])
                         compiled(newscope, function (clonedElement, scope) {
+//                            console.log(clonedElement.html())
                             $('.my-slider').slickAdd(clonedElement);
                             if (i == 0) {
                                 $('.my-slider').slickRemove(true);
@@ -217,9 +219,9 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
             }
 
             function tryKey() {
+                scope.loading = false;
+                scope.$apply();
                 if (getCurrentKey()) {
-                    scope.loading = false;
-                    scope.$apply();
                     ready = true;
                 } else {
                     setTimeout(tryKey, 100);
@@ -239,8 +241,6 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
             scope.$watch('step', function (newValue, oldValue) {
                 scope.loading = true;
                 if (oldValue != newValue) {
-                    $('.my-slider').unslick();
-                    $('.my-slider').html("")
                     initSlider();
                 }
             })
