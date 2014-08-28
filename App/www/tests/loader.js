@@ -64,7 +64,6 @@ describe('tests for Loader:\n', function () {
         });
 
         it("должен загрузить объекты с сервера", function () {
-            //            indexedDB.deleteDatabase("storage
             var periodObj = {
                 dateFrom: new Date(2000, 10, 15),
                 dateTill: new Date(2000, 10, 17),
@@ -72,9 +71,6 @@ describe('tests for Loader:\n', function () {
             }
 
             spyOn(server, 'searchForPeriod').andCallThrough();
-            //            loader.search("OperationalStatistics", periodObj, function(){});
-            //            
-            //            expect(server.searchForPeriod).toHaveBeenCalled();
             var opStats, flag = false;
             runs(loader.search("OperationalStatistics", periodObj, function (data) {
                 flag = true;

@@ -1,5 +1,4 @@
 //indexedDB.deleteDatabase("storage")
-
 /**
  * @ngdoc service
  * @description Сервис для кэширования данных
@@ -45,7 +44,7 @@ myApp.factory('Storage', function (DateHelper) {
 
     var lastModified = function (query, callbacK) {
         get("classesLastModified", "primary", function (data) {
-            if (data == null || typeof(callbacK) == 'undefined') {
+            if (data == null || typeof (callbacK) == 'undefined') {
                 setTimeout(lastModified(query), 500);
             } else {
                 var result = new ClassesLastModified();

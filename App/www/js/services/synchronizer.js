@@ -9,16 +9,17 @@ myApp.service("Synchronizer", ["Storage", "Server", "ModelConverter",
                     "offset": offset
                 }, function (data) {
                     if (data == null || data.length < count) {
-                        Server.lastModified(className, function (date) {
-                            lastLocalModified[className] = lastServerModified;
-                            if (date == lastServerModified) {
+                        Server.lastModified(["OperationalStatistics", "Visit", "Expenditures"], function (date) {
+                            lastLocalModified[className] = lastServerModified[className];
+                            console.log("synch end", date[className], lastServerModified[className]);
+                            if (date[className] == lastServerModified[className]) {
                                 Storage.saveLastModify(lastLocalModified, function () {
                                     callback();
                                 });
                             } else {
-                                Storage.saveLastModify(lastLocalModified, function () {
-                                    synch.updateData(className, count, 0, callback, lastLocalModified, date);
-                                });
+                                //                                Storage.saveLastModify(lastLocalModified, function () {
+                                synch.updateData(className, count, 0, callback, lastLocalModified, date);
+                                //                                });
                             }
                         });
 
@@ -35,13 +36,12 @@ myApp.service("Synchronizer", ["Storage", "Server", "ModelConverter",
             synchCheck: function (className, callback) {
                 var synch = this;
                 Storage.lastModified(["OperationalStatistics", "Visit", "Expenditures"], function (lastLocalModified) {
-                    Server.lastModified(className, function (lastServerModified) {
-                        console.log(lastLocalModified[className], lastServerModified);
-                        if (lastLocalModified[className] == lastServerModified) {
+                    Server.lastModified(["OperationalStatistics", "Visit", "Expenditures"], function (lastServerModified) {
+                        console.log(lastLocalModified[className], lastServerModified[className]);
+                        if (lastLocalModified[className] == lastServerModified[className]) {
                             callback();
                         } else {
                             synch.updateData(className, 20, 0, callback, lastLocalModified, lastServerModified);
-                            callback();
                         }
                     });
                 });
@@ -53,20 +53,20 @@ myApp.service("Synchronizer", ["Storage", "Server", "ModelConverter",
 var $inj = angular.injector(['myApp']);
 var synchronizer = $inj.get('Synchronizer');
 var storage = $inj.get('Storage');
-synchronizer.synchCheck("OperationalStatistics", function () {
+synchronizer.synchCheck.call(synchronizer, "OperationalStatistics", function () {
     console.log("synch end OperationalStatistics0");
-    synchronizer.synchCheck("Visit", function () {
+    synchronizer.synchCheck.call(synchronizer, "Visit", function () {
         console.log("synch end Visit0");
-        synchronizer.synchCheck("Expenditures", function () {
+        synchronizer.synchCheck.call(synchronizer, "Expenditures", function () {
             console.log("synch end Expenditures0");
         });
     });
 });
-setInterval(synchronizer.synchCheck, 60000, "OperationalStatistics", function () {
+setInterval(synchronizer.synchCheck.call, 60000, synchronizer, "OperationalStatistics", function () {
     //    console.log("synch end OperationalStatistics");
-    setInterval(synchronizer.synchCheck, 60000, "Visit", function () {
+    setInterval(synchronizer.synchCheck.call, 60000, synchronizer, "Visit", function () {
         //        console.log("synch end Visit");
-        setInterval(synchronizer.synchCheck, 60000, "Expenditures", function () {
+        setInterval(synchronizer.synchCheck.call, 60000, synchronizer, "Expenditures", function () {
             //            console.log("synch end Expenditures");
         });
     });
