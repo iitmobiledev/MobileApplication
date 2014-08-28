@@ -37,7 +37,7 @@ myApp.factory('Master', function (Model) {
 /**
  * @ngdoc service
  * @description Сервис - конструктор класса Услуга
- * @name myApp.service:Client
+ * @name myApp.service:Service
  * @requires myApp.service:Model
  * @param {Object} data Данные в формате ключ: значение.
  */
@@ -64,12 +64,11 @@ myApp.factory('Service', function (Model, Master) {
 /**
  * @ngdoc service
  * @description Сервис - конструктор класса Визит
- * @name myApp.service:Client
+ * @name myApp.service:Visit
  * @requires myApp.service:Model
  * @param {Object} data Данные в формате ключ: значение.
  */
 myApp.factory('Visit', function (Model, Client, Service) {
-
     var visitConstructor = Model("Visit", {
         deserialize: function (self, data) {
             self.id = data.id;

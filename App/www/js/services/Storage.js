@@ -45,7 +45,7 @@ myApp.factory('Storage', function (DateHelper) {
 
     var lastModified = function (query, callbacK) {
         get("classesLastModified", "primary", function (data) {
-            if (data == null) {
+            if (data == null || typeof(callbacK) == 'undefined') {
                 setTimeout(lastModified(query), 500);
             } else {
                 var result = new ClassesLastModified();
@@ -67,7 +67,7 @@ myApp.factory('Storage', function (DateHelper) {
      * за которые еще есть данные.
      * @param {Array} query
      * @param {Function} callback
-     * @return {Object} экземпляр класса  className
+     * @return {Object} экземпляр класса className
      */
     var getFieldStat = function (query, callback) {
         var result = [];

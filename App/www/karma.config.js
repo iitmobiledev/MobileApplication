@@ -30,19 +30,18 @@ module.exports = function (config) {
             'js/lib/jquery-1.11.0.min.js',
             'js/lib/jquery.min.js',
             'js/lib/angular.js',
-            'js/services/loader.js',
             'js/services/Storage.js',
             'js/services/data.js',
             'js/services/date-helper.js',
-            'js/services/finder.js',
+            'js/services/expenditures.js',
+            'js/services/model-converter.js',
+            'js/services/loader.js',
             'js/services/model.js',
             'js/services/statistics.js',
-            'js/services/finance-statistics.js',
             'js/services/visits-masters.js',
-            'js/services/expenditures.js',
+            'js/services/synchronizer.js',
             'js/controllers/operational-statistic.js',
-            'tests/loader.js',
-            'tests/storage.js'
+            'tests/synchronizer.js'
         ],
 
 

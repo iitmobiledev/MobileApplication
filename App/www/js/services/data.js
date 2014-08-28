@@ -8,9 +8,9 @@
 myApp.service("Server", ["DateHelper", "Visit",
     function (DateHelper, Visit) {
         var classesLastModified = {
-            "OperationalStatistics": "2014-08-25 21:44:00",
-            "Visit": "2014-08-25 21:44:00",
-            "Expenditures": "2014-08-25 21:44:00"
+            "OperationalStatistics": "2014-08-25 22:44:00",
+            "Visit": "2014-08-25 22:44:00",
+            "Expenditures": "2014-08-25 22:44:00"
         };
 
         var classesFieldStat = {
@@ -107,7 +107,7 @@ myApp.service("Server", ["DateHelper", "Visit",
                         };
                         sList.push(service);
                         var visit = {};
-                        visit.id =j*4 + i;
+                        visit.id = j * 4 + i;
                         visit.client = {
                             firstName: "Марина",
                             middleName: "Андреевна",
@@ -186,6 +186,7 @@ myApp.service("Server", ["DateHelper", "Visit",
             }
         };
         return {
+            classesLastModified: classesLastModified,
             lastModified: function (query, callback) {
                 //                var result = {};
                 //                for (var i in query)
@@ -210,17 +211,18 @@ myApp.service("Server", ["DateHelper", "Visit",
             },
 
             search: function (className, params, callback) {
-                setTimeout(function () {
-                    var allObjects = objects[className]();
-                    var end = params.offset + params.count;
-                    if (end > allObjects.length)
-                        end = allObjects.length;
-                    var neededObjs = [];
-                    for (var i = params.offset; i < end; i++) {
-                        neededObjs.push(allObjects[i]);
-                    }
-                    callback(neededObjs);
-                }, 500);
+                //                setTimeout(function () {
+                var allObjects = objects[className]();
+                var end = params.offset + params.count;
+                if (end > allObjects.length)
+                    end = allObjects.length;
+                var neededObjs = [];
+                for (var i = params.offset; i < end; i++) {
+                    neededObjs.push(allObjects[i]);
+                }
+                //                    classesLastModified[className] = "2014-8-30 14:00"
+                callback(neededObjs);
+                //                }, 500);
             },
 
             /**
