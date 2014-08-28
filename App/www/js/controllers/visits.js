@@ -146,7 +146,6 @@ myApp.controller('VisitsController', function ($scope, $filter, $location, Loade
             }, function (data) {
                 var visitsByDate = {};
                 angular.forEach(data, function (visit) {
-                    //                console.log("visit", visit);
                     var key = visit.date.toDateString();
                     if (!visitsByDate[key]) {
                         visitsByDate[key] = [];
@@ -156,10 +155,12 @@ myApp.controller('VisitsController', function ($scope, $filter, $location, Loade
                 var list = [];
                 for (var tmpdate = new Date(beginDate); tmpdate < endDate || tmpdate.toDateString() == endDate.toDateString(); tmpdate.setDate(tmpdate.getDate() + 1)) {
                     console.log("date ", tmpdate);
-                     var page = new VisitsPage(new Date(tmpdate), visitsByDate[tmpdate.toDateString()].sort(function (a, b) {
-                                return new Date(a.date).getTime() - new Date(b.date).getTime();
-                            }));
-                    list.push(page);
+                    if (visitsByDate[tmpdate.toDateString()]) {
+                        var page = new VisitsPage(new Date(tmpdate), visitsByDate[tmpdate.toDateString()].sort(function (a, b) {
+                            return new Date(a.date).getTime() - new Date(b.date).getTime();
+                        }));
+                        list.push(page);
+                    }
                 }
                 callback(list);
             });

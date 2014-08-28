@@ -1,11 +1,11 @@
 var myApp = angular.module('myApp', ['ngRoute', 'ngAnimate']);
 
-myApp.run(function ($templateCache) {
+myApp.run(function ($templateCache, Storage) {
     $templateCache.put('statistic-content');
     $templateCache.put('visits');
-    //    if (!Storage.checkSupport()) {
-    //        alert("indexedDB not support!");
-    //    }
+    if (!Storage.checkSupport()) {
+        alert("indexedDB not support!");
+    }
 });
 
 myApp.config(['$routeProvider',
