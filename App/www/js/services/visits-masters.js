@@ -151,7 +151,7 @@ myApp.factory('Visit', function (Model, Client, Service) {
  * @name myApp.service:MastersPerDayLoader
  * @requires myApp.service:VisitsLoader
  */
-myApp.factory('MastersLoader', function (DateHelper, Loader) {
+myApp.factory('MastersLoader', function (DateHelper, Loader, $filter) {
 
     /**
      *
@@ -255,11 +255,81 @@ myApp.factory('MastersLoader', function (DateHelper, Loader) {
                         return 1;
                     return 0;
                 });
+
+                for (var i in mastersForDay) {
+                    var vlist = mastersForDay[i].visList;
+                    mastersForDay[i].visList = getGoodVisitsList(vlist, mastersForDay[i].master.id);
+                }
+                console.log('mastersForDay', mastersForDay);
                 mastersForPeriod.push(mastersForDay);
             }
             callback(mastersForPeriod);
         });
     }
+
+    /**
+     *
+     * @ngdoc method
+     * @name myApp.controller:MastersLoader#getGoodVisitsList
+     * @methodOf myApp.controller:MastersLoader
+     * @param {Array} masterList список визитов мастера
+     * @description Метод, формирующий список объектов "визит" с дополнительными информационными полями
+     * @returns {Object} Список объектов "визит" с новыми полями
+     */
+    function getGoodVisitsList(masterList, id) {
+        var nmav = [];
+        for (var i = 0; i < masterList.length; i++) {
+            nmav.push(selectVisitInfo(masterList[i], id));
+        }
+        for (var j = 1; j < nmav.length; j++) {
+            if (nmav[j].startTime != nmav[j - 1].endTime) {
+                nmav[j - 1].downTime = $filter('date')(nmav[j - 1].endTime, "HH:mm") + '-' + $filter('date')(nmav[j].startTime, "HH:mm");
+                nmav[j - 1].isDownTime = true;
+            }
+        }
+        return nmav;
+    }
+
+
+    /**
+     *
+     * @ngdoc method
+     * @name myApp.controller:MastersLoader#selectVisitInfo
+     * @methodOf myApp.controller:MastersLoader
+     * @param {Object} visit Объект визит
+     * @description Метод, формирующий объект визит с дополнительными информационными полями
+     * @returns {Object} Объект визит с новыми полями
+     */
+    function selectVisitInfo(visit, id) {
+        var services = [],
+            startTimes = [],
+            endTimes = [],
+            coast = 0;
+        for (var j = 0; j < visit.serviceList.length; j++) {
+            var service = visit.serviceList[j]
+            if (id == service.master.id) {
+                services.push(service);
+                coast += service.cost
+                startTimes.push(service.startTime);
+                endTimes.push(service.endTime);
+            }
+        }
+        var result = {};
+        result.id = visit.id;
+        result.status = visit.status;
+        result.client = visit.client;
+        result.serviceList = services;
+        result.cost = coast + ' р.';
+        result.startTime = Math.min.apply(null, startTimes);
+        result.endTime = Math.max.apply(null, endTimes);
+        result.isDownTime = false;
+        result.downTime = '';
+        console.log("res-visit", result);
+        return result;
+    }
+
+
+
     return {
         getAllMastersPerDay: getAllMastersPerDay
     };

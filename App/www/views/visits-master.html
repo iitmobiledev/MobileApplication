@@ -11,38 +11,39 @@
         <li ng-repeat="page in pages">
             <ul>
                 <li ng-repeat="masterVis in page" id="visitsPerMasters">
-                    <status-statistics visits="visits[pages.indexOf(page)]"></status-statistics>
+                    <status-statistics visits="page"></status-statistics>
                     <ul class="list inset">
                         <li class="divider" ng-click="toMaster(masterVis.master.id)">
                             {{getMasterInfo(masterVis.master)}}
                         </li>
-                        <li ng-repeat="visit in masterVis.visList">
-                            {{getVisitByMasterInfo(visit)}}
-                            <a href="#/visit/{{visit.id}}">
-                                <div>
-                                    <visit-status status='masterVisitInfo.status' style="width:50%;"></visit-status>
-                                    <span style="float:right; width:35%;top:-25px;position:relative;white-space:nowrap;text-overflow:ellipsis">{{masterVisitInfo.time}}</span>
-                                    <div>
-                                        <span style="width:65%;white-space:nowrap;text-overflow:ellipsis;overflow: hidden; font-size:18px; font-weight:500;">
-                                            {{masterVisitInfo.client}}
-                                        </span>
-                                        <!--
-                                        <span style="text-align:right; width:35%;white-space:nowrap;text-overflow:ellipsis">
-                                            {{masterVisitInfo.time}}
-                                        </span>
--->
-                                    </div>
-                                    <div>
-                                        <span style="width:65%;white-space:nowrap;text-overflow:ellipsis;overflow: hidden;">
-                                            {{masterVisitInfo.service}} — {{masterVisitInfo.cost}}
-                                        </span>
-                                    </div>
-                                </div>
-                            </a>
-                        </li>
+                        <ul ng-repeat="visit in masterVis.visList">
+                            <li>
+                                {{getVisitByMasterInfo(visit)}}
+                                <a href="#/visit/{{visit.id}}">
+                                    <div style="width:100%">
+                                        <visit-status status='masterVisitInfo.status'></visit-status>
+                                        <img style="float:right;top:-25px;position:relative;left: -95px;" src="images/time.png">
+                                        <span style="float:right;top:-25px;position:relative">{{masterVisitInfo.time}}</span>
+                                        <div>
+                                            <span style="width:65%;white-space:nowrap;text-overflow:ellipsis;overflow: hidden; font-size:18px; font-weight:500; margin-bottom:5px;">
+                                    {{masterVisitInfo.client}}
+                                </span>
 
+                                        </div>
+                                        <div>
+                                            <span style="text-align:left;width:65%;white-space:nowrap;text-overflow:ellipsis;overflow: hidden;">
+                                   {{masterVisitInfo.service}} — {{masterVisitInfo.cost}} 
+                                </span>
+                                        </div>
+                                    </div>
+                                </a>
+                            </li>
+                            <li style="font-weight:lighter; font-size:12pt; color:#b8b8b8" ng-show="visit.isDownTime">Простой мастера {{visit.downTime}}</li>
+                        </ul>
                     </ul>
                 </li>
+
+
                 <ul class="list inset" ng-hide="hasVisits(page)">
                     <li style='text-align: center; font-size: 14pt;'>Нет визитов</li>
                 </ul>

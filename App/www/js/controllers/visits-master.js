@@ -80,7 +80,8 @@ myApp.controller('VisitsMasterController', function ($scope, $filter, $location,
         };
         MastersLoader.getAllMastersPerDay(period, function (masters) {
             $scope.pages = masters;
-            $scope.calculateVisitsPerDay();
+            console.log(masters);
+            //            $scope.calculateVisitsPerDay();
             $scope.$apply();
         });
     });
@@ -114,6 +115,10 @@ myApp.controller('VisitsMasterController', function ($scope, $filter, $location,
         return master.lastName + " " + master.firstName;
     };
 
+
+
+    $scope.downTime;
+    $scope.isDownTime;
     /**
      *
      * @ngdoc method
@@ -123,6 +128,7 @@ myApp.controller('VisitsMasterController', function ($scope, $filter, $location,
      * @description Метод, формирующий данные в виде, нужном для отображения визитов, отсортированных по мастерам.
      */
     $scope.getVisitByMasterInfo = function (visit) {
+        console.log("visit", visit);
         $scope.masterVisitInfo = {};
         var services = [],
             startTimes = [],
@@ -137,14 +143,16 @@ myApp.controller('VisitsMasterController', function ($scope, $filter, $location,
                 endTimes.push(service.endTime);
             }
         }
-
+        $scope.downTime = visit.downTime;
+        $scope.isDownTime = visit.isDownTime;
         $scope.masterVisitInfo.id = visit.id;
         $scope.masterVisitInfo.status = visit.status;
         $scope.masterVisitInfo.client = visit.client.lastName + ' ' + visit.client.firstName;
-        $scope.masterVisitInfo.time = $filter('date')(Math.min.apply(null, startTimes), "HH:mm") + '—' + $filter('date')(Math.max.apply(null, endTimes), "HH:mm");
+        $scope.masterVisitInfo.time = $filter('date')(Math.min.apply(null, startTimes), "HH:mm") + '-' + $filter('date')(Math.max.apply(null, endTimes), "HH:mm");
         $scope.masterVisitInfo.service = services.join(", ");
         $scope.masterVisitInfo.cost = coast + ' р.';
     };
+
 
     $scope.visits = [];
     $scope.getVisits = function (page) {

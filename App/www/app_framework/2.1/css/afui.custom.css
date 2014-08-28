@@ -972,7 +972,11 @@ only screen and (min-width: 768px) {
     display: block;
     list-style: none;
     position: relative;
-    padding: 20px 20px 20px 10px;
+    padding: 20px 10px;
+/*
+    color: #000000;
+    text-decoration: none;
+*/
     border-bottom: 1px solid #ccc;
 }
 #afui .list li:first-child {
@@ -1006,6 +1010,7 @@ only screen and (min-width: 768px) {
     -webkit-font-smoothing: antialiased;
     content: "\f054";
     top: 50%;
+    right: 20px;
     margin-top: -0.5em;
     color: inherit;
 }
@@ -1274,7 +1279,7 @@ only screen and (min-width: 768px) {
     margin: 8px 0;
     font-weight: lighter;
     /*    font-size: 16px;*/
-/*    color: gray;*/
+    /*    color: gray;*/
     text-align: center;
     vertical-align: top;
     cursor: pointer;

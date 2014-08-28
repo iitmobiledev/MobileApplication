@@ -7,7 +7,7 @@ myApp.directive('statusStatistics', function (Visit) {
 
             var updateStatus = function () { 
 //                console.log("attrs.visits ", attrs.visits);
-//                console.log("scope.$eval(attrs.visits) ", scope.$eval(attrs.visits));
+                console.log("scope.$eval(attrs.visits) ", scope.$eval(attrs.visits));
                 visits = scope.$eval(attrs.visits);
                 salary = 0;
 
