@@ -66,12 +66,12 @@
                             <td style="text-align:left">Приход:</td>
                             <td style="font-weight: bold;text-align:left">{{page.financeStat.credit}} р.</td>
                         </tr>
-                         <a ng-click="toExpenditures() ">
-                             <tr>
-                                <td style="text-align:left">Расход:</td>
-                                <td style="font-weight: bold;text-align:left">{{page.financeStat.debit}} р.</td>
+                         
+                             <tr ng-click="toExpenditures() ">
+                                    <td style="text-align:left">Расход:</td>
+                                    <td style="font-weight: bold;text-align:left">{{page.financeStat.debit}} р.</td>
                             </tr>
-                         </a>
+                    
                         </table>
                             
                         </td>
@@ -86,16 +86,6 @@
     </div>
 </div>
 
-<!--
-<p>Утром:
-                            <span style="font-weight: bold; ">{{page.financeStat.morningMoney}} р.</span></p>
-                             <p>Приход: 
-                            <span style="font-weight: bold; ">{{page.financeStat.credit}} р.</span> </p>
-                            <a ng-click="toExpenditures() ">
-                                 <p><span>Расход:</span> 
-                                 <span style="font-weight: bold;">{{page.financeStat.debit}} р.</span> </p>
-                            </a>
--->
 <!-- /upage-content -->
 <!-- //<div class="footer "></div>-->
 <!--
