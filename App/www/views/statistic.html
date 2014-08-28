@@ -41,7 +41,7 @@
                         <td class="sCell" ng-click="$parent.toChart('clients')">
                             <img src="images/clients.PNG" style="margin:5px">
                             <p style="font-size:18pt; font-weight: bold">{{page.clients}}</p>
-                            <p style="font-weight: lighter">Клиента</p>
+                            <p style="font-weight: lighter">Оформлено визитов</p>
                         </td>
                         <td class="sCell" ng-click="$parent.toChart('workload')">
                             <img src="images/workload.PNG" style="margin:5px">
@@ -56,15 +56,24 @@
                             <h1>{{page.financeStat.tillMoney}} р.</h1>
                             <span style="font-size:14px; font-weight: lighter">В кассе</span>
                         </td>
-                        <td class="financeCellLeft">
-                            <p><span>Утром:</span>
-                            <span style="font-weight: bold; float:right">{{page.financeStat.morningMoney}} р.</span></p>
-                             <p><span>Приход: </span> 
-                            <span style="font-weight: bold; float:right">{{page.financeStat.credit}} р.</span> </p>
-                            <a ng-click="toExpenditures() ">
-                                 <p><span>Расход:</span> 
-                                 <span style="font-weight: bold; float:right">{{page.financeStat.debit}} р.</span> </p>
-                            </a>
+                        <td class="financeCellLeft" align="center">
+                        <table align="center">
+                        <tr>
+                            <td style="text-align:left">Утром:</td>
+                            <td style="font-weight: bold;text-align:left">{{page.financeStat.morningMoney}} р.</td>
+                        </tr>
+                         <tr>
+                            <td style="text-align:left">Приход:</td>
+                            <td style="font-weight: bold;text-align:left">{{page.financeStat.credit}} р.</td>
+                        </tr>
+                         <a ng-click="toExpenditures() ">
+                             <tr>
+                                <td style="text-align:left">Расход:</td>
+                                <td style="font-weight: bold;text-align:left">{{page.financeStat.debit}} р.</td>
+                            </tr>
+                         </a>
+                        </table>
+                            
                         </td>
 
                     </tr>
@@ -77,6 +86,16 @@
     </div>
 </div>
 
+<!--
+<p>Утром:
+                            <span style="font-weight: bold; ">{{page.financeStat.morningMoney}} р.</span></p>
+                             <p>Приход: 
+                            <span style="font-weight: bold; ">{{page.financeStat.credit}} р.</span> </p>
+                            <a ng-click="toExpenditures() ">
+                                 <p><span>Расход:</span> 
+                                 <span style="font-weight: bold;">{{page.financeStat.debit}} р.</span> </p>
+                            </a>
+-->
 <!-- /upage-content -->
 <!-- //<div class="footer "></div>-->
 <!--

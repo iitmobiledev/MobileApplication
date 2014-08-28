@@ -24,9 +24,11 @@
 #financeTable .financeCell {
     text-align: center;
 }
+/*
 #financeTable .financeCellLeft {
-    text-align: left;
+    text-align: center;
 }
+*/
 /*Data navigation*/
 
 #dateToggle {
