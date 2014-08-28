@@ -10,13 +10,15 @@ myApp.service("Synchronizer", ["Storage", "Server", "ModelConverter",
                 }, function (data) {
                     if (data == null || data.length < count) {
                         Server.lastModified(className, function (date) {
+                            lastLocalModified[className] = lastServerModified;
                             if (date == lastServerModified) {
-                                lastLocalModified[className] = lastServerModified;
                                 Storage.saveLastModify(lastLocalModified, function () {
                                     callback();
                                 });
                             } else {
-                                synch.updateData(className, count, 0, callback, lastLocalModified, date);
+                                Storage.saveLastModify(lastLocalModified, function () {
+                                    synch.updateData(className, count, 0, callback, lastLocalModified, date);
+                                });
                             }
                         });
 
@@ -61,11 +63,11 @@ synchronizer.synchCheck("OperationalStatistics", function () {
     });
 });
 setInterval(synchronizer.synchCheck, 60000, "OperationalStatistics", function () {
-    console.log("synch end OperationalStatistics");
+    //    console.log("synch end OperationalStatistics");
     setInterval(synchronizer.synchCheck, 60000, "Visit", function () {
-        console.log("synch end Visit");
+        //        console.log("synch end Visit");
         setInterval(synchronizer.synchCheck, 60000, "Expenditures", function () {
-            console.log("synch end Expenditures");
+            //            console.log("synch end Expenditures");
         });
     });
 });

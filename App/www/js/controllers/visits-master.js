@@ -81,7 +81,7 @@ myApp.controller('VisitsMasterController', function ($scope, $filter, $location,
         MastersLoader.getAllMastersPerDay(period, function (masters) {
             $scope.pages = masters;
             console.log(masters);
-            //            $scope.calculateVisitsPerDay();
+                        $scope.calculateVisitsPerDay();
             $scope.$apply();
         });
     });

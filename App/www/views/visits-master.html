@@ -11,7 +11,7 @@
         <li ng-repeat="page in pages">
             <ul>
                 <li ng-repeat="masterVis in page" id="visitsPerMasters">
-                    <status-statistics visits="page"></status-statistics>
+                    <status-statistics visits="visits[pageIndex]"></status-statistics>
                     <ul class="list inset">
                         <li class="divider" ng-click="toMaster(masterVis.master.id)">
                             {{getMasterInfo(masterVis.master)}}

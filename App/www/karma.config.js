@@ -41,7 +41,8 @@ module.exports = function (config) {
             'js/services/visits-masters.js',
             'js/services/synchronizer.js',
             'js/controllers/operational-statistic.js',
-            'tests/synchronizer.js'
+            'tests/synchronizer.js',
+            'tests/loader.js'
         ],
 
 

@@ -5,9 +5,7 @@ myApp.directive('statusStatistics', function (Visit) {
         link: function (scope, element, attrs) {
             var visits, salary = 0;
 
-            var updateStatus = function () { 
-//                console.log("attrs.visits ", attrs.visits);
-                console.log("scope.$eval(attrs.visits) ", scope.$eval(attrs.visits));
+            var updateStatus = function () {
                 visits = scope.$eval(attrs.visits);
                 salary = 0;
 

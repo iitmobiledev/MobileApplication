@@ -37,12 +37,12 @@ myApp.service("Loader", ["Storage", "ModelConverter", "Server",
                 Storage.search(className, params, function (data) {
                     if (data == null) { //если в базе ничего не нашли
                         Server.searchForPeriod(className, params, function (result) {
-                            console.log("server.search", result);
+//                            console.log("server.search", result);
                             var objs = ModelConverter.getObjects(className, result);
                             callback(objs);
                         });
                     } else {
-                        console.log("Storage.search ", data);
+//                        console.log("Storage.search ", data);
                         var objs = ModelConverter.getObjects(className, data);
                         callback(objs);
                     }

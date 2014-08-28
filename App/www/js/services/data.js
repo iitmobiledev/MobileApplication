@@ -211,18 +211,18 @@ myApp.service("Server", ["DateHelper", "Visit",
             },
 
             search: function (className, params, callback) {
-                //                setTimeout(function () {
-                var allObjects = objects[className]();
-                var end = params.offset + params.count;
-                if (end > allObjects.length)
-                    end = allObjects.length;
-                var neededObjs = [];
-                for (var i = params.offset; i < end; i++) {
-                    neededObjs.push(allObjects[i]);
-                }
-                //                    classesLastModified[className] = "2014-8-30 14:00"
-                callback(neededObjs);
-                //                }, 500);
+                setTimeout(function () {
+                    var allObjects = objects[className]();
+                    var end = params.offset + params.count;
+                    if (end > allObjects.length)
+                        end = allObjects.length;
+                    var neededObjs = [];
+                    for (var i = params.offset; i < end; i++) {
+                        neededObjs.push(allObjects[i]);
+                    }
+                    //                    classesLastModified[className] = "2014-8-30 14:00"
+                    callback(neededObjs);
+                }, 500);
             },
 
             /**
