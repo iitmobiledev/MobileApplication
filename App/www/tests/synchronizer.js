@@ -15,15 +15,37 @@ describe('tests for Synchronizer:\n', function () {
 
     describe('Synchronizer', function () {
         it("должен начать синхронизацию хранилища с сервером", function () {
-            spyOn(server, 'search');
-            spyOn(synchronizer, 'updateData');
+
+            //            spyOn(storage, 'lastModified').andCallFake(function () {
+            //                console.log("storage.lastModified");
+            //                return {
+            //                    primary: "primary",
+            //                    OperationalStatistics: "2000-08-25 22:44:00",
+            //                    Visit: "2000-08-25 22:44:00",
+            //                    Expenditures: "2000-08-25 22:44:00"
+            //                };
+            //            });
+            //            spyOn(server, 'lastModified').andCallFake(function () {
+            //                return {
+            //                    primary: "primary",
+            //                    OperationalStatistics: "2014-08-25 22:44:00",
+            //                    Visit: "2014-08-25 22:44:00",
+            //                    Expenditures: "2014-08-25 22:44:00"
+            //                };
+            //            });
+
             storage.saveLastModify({
                 primary: "primary",
                 OperationalStatistics: "2000-08-25 21:00:00",
                 Visit: "2000-08-25 21:00:00",
                 Expenditures: "2000-08-25 21:00:00"
             }, function () {});
+
             var flag = false;
+
+            spyOn(synchronizer, 'updateData').andCallFake(function () {
+                flag = true;
+            });
 
             runs(synchronizer.synchCheck("OperationalStatistics", function () {
                 flag = true;
@@ -31,7 +53,7 @@ describe('tests for Synchronizer:\n', function () {
 
             waitsFor(function () {
                 return flag;
-            }, "The synch for OpStat should start", 60000);
+            }, "The synch for OpStat should start", 3000);
 
             runs(function () {
                 expect(synchronizer.updateData).toHaveBeenCalled();
@@ -39,8 +61,25 @@ describe('tests for Synchronizer:\n', function () {
         });
 
         it("должен не начинать синхронизацию хранилища с сервером", function () {
-            spyOn(server, 'search');
             spyOn(synchronizer, 'updateData');
+
+            //            spyOn(storage, 'lastModified').andCallFake(function () {
+            //                return {
+            //                    primary: "primary",
+            //                    OperationalStatistics: "2014-08-25 22:44:00",
+            //                    Visit: "2014-08-25 22:44:00",
+            //                    Expenditures: "2014-08-25 22:44:00"
+            //                };
+            //            });
+            //            spyOn(server, 'lastModified').andCallFake(function () {
+            //                return {
+            //                    primary: "primary",
+            //                    OperationalStatistics: "2014-08-25 22:44:00",
+            //                    Visit: "2014-08-25 22:44:00",
+            //                    Expenditures: "2014-08-25 22:44:00"
+            //                };
+            //            });
+
             storage.saveLastModify({
                 primary: "primary",
                 OperationalStatistics: "2014-08-25 22:44:00",
@@ -65,6 +104,14 @@ describe('tests for Synchronizer:\n', function () {
 
         it("должен заново начать синхронизацию", function () {
 
+            var className = "OperationalStatistics";
+            var query = ["OperationalStatistics", "Visit", "Expenditures"];
+
+            var lastServerModify;
+            server.lastModified(query, function (date) {
+                lastServerModify = date[className];
+            });
+
             spyOn(synchronizer, 'updateData').andCallThrough();
 
             spyOn(server, 'search').andCallFake(function () {
@@ -74,19 +121,15 @@ describe('tests for Synchronizer:\n', function () {
                     "Visit": "2014-08-25 23:44:00",
                     "Expenditures": "2014-08-25 23:44:00"
                 };
-                server.lastModified("OperationalStatistics", function (date) {
-                    if (date == lastServerModify) {
+                server.lastModified(query, function (date) {
+                    if (date[className] == lastServerModify) {
+                        flag = true;
                         return;
                     } else {
-                        lastServerModify = date;
-                        synchronizer.updateData("OperationalStatistics", 20, 0, function () {}, "2014-08-25 20:44:00", date);
+                        lastServerModify = date[className];
+                        synchronizer.updateData(className, 20, 0, function () {}, "2014-08-25 20:44:00", lastServerModify);
                     }
                 });
-            });
-
-            var lastServerModify;
-            server.lastModified("OperationalStatistics", function (date) {
-                lastServerModify = "2014-08-25 22:44:00";
             });
 
             //ставим дату последних изменений в хранилище
@@ -101,13 +144,13 @@ describe('tests for Synchronizer:\n', function () {
 
             var flag = false;
 
-            runs(synchronizer.synchCheck("OperationalStatistics", function () {
+            runs(synchronizer.synchCheck(className, function () {
                 flag = true;
             }));
 
             waitsFor(function () {
                 return flag;
-            }, "The synch for OpStat should be start twice", 60000);
+            }, "The synch for OpStat should be start twice", 10000);
 
             runs(function () {
                 expect(server.search).toHaveBeenCalled();

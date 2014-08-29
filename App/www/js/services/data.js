@@ -6,9 +6,9 @@
 
  function ClassesLastModified() {
      this.primary = "primary";
-     this.OperationalStatistics = "2000-08-25 21:00:00";
-     this.Visit = "2000-08-25 21:00:00";
-     this.Expenditures = "2000-08-25 21:00:00";
+     this.OperationalStatistics = "2011-08-25 21:00:00";
+     this.Visit = "2011-08-25 21:00:00";
+     this.Expenditures = "2011-08-25 21:00:00";
  }
 
  /**
@@ -216,7 +216,7 @@
              },
 
              search: function (className, params, callback) {
-                 setTimeout(function () {
+//                 setTimeout(function () {
                      var allObjects = objects[className]();
                      var end = params.offset + params.count;
                      if (end > allObjects.length)
@@ -227,7 +227,7 @@
                      }
                      //                    classesLastModified[className] = "2014-8-30 14:00"
                      callback(neededObjs);
-                 }, 500);
+//                 }, 500);
              },
 
              /**
