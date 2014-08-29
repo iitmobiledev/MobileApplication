@@ -34,6 +34,11 @@ myApp.service("Loader", ["Storage", "ModelConverter", "Server",
             },
             //получение объектов за период
             search: function (className, params, callback) {
+                //                Server.searchForPeriod(className, params, function (result) {
+                //                    console.log("server.search", result);
+                //                    var objs = ModelConverter.getObjects(className, result);
+                //                    callback(objs);
+                //                });
                 Storage.search(className, params, function (data) {
                     if (data == null) { //если в базе ничего не нашли
                         Server.searchForPeriod(className, params, function (result) {

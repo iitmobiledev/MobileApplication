@@ -69,8 +69,7 @@ myApp.factory('OperationalStatistics', function (Model, FinanceStatistics) {
             var cursor = event.target.result;
             if (cursor) {
                 result.push(cursor.value);
-                cursor.
-                continue();
+                cursor.continue();
             }
         };
 
