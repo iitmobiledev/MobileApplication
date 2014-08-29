@@ -50,24 +50,24 @@ myApp.service("Synchronizer", ["Storage", "Server", "ModelConverter",
     }
 ]);
 
-//var $inj = angular.injector(['myApp']);
-//var synchronizer = $inj.get('Synchronizer');
-//var storage = $inj.get('Storage');
-//synchronizer.synchCheck.call(synchronizer, "OperationalStatistics", function () {
-//    console.log("synch end OperationalStatistics0");
-//    synchronizer.synchCheck.call(synchronizer, "Visit", function () {
-//        console.log("synch end Visit0");
-//        synchronizer.synchCheck.call(synchronizer, "Expenditures", function () {
-//            console.log("synch end Expenditures0");
-//        });
-//    });
-//});
-//setInterval(synchronizer.synchCheck.call, 60000, synchronizer, "OperationalStatistics", function () {
-//    //    console.log("synch end OperationalStatistics");
-//    setInterval(synchronizer.synchCheck.call, 60000, synchronizer, "Visit", function () {
-//        //        console.log("synch end Visit");
-//        setInterval(synchronizer.synchCheck.call, 60000, synchronizer, "Expenditures", function () {
-//            //            console.log("synch end Expenditures");
-//        });
-//    });
-//});
+var $inj = angular.injector(['myApp']);
+var synchronizer = $inj.get('Synchronizer');
+var storage = $inj.get('Storage');
+synchronizer.synchCheck.call(synchronizer, "OperationalStatistics", function () {
+    console.log("synch end OperationalStatistics0");
+    synchronizer.synchCheck.call(synchronizer, "Visit", function () {
+        console.log("synch end Visit0");
+        synchronizer.synchCheck.call(synchronizer, "Expenditures", function () {
+            console.log("synch end Expenditures0");
+        });
+    });
+});
+setInterval(synchronizer.synchCheck.call, 60000, synchronizer, "OperationalStatistics", function () {
+    //    console.log("synch end OperationalStatistics");
+    setInterval(synchronizer.synchCheck.call, 60000, synchronizer, "Visit", function () {
+        //        console.log("synch end Visit");
+        setInterval(synchronizer.synchCheck.call, 60000, synchronizer, "Expenditures", function () {
+            //            console.log("synch end Expenditures");
+        });
+    });
+});
