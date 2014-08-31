@@ -1,5 +1,25 @@
 myApp.service("Synchronizer", ["Storage", "Server", "ModelConverter",
     function (Storage, Server, ModelConverter) {
+
+        function save(data, className, offset, callback) {
+            if (offset >= data.length) {
+//                console.log("save end");
+                callback();
+            } else {
+                if (data[offset].visible) {
+//                    console.log("visible");
+                    Storage.update(ModelConverter.getObject(className, data[offset]));
+                    save(data, className, offset + 1, callback)
+                } else {
+//                    console.log("not visible");
+                    Storage.del(ModelConverter.getObject(className, data[offset]), function () {
+//                        console.log("obj deleted");
+                        save(data, className, offset + 1, callback)
+                    });
+                }
+            }
+        };
+
         return {
             updateData: function (className, count, offset, callback, lastLocalModified, lastServerModified) {
                 var synch = this;
@@ -16,8 +36,10 @@ myApp.service("Synchronizer", ["Storage", "Server", "ModelConverter",
                                     Server.getFieldStat([{
                                         type: className,
                                         field: "date"
-                        }], function (serverStat) {
+                                    }], function (serverStat) {
+                                        console.log("serverStat in synch ", serverStat);
                                         Storage.saveFieldStat(serverStat, function () {
+                                            save(data, className, 0, callback);
                                             callback();
                                         });
                                     });
@@ -30,11 +52,11 @@ myApp.service("Synchronizer", ["Storage", "Server", "ModelConverter",
                         });
 
                     } else {
-                        for (var i = 0; i < data.length; i++) {
-                            Storage.update(ModelConverter.getObject(className, data[i]));
-                        }
-                        var nextOffset = offset + count;
-                        synch.updateData(className, count, nextOffset, callback, lastLocalModified, lastServerModified);
+                        save(data, className, 0, function () {
+                            var nextOffset = offset + count;
+                            synch.updateData(className, count, nextOffset, callback, lastLocalModified, lastServerModified);
+                        });
+
                     }
                 });
             },
@@ -43,6 +65,7 @@ myApp.service("Synchronizer", ["Storage", "Server", "ModelConverter",
                 var synch = this;
                 Storage.lastModified(["OperationalStatistics", "Visit", "Expenditures"], function (lastLocalModified) {
                     Server.lastModified(["OperationalStatistics", "Visit", "Expenditures"], function (lastServerModified) {
+                        console.log(lastLocalModified[className], lastServerModified[className]);
                         if (lastLocalModified[className] == lastServerModified[className]) {
                             callback();
                         } else {
@@ -60,13 +83,14 @@ var synchronizer = $inj.get('Synchronizer');
 var storage = $inj.get('Storage');
 
 (function beginSynch() {
+//    console.log("beginSynch");
     synchronizer.synchCheck.call(synchronizer, "OperationalStatistics", function () {
         console.log("synch end OperationalStatistics0");
         synchronizer.synchCheck.call(synchronizer, "Visit", function () {
             console.log("synch end Visit0");
             synchronizer.synchCheck.call(synchronizer, "Expenditures", function () {
                 console.log("synch end Expenditures0");
-                setTimeout(beginSynch, 60000);
+                setTimeout(beginSynch, 70000);
             });
         });
     });

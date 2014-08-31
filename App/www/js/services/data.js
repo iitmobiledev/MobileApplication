@@ -1,6 +1,6 @@
  var classesLastModifiedOnServer = {
-     "OperationalStatistics": "2014-08-25 22:44:00",
-     "Visit": "2014-08-25 22:44:00",
+     "OperationalStatistics": "2014-08-31 20:00:00",
+     "Visit": "2014-08-31 18:00:00",
      "Expenditures": "2014-08-25 22:44:00"
  };
 
@@ -25,7 +25,7 @@
              "OperationalStatistics": {
                  "date": {
                      min: "2013-01-01 09:00:00",
-                     max: "2014-09-01 15:15:00"
+                     max: "2014-09-01 09:00:00"
                  }
              },
              "Visit": {
@@ -57,6 +57,7 @@
                      data.date = currentDay;
                      data.step = DateHelper.steps.DAY;
                      data.financeStat = getFinanceStatistics(new Date(currentDay.getFullYear(), currentDay.getMonth(), currentDay.getDate()));
+                     data.visible = true;
                      allObjects.push(data);
 
                      var currentWeek = DateHelper.getPeriod(currentDay, DateHelper.steps.WEEK);
@@ -69,6 +70,7 @@
                          data.date = currentDay;
                          data.step = DateHelper.steps.WEEK;
                          data.financeStat = {};
+                         data.visible = true;
                          allObjects.push(data);
                      }
 
@@ -82,6 +84,7 @@
                          data.date = currentDay;
                          data.step = DateHelper.steps.MONTH;
                          data.financeStat = {};
+                         data.visible = true;
                          allObjects.push(data);
                      }
 
@@ -101,7 +104,7 @@
                          var serviceCost = Math.round(getRandom(500, 10000));
                          var salary = serviceCost - Math.round(getRandom(0, serviceCost / 2));
                          var service = {
-                             description: "Маникюр",
+                             description: "Мелирование",
                              startTime: new Date(day.getFullYear(), day.getMonth(), day.getDate(), hours, Math.round(getRandom(0, 59))),
                              endTime: new Date(day.getFullYear(), day.getMonth(), day.getDate(), hours + 2, Math.round(getRandom(0, 59))),
                              master: {
@@ -129,11 +132,11 @@
                          visit.comment = "Забыла деньги дома. Обещала принести чуть позже."
                          visit.date = new Date(day.getFullYear(), day.getMonth(), day.getDate(), hours + Math.round(getRandom(-2, 1)), Math.round(getRandom(0, 59)));
                          visit.status = Visit.statuses.titlesArray[i];
+                         visit.visible = true;
                          visits.push(visit);
                      }
                      day = new Date(day.getFullYear(), day.getMonth(), day.getDate() - 1);
                  }
-
                  return visits;
              },
              "Expenditures": function () {
@@ -153,6 +156,7 @@
                      });
                      expenditures.expenditureList = expItemsList;
                      expenditures.date = day;
+                     expenditures.visible = true;
                      allObjs.push(expenditures);
                      day = new Date(day.getFullYear(), day.getMonth(), day.getDate() - 1);
                  }
@@ -174,6 +178,7 @@
                      data.financeStat = getFinanceStatistics(new Date(day.getFullYear(), day.getMonth(), day.getDate()));
                  else
                      data.financeStat = {};
+                 data.visible = true;
                  return data;
              },
              "Expenditures": function (params) {
@@ -189,6 +194,7 @@
                  });
                  expenditures.expenditureList = expItemsList;
                  expenditures.date = params.day || new Date();
+                 expenditures.visible = true;
                  return expenditures;
              }
          };
@@ -225,7 +231,7 @@
                      for (var i = params.offset; i < end; i++) {
                          neededObjs.push(allObjects[i]);
                      }
-                     //                    classesLastModified[className] = "2014-8-30 14:00"
+                     //classesLastModified[className] = "2014-8-30 14:00"
                      callback(neededObjs);
                  }, 500);
              },
@@ -282,6 +288,7 @@
                          visit.comment = "Забыла деньги дома. Обещала принести чуть позже."
                          visit.date = new Date(day.getFullYear(), day.getMonth(), day.getDate(), hours + Math.round(getRandom(-2, 1)), Math.round(getRandom(0, 59)));
                          visit.status = Visit.statuses.titlesArray[i];
+                         visit.visible = true;
                          visits.push(visit);
                      }
 
@@ -354,6 +361,7 @@
                      visit.comment = "Забыла деньги дома. Обещала принести чуть позже."
                      visit.date = new Date(day.getFullYear(), day.getMonth(), day.getDate(), hours + Math.round(getRandom(-2, 1)), Math.round(getRandom(0, 59)));
                      visit.status = Visit.statuses.titles.CONFIRMED;
+                     visit.visible = true;
                      return visit;
                  };
 

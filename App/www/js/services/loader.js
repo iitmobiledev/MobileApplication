@@ -56,6 +56,7 @@ myApp.service("Loader", ["Storage", "ModelConverter", "Server",
                         }];
                 Storage.getFieldStat(query, function (localStat) {
                     Server.getFieldStat(query, function (serverStat) {
+//                        console.log(serverStat[0], localStat[0]);
                         if (serverStat[0].min == localStat[0].min && serverStat[0].max == localStat[0].max) {
                             Storage.search(className, params, function (data) {
                                 console.log("Storage.search ", data);
