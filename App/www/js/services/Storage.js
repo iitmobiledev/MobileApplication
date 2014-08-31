@@ -12,33 +12,36 @@ myApp.factory('Storage', function (DateHelper) {
 
     function ClassesLastModified() {
         this.primary = "primary";
-        this.OperationalStatistics = "2000-08-25 21:00:00";
-        this.Visit = "2000-08-25 21:00:00";
-        this.Expenditures = "2000-08-25 21:00:00";
+        this.OperationalStatistics = null;
+        this.Visit = null;
+        this.Expenditures = null;
+    }
+
+    function ClassesFieldStat() {
+        this.primary = "primary";
+        this.OperationalStatistics = {
+            date: {
+                min: null,
+                max: null
+            }
+        };
+        this.Visit = {
+            date: {
+                min: null,
+                max: null
+            }
+        };
+        this.Expenditures = {
+            date: {
+                min: null,
+                max: null
+            }
+        };
     }
 
     var classesLastModified = new ClassesLastModified();
 
-    var classesFieldStat = {
-        "OperationalStatistics": {
-            "date": {
-                min: "2013-01-01 09:00:00",
-                max: "2014-01-01 15:15:00"
-            }
-        },
-        "Visit": {
-            "id": {
-                min: "2013-01-01 13:00:00",
-                max: "2014-01-01 17:15:00"
-            }
-        },
-        "Expenditures": {
-            "date": {
-                min: "2013-01-01 15:00:00",
-                max: "2014-01-01 19:15:00"
-            }
-        }
-    };
+    var classesFieldStat = new ClassesFieldStat();
 
     open();
 
@@ -69,18 +72,20 @@ myApp.factory('Storage', function (DateHelper) {
      * @return {Object} экземпляр класса className
      */
     var getFieldStat = function (query, callback) {
-        var result = [];
-        for (var i in query) {
-            var resType = classesFieldStat[query[i].type];
-            var resField = resType[query[i].field];
-            result.push({
-                type: query[i].type,
-                field: query[i].field,
-                min: resField.min,
-                max: resField.max
-            });
-        }
-        callback(result);
+        get("fieldStat", "primary", function (data) {
+            var result = [];
+            for (var i in query) {
+                var resType = data[query[i].type];
+                var resField = resType[query[i].field];
+                result.push({
+                    type: query[i].type,
+                    field: query[i].field,
+                    min: resField.min,
+                    max: resField.max
+                });
+            }
+            callback(result);
+        });
     };
 
 
@@ -105,7 +110,6 @@ myApp.factory('Storage', function (DateHelper) {
         request.onsuccess = function (e) { //если транзакт прошел успешно
             //            console.log("onsuccess");
         };
-
         trans.onerror = function (e) { //если что-то пошло не так
             //                        console.log("update() transaction: Error", event);
         };
@@ -114,6 +118,33 @@ myApp.factory('Storage', function (DateHelper) {
         };
         callback();
 
+    });
+
+    var saveFieldStat = waitDatabase(function (obj, callback) {
+
+
+        if (obj instanceof Array) {
+            get("fieldStat", "primary", function (classesStat) {
+
+                for (var i = 0; i < obj.length; i++) {
+                    classesStat[obj[i].type][obj[i].field].min = obj[i].min;
+                    classesStat[obj[i].type][obj[i].field].max = obj[i].max;
+                }
+                var db = database;
+                var trans = db.transaction(["fieldStat"], "readwrite");
+                var store = trans.objectStore("fieldStat");
+                var request = store.put(classesStat);
+                request.onsuccess = function (e) {};
+                callback();
+            });
+        } else {
+            var db = database;
+            var trans = db.transaction(["fieldStat"], "readwrite");
+            var store = trans.objectStore("fieldStat");
+            var request = store.put(obj);
+            request.onsuccess = function (e) {};
+            callback();
+        }
     });
 
 
@@ -140,8 +171,12 @@ myApp.factory('Storage', function (DateHelper) {
             db.createObjectStore("classesLastModified", {
                 keyPath: "primary"
             });
-
             saveLastModify(classesLastModified, function () {});
+
+            db.createObjectStore("fieldStat", {
+                keyPath: "primary"
+            });
+            saveFieldStat(classesFieldStat, function () {});
         };
 
         request.onsuccess = function (event) {
@@ -292,6 +327,7 @@ myApp.factory('Storage', function (DateHelper) {
         lastModified: lastModified,
         getFieldStat: getFieldStat,
         classesLastModified: classesLastModified,
-        saveLastModify: saveLastModify
+        saveLastModify: saveLastModify,
+        saveFieldStat: saveFieldStat
     };
 });

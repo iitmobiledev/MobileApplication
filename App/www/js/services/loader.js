@@ -23,38 +23,62 @@ myApp.service("Loader", ["Storage", "ModelConverter", "Server",
              * объекта по первичному ключу.
              */
             get: function (className, primaryKey, callback) {
-                Storage.get(className, primaryKey, function (result) {
-                    if (result == null) {
-                        Server.get(className, primaryKey, function (data) {
-                            callback(ModelConverter.getObject(className, data))
-                        });
-                    } else
-                        callback(ModelConverter.getObject(className, result));
+                var query = [{
+                    type: className,
+                    field: "date"
+                        }];
+                Storage.getFieldStat(query, function (localStat) {
+                    Server.getFieldStat(query, function (serverStat) {
+                        if (serverStat[0].min == localStat[0].min && serverStat[0].max == localStat[0].max) {
+                            console.log("Storage.get");
+                            Storage.get(className, primaryKey, function (result) {
+                                if (result == null) {
+                                    console.log("Storage empty!");
+                                    callback(null);
+                                } else {
+                                    callback(ModelConverter.getObject(className, result));
+                                }
+                            });
+                        } else {
+                            console.log("server.get");
+                            Server.get(className, primaryKey, function (data) {
+                                callback(ModelConverter.getObject(className, data))
+                            });
+                        }
+                    });
                 });
             },
             //получение объектов за период
             search: function (className, params, callback) {
-                //                Server.searchForPeriod(className, params, function (result) {
-                //                    console.log("server.search", result);
-                //                    var objs = ModelConverter.getObjects(className, result);
-                //                    callback(objs);
-                //                });
-                Storage.search(className, params, function (data) {
-                    if (data == null) { //если в базе ничего не нашли
-                        Server.searchForPeriod(className, params, function (result) {
-                            console.log("server.search", result);
-                            var objs = ModelConverter.getObjects(className, result);
-                            callback(objs);
-                        });
-                    } else {
-                        console.log("Storage.search ", data);
-                        var objs = ModelConverter.getObjects(className, data);
-                        callback(objs);
-                    }
+                var query = [{
+                    type: className,
+                    field: "date"
+                        }];
+                Storage.getFieldStat(query, function (localStat) {
+                    Server.getFieldStat(query, function (serverStat) {
+                        if (serverStat[0].min == localStat[0].min && serverStat[0].max == localStat[0].max) {
+                            Storage.search(className, params, function (data) {
+                                console.log("Storage.search ", data);
+                                if (data == null) {
+                                    console.log("Storage empty!");
+                                    callback([]);
+                                } else {
+                                    var objs = ModelConverter.getObjects(className, data);
+                                    callback(objs);
+                                }
+                            });
+                        } else {
+                            Server.searchForPeriod(className, params, function (result) {
+                                console.log("server.search", result);
+                                var objs = ModelConverter.getObjects(className, result);
+                                callback(objs);
+                            });
+                        }
+                    });
                 });
             }
         }
-    }]);
+            }]);
 
 //                var query = ["OperationalStatistics", "Visit", "Expenditures"];
 //                console.log("lastModified: ", Storage.lastModified(query));

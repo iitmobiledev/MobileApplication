@@ -11,15 +11,21 @@ myApp.service("Synchronizer", ["Storage", "Server", "ModelConverter",
                     if (data == null || data.length < count) {
                         Server.lastModified(["OperationalStatistics", "Visit", "Expenditures"], function (date) {
                             lastLocalModified[className] = lastServerModified[className];
-                            console.log("synch end", date[className], lastServerModified[className]);
                             if (date[className] == lastServerModified[className]) {
                                 Storage.saveLastModify(lastLocalModified, function () {
-                                    callback();
+                                    Server.getFieldStat([{
+                                        type: className,
+                                        field: "date"
+                        }], function (serverStat) {
+                                        Storage.saveFieldStat(serverStat, function () {
+                                            callback();
+                                        });
+                                    });
                                 });
                             } else {
-                                //                                Storage.saveLastModify(lastLocalModified, function () {
-                                synch.updateData(className, count, 0, callback, lastLocalModified, date);
-                                //                                });
+                                Storage.saveLastModify(lastLocalModified, function () {
+                                    synch.updateData(className, count, 0, callback, lastLocalModified, date);
+                                });
                             }
                         });
 
@@ -37,7 +43,6 @@ myApp.service("Synchronizer", ["Storage", "Server", "ModelConverter",
                 var synch = this;
                 Storage.lastModified(["OperationalStatistics", "Visit", "Expenditures"], function (lastLocalModified) {
                     Server.lastModified(["OperationalStatistics", "Visit", "Expenditures"], function (lastServerModified) {
-                        console.log(lastLocalModified[className], lastServerModified[className]);
                         if (lastLocalModified[className] == lastServerModified[className]) {
                             callback();
                         } else {
@@ -53,21 +58,16 @@ myApp.service("Synchronizer", ["Storage", "Server", "ModelConverter",
 var $inj = angular.injector(['myApp']);
 var synchronizer = $inj.get('Synchronizer');
 var storage = $inj.get('Storage');
-synchronizer.synchCheck.call(synchronizer, "OperationalStatistics", function () {
-    console.log("synch end OperationalStatistics0");
-    synchronizer.synchCheck.call(synchronizer, "Visit", function () {
-        console.log("synch end Visit0");
-        synchronizer.synchCheck.call(synchronizer, "Expenditures", function () {
-            console.log("synch end Expenditures0");
+
+(function beginSynch() {
+    synchronizer.synchCheck.call(synchronizer, "OperationalStatistics", function () {
+        console.log("synch end OperationalStatistics0");
+        synchronizer.synchCheck.call(synchronizer, "Visit", function () {
+            console.log("synch end Visit0");
+            synchronizer.synchCheck.call(synchronizer, "Expenditures", function () {
+                console.log("synch end Expenditures0");
+                setTimeout(beginSynch, 60000);
+            });
         });
     });
-});
-setInterval(synchronizer.synchCheck.call, 60000, synchronizer, "OperationalStatistics", function () {
-    //    console.log("synch end OperationalStatistics");
-    setInterval(synchronizer.synchCheck.call, 60000, synchronizer, "Visit", function () {
-        //        console.log("synch end Visit");
-        setInterval(synchronizer.synchCheck.call, 60000, synchronizer, "Expenditures", function () {
-            //            console.log("synch end Expenditures");
-        });
-    });
-});
+})();

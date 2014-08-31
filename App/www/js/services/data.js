@@ -25,19 +25,19 @@
              "OperationalStatistics": {
                  "date": {
                      min: "2013-01-01 09:00:00",
-                     max: "2014-01-01 15:15:00"
+                     max: "2014-09-01 15:15:00"
                  }
              },
              "Visit": {
-                 "id": {
+                 "date": {
                      min: "2013-01-01 13:00:00",
-                     max: "2014-01-01 17:15:00"
+                     max: "2014-09-15 17:15:00"
                  }
              },
              "Expenditures": {
                  "date": {
                      min: "2013-01-01 15:00:00",
-                     max: "2014-01-01 19:15:00"
+                     max: "2014-09-01 19:15:00"
                  }
              }
          };
@@ -216,7 +216,7 @@
              },
 
              search: function (className, params, callback) {
-//                 setTimeout(function () {
+                 setTimeout(function () {
                      var allObjects = objects[className]();
                      var end = params.offset + params.count;
                      if (end > allObjects.length)
@@ -227,7 +227,7 @@
                      }
                      //                    classesLastModified[className] = "2014-8-30 14:00"
                      callback(neededObjs);
-//                 }, 500);
+                 }, 500);
              },
 
              /**
