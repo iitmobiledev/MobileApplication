@@ -72,6 +72,7 @@ myApp.controller('VisitsController', function ($scope, $filter, $location, Loade
     };
 
     $scope.getData = function (key, quantity, forward, callback) {
+        console.log("scope.visit",$scope.visit);
         var resultArr = [];
         var date;
         if (key) {

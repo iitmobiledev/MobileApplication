@@ -121,8 +121,6 @@ myApp.factory('Storage', function (DateHelper) {
     });
 
     var saveFieldStat = waitDatabase(function (obj, callback) {
-
-
         if (obj instanceof Array) {
             get("fieldStat", "primary", function (classesStat) {
 
@@ -151,6 +149,25 @@ myApp.factory('Storage', function (DateHelper) {
     /**
      *
      * @ngdoc method
+     * @name myApp.service:Storage#deleteDB
+     * @methodOf myApp.service:Storage
+     * @description Удаляет базу данных
+     */
+    function deleteDB() {
+        var request = indexedDB.deleteDatabase(dbName);
+        request.onerror = function (event) {
+            console.log("delete error", event);
+            deleteDB();
+        };
+
+        request.onsuccess = function (event) {
+            console.log("delete success", event);
+        };
+    }
+
+    /**
+     *
+     * @ngdoc method
      * @name myApp.service:Storage#init
      * @methodOf myApp.service:Storage
      * @description Инициализирует ибд
@@ -158,8 +175,8 @@ myApp.factory('Storage', function (DateHelper) {
     function open(callback) {
         var request = indexedDB.open(dbName, dbVersion);
 
-        //пересоздаются ли объекты при изменении версии!?
         request.onupgradeneeded = function (event) {
+            //            deleteDB();
             var db = event.target.result;
 
             var models = ['OperationalStatistics', 'Visit', 'Expenditures'];
@@ -181,12 +198,9 @@ myApp.factory('Storage', function (DateHelper) {
 
         request.onsuccess = function (event) {
             database = request.result;
-            //            console.log("db in myApp.service.Storage.open: ", database);
         };
 
-        request.onerror = function (event) { // Если ошибка
-            //            console.log("open(): Error", event);
-        };
+        request.onerror = function (event) {};
     }
 
     /**
@@ -310,7 +324,7 @@ myApp.factory('Storage', function (DateHelper) {
         var request = store.delete(obj.getKey()); //получим PK объекта, далее удалим по PK из бд нужный объект
 
         request.onsuccess = function (e) {
-            callback():
+            callback();
             //        make something
         };
 
