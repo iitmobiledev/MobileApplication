@@ -75,7 +75,7 @@ myApp.controller('VisitsController', function ($scope, $filter, $location, Loade
         var resultArr = [];
         var date;
         if (key) {
-            Loader.get("OperationalStatistics", key, function (obj) {
+            Loader.get("Visit", key, function (obj) {
                 if (obj) {
                     date = new Date(key);
                     if (forward) {
@@ -114,7 +114,7 @@ myApp.controller('VisitsController', function ($scope, $filter, $location, Loade
                         });
                         var list = [];
                         for (var tmpdate = new Date(beginDate); tmpdate < endDate || tmpdate.toDateString() == endDate.toDateString(); tmpdate.setDate(tmpdate.getDate() + 1)) {
-//                            console.log("date ", tmpdate);
+                            //                            console.log("date ", tmpdate);
                             var page = new VisitsPage(new Date(tmpdate), visitsByDate[tmpdate.toDateString()].sort(function (a, b) {
                                 return new Date(a.date).getTime() - new Date(b.date).getTime();
                             }));
@@ -154,7 +154,7 @@ myApp.controller('VisitsController', function ($scope, $filter, $location, Loade
                 });
                 var list = [];
                 for (var tmpdate = new Date(beginDate); tmpdate < endDate || tmpdate.toDateString() == endDate.toDateString(); tmpdate.setDate(tmpdate.getDate() + 1)) {
-//                    console.log("date ", tmpdate);
+                    //                    console.log("date ", tmpdate);
                     if (visitsByDate[tmpdate.toDateString()]) {
                         var page = new VisitsPage(new Date(tmpdate), visitsByDate[tmpdate.toDateString()].sort(function (a, b) {
                             return new Date(a.date).getTime() - new Date(b.date).getTime();

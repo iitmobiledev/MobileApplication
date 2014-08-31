@@ -301,7 +301,7 @@ myApp.factory('Storage', function (DateHelper) {
      * @param {Object} obj объект модель
      * @description удаляет объект из контейнера. Вложенные объекты не удаляются
      */
-    var del = waitDatabase(function (obj) {
+    var del = waitDatabase(function (obj, callback) {
         var db = database;
         var objClass = obj.getClass();
         var trans = db.transaction([objClass], "readwrite");
@@ -310,6 +310,7 @@ myApp.factory('Storage', function (DateHelper) {
         var request = store.delete(obj.getKey()); //получим PK объекта, далее удалим по PK из бд нужный объект
 
         request.onsuccess = function (e) {
+            callback():
             //        make something
         };
 

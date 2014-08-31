@@ -34,7 +34,7 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
             var content = $templateCache.get(contentID);
             var compiled = $compile(angular.element(content));
 
-            var loadBar = $compile(angular.element("<div><load-bar param-name='true'></load-bar></div>"));
+            //            var loadBar = $compile(angular.element("<load-bar param-name='true'></load-bar>"));
 
             var contentData;
             var step = DateHelper.steps.DAY;
@@ -72,10 +72,10 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
                         if (ready) {
                             var key = getCurrentKey();
                             if ($('.my-slider').slickCurrentSlide() == 1) {
-                                scope.loading = true;
+                                //                                scope.loading = true;
                                 scope.$apply();
                             } else if ($('.my-slider').slickCurrentSlide() == ($('.my-slider').getSlick().slideCount - 2)) {
-                                scope.loading = true;
+                                //                                scope.loading = true;
                                 scope.$apply();
                             }
                         }
@@ -192,7 +192,7 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
                         newscope.page = contentData[i];
                         //                        console.log(i, contentData[i])
                         compiled(newscope, function (clonedElement, scope) {
-//                            console.log(clonedElement.html())
+                            //                            console.log(clonedElement.html())
                             $('.my-slider').slickAdd(clonedElement);
                             if (i == 0) {
                                 $('.my-slider').slickRemove(true);
