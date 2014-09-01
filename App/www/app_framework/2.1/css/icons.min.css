@@ -3,13 +3,13 @@
 @font-face{
 
 font-family:IcoMoon;
- src:url(icomoon.woff) format('woff'), url(icomoon.ttf)  format('truetype');
+ src:url(icomoon.woff) format('woff'),
+url(icomoon.ttf) format('truetype');
  font-weight:400;
  font-style:normal
 }
 .icon:before {
     font-family: IcoMoon;
-    src: url(icomoon.woff) format('woff'),url(icomoon.ttf)  format('truetype');
     speak: none;
     font-style: normal;
     font-weight: 400!important;

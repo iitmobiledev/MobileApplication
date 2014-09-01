@@ -38,6 +38,9 @@ myApp.directive('chart', function () {
                         height: $("#content").height(),
                         animation: true,
                     },
+                    credits: {
+                        enabled: false,
+                    },
                     title: "",
                     xAxis: {
                         type: 'datetime',
