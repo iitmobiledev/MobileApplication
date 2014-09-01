@@ -8,7 +8,7 @@ myApp.factory('Storage', function (DateHelper) {
 
     var dbName = "storage";
     var database = null;
-    var dbVersion = 1.0;
+    var dbVersion = 3.0;
 
     function ClassesLastModified() {
         this.primary = "primary";
@@ -145,26 +145,6 @@ myApp.factory('Storage', function (DateHelper) {
         }
     });
 
-
-    /**
-     *
-     * @ngdoc method
-     * @name myApp.service:Storage#deleteDB
-     * @methodOf myApp.service:Storage
-     * @description Удаляет базу данных
-     */
-    function deleteDB() {
-        var request = indexedDB.deleteDatabase(dbName);
-        request.onerror = function (event) {
-            console.log("delete error", event);
-            deleteDB();
-        };
-
-        request.onsuccess = function (event) {
-            console.log("delete success", event);
-        };
-    }
-
     /**
      *
      * @ngdoc method
@@ -176,8 +156,14 @@ myApp.factory('Storage', function (DateHelper) {
         var request = indexedDB.open(dbName, dbVersion);
 
         request.onupgradeneeded = function (event) {
-            //            deleteDB();
             var db = event.target.result;
+
+            var delModels = ['OperationalStatistics', 'Visit', 'Expenditures', 'classesLastModified', 'fieldStat'];
+            for (var i in delModels) {
+                if (db.objectStoreNames.contains(delModels[i])) {
+                    db.deleteObjectStore(delModels[i]);
+                }
+            }
 
             var models = ['OperationalStatistics', 'Visit', 'Expenditures'];
             var $inj = angular.injector(['myApp']);

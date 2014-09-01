@@ -321,7 +321,6 @@ myApp.factory("Model", function () {
                 });
                 this.push(name.toString());
             }, indexes);
-            console.log(indexes);
 
             var compositeIndex = indexes.join(":");
             if (compositeIndex != indexes) {
