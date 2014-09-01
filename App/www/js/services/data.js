@@ -1,5 +1,5 @@
  var classesLastModifiedOnServer = {
-     "OperationalStatistics": "2014-09-01 09:00:00",
+     "OperationalStatistics": "2014-09-01 09:01:00",
      "Visit": "2014-09-01 09:00:00",
      "Expenditures": "2014-09-01 09:00:00"
  };
@@ -24,7 +24,7 @@
          var classesFieldStat = {
              "OperationalStatistics": {
                  "date": {
-                     min: "2013-01-01 09:00:00",
+                     min: "2013-01-01 09:01:00",
                      max: "2014-09-15 09:00:00"
                  }
              },
@@ -84,7 +84,7 @@
                          data.date = currentDay;
                          data.step = DateHelper.steps.MONTH;
                          data.financeStat = {};
-                         data.visible = true;
+                         data.visible = false;
                          allObjects.push(data);
                      }
 

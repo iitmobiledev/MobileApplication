@@ -21,11 +21,15 @@
     -moz-box-sizing: border-box;
     box-sizing: border-box;
 }
+@font-face {
+    font-family: 'HelveticaNeueCyr';
+    src: local("HelveticaNeueCyr"), url('../../../css/fonts/helveticaneuecyr-roman.ttf');
+}
 body {
     overflow-x: hidden;
     -webkit-text-size-adjust: none;
     font-family: 'HelveticaNeueCyr';
-    src: url(css/fonts/helveticaneuecyr-roman.ttf);
+    /*     src: url('../../../css/fonts/helveticaneuecyr-roman.ttf');*/
     /*    , HelveticaNeueCyr, Arial, sans-serif;*/
     color: #000;
     font-size: 14px;
@@ -973,7 +977,7 @@ only screen and (min-width: 768px) {
     list-style: none;
     position: relative;
     padding: 20px 10px;
-/*
+    /*
     color: #000000;
     text-decoration: none;
 */
