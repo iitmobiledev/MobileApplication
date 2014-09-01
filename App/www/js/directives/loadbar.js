@@ -10,7 +10,7 @@ myApp.directive('loadBar', function () {
     return {
         restrict: 'E',
         replace: true,
-        template: '<div id="loading-image"><img style="position:absolute;left:50%; margin-left: -32px;top: 50%;margin-top: -32px;z-index: 100;" src="images/loading2.gif"><div style="height:100%;width:100%;position:fixed;opacity:0.5;background:black;z-index: 90;top: 0%;"></div></div>',
+        template: '<div id="loading-image"><img style="position:absolute;left:50%; margin-left: -32px;top: 50%;margin-top: -32px;z-index: 100;" src="images/loading2.gif"><div style="height:100%;width:100%;position:fixed;opacity:0.5;background:white;z-index: 90;top: 0%;"></div></div>',
         link: function (scope, element, attrs) {
             /*
              *wath, следящий за изменением параметра loading в контроллере
