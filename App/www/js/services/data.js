@@ -1,7 +1,7 @@
  var classesLastModifiedOnServer = {
-     "OperationalStatistics": "2014-08-31 20:00:00",
-     "Visit": "2014-08-31 18:00:00",
-     "Expenditures": "2014-08-25 22:44:00"
+     "OperationalStatistics": "2014-09-01 09:00:00",
+     "Visit": "2014-09-01 09:00:00",
+     "Expenditures": "2014-09-01 09:00:00"
  };
 
  function ClassesLastModified() {
@@ -25,19 +25,19 @@
              "OperationalStatistics": {
                  "date": {
                      min: "2013-01-01 09:00:00",
-                     max: "2014-09-01 09:00:00"
+                     max: "2014-09-15 09:00:00"
                  }
              },
              "Visit": {
                  "date": {
                      min: "2013-01-01 13:00:00",
-                     max: "2014-09-15 17:15:00"
+                     max: "2014-09-15 14:00:00"
                  }
              },
              "Expenditures": {
                  "date": {
                      min: "2013-01-01 15:00:00",
-                     max: "2014-09-01 19:15:00"
+                     max: "2014-09-15 19:00:00"
                  }
              }
          };

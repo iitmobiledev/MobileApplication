@@ -37,10 +37,10 @@ myApp.service("Synchronizer", ["Storage", "Server", "ModelConverter",
                                         type: className,
                                         field: "date"
                                     }], function (serverStat) {
-                                        console.log("serverStat in synch ", serverStat);
+//                                   console.log("serverStat in synch ", serverStat);
                                         Storage.saveFieldStat(serverStat, function () {
                                             save(data, className, 0, callback);
-                                            callback();
+//                                            callback();
                                         });
                                     });
                                 });
