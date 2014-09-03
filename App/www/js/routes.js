@@ -61,10 +61,13 @@ myApp.config(['$routeProvider',
 //        }));
 //    };
     
+//    var originalError = console.error;
+    
     console.error = function (msg) {
         $('#console').append($("<p>", {
             text: msg
         }));
+        console.log(msg);
     };
 
     //    }
