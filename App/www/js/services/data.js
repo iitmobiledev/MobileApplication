@@ -377,7 +377,7 @@
                          step: primary[1]
                      };
                  }
-                 callback(new classes[className](primary));
+                 callback(new classes[className](params));
              }
          }
 }]);

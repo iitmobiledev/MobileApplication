@@ -4,7 +4,7 @@
  * @description Сервис для кэширования данных
  * @name myApp.service:Storage
  */
-myApp.factory('Storage', function (DateHelper) {
+myApp.service("Storage", [ function (DateHelper) {
 
     var dbName = "storage";
     var database = null;
@@ -74,6 +74,7 @@ myApp.factory('Storage', function (DateHelper) {
     var getFieldStat = function (query, callback) {
         get("fieldStat", "primary", function (data) {
             var result = [];
+            console.log(data);
             for (var i in query) {
                 var resType = data[query[i].type];
                 var resField = resType[query[i].field];
@@ -331,4 +332,4 @@ myApp.factory('Storage', function (DateHelper) {
         saveLastModify: saveLastModify,
         saveFieldStat: saveFieldStat
     };
-});
+}]);
