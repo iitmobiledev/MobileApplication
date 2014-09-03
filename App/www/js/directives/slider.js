@@ -63,6 +63,7 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
                     onAfterChange: function () {
                         if (ready) {
                             var key = getCurrentKey();
+                            console.log("key", key)
                             if ($('.my-slider').slickCurrentSlide() == 0) {
                                 dataCallback(key, count, false, addPastData);
                             } else if ($('.my-slider').slickCurrentSlide() == ($('.my-slider').getSlick().slideCount - 1)) {
@@ -139,9 +140,7 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
                         newscope.$apply();
                     }
                 }
-                scope.loading = false;
-                scope.$apply();
-                ready = true;
+                tryKey();
             }
 
             /**
@@ -168,9 +167,7 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
                         newscope.$apply();
                     }
                 }
-                scope.loading = false;
-                scope.$apply();
-                ready = true;
+                tryKey();
             }
 
             /**
@@ -203,17 +200,36 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
                             if (i == 0) {
                                 $('.my-slider').slickRemove(true);
                             }
-                            $('.my-slider').getSlick().$slides[$('.my-slider').getSlick().slideCount - 1].setAttribute("contentkey", keyFunc(contentData[i]));
+                            
+                            loop();
+
+                            function loop() {
+                                if ($('.my-slider').getSlick().$slides[$('.my-slider').getSlick().slideCount - 1]) {
+                                    $('.my-slider').getSlick().$slides[$('.my-slider').getSlick().slideCount - 1].setAttribute("contentkey", keyFunc(contentData[i]));
+                                    $('.my-slider').unslick();
+                                    toSlick();
+                                } else {
+                                    setTimeout(loop, 10);
+                                }
+                            }
                         });
                         newscope.$apply();
                     }
 
                     $('.my-slider').slickSetOption('speed', 0).slickGoTo(curIndex).slickSetOption('speed', 300);
                     
-                    scope.loading = false;
-                    scope.$apply();
-                    console.log("loading", scope)
+                    console.log($('.my-slider').getSlick())
+                    tryKey();
+                }
+            }
+            
+            function tryKey() {
+                scope.loading = false;
+                scope.$apply();
+                if (getCurrentKey()) {
                     ready = true;
+                } else {
+                    setTimeout(tryKey, 100);
                 }
             }
 
