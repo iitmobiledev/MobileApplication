@@ -40,7 +40,7 @@ myApp.controller('OperationalStatisticController', function ($scope, $location, 
                 "id": steps[i],
                 click: function () {
                     $scope.step = this.id;
-                    $scope.$apply();
+//                    $scope.$apply();
                     for (var j = 0; j < steps.length; j++)
                         $("#" + steps[j]).removeClass('active');
                     $(this).addClass("active");
@@ -53,8 +53,10 @@ myApp.controller('OperationalStatisticController', function ($scope, $location, 
         var resultArr = [];
         var date;
         if (key) {
+            console.log("key", key)
             Loader.get("OperationalStatistics", key, function (obj) {
                 if (obj) {
+                    console.log("obj", obj)
                     date = obj.date;
                     if (forward) {
                         date = DateHelper.getNextPeriod(date, $scope.step).end;
