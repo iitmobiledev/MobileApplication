@@ -1,10 +1,10 @@
-/*! intel-appframework - v2.1.0 - 2014-04-07 */
+/*
+! intel-appframework - v2.1.0 - 2014-04-07 
 
 @font-face{
 
 font-family:IcoMoon;
- src:url(icomoon.woff) format('woff'),
-url(icomoon.ttf) format('truetype');
+ src:url(icomoon.woff) format('woff');
  font-weight:400;
  font-style:normal
 }
@@ -44,4 +44,4 @@ li .icon:before {
 }
 .icon.settings:before {
     content: "\33"
-}
+}*/

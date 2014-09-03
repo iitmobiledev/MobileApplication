@@ -798,8 +798,8 @@ only screen and (min-width: 768px) {
 }
 #afui footer>a:not(.button) {} #afui footer>a.pressed:not(.button) {
     border-radius: 0;
-    background: #f6f6f6;
-    color: rgb(168, 61, 190);
+/*    background: #f6f6f6;*/
+    color: rgb(149, 24, 184);
 }
 #afui footer>a.icon.pressed:not(.button):before {
     color: inherit;

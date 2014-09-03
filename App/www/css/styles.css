@@ -29,6 +29,7 @@
     text-align: center;
 }
 */
+
 /*Data navigation*/
 
 #dateToggle {
@@ -128,4 +129,40 @@
     border-radius: 2px;
     height: 20px;
     margin-bottom: 5px;
+}
+a.pressed.statistic {
+    background: url("'../../../images/statistic-pressed.png");
+    background-repeat: no-repeat;
+    background-position: center top;
+    background-size: 25px;
+}
+a.statistic {
+    background: url("'../../../images/statistic.png");
+    background-repeat: no-repeat;
+    background-position: center top;
+    background-size: 25px;
+}
+a.pressed.visits {
+    background: url("'../../../images/visits-pressed.png");
+    background-repeat: no-repeat;
+    background-position: center top;
+    background-size: 25px;
+}
+a.visits {
+    background: url("'../../../images/visits.png");
+    background-repeat: no-repeat;
+    background-position: center top;
+    background-size: 25px;
+}
+a.pressed.settings {
+    background: url("'../../../images/settings-pressed.png");
+    background-repeat: no-repeat;
+    background-position: center top;
+    background-size: 25px;
+}
+a.settings {
+    background: url("'../../../images/settings.png");
+    background-repeat: no-repeat;
+    background-position: center top;
+    background-size: 25px;
 }
