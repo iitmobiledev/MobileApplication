@@ -218,11 +218,11 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
             }
 
 
-            $('#slider-back-button').on('click', function () {
+            $('.slider-back-button').on('click', function () {
                 $('.my-slider').slickPrev();
             });
 
-            $('#slider-next-button').on('click', function () {
+            $('.slider-next-button').on('click', function () {
                 $('.my-slider').slickNext();
             });
 
