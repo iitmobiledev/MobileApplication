@@ -148,7 +148,7 @@ myApp.factory('Visit', function (Model, Client, Service) {
 /**
  * @ngdoc service
  * @description Сервис для получения списка мастеров с их визитами за нужную дату.
- * @name myApp.service:MastersPerDayLoader
+ * @name myApp.service:MastersLoader
  * @requires myApp.service:VisitsLoader
  */
 myApp.factory('MastersLoader', function (DateHelper, Loader, $filter) {
@@ -156,8 +156,8 @@ myApp.factory('MastersLoader', function (DateHelper, Loader, $filter) {
     /**
      *
      * @ngdoc method
-     * @name myApp.service:MastersPerDayLoader#checkMasterInList
-     * @methodOf myApp.service:MastersPerDayLoader
+     * @name myApp.service:MastersLoader#checkMasterInList
+     * @methodOf myApp.service:MastersLoader
      * @description Проверяет есть ли мастер в списке мастеров.
      * @param {Object} master Объект мастер.
      * @param {Array}  masters Список мастеров.
@@ -194,8 +194,8 @@ myApp.factory('MastersLoader', function (DateHelper, Loader, $filter) {
     /**
      *
      * @ngdoc method
-     * @name myApp.service:MastersPerDayLoader#getAllMastersPerDay
-     * @methodOf myApp.service:MastersPerDayLoader
+     * @name myApp.service:MastersLoader#getAllMastersPerDay
+     * @methodOf myApp.service:MastersLoader
      * @description Метод для получения списка мастеров за период, состоящего из списков мастеров за день, отсортированных по фамилии мастера объектов `perMaster`.
      * @param {Period} period  Период, за который требуется получить мастеров.
      * @param {Function} callback Функция, в которую будут переданы полученные мастера.
@@ -270,8 +270,8 @@ myApp.factory('MastersLoader', function (DateHelper, Loader, $filter) {
     /**
      *
      * @ngdoc method
-     * @name myApp.controller:MastersLoader#getGoodVisitsList
-     * @methodOf myApp.controller:MastersLoader
+     * @name myApp.service:MastersLoader#getGoodVisitsList
+     * @methodOf myApp.service:MastersLoader
      * @param {Array} masterList список визитов мастера
      * @description Метод, формирующий список объектов "визит" с дополнительными информационными полями
      * @returns {Object} Список объектов "визит" с новыми полями
@@ -294,8 +294,8 @@ myApp.factory('MastersLoader', function (DateHelper, Loader, $filter) {
     /**
      *
      * @ngdoc method
-     * @name myApp.controller:MastersLoader#selectVisitInfo
-     * @methodOf myApp.controller:MastersLoader
+     * @name myApp.service:MastersLoader#selectVisitInfo
+     * @methodOf myApp.service:MastersLoader
      * @param {Object} visit Объект визит
      * @description Метод, формирующий объект визит с дополнительными информационными полями
      * @returns {Object} Объект визит с новыми полями

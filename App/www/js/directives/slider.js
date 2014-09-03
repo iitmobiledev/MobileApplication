@@ -1,13 +1,15 @@
 /**
  * @description Директива добавляет на страницу приложения "слайдер",
  * который позволяет листать страницы заданные шаблоном
- * <pre><script type="text/ng-template" id="content-id">...</script></pre>
- * Так же необходимо указать id шаблона (routes.js):
- * <pre>myApp.run(function ($templateCache) {
- *      $templateCache.put('content-id');</pre>
+
  * @ngdoc directive
  * @name myApp.directive:slider
  * @restrict E
+ * @param {String} contentId id шаблона, в котором хранится контент слайдера
+ * <pre><script type="text/ng-template" id="content-id">...</script></pre>
+ * Так же необходимо указать id шаблона в routes.js:
+ * <pre>myApp.run(function ($templateCache) {
+ *      $templateCache.put('content-id');</pre>
  * @param {function} dataCallback Получение данных, функция имеет следующий вид:
  * <pre>
  * function (key, quantity, forward, callback){...} // где:
@@ -72,10 +74,10 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
                         if (ready) {
                             var key = getCurrentKey();
                             if ($('.my-slider').slickCurrentSlide() == 1) {
-                                //                                scope.loading = true;
+                                scope.loading = true;
                                 scope.$apply();
                             } else if ($('.my-slider').slickCurrentSlide() == ($('.my-slider').getSlick().slideCount - 2)) {
-                                //                                scope.loading = true;
+                                scope.loading = true;
                                 scope.$apply();
                             }
                         }
@@ -137,7 +139,9 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
                         newscope.$apply();
                     }
                 }
-                tryKey();
+                scope.loading = false;
+                scope.$apply();
+                ready = true;
             }
 
             /**
@@ -164,7 +168,9 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
                         newscope.$apply();
                     }
                 }
-                tryKey();
+                scope.loading = false;
+                scope.$apply();
+                ready = true;
             }
 
             /**
@@ -197,34 +203,17 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
                             if (i == 0) {
                                 $('.my-slider').slickRemove(true);
                             }
-                            loop();
-
-                            function loop() {
-                                if ($('.my-slider').getSlick().$slides[$('.my-slider').getSlick().slideCount - 1]) {
-                                    $('.my-slider').getSlick().$slides[$('.my-slider').getSlick().slideCount - 1].setAttribute("contentkey", keyFunc(contentData[i]));
-                                    $('.my-slider').unslick();
-                                    toSlick();
-                                } else {
-                                    setTimeout(loop, 10);
-                                }
-                            }
-                            //                            newscope.$apply(); 
+                            $('.my-slider').getSlick().$slides[$('.my-slider').getSlick().slideCount - 1].setAttribute("contentkey", keyFunc(contentData[i]));
                         });
                         newscope.$apply();
                     }
 
                     $('.my-slider').slickSetOption('speed', 0).slickGoTo(curIndex).slickSetOption('speed', 300);
-                    tryKey();
-                }
-            }
-
-            function tryKey() {
-                scope.loading = false;
-                scope.$apply();
-                if (getCurrentKey()) {
+                    
+                    scope.loading = false;
+                    scope.$apply();
+                    console.log("loading", scope)
                     ready = true;
-                } else {
-                    setTimeout(tryKey, 100);
                 }
             }
 
@@ -239,8 +228,9 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
 
 
             scope.$watch('step', function (newValue, oldValue) {
-                scope.loading = true;
                 if (oldValue != newValue) {
+                    scope.loading = true;
+                    scope.$apply();
                     initSlider();
                 }
             })

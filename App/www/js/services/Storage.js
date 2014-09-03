@@ -67,8 +67,8 @@ myApp.factory('Storage', function (DateHelper) {
      * определенного поля у указанного класса. В данный
      * момент указывает максимальную и минимальную даты,
      * за которые еще есть данные.
-     * @param {Array} query
-     * @param {Function} callback
+     * @param {Array} query a
+     * @param {Function} callback a
      * @return {Object} экземпляр класса className
      */
     var getFieldStat = function (query, callback) {
