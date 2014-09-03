@@ -208,7 +208,7 @@ myApp.directive('dateChanger', function (DateHelper, $filter) {
                     //$('#Title').css('font-size', '');
                     return DateHelper.getMonthTitle(date.getMonth(), step) + ' ' + date.getFullYear();
                 }
-                return "";
+                return " ";
             }
 
 //            
