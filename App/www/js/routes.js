@@ -1,11 +1,11 @@
 var myApp = angular.module('myApp', ['ngRoute', 'ngAnimate']);
 
-myApp.run(function ($templateCache, Storage) {
+myApp.run(function ($templateCache) {
     $templateCache.put('statistic-content');
     $templateCache.put('visits');
-    if (!Storage.checkSupport()) {
-        alert("indexedDB not support!");
-    }
+    //    if (!Storage.checkSupport()) {
+    //        alert("indexedDB not support!");
+    //    }
 });
 
 myApp.config(['$routeProvider',
@@ -35,17 +35,9 @@ myApp.config(['$routeProvider',
             templateUrl: 'views/visit.html',
             controller: 'VisitController'
         }).
-        when('/master/:id/:date', {
-            templateUrl: 'views/master.html',
-            controller: 'MasterController'
-        }).
         when('/settings', {
             templateUrl: 'views/settings.html',
             controller: 'SettingsController'
-        }).
-        when('/login', {
-            templateUrl: 'views/login.html',
-            controller: 'LoginController'
         }).
         when('/authorization', {
             templateUrl: 'views/authorization.html',
@@ -56,13 +48,26 @@ myApp.config(['$routeProvider',
         }).
         otherwise({
             redirectTo: 'index'
-            //            '/authorization'
         });
     }]);
 
 
 (function () {
     "use strict";
+    
+//    console.log = function (msg) {
+//        $('#console').append($("<p>", {
+//            text: msg
+//        }));
+//    };
+    
+    console.error = function (msg) {
+        $('#console').append($("<p>", {
+            text: msg
+        }));
+    };
+
+    //    }
     //$.ui.useInternalRouting = false;
     //        document.addEventListener("intel.xdk.device.ready", function () {
     //            //lock the application in portrait orientation

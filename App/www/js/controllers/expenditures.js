@@ -21,6 +21,7 @@ myApp.controller('ExpendituresController', function ($scope, $filter, Loader, Da
 
     $scope.pageIndex = 1;
 
+
     /**
      *
      * @ngdoc method
@@ -56,10 +57,8 @@ myApp.controller('ExpendituresController', function ($scope, $filter, Loader, Da
      * @methodOf myApp.controller:ExpendituresController
      */
     function updatePages() {
-        console.log("updatePages");
         $scope.prevdate = DateHelper.getPrevPeriod($scope.date, DateHelper.steps.DAY).begin;
         $scope.nextdate = DateHelper.getNextPeriod($scope.date, DateHelper.steps.DAY).end;
-        $scope.pages = ["Data null"];
         Loader.search("Expenditures", {
             dateFrom: $scope.prevdate,
             dateTill: $scope.nextdate,

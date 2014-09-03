@@ -1,5 +1,5 @@
  var classesLastModifiedOnServer = {
-     "OperationalStatistics": "2014-09-01 09:01:00",
+     "OperationalStatistics": "2014-09-03 10:36:00",
      "Visit": "2014-09-01 09:00:00",
      "Expenditures": "2014-09-01 09:00:00"
  };
@@ -84,7 +84,7 @@
                          data.date = currentDay;
                          data.step = DateHelper.steps.MONTH;
                          data.financeStat = {};
-                         data.visible = false;
+                         data.visible = true;
                          allObjects.push(data);
                      }
 
