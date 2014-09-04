@@ -26,6 +26,7 @@ myApp.controller('OperationalStatisticController', function ($scope, $location, 
     $scope.loading = true;
 
     $scope.getData = function (key, quantity, forward, callback) {
+        $scope.loading = true;
         var resultArr = [];
         var date;
         if (key) {

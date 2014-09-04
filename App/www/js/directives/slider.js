@@ -71,18 +71,18 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
                             }
                         }
                     },
-                    onBeforeChange: function () {
-                        if (ready) {
-                            var key = getCurrentKey();
-                            if ($('.my-slider').slickCurrentSlide() == 1) {
-                                scope.loading = true;
-                                scope.$apply();
-                            } else if ($('.my-slider').slickCurrentSlide() == ($('.my-slider').getSlick().slideCount - 2)) {
-                                scope.loading = true;
-                                scope.$apply();
-                            }
-                        }
-                    },
+//                    onBeforeChange: function () {
+//                        if (ready) {
+//                            var key = getCurrentKey();
+//                            if ($('.my-slider').slickCurrentSlide() == 1) {
+//                                scope.loading = true;
+//                                scope.$apply();
+//                            } else if ($('.my-slider').slickCurrentSlide() == ($('.my-slider').getSlick().slideCount - 2)) {
+//                                scope.loading = true;
+//                                scope.$apply();
+//                            }
+//                        }
+//                    },
                     responsive: [{
                         breakpoint: 480,
                         settings: {
