@@ -101,11 +101,9 @@ myApp.controller('OperationalStatisticController', function ($scope, $location, 
      * @description Метод для проверки наличия данных за прошлый
      * период.
      */
-    $scope.hasPrevData = function (date) {
-        //        return date > minDate;
-        return true;
+    $scope.hasPrevData = function (currentDate) {
+        Loader.hasPastData("OperationalStatistics", currentDate);
     };
-
 
     /**
      *
@@ -113,14 +111,18 @@ myApp.controller('OperationalStatisticController', function ($scope, $location, 
      * @name myApp.controller:OperationalStatisticController#hasFutureData
      * @methodOf myApp.controller:OperationalStatisticController
      * @returns {Boleean} Возвращает `true`, если есть данные за будущее.
-     * @description Метод для проверки наличия данных за будущий
-     * период.
+     * @description Метод для проверки наличия данных за будущий период.
      */
-    $scope.hasFutureData = function (date) {
-        //        var period = DateHelper.getPeriod(date, $scope.step);
-        //        return period.end < maxDate && period.end.toDateString() != maxDate.toDateString();
-        return true;
-    };
+    $scope.futureData = function (currentDate) {
+        Loader.hasFutureData("OperationalStatistics", currentDate);
+    }
+
+    document.addEventListener('received', function () {
+        //updatePage
+
+        //        console.log("past ", Loader.hasPastData("OperationalStatistics", new Date()));
+        //        console.log("future ", Loader.hasFutureData("OperationalStatistics", "2014-10-04 09:00:00"));
+    }, false);
 
     $scope.$watch('step', function (newValue, oldValue) {
         var period = DateHelper.getPeriod($scope.date, $scope.step);
@@ -176,13 +178,13 @@ myApp.controller('OperationalStatisticController', function ($scope, $location, 
         $(".day").addClass("active");
         $scope.step = DateHelper.steps.DAY;
     };
-    
+
     $scope.goForWeek = function () {
         $(".periodButtons a").removeClass('active');
         $(".week").addClass("active");
         $scope.step = DateHelper.steps.WEEK;
     };
-    
+
     $scope.goForMonth = function () {
         $(".periodButtons a").removeClass('active');
         $(".month").addClass("active");
