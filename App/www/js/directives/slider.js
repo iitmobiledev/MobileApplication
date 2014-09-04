@@ -189,11 +189,12 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
                 console.log("addCurentDayData", contentData)
                 if (contentData) {
                     for (var i = 0; i < contentData.length; i++) {
-                        var now = new Date()
+                        var now = scope.date;
                         var today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-                        var curDate = new Date(contentData[i].date);
-                        curDate = new Date(curDate.getFullYear(), curDate.getMonth(), curDate.getDate());
-                        if (contentData[i].date && curDate.toDateString() == today.toDateString()) {
+                        var todayPeriod = DateHelper.getPeriod(today, scope.step);
+                        var curPeriod = DateHelper.getPeriod(contentData[i].date, scope.step);
+                        if (contentData[i].date && 
+                            curPeriod.begin.toDateString() == todayPeriod.begin.toDateString() ) {
                             curIndex = i;
                         }
                         newscope = scope.$new();

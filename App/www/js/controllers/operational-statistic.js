@@ -125,7 +125,7 @@ myApp.controller('OperationalStatisticController', function ($scope, $location, 
     }, false);
 
     $scope.$watch('step', function (newValue, oldValue) {
-        var period = DateHelper.getPeriod($scope.date, $scope.step);
+        var period = DateHelper.getPeriod($scope.date, newValue);
         if (oldValue == DateHelper.steps.WEEK) {
             if (period.end < new Date()) {
                 $scope.date = new Date(period.end.getFullYear(), period.end.getMonth(),
