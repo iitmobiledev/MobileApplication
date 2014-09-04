@@ -8,7 +8,7 @@ myApp.service("Storage", [ function (DateHelper) {
 
     var dbName = "storage";
     var database = null;
-    var dbVersion = 3.0;
+    var dbVersion = 1.0;
 
     function ClassesLastModified() {
         this.primary = "primary";
