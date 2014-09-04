@@ -8,14 +8,74 @@
  */
 myApp.service("Loader", ["ModelConverter", "Server", "Storage",
     function (ModelConverter, Server, Storage) {
+
+        var localStat = null;
+        var serverStat = null;
+
+        var query = [{
+            type: "OperationalStatistics",
+            field: "date"
+                }, {
+            type: "Visit",
+            field: "date"
+            }, {
+            type: "Expenditures",
+            field: "date"
+            }];
+
+        function getFieldStat() {
+            Storage.getFieldStat(query, function (stat) {
+                localStat = stat;
+
+                Server.getFieldStat(query, function (stat) {
+                    serverStat = stat;
+                    var event = new CustomEvent('received', {});
+                    document.dispatchEvent(event);
+                });
+            });
+        };
+
+        getFieldStat();
+
+        document.addEventListener('synchEnd', getFieldStat, false);
+
         return {
-            
-            hasFutureData: function (className, date){
+            hasFutureData: function (className, date) {
+                if (localStat) {
+                    var typeStat = localStat.filter(function (stat) {
+                        return stat.type == className;
+                    })[0];
+                    if (typeStat.min == null || typeStat.max == null) {
+                        typeStat = serverStat.filter(function (stat) {
+                            return stat.type == className;
+                        })[0];
+                        return new Date(date) < new Date(typeStat.max);
+                    } else {
+                        return new Date(date) < new Date(typeStat.max);
+                    }
+                } else {
+                    return false;
+                }
             },
-            
-            hasPastData: function (className, date){
+
+            hasPastData: function (className, date) {
+                if (localStat) {
+                    var typeStat = localStat.filter(function (stat) {
+                        return stat.type == className;
+                    })[0];
+                    if (typeStat.min == null || typeStat.max == null) {
+                        typeStat = serverStat.filter(function (stat) {
+                            return stat.type == className;
+                        })[0];
+                        return new Date(date) > new Date(typeStat.min);
+                    } else {
+                        return new Date(date) > new Date(typeStat.min);
+                    }
+                } else {
+                    return false;
+                }
             },
-            
+
             /**
              * @ngdoc method
              * @name myApp.service:Loader#get
@@ -30,63 +90,70 @@ myApp.service("Loader", ["ModelConverter", "Server", "Storage",
              * объекта по первичному ключу.
              */
             get: function (className, primaryKey, callback) {
-                var query = [{
-                    type: className,
-                    field: "date"
-                }];
-                Storage.getFieldStat(query, function (localStat) {
-                    Server.getFieldStat(query, function (serverStat) {
-                        if (serverStat[0].min == localStat[0].min && serverStat[0].max == localStat[0].max) {
-                            console.log("Storage.get");
-                            Storage.get(className, primaryKey, function (result) {
-                                if (result == null) {
-                                    console.log("Storage empty!");
-                                    callback(null);
-                                } else {
-                                    callback(ModelConverter.getObject(className, result));
-                                }
-                            });
-                        } else {
-                            console.log("server.get ", primaryKey);
-                            Server.get(className, primaryKey, function (data) {
-                                callback(ModelConverter.getObject(className, data))
-                            });
-                        }
-                    });
-                });
+                if (localStat && serverStat) {
+                    var typeStatLocal = localStat.filter(function (stat) {
+                        return stat.type == className;
+                    })[0];
+                    var typeStatServer = serverStat.filter(function (stat) {
+                        return stat.type == className;
+                    })[0];
+//                    console.log(typeStatLocal, typeStatServer);
+                    if (typeStatServer.min == typeStatLocal.min && typeStatServer.max == typeStatLocal.max) {
+//                        console.log("Storage.get");
+                        Storage.get(className, primaryKey, function (result) {
+                            if (result == null) {
+                                console.log("Storage empty!");
+                                callback(null);
+                            } else {
+                                callback(ModelConverter.getObject(className, result));
+                            }
+                        });
+                    } else {
+//                        console.log("server.get ", primaryKey);
+                        Server.get(className, primaryKey, function (data) {
+                            callback(ModelConverter.getObject(className, data))
+                        });
+                    }
+                } else {
+                    setTimeout(this.get, 500, className, primaryKey, callback);
+                }
             },
+
             //получение объектов за период
             search: function (className, params, callback) {
-                var query = [{
-                    type: className,
-                    field: "date"
-                                                        }];
-                Storage.getFieldStat(query, function (localStat) {
-                    Server.getFieldStat(query, function (serverStat) {
-                        //                        console.log(serverStat[0], localStat[0]);
-                        if (serverStat[0].min == localStat[0].min && serverStat[0].max == localStat[0].max) {
-                            Storage.search(className, params, function (data) {
-                                console.log("Storage.search ", data);
-                                if (data == null) {
-                                    console.log("Storage empty!");
-                                    callback([]);
-                                } else {
-                                    var objs = ModelConverter.getObjects(className, data);
-                                    callback(objs);
-                                }
-                            });
-                        } else {
-                            Server.searchForPeriod(className, params, function (result) {
-                                console.log("server.search", result);
-                                var objs = ModelConverter.getObjects(className, result);
+                if (localStat && serverStat) {
+                    var typeStatLocal = localStat.filter(function (stat) {
+                        return stat.type == className;
+                    })[0];
+                    var typeStatServer = serverStat.filter(function (stat) {
+                        return stat.type == className;
+                    })[0];
+//                    console.log(typeStatLocal, typeStatServer);
+                    if (typeStatServer.min == typeStatLocal.min && typeStatServer.max == typeStatLocal.max) {
+                        Storage.search(className, params, function (data) {
+//                            console.log("Storage.search ", data);
+                            if (data == null) {
+                                console.log("Storage empty!");
+                                callback([]);
+                            } else {
+                                var objs = ModelConverter.getObjects(className, data);
                                 callback(objs);
-                            });
-                        }
-                    });
-                });
+                            }
+                        });
+                    } else {
+                        Server.searchForPeriod(className, params, function (result) {
+//                            console.log("server.search", result);
+                            var objs = ModelConverter.getObjects(className, result);
+                            callback(objs);
+                        });
+                    }
+
+                } else {
+                    setTimeout(this.search, 500, className, params, callback);
+                }
             }
         }
-    }]);
+}]);
 
 //                var query = ["OperationalStatistics", "Visit", "Expenditures"];
 //                console.log("lastModified: ", Storage.lastModified(query));

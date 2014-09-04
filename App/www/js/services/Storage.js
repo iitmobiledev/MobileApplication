@@ -74,7 +74,7 @@ myApp.service("Storage", [ function (DateHelper) {
     var getFieldStat = function (query, callback) {
         get("fieldStat", "primary", function (data) {
             var result = [];
-            console.log(data);
+//            console.log(data);
             for (var i in query) {
                 var resType = data[query[i].type];
                 var resField = resType[query[i].field];

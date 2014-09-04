@@ -3,17 +3,17 @@ myApp.service("Synchronizer", ["Storage", "Server", "ModelConverter",
 
         function save(data, className, offset, callback) {
             if (offset >= data.length) {
-//                console.log("save end");
+                //                console.log("save end");
                 callback();
             } else {
                 if (data[offset].visible) {
-//                    console.log("visible");
+                    //                    console.log("visible");
                     Storage.update(ModelConverter.getObject(className, data[offset]));
                     save(data, className, offset + 1, callback)
                 } else {
-//                    console.log("not visible");
+                    //                    console.log("not visible");
                     Storage.del(ModelConverter.getObject(className, data[offset]), function () {
-//                        console.log("obj deleted");
+                        //                        console.log("obj deleted");
                         save(data, className, offset + 1, callback)
                     });
                 }
@@ -37,10 +37,10 @@ myApp.service("Synchronizer", ["Storage", "Server", "ModelConverter",
                                         type: className,
                                         field: "date"
                                     }], function (serverStat) {
-//                                   console.log("serverStat in synch ", serverStat);
+                                        //                                   console.log("serverStat in synch ", serverStat);
                                         Storage.saveFieldStat(serverStat, function () {
                                             save(data, className, 0, callback);
-//                                            callback();
+                                            //                                            callback();
                                         });
                                     });
                                 });
@@ -65,7 +65,7 @@ myApp.service("Synchronizer", ["Storage", "Server", "ModelConverter",
                 var synch = this;
                 Storage.lastModified(["OperationalStatistics", "Visit", "Expenditures"], function (lastLocalModified) {
                     Server.lastModified(["OperationalStatistics", "Visit", "Expenditures"], function (lastServerModified) {
-                        console.log(lastLocalModified[className], lastServerModified[className]);
+//                        console.log(lastLocalModified[className], lastServerModified[className]);
                         if (lastLocalModified[className] == lastServerModified[className]) {
                             callback();
                         } else {
@@ -83,13 +83,14 @@ var synchronizer = $inj.get('Synchronizer');
 var storage = $inj.get('Storage');
 
 (function beginSynch() {
-//    console.log("beginSynch");
     synchronizer.synchCheck.call(synchronizer, "OperationalStatistics", function () {
-        console.log("synch end OperationalStatistics0");
+//        console.log("synch end OperationalStatistics0");
         synchronizer.synchCheck.call(synchronizer, "Visit", function () {
-            console.log("synch end Visit0");
+//            console.log("synch end Visit0");
             synchronizer.synchCheck.call(synchronizer, "Expenditures", function () {
-                console.log("synch end Expenditures0");
+                console.log("synch end");
+                var synchEndEvent = new CustomEvent('synchEnd', {});
+                document.dispatchEvent(synchEndEvent);
                 setTimeout(beginSynch, 70000);
             });
         });
