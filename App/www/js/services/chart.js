@@ -29,9 +29,7 @@ myApp.factory('ChartDataLoader', function (DateHelper, Finder) {
                 goodData.push(item);
             }
             goodData = goodData.sort();
-            setTimeout(function () {
-                callback(goodData);
-            }, 5000);
+            callback(goodData);
         });
 
     }
