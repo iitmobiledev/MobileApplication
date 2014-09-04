@@ -230,7 +230,7 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
             scope.$watch('step', function (newValue, oldValue) {
                 if (oldValue != newValue) {
                     scope.loading = true;
-                    scope.$apply();
+//                    scope.$apply();
                     initSlider();
                 }
             })
