@@ -10,7 +10,24 @@
             <div class="col uib_col_5 col-0_12-12" data-uib="layout/col" data-ver="0">
                 <div class="widget-container content-area vertical-col">
                     <div id="periodButtons" class="button-grouped widget uib_w_4 flex" style="margin-bottom: 10px; font-weight: lighter" data-ver="1">
-
+                        <a class="active day button widget uib_w_6 d-margins" 
+                           data-uib="app_framework/button" 
+                           data-ver="1"
+                           ng-click="goForDay()">
+                            За день
+                        </a>
+                        <a class="button week  widget uib_w_6 d-margins" 
+                           data-uib="app_framework/button" 
+                           data-ver="1"
+                           ng-click="goForWeek()">
+                            За неделю
+                        </a>
+                        <a class="button month widget uib_w_6 d-margins" 
+                           data-uib="app_framework/button" 
+                           data-ver="1"
+                           ng-click="goForMonth()">
+                            За месяц
+                        </a>
                     </div>
                     <span class="uib_shim"></span>
                 </div>
@@ -85,9 +102,3 @@
             </script>
     </div>
 </div>
-
-<!-- /upage-content -->
-<!-- //<div class="footer "></div>-->
-<!--
-   
--->

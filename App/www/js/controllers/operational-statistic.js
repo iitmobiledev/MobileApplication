@@ -24,31 +24,7 @@ myApp.controller('OperationalStatisticController', function ($scope, $location, 
 
     $scope.step = DateHelper.steps.DAY;
     $scope.loading = true;
-    var steps = [DateHelper.steps.DAY, DateHelper.steps.WEEK, DateHelper.steps.MONTH];
-    var titles = ["За день", "За неделю", "За месяц"];
 
-    for (var i = 0; i < steps.length; i++) {
-        var classValue = "button widget uib_w_6 d-margins";
-        if (i === 0)
-            classValue += ' active';
-        $("#periodButtons").append(
-            $("<a>", {
-                "class": classValue,
-                "data-uib": "app_framework/button",
-                "data-ver": "1",
-                text: titles[i],
-                "id": steps[i],
-                click: function () {
-                    $scope.step = this.id;
-//                    $scope.$apply();
-                    for (var j = 0; j < steps.length; j++)
-                        $("#" + steps[j]).removeClass('active');
-                    $(this).addClass("active");
-                }
-            })
-        );
-    }
-    
     $scope.getData = function (key, quantity, forward, callback) {
         var resultArr = [];
         var date;
@@ -193,6 +169,24 @@ myApp.controller('OperationalStatisticController', function ($scope, $location, 
             return typeof (statistics.financeStat.credit) !== 'undefined';
         }
         return false;
+    };
+
+    $scope.goForDay = function () {
+        $(".periodButtons a").removeClass('active');
+        $(".day").addClass("active");
+        $scope.step = DateHelper.steps.DAY;
+    };
+    
+    $scope.goForWeek = function () {
+        $(".periodButtons a").removeClass('active');
+        $(".week").addClass("active");
+        $scope.step = DateHelper.steps.WEEK;
+    };
+    
+    $scope.goForMonth = function () {
+        $(".periodButtons a").removeClass('active');
+        $(".month").addClass("active");
+        $scope.step = DateHelper.steps.MONTH;
     };
 
 });

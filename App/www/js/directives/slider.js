@@ -140,7 +140,9 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
                         newscope.$apply();
                     }
                 }
-                tryKey();
+                scope.loading = false;
+                scope.$apply();
+                ready = true;
             }
 
             /**
@@ -167,7 +169,9 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
                         newscope.$apply();
                     }
                 }
-                tryKey();
+                scope.loading = false;
+                scope.$apply();
+                ready = true;
             }
 
             /**
@@ -193,7 +197,7 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
                             curIndex = i;
                         }
                         newscope = scope.$new();
-                        //                        newscope.page = contentData[i];
+                        newscope.page = contentData[i];
                         //                        console.log(i, contentData[i])
                         compiled(newscope, function (clonedElement, scope) {
                             clonedElement.attr("contentkey", keyFunc(contentData[i]))
@@ -203,36 +207,16 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
                             }
 
                         });
-                        //                        newscope.$apply();
-
-                        safeApply(newscope, function () {
-                            newscope.page = contentData[i];
-                        })
-
-
+                        newscope.$apply();
                     }
 
                     $('.my-slider').slickSetOption('speed', 0).slickGoTo(curIndex).slickSetOption('speed', 300);
 
-                    console.log($('.my-slider').getSlick())
-                    tryKey();
-                }
-            }
-
-            function safeApply(scope, fn) {
-                (scope.$$phase || scope.$root.$$phase) ? fn() : scope.$apply(fn);
-            }
-
-            function tryKey() {
-                scope.loading = false;
-                scope.$apply();
-                if (getCurrentKey()) {
+                    scope.loading = false;
+                    scope.$apply();
                     ready = true;
-                } else {
-                    setTimeout(tryKey, 100);
                 }
             }
-
 
             $('.slider-back-button').on('click', function () {
                 $('.my-slider').slickPrev();
