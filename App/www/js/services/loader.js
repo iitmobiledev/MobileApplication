@@ -29,6 +29,9 @@ myApp.service("Loader", ["ModelConverter", "Server", "Storage",
 
                 Server.getFieldStat(query, function (stat) {
                     serverStat = stat;
+                    
+                    console.log("received");
+                    
                     var event = new CustomEvent('received', {});
                     document.dispatchEvent(event);
                 });

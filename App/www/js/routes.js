@@ -54,20 +54,20 @@ myApp.config(['$routeProvider',
 
 (function () {
     "use strict";
-    
-//    console.log = function (msg) {
-//        $('#console').append($("<p>", {
-//            text: msg
-//        }));
-//    };
-    
-//    var originalError = console.error;
-    
+
+    console.log = function (msg) {
+        $('#console').append($("<p>", {
+            text: msg
+        }));
+    };
+
+    //    var originalError = console.error;
+
 //    console.error = function (msg) {
 //        $('#console').append($("<p>", {
 //            text: msg
 //        }));
-////        console.log(msg);
+//        //        console.log(msg);
 //    };
 
     //    }

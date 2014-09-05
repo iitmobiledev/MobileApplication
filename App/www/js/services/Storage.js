@@ -74,7 +74,6 @@ myApp.service("Storage", [ function (DateHelper) {
     var getFieldStat = function (query, callback) {
         get("fieldStat", "primary", function (data) {
             var result = [];
-//            console.log(data);
             for (var i in query) {
                 var resType = data[query[i].type];
                 var resField = resType[query[i].field];
@@ -154,9 +153,13 @@ myApp.service("Storage", [ function (DateHelper) {
      * @description Инициализирует ибд
      */
     function open(callback) {
+        
         var request = indexedDB.open(dbName, dbVersion);
 
         request.onupgradeneeded = function (event) {
+            
+            console.error("onupgradeneeded");
+            
             var db = event.target.result;
 
             var delModels = ['OperationalStatistics', 'Visit', 'Expenditures', 'classesLastModified', 'fieldStat'];
@@ -175,12 +178,16 @@ myApp.service("Storage", [ function (DateHelper) {
             db.createObjectStore("classesLastModified", {
                 keyPath: "primary"
             });
-            saveLastModify(classesLastModified, function () {});
+            saveLastModify(classesLastModified, function () {
+                console.log("saveLastModify");
+            });
 
             db.createObjectStore("fieldStat", {
                 keyPath: "primary"
             });
-            saveFieldStat(classesFieldStat, function () {});
+            saveFieldStat(classesFieldStat, function () {
+                console.log("saveFieldStat");
+            });
         };
 
         request.onsuccess = function (event) {
