@@ -71,6 +71,7 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
                             }
                         }
                     },
+                    useCSS: false
 //                    onBeforeChange: function () {
 //                        if (ready) {
 //                            var key = getCurrentKey();
@@ -83,13 +84,13 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
 //                            }
 //                        }
 //                    },
-                    responsive: [{
-                        breakpoint: 480,
-                        settings: {
-                            slidesToShow: 1,
-                            slidesToScroll: 1
-                        }
-                            }]
+//                    responsive: [{
+//                        breakpoint: 480,
+//                        settings: {
+//                            slidesToShow: 1,
+//                            slidesToScroll: 1
+//                        }
+//                            }]
                 });
             }
 
