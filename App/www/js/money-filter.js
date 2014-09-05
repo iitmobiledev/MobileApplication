@@ -12,6 +12,10 @@ myApp.filter('money', ['$filter', '$locale',
                 num = -1;
             var value = filter(amount);
             var sep = value.indexOf(formats.DECIMAL_SEP);
+            if (sep == -1) {
+                console.log("sep=-1",value.substring(0, value.length).replace(/,/g, " "));
+                return value.substring(0, value.length).replace(/,/g, " ");
+            }
             return value.substring(0, sep).replace(/,/g, " ");
         };
 }]);

@@ -206,6 +206,6 @@ myApp.controller('VisitsController', function ($scope, $filter, $location, Loade
             $filter('date')(Math.max.apply(null, endTimes), "HH:mm");
         $scope.visitInfo.masters = masters.join(",");
         $scope.visitInfo.services = services.join(", ");
-        $scope.visitInfo.cost = coast + ' р.';
+        $scope.visitInfo.cost = coast;
     };
 });

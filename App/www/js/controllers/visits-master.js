@@ -138,7 +138,7 @@ myApp.controller('VisitsMasterController', function ($scope, $filter, $location,
             var service = visit.serviceList[j];
             if (service.master.id == $scope.masterId) {
                 services.push(service.description);
-                coast += service.cost
+                coast += service.cost;
                 startTimes.push(service.startTime);
                 endTimes.push(service.endTime);
             }
@@ -150,7 +150,7 @@ myApp.controller('VisitsMasterController', function ($scope, $filter, $location,
         $scope.masterVisitInfo.client = visit.client.lastName + ' ' + visit.client.firstName;
         $scope.masterVisitInfo.time = $filter('date')(Math.min.apply(null, startTimes), "HH:mm") + '-' + $filter('date')(Math.max.apply(null, endTimes), "HH:mm");
         $scope.masterVisitInfo.service = services.join(", ");
-        $scope.masterVisitInfo.cost = coast + ' р.';
+        $scope.masterVisitInfo.cost = coast;
     };
 
 

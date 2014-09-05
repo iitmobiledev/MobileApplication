@@ -44,26 +44,26 @@
                 <date-changer date='page.date' step='$parent.step' has-future-data='hasFutureData(page.date)' has-prev-data='hasPrevData(page.date)'></date-changer>
                 <table id="statisticTable">
                     <tr>
-                        <td class="sCell" ng-click="$parent.toChart('proceeds')">
+                        <td class="sCell" ng-click="$parent.toChart('proceeds')" style="border-right: none;border-bottom: none;">
                             <img src="images/proceeds.PNG" style="margin:5px;">
-                            <p style="font-size:20pt; font-weight: bold">{{page.proceeds| money:0}} р.</p>
+                            <p style="font-size:23pt; font-weight: bold">{{page.proceeds| money:0}} <span class="price">ю</span></p>
                             <p style="font-weight: lighter">Выручка</p>
                         </td>
-                        <td class="sCell" ng-click="$parent.toChart('profit')">
+                        <td class="sCell" ng-click="$parent.toChart('profit')" style="border-bottom: none;">
                             <img src="images/profit.PNG" style="margin:5px">
-                            <p style="font-size:20pt; font-weight: bold">{{page.profit| money:0}} р.</p>
+                            <p style="font-size:23pt; font-weight: bold">{{page.profit| money:0}} <span class="price">ю</span></p>
                             <p style="font-weight: lighter">Прибыль</p>
                         </td>
                     </tr>
                     <tr>
-                        <td class="sCell" ng-click="$parent.toChart('clients')">
+                        <td class="sCell" ng-click="$parent.toChart('clients')" style="border-right: none;">
                             <img src="images/clients.PNG" style="margin:5px">
-                            <p style="font-size:20pt; font-weight: bold">{{page.clients}}</p>
+                            <p style="font-size:23pt; font-weight: bold">{{page.clients}}</p>
                             <p style="font-weight: lighter">Оформлено визитов</p>
                         </td>
-                        <td class="sCell" ng-click="$parent.toChart('workload')">
+                        <td class="sCell" ng-click="$parent.toChart('workload')" ;>
                             <img src="images/workload.PNG" style="margin:5px">
-                            <p style="font-size:20pt; font-weight: bold">{{page.workload}}%</p>
+                            <p style="font-size:23pt; font-weight: bold">{{page.workload| money:0}}%</p>
                             <p style="font-weight: lighter">Загруженность</p>
                         </td>
                     </tr>
@@ -71,23 +71,23 @@
                 <table id="financeTable" ng-show='hasFinance(page)'>
                     <tr>
                         <td class="financeCell">
-                            <h1>{{page.financeStat.tillMoney}} р.</h1>
+                            <h1>{{page.financeStat.tillMoney}} <span class="price">ю</span></h1>
                             <span style="font-size:14px; font-weight: lighter">В кассе</span>
                         </td>
                         <td class="financeCellLeft" align="center">
                             <table align="center">
                                 <tr>
                                     <td style="text-align:right">Утром:</td>
-                                    <td style="font-weight: bold;text-align:right">{{page.financeStat.morningMoney| money:0}} р.</td>
+                                    <td style="font-weight: bold;text-align:right">{{page.financeStat.morningMoney| money:0}} <span class="price">ю</span></td>
                                 </tr>
                                 <tr>
                                     <td style="text-align:right">Приход:</td>
-                                    <td style="font-weight: bold;text-align:right">{{page.financeStat.credit| money:0}} р.</td>
+                                    <td style="font-weight: bold;text-align:right">{{page.financeStat.credit| money:0}} <span class="price">ю</span></td>
                                 </tr>
 
                                 <tr ng-click="toExpenditures() ">
                                     <td style="text-align:right">Расход:</td>
-                                    <td style="font-weight: bold;text-align:right">{{page.financeStat.debit| money:0}} р.</td>
+                                    <td style="font-weight: bold;text-align:right">{{page.financeStat.debit| money:0}} <span class="price">ю</span></td>
                                 </tr>
 
                             </table>

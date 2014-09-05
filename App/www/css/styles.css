@@ -5,7 +5,7 @@
     border-spacing: 0px;
     width: 100%;
     height: 100%;
-    padding: 0 2% 0 2%;
+    padding: 0 10px 0 10px;
 }
 #statisticTable .sCell {
     border: 1px solid #D3D3D3;
@@ -16,19 +16,24 @@
 #financeTable {
     border-collapse: separate;
     border-spacing: 0px;
-    width: 96%;
+    width: 100%;
     height: 100%;
-    border: 1px solid #D3D3D3;
-    margin: 0 2% 2% 2%;
+    padding: 0 10px;
 }
 #financeTable .financeCell {
+    border: 1px solid #D3D3D3;
+    border-top: none;
+    border-right: none;
+    width: 50%;
+    padding: 20px 0;
     text-align: center;
 }
-/*
 #financeTable .financeCellLeft {
-    text-align: center;
+    border: 1px solid #D3D3D3;
+    border-top: none;
+    width: 50%;
+    padding: 20px 0;
 }
-*/
 
 /*Data navigation*/
 
@@ -165,4 +170,11 @@ a.settings {
     background-repeat: no-repeat;
     background-position: center top;
     background-size: 25px;
+}
+@font-face {
+    font-family: 'PT Sans';
+    src: url("'../../../css/fonts/pt-rouble-sans.ttf");
+}
+.price {
+    font-family: 'PT Sans';
 }

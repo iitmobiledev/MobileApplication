@@ -6,7 +6,6 @@
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" type="text/css" href="app_framework/2.1/css/afui.custom.css">
-    <link rel="stylesheet" type="text/css" href="app_framework/2.1/css/icons.min.css">
     <link rel="stylesheet" type="text/css" href="css/transitionAnimation.css">
     <link rel="stylesheet" type="text/css" href="css/styles.css">
     <link rel="stylesheet" type="text/css" href="css/angular-carousel.min.css">
@@ -38,7 +37,7 @@
     <script src="intelxdk.js"></script>
     <script type="text/javascript">
         /* Intel native bridge is available */
-        var onDeviceReady = function() {
+        var onDeviceReady = function () {
             //hide splash screen
             intel.xdk.device.hideSplashScreen();
             //     intel.xdk.device.hideStatusBar();            
@@ -105,29 +104,21 @@
         }
         show();
     </script>
-    <!--    <div id="afui" class="ios7">-->
-    <!-- ios7 --->
     <div id="header" class="container-group inner-element uib_w_19" data-uib="app_framework/header" data-ver="1">
     </div>
     <!-- content goes here-->
     <div class="uwrap" id="content">
         <div class="upage panel" id="home" data-header="none" data-footer="none">
-            <div id="console"></div>
-            <!--            <div class="upage-outer">-->
+<!--            <div id="console"></div>-->
             <div ng-view class="fade"></div>
-            <!--            </div>-->
         </div>
-
     </div>
 
     <div id="navbar" class="inner-element uib_w_22" style="font-weight: lighter" data-uib="app_framework/footer" data-ver="1">
         <a class="statistic" href="#/index" id="StatisticsFooter">Отчетность</a>
         <a class="visits" href="#/visits" id="VisitsFooter">Визиты</a>
         <a class="settings" href="#/settings" id="SettingsFooter">Настройки</a>
-
     </div>
-    <!--    </div>-->
-    <!-- /uwrap -->
 </body>
 
 </html>

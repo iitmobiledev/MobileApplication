@@ -17,16 +17,8 @@ myApp.directive('loadBar', function () {
              */
             scope.$watch(attrs.paramName, function (newValue) {
                 if (newValue) {
-                    //                    $("#content").css("opacity", "0.5");
-                    //                    $("#content").css("background", "white");
-                    //                    $("#content").css("z-index", "90");
-//                    $(".loading-image").fadeIn("slow");
                     $(".loading-image").fadeIn("fast");
                 } else {
-                    //                    $("#content").css("opacity", "");
-                    //                    $("#content").css("background", "");
-                    //                    $("#content").css("z-index", "");
-//                    $(".loading-image").fadeOut("slow");
                     $(".loading-image").fadeOut("fast");
                 }
             }, true);
