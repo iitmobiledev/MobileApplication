@@ -1058,7 +1058,7 @@ only screen and (min-width: 768px) {
     top: 50%;
     right: 20px;
     margin-top: -0.5em;
-    color: inherit;
+    color: rgb(224, 224, 224)
 }
 #afui .list .divider {
     position: relative;

@@ -98,42 +98,42 @@
 }
 .not-come {
     width: 140px;
-    background-color: #FF9F9F;
+    background-color: #fda79a;
     text-align: center;
     color: white;
     font-size: 15px;
     border-radius: 2px;
-    height: 20px;
+    padding: 2px;
     margin-bottom: 5px;
 }
 .new {
     width: 110px;
-    background-color: #FFCC66;
+    background-color: #ffc977;
     text-align: center;
     color: white;
     font-size: 15px;
     border-radius: 2px;
-    height: 20px;
+    padding: 2px;
     margin-bottom: 5px;
 }
 .confirm {
     width: 120px;
-    background-color: #33BBFF;
+    background-color: #54c8d8;
     text-align: center;
     color: white;
     font-size: 15px;
     border-radius: 2px;
-    height: 20px;
+    padding: 2px;
     margin-bottom: 5px;
 }
 .come {
     width: 120px;
-    background-color: #77CC33;
+    background-color: #9cd266;
     text-align: center;
     color: white;
     font-size: 15px;
     border-radius: 2px;
-    height: 20px;
+    padding: 2px;
     margin-bottom: 5px;
 }
 a.pressed.statistic {
