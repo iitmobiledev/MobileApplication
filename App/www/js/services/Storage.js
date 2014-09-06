@@ -159,11 +159,10 @@ myApp.service("Storage", [
             var request = indexedDB.open(dbName, dbVersion);
 
             request.onupgradeneeded = function (event) {
-
-                
-
                 var db = event.target.result;
-
+                
+                console.log("onupgradeneeded");
+                console.error("onupgradeneeded");
 
                 var delModels = ['OperationalStatistics', 'Visit', 'Expenditures', 'classesLastModified', 'fieldStat'];
                 //                for (var i in delModels) {
@@ -191,9 +190,7 @@ myApp.service("Storage", [
                 saveFieldStat(classesFieldStat, function () {
                     console.log("saveFieldStat");
                 });
-                
-                console.log("onupgradeneeded");
-                console.error("onupgradeneeded");
+
                 alert("onupgradeneeded");
                 //                for (var i=0;i<db.objectStoreNames.lenght;i++) {
                 //                    console.log(db.objectStoreNames[i]);

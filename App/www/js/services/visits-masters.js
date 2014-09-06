@@ -30,7 +30,7 @@ myApp.factory('Master', function (Model) {
             var data = angular.extend({}, self);
             return data;
         },
-        primary: ['firstName', 'middleName', 'lastName']
+        primary: ['id']
     });
 });
 
@@ -56,7 +56,7 @@ myApp.factory('Service', function (Model, Master) {
             var data = angular.extend({}, self);
             return data;
         },
-        primary: ['description']
+        primary: ['id']
     });
 });
 
