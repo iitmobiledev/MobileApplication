@@ -7,52 +7,40 @@
     </div>
 
     <date-changer step='"day"' date='date' steps='["day"]' has-future-data='hasFutureData()' has-prev-data='hasPrevData()' index='pageIndex'></date-changer>
-    <ul id='carousel' rn-carousel rn-carousel-index="pageIndex" style="height: 100%">
-        <li ng-repeat="page in pages">
-            <ul>
-                <li ng-repeat="masterVis in page" id="visitsPerMasters">
-                    <status-statistics visits="visits[pageIndex]"></status-statistics>
-                    <ul class="list inset">
-                        <li class="divider" ng-click="toMaster(masterVis.master.id)">
-                            {{getMasterInfo(masterVis.master)}}
-                        </li>
-                        <ul ng-repeat="visit in masterVis.visList">
-                            <li>
-                                {{getVisitByMasterInfo(visit)}}
-                                <a href="#/visit/{{visit.id}}">
-                                    <div style="width:100%">
-                                        <visit-status status='masterVisitInfo.status'></visit-status>
-                                        <img style="float:right;top:-25px;position:relative;left: -95px;" src="images/time.png">
-                                        <span style="float:right;top:-25px;position:relative">{{masterVisitInfo.time}}</span>
-                                        <div>
-                                            <span style="width:65%;white-space:nowrap;text-overflow:ellipsis;overflow: hidden; font-size:18px; font-weight:500; margin-bottom:5px;">
+    <status-statistics visits="page"></status-statistics>
+
+    <ul class="list inset" ng-repeat="masterVis in page" id="visitsPerMasters">
+        <li class="divider" ng-click="toMaster(masterVis.master.id)">
+            {{getMasterInfo(masterVis.master)}}
+        </li>
+        <div ng-repeat="visit in masterVis.visList">
+            <li>
+                {{getVisitByMasterInfo(visit)}}
+                <a href="#/visit/{{visit.id}}" style="text-decoration: none;color: black;">
+                    <div style="width:100%">
+                        <visit-status status='masterVisitInfo.status'></visit-status>
+                        <img style="float:right;top:-25px;position:relative;left: -95px;" src="images/time.png">
+                        <span style="float:right;top:-25px;position:relative">{{masterVisitInfo.time}}</span>
+                        <div>
+                            <span style="width:65%;white-space:nowrap;text-overflow:ellipsis;overflow: hidden; font-size:18px; font-weight:500; margin-bottom:5px;">
                                     {{masterVisitInfo.client}}
                                 </span>
-
-                                        </div>
-                                        <div>
-                                            <span style="text-align:left;width:65%;white-space:nowrap;text-overflow:ellipsis;overflow: hidden;">
+                        </div>
+                        <div>
+                            <span style="text-align:left;width:65%;white-space:nowrap;text-overflow:ellipsis;overflow: hidden;">
                                    {{masterVisitInfo.service}} — {{masterVisitInfo.cost| money:0}} <span class="price">ю</span>
-                                </span>
-                                        </div>
-                                    </div>
-                                </a>
-                            </li>
-                            <li style="font-weight:lighter; font-size:12pt; color:#b8b8b8" ng-show="visit.isDownTime">Простой мастера {{visit.downTime}}</li>
-                        </ul>
-                    </ul>
-                </li>
-
-
-                <ul class="list inset" ng-hide="hasVisits(page)">
-                    <li style='text-align: center; font-size: 14pt;'>Нет визитов</li>
-                </ul>
-            </ul>
-        </li>
+                            </span>
+                        </div>
+                    </div>
+                </a>
+            </li>
+            <li style="font-weight:lighter; font-size:12pt; color:#b8b8b8" ng-show="visit.isDownTime">Простой мастера {{visit.downTime}}</li>
+        </div>
     </ul>
 
 
-
-
+    <ul class="list inset" ng-hide="hasVisits(page)">
+        <li style='text-align: center; font-size: 14pt;'>Нет визитов</li>
+    </ul>
 </div>
 <footer-content show="true"></footer-content>

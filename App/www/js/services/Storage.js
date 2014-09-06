@@ -160,16 +160,16 @@ myApp.service("Storage", [
 
             request.onupgradeneeded = function (event) {
                 var db = event.target.result;
-                
+
                 console.log("onupgradeneeded");
                 console.error("onupgradeneeded");
 
                 var delModels = ['OperationalStatistics', 'Visit', 'Expenditures', 'classesLastModified', 'fieldStat'];
-                //                for (var i in delModels) {
-                //                    if (db.objectStoreNames.contains(delModels[i])) {
-                //                        db.deleteObjectStore(delModels[i]);
-                //                    }
-                //                }
+                for (var i in delModels) {
+                    if (db.objectStoreNames.contains(delModels[i])) {
+                        db.deleteObjectStore(delModels[i]);
+                    }
+                }
 
                 var models = ['OperationalStatistics', 'Visit', 'Expenditures'];
                 var $inj = angular.injector(['myApp']);
@@ -192,9 +192,6 @@ myApp.service("Storage", [
                 });
 
                 alert("onupgradeneeded");
-                //                for (var i=0;i<db.objectStoreNames.lenght;i++) {
-                //                    console.log(db.objectStoreNames[i]);
-                //                }
             };
 
             request.onsuccess = function (event) {

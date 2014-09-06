@@ -29,9 +29,9 @@ myApp.service("Loader", ["ModelConverter", "Server", "Storage",
 
                 Server.getFieldStat(query, function (stat) {
                     serverStat = stat;
-                    
+
                     console.log("received");
-                    
+
                     var event = new CustomEvent('received', {});
                     document.dispatchEvent(event);
                 });
@@ -100,9 +100,9 @@ myApp.service("Loader", ["ModelConverter", "Server", "Storage",
                     var typeStatServer = serverStat.filter(function (stat) {
                         return stat.type == className;
                     })[0];
-//                    console.log(typeStatLocal, typeStatServer);
+                    //                    console.log(typeStatLocal, typeStatServer);
                     if (typeStatServer.min == typeStatLocal.min && typeStatServer.max == typeStatLocal.max) {
-//                        console.log("Storage.get");
+                        //                        console.log("Storage.get");
                         Storage.get(className, primaryKey, function (result) {
                             if (result == null) {
                                 console.log("Storage empty!");
@@ -112,7 +112,7 @@ myApp.service("Loader", ["ModelConverter", "Server", "Storage",
                             }
                         });
                     } else {
-//                        console.log("server.get ", primaryKey);
+                        //                        console.log("server.get ", primaryKey);
                         Server.get(className, primaryKey, function (data) {
                             callback(ModelConverter.getObject(className, data))
                         });
@@ -131,10 +131,10 @@ myApp.service("Loader", ["ModelConverter", "Server", "Storage",
                     var typeStatServer = serverStat.filter(function (stat) {
                         return stat.type == className;
                     })[0];
-//                    console.log(typeStatLocal, typeStatServer);
+                    //                    console.log(typeStatLocal, typeStatServer);
                     if (typeStatServer.min == typeStatLocal.min && typeStatServer.max == typeStatLocal.max) {
                         Storage.search(className, params, function (data) {
-//                            console.log("Storage.search ", data);
+                            //                            console.log("Storage.search ", data);
                             if (data == null) {
                                 console.log("Storage empty!");
                                 callback([]);
@@ -145,7 +145,7 @@ myApp.service("Loader", ["ModelConverter", "Server", "Storage",
                         });
                     } else {
                         Server.searchForPeriod(className, params, function (result) {
-//                            console.log("server.search", result);
+                            //                            console.log("server.search", result);
                             var objs = ModelConverter.getObjects(className, result);
                             callback(objs);
                         });

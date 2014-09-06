@@ -79,9 +79,9 @@ myApp.controller('VisitsMasterController', function ($scope, $filter, $location,
             end: $scope.nextdate
         };
         MastersLoader.getAllMastersPerDay(period, function (masters) {
-            $scope.pages = masters;
-            console.log(masters);
-                        $scope.calculateVisitsPerDay();
+            $scope.page = masters[0];
+            console.log("page", $scope.page);
+            $scope.calculateVisitsPerDay();
             $scope.$apply();
         });
     });
@@ -115,7 +115,9 @@ myApp.controller('VisitsMasterController', function ($scope, $filter, $location,
         return master.lastName + " " + master.firstName;
     };
 
-
+    $scope.log = function (str) {
+        console.log("log:",str);
+    }
 
     $scope.downTime;
     $scope.isDownTime;
