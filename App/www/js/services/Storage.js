@@ -5,6 +5,7 @@
  * @name myApp.service:Storage
  */
 myApp.service("Storage", [
+
     function (DateHelper) {
 
         var dbName = "storage";
@@ -159,17 +160,17 @@ myApp.service("Storage", [
 
             request.onupgradeneeded = function (event) {
 
-                console.error("onupgradeneeded");
+                
 
                 var db = event.target.result;
 
 
                 var delModels = ['OperationalStatistics', 'Visit', 'Expenditures', 'classesLastModified', 'fieldStat'];
-                for (var i in delModels) {
-                    if (db.objectStoreNames.contains(delModels[i])) {
-                        db.deleteObjectStore(delModels[i]);
-                    }
-                }
+                //                for (var i in delModels) {
+                //                    if (db.objectStoreNames.contains(delModels[i])) {
+                //                        db.deleteObjectStore(delModels[i]);
+                //                    }
+                //                }
 
                 var models = ['OperationalStatistics', 'Visit', 'Expenditures'];
                 var $inj = angular.injector(['myApp']);
@@ -190,7 +191,13 @@ myApp.service("Storage", [
                 saveFieldStat(classesFieldStat, function () {
                     console.log("saveFieldStat");
                 });
-                console.log(db.objectStoreNames);
+                
+                console.log("onupgradeneeded");
+                console.error("onupgradeneeded");
+                alert("onupgradeneeded");
+                //                for (var i=0;i<db.objectStoreNames.lenght;i++) {
+                //                    console.log(db.objectStoreNames[i]);
+                //                }
             };
 
             request.onsuccess = function (event) {
