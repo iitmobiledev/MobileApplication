@@ -32,6 +32,7 @@
     border: 1px solid #D3D3D3;
     border-top: none;
     width: 50%;
+      border-left: none;
     padding: 20px 0;
 }
 

@@ -71,8 +71,11 @@
                 <table id="financeTable" ng-show='hasFinance(page)'>
                     <tr>
                         <td class="financeCell">
-                            <h1>{{page.financeStat.tillMoney}} <span class="price">ю</span></h1>
+                            
+                            <div style="text-align:left;display:inline-block;">
+                            <h1>{{page.financeStat.tillMoney| money:0}} <span class="price">ю</span></h1>
                             <span style="font-size:14px; font-weight: lighter">В кассе</span>
+                            </div>
                         </td>
                         <td class="financeCellLeft" align="center">
                             <table align="center">
