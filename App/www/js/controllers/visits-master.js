@@ -57,6 +57,19 @@ myApp.controller('VisitsMasterController', function ($scope, $filter, $location,
         $location.path('visits');
     }
 
+//    $scope.visits = [];
+    $scope.getVisits = function (masters) {
+        console.log("getVisits ", masters);
+        $scope.visits = [];
+        for (var i = 0; i < masters.length; i++) {
+            if (masters[i].visList) {
+                $scope.visits = $scope.visits.concat(masters[i].visList);
+            }
+        }
+//        console.log($scope.visits);
+        return $scope.visits;
+    };
+
     /**
      *
      * @ngdoc method
@@ -80,26 +93,9 @@ myApp.controller('VisitsMasterController', function ($scope, $filter, $location,
         };
         MastersLoader.getAllMastersPerDay(period, function (masters) {
             $scope.page = masters[0];
-            console.log("page", $scope.page);
-            $scope.calculateVisitsPerDay();
-            $scope.$apply();
+            $scope.visits = $scope.getVisits($scope.page);
         });
     });
-
-
-    $scope.calculateVisitsPerDay = function () {
-        $scope.visits = [];
-        for (var i = 0; i < $scope.pages.length; i++) {
-            var dayVisits = [];
-            for (var j = 0; j < $scope.pages[i].length; j++) {
-                if ($scope.pages[i][j].visList)
-                    dayVisits = dayVisits.concat($scope.pages[i][j].visList);
-
-            }
-            $scope.visits.push(dayVisits);
-        }
-    }
-
 
     /**
      *
@@ -116,7 +112,7 @@ myApp.controller('VisitsMasterController', function ($scope, $filter, $location,
     };
 
     $scope.log = function (str) {
-        console.log("log:",str);
+        console.log("log:", str);
     }
 
     $scope.downTime;
@@ -130,7 +126,6 @@ myApp.controller('VisitsMasterController', function ($scope, $filter, $location,
      * @description Метод, формирующий данные в виде, нужном для отображения визитов, отсортированных по мастерам.
      */
     $scope.getVisitByMasterInfo = function (visit) {
-        console.log("visit", visit);
         $scope.masterVisitInfo = {};
         var services = [],
             startTimes = [],
@@ -156,14 +151,5 @@ myApp.controller('VisitsMasterController', function ($scope, $filter, $location,
     };
 
 
-    $scope.visits = [];
-    $scope.getVisits = function (page) {
-        console.log("getVisits ", page);
-        $scope.visits = [];
-        for (var i = 0; i < page.length; i++) {
-            if (page[i].visList)
-                $scope.visits = $scope.visits.concat(page[i].visList);
-        }
-        return $scope.visits;
-    };
+
 });

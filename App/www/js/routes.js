@@ -3,9 +3,6 @@ var myApp = angular.module('myApp', ['ngRoute', 'ngAnimate']);
 myApp.run(function ($templateCache) {
     $templateCache.put('statistic-content');
     $templateCache.put('visits');
-    //    if (!Storage.checkSupport()) {
-    //        alert("indexedDB not support!");
-    //    }
 });
 
 myApp.config(['$routeProvider',
@@ -27,7 +24,7 @@ myApp.config(['$routeProvider',
             templateUrl: 'views/visits.html',
             controller: 'VisitsController'
         }).
-        when('/visits-master', {
+        when('/visits-master/:date', {
             templateUrl: 'views/visits-master.html',
             controller: 'VisitsMasterController'
         }).
@@ -65,15 +62,6 @@ myApp.config(['$routeProvider',
 //            text: msg
 //        }));
 //    };
-
-    //    var originalError = console.error;
-
-    //    console.error = function (msg) {
-    //        $('#console').append($("<p>", {
-    //            text: msg
-    //        }));
-    //        //        console.log(msg);
-    //    };
 
     //    }
     //$.ui.useInternalRouting = false;

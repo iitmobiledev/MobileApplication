@@ -1,4 +1,5 @@
 //indexedDB.deleteDatabase("storage")
+//console.log(indexedDB.deleteDatabase("storage"));
 /**
  * @ngdoc service
  * @description Сервис для кэширования данных
@@ -75,18 +76,22 @@ myApp.service("Storage", [
          */
         var getFieldStat = function (query, callback) {
             get("fieldStat", "primary", function (data) {
-                var result = [];
-                for (var i in query) {
-                    var resType = data[query[i].type];
-                    var resField = resType[query[i].field];
-                    result.push({
-                        type: query[i].type,
-                        field: query[i].field,
-                        min: resField.min,
-                        max: resField.max
-                    });
+                if (data == null) {
+                    setTimeout(getFieldStat(query, callback), 500);
+                } else {
+                    var result = [];
+                    for (var i in query) {
+                        var resType = data[query[i].type];
+                        var resField = resType[query[i].field];
+                        result.push({
+                            type: query[i].type,
+                            field: query[i].field,
+                            min: resField.min,
+                            max: resField.max
+                        });
+                    }
+                    callback(result);
                 }
-                callback(result);
             });
         };
 
@@ -110,7 +115,6 @@ myApp.service("Storage", [
             var request = store.put(obj); //положим в хранилище
 
             request.onsuccess = function (e) { //если транзакт прошел успешно
-                //            console.log("onsuccess");
             };
             trans.onerror = function (e) { //если что-то пошло не так
                 //                        console.log("update() transaction: Error", event);
@@ -159,10 +163,8 @@ myApp.service("Storage", [
             var request = indexedDB.open(dbName, dbVersion);
 
             request.onupgradeneeded = function (event) {
-                var db = event.target.result;
 
-                console.log("onupgradeneeded");
-                console.error("onupgradeneeded");
+                var db = event.target.result;
 
                 var delModels = ['OperationalStatistics', 'Visit', 'Expenditures', 'classesLastModified', 'fieldStat'];
                 for (var i in delModels) {
@@ -180,18 +182,13 @@ myApp.service("Storage", [
                 db.createObjectStore("classesLastModified", {
                     keyPath: "primary"
                 });
-                saveLastModify(classesLastModified, function () {
-                    console.log("saveLastModify");
-                });
+                saveLastModify(classesLastModified, function () {});
 
                 db.createObjectStore("fieldStat", {
                     keyPath: "primary"
                 });
-                saveFieldStat(classesFieldStat, function () {
-                    console.log("saveFieldStat");
-                });
+                saveFieldStat(classesFieldStat, function () {});
 
-                alert("onupgradeneeded");
             };
 
             request.onsuccess = function (event) {
@@ -343,4 +340,4 @@ myApp.service("Storage", [
             saveLastModify: saveLastModify,
             saveFieldStat: saveFieldStat
         };
-}]);
+    }]);

@@ -7,7 +7,8 @@
     </div>
 
     <date-changer step='"day"' date='date' steps='["day"]' has-future-data='hasFutureData()' has-prev-data='hasPrevData()' index='pageIndex'></date-changer>
-    <status-statistics visits="page"></status-statistics>
+<!--    {{getVisits(page)}}-->
+    <status-statistics visits="visits"></status-statistics>
 
     <ul class="list inset" ng-repeat="masterVis in page" id="visitsPerMasters">
         <li class="divider" ng-click="toMaster(masterVis.master.id)">

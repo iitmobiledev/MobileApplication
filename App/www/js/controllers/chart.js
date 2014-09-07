@@ -22,7 +22,7 @@ myApp.controller('GraphicController', function ($scope, $routeParams, ChartDataL
     ChartDataLoader.getGoodData($scope.type, $scope.period, function (data) {
         $scope.loading = false;
         $scope.data = data;
-        $scope.$apply();
+//        $scope.$apply();
     });
     $scope.step;
     $scope.title = '';
@@ -67,7 +67,7 @@ myApp.controller('GraphicController', function ($scope, $routeParams, ChartDataL
         ChartDataLoader.getGoodData($scope.type, $scope.period, function (data) {
             $scope.loading = false;
             $scope.data = data;
-            $scope.$apply();
+//            $scope.$apply();
         });
     });
 });

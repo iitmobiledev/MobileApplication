@@ -52,7 +52,8 @@ myApp.controller('VisitsController', function ($scope, $filter, $location, Loade
     };
 
     $scope.onMasters = function () {
-        $location.path('visits-master');
+        $location.path('visits-master/' + $scope.date);
+//        $location.path('visits-master');
     };
     /**
      *

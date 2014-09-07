@@ -222,6 +222,7 @@
              },
 
              search: function (className, params, callback) {
+                 //console.log('search in server');
                  setTimeout(function () {
                      var allObjects = objects[className]();
                      var end = params.offset + params.count;
@@ -232,6 +233,7 @@
                          neededObjs.push(allObjects[i]);
                      }
                      //classesLastModified[className] = "2014-8-30 14:00"
+                     //alert('search in server');
                      callback(neededObjs);
                  }, 500);
              },

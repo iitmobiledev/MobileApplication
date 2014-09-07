@@ -66,7 +66,7 @@ myApp.controller('ExpendituresController', function ($scope, $filter, Loader, Da
             index: "date"
         }, function (data) {
             $scope.pages = data;
-            $scope.$apply();
+//            $scope.$apply();
         });
     }
 

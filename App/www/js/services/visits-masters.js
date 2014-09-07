@@ -324,7 +324,7 @@ myApp.factory('MastersLoader', function (DateHelper, Loader, $filter) {
         result.endTime = Math.max.apply(null, endTimes);
         result.isDownTime = false;
         result.downTime = '';
-        console.log("res-visit", result);
+//        console.log("res-visit", result);
         return result;
     }
 
