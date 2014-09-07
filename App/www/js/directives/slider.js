@@ -175,7 +175,6 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
             function addCurrentDayData(contentData) {
                 ready = false;
                 var curIndex = 0;
-                console.log("addCurentDayData", contentData)
                 if (contentData) {
                     for (var i = 0; i < contentData.length; i++) {
                         var now = scope.date;
@@ -188,14 +187,9 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
                         }
                         newscope = scope.$new();
                         newscope.page = contentData[i];
-                        //                        console.log(i, contentData[i])
                         compiled(newscope, function (clonedElement, scope) {
                             clonedElement.attr("contentkey", keyFunc(contentData[i]))
                             $('.my-slider').slickAdd(clonedElement);
-                            if (i == 0) {
-                                $('.my-slider').slickRemove(true);
-                            }
-
                         });
                         newscope.$apply();
                     }
