@@ -55,43 +55,31 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
              * является слайдером, библиотеки slick
              */
             function toSlick() {
-                $('.my-slider').slick({
-                    infinite: false,
-                    speed: 300,
-                    slidesToShow: 1,
-                    slidesToScroll: 1,
-                    onAfterChange: function () {
-                        if (ready) {
-                            var key = getCurrentKey();
-                            //                            console.log("key", key)
-                            if ($('.my-slider').slickCurrentSlide() == 0) {
-                                dataCallback(key, count, false, addPastData);
-                            } else if ($('.my-slider').slickCurrentSlide() == ($('.my-slider').getSlick().slideCount - 1)) {
-                                dataCallback(key, count, true, addFutureData);
+                var width = $("#content").width()
+                if (width !== 0) {
+                    $('.my-slider').slick({
+                        infinite: false,
+                        slidesToShow: 1,
+                        slidesToScroll: 1,
+                        slideWidth: width,
+                        touchThreshold: 100,
+                        onAfterChange: function () {
+                            if (ready) {
+                                var key = getCurrentKey();
+                                //                            console.log("key", key)
+                                if ($('.my-slider').slickCurrentSlide() == 0) {
+                                    dataCallback(key, count, false, addPastData);
+                                } else if ($('.my-slider').slickCurrentSlide() == ($('.my-slider').getSlick().slideCount - 1)) {
+                                    dataCallback(key, count, true, addFutureData);
+                                }
                             }
-                        }
-                    },
-                    useCSS: false
-//                    onBeforeChange: function () {
-//                        if (ready) {
-//                            var key = getCurrentKey();
-//                            if ($('.my-slider').slickCurrentSlide() == 1) {
-//                                scope.loading = true;
-//                                scope.$apply();
-//                            } else if ($('.my-slider').slickCurrentSlide() == ($('.my-slider').getSlick().slideCount - 2)) {
-//                                scope.loading = true;
-//                                scope.$apply();
-//                            }
-//                        }
-//                    },
-//                    responsive: [{
-//                        breakpoint: 480,
-//                        settings: {
-//                            slidesToShow: 1,
-//                            slidesToScroll: 1
-//                        }
-//                            }]
-                });
+                        },
+                        useCSS: false
+                    });
+                }
+                else{
+                    setTimeout(toSlick, 10);
+                }
             }
 
             /**
@@ -194,8 +182,8 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
                         var today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
                         var todayPeriod = DateHelper.getPeriod(today, scope.step);
                         var curPeriod = DateHelper.getPeriod(contentData[i].date, scope.step);
-                        if (contentData[i].date && 
-                            curPeriod.begin.toDateString() == todayPeriod.begin.toDateString() ) {
+                        if (contentData[i].date &&
+                            curPeriod.begin.toDateString() == todayPeriod.begin.toDateString()) {
                             curIndex = i;
                         }
                         newscope = scope.$new();
@@ -232,7 +220,7 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
             scope.$watch('step', function (newValue, oldValue) {
                 if (oldValue != newValue) {
                     scope.loading = true;
-//                    scope.$apply();
+                    //                    scope.$apply();
                     initSlider();
                 }
             })

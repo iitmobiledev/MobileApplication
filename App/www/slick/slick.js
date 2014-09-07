@@ -77,7 +77,8 @@
                 touchMove: true,
                 touchThreshold: 5,
                 useCSS: true,
-                vertical: false
+                vertical: false,
+                slideWidth: null
             };
 
             _.initials = {
@@ -1103,42 +1104,59 @@
         }
 
     };
+    
+    
+//    Slick.prototype.setDimensions = function() {
+//
+//        var _ = this;
+//
+//        if (_.options.vertical === false) {
+//            if (_.options.centerMode === true) {
+//                _.$list.css({
+//                    padding: ('0px ' + _.options.centerPadding)
+//                });
+//            }
+//        } else {
+//            _.$list.height(_.$slides.first().outerHeight(true) * _.options.slidesToShow);
+//            if (_.options.centerMode === true) {
+//                _.$list.css({
+//                    padding: (_.options.centerPadding + ' 0px')
+//                });
+//            }
+//        }
+//
+//        _.listWidth = _.$list.width();
+//        _.listHeight = _.$list.height();
+//
+//
+//        if(_.options.vertical === false) {
+//            _.slideWidth = Math.ceil(_.listWidth / _.options.slidesToShow);
+//            _.$slideTrack.width(Math.ceil((_.slideWidth * _.$slideTrack.children('.slick-slide').length)));
+//
+//        } else {
+//            _.slideWidth = Math.ceil(_.listWidth);
+//            _.$slideTrack.height(Math.ceil((_.$slides.first().outerHeight(true) * _.$slideTrack.children('.slick-slide').length)));
+//
+//        }
+//
+//        var offset = _.$slides.first().outerWidth(true) - _.$slides.first().width();
+//        _.$slideTrack.children('.slick-slide').width(_.slideWidth - offset);
+//
+//    };
 
     Slick.prototype.setDimensions = function() {
 
         var _ = this;
 
-        if (_.options.vertical === false) {
-            if (_.options.centerMode === true) {
-                _.$list.css({
-                    padding: ('0px ' + _.options.centerPadding)
-                });
-            }
-        } else {
-            _.$list.height(_.$slides.first().outerHeight(true) * _.options.slidesToShow);
-            if (_.options.centerMode === true) {
-                _.$list.css({
-                    padding: (_.options.centerPadding + ' 0px')
-                });
-            }
-        }
-
-        _.listWidth = _.$list.width();
+        _.slideWidth = _.options.slideWidth;
         _.listHeight = _.$list.height();
-
-
-        if(_.options.vertical === false) {
-            _.slideWidth = Math.ceil(_.listWidth / _.options.slidesToShow);
-            _.$slideTrack.width(Math.ceil((_.slideWidth * _.$slideTrack.children('.slick-slide').length)));
-        
-        } else {
-            _.slideWidth = Math.ceil(_.listWidth);
-            _.$slideTrack.height(Math.ceil((_.$slides.first().outerHeight(true) * _.$slideTrack.children('.slick-slide').length)));
-        
-        }
-
-        var offset = _.$slides.first().outerWidth(true) - _.$slides.first().width();
-        _.$slideTrack.children('.slick-slide').width(_.slideWidth - offset);
+             _.listWidth = Math.ceil(
+                 _.slideWidth * _.$slideTrack.children('.slick-slide').length
+             );
+            _.$slideTrack.width(_.listWidth);  
+ //       предпологаем что нет margin, padding
+//        var offset = _.$slides.first().outerWidth(true) - _.$slides.first().width();
+        _.$slideTrack.children('.slick-slide').width(_.slideWidth);
 
     };
 

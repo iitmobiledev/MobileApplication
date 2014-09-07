@@ -173,6 +173,10 @@ myApp.directive('dateChanger', function (DateHelper, $filter) {
                     return $filter('date')(period.begin, "dd.MM.yyyy") + " - " +
                         $filter('date')(period.end, "dd.MM.yyyy");
                 }
+                if (step == DateHelper.steps.MONTH) {
+                    //$('#Title').css('font-size', '');
+                    return DateHelper.getMonthTitle(date.getMonth(), step) + ' ' + date.getFullYear();
+                }
                 return "";
             }
 
@@ -204,10 +208,7 @@ myApp.directive('dateChanger', function (DateHelper, $filter) {
                     if (date.toDateString() == yesterday.toDateString())
                         return "Вчера";
                 }
-                if (step == DateHelper.steps.MONTH) {
-                    //$('#Title').css('font-size', '');
-                    return DateHelper.getMonthTitle(date.getMonth(), step) + ' ' + date.getFullYear();
-                }
+                
                 return " ";
             }
 
