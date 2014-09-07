@@ -1149,7 +1149,7 @@
         var _ = this;
 
         _.slideWidth = _.options.slideWidth;
-        _.listHeight = _.$list.height();
+//        _.listHeight = _.$list.height();
              _.listWidth = Math.ceil(
                  _.slideWidth * _.$slideTrack.children('.slick-slide').length
              );
