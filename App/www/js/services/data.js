@@ -297,21 +297,24 @@
                      return visits;
                  };
 
-                 var result = [];
-                 var day = params.dateFrom;
-                 while (day < params.dateTill || day.toDateString() == params.dateTill.toDateString()) {
-                     var data = new classes[className]({
-                         day: day,
-                         step: params.step
-                     });
+                 setTimeout(function () {
 
-                     if (data instanceof Array)
-                         result = result.concat(data);
-                     else
-                         result.push(data);
-                     day = DateHelper.getNextPeriod(day, params.step).begin;
-                 }
-                 callback(result);
+                     var result = [];
+                     var day = params.dateFrom;
+                     while (day < params.dateTill || day.toDateString() == params.dateTill.toDateString()) {
+                         var data = new classes[className]({
+                             day: day,
+                             step: params.step
+                         });
+
+                         if (data instanceof Array)
+                             result = result.concat(data);
+                         else
+                             result.push(data);
+                         day = DateHelper.getNextPeriod(day, params.step).begin;
+                     }
+                     callback(result);
+                 }, 100);
              },
 
              /**
