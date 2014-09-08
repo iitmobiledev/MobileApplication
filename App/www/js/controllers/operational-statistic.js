@@ -56,7 +56,10 @@ myApp.controller('OperationalStatisticController', function ($scope, $location, 
                         dateFrom: beginDate,
                         dateTill: endDate,
                         step: $scope.step,
-                    }, callback);
+                    }, function (data) {
+                        $scope.loading = false;
+                        callback(data)
+                    });
                 }
             });
 
@@ -80,7 +83,10 @@ myApp.controller('OperationalStatisticController', function ($scope, $location, 
                 dateTill: endDate,
                 step: $scope.step,
                 index: "date"
-            }, callback);
+            }, function (data) {
+                $scope.loading = false;
+                callback(data)
+            });
         };
     }
 
@@ -114,18 +120,18 @@ myApp.controller('OperationalStatisticController', function ($scope, $location, 
     $scope.futureData = function (currentDate) {
         Loader.hasFutureData("OperationalStatistics", currentDate);
     }
-    
-    $rootScope.$on('received', function(){
+
+    $rootScope.$on('received', function () {
         //updatePage
-//        console.log('received on');
+        //        console.log('received on');
     });
 
-//    document.addEventListener('received', function () {
-//        //updatePage
-//
-//        //        console.log("past ", Loader.hasPastData("OperationalStatistics", new Date()));
-//        //        console.log("future ", Loader.hasFutureData("OperationalStatistics", "2014-10-04 09:00:00"));
-//    }, false);
+    //    document.addEventListener('received', function () {
+    //        //updatePage
+    //
+    //        //        console.log("past ", Loader.hasPastData("OperationalStatistics", new Date()));
+    //        //        console.log("future ", Loader.hasFutureData("OperationalStatistics", "2014-10-04 09:00:00"));
+    //    }, false);
 
     $scope.$watch('step', function (newValue, oldValue) {
         var period = DateHelper.getPeriod($scope.date, newValue);

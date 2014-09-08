@@ -17,9 +17,11 @@ myApp.directive('loadBar', function () {
              */
             scope.$watch(attrs.paramName, function (newValue) {
                 if (newValue) {
-                    $(".loading-image").fadeIn("fast");
+//                    $(".loading-image").fadeIn("fast");
+                    $(".loading-image").show();
                 } else {
-                    $(".loading-image").fadeOut("fast");
+//                    $(".loading-image").fadeOut("fast");
+                    $(".loading-image").hide();
                 }
             }, true);
 

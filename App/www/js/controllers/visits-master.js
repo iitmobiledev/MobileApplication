@@ -16,6 +16,7 @@ myApp.controller('VisitsMasterController', function ($scope, $filter, $location,
 
     var today = new Date();
     $scope.date = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+    $scope.step = DateHelper.steps.DAY;
 
     $scope.pageIndex = 0;
 
@@ -58,16 +59,19 @@ myApp.controller('VisitsMasterController', function ($scope, $filter, $location,
     }
 
 //    $scope.visits = [];
-    $scope.getVisits = function (masters) {
-        console.log("getVisits ", masters);
-        $scope.visits = [];
-        for (var i = 0; i < masters.length; i++) {
-            if (masters[i].visList) {
-                $scope.visits = $scope.visits.concat(masters[i].visList);
+    $scope.getVisits = function (visitsByMaster) {
+        console.log("getVisits ", visitsByMaster);
+        var v = [];
+        for (var i = 0; i < visitsByMaster.length; i++) {
+            for (var j = 0; j < visitsByMaster[i].length; j++){
+                if (visitsByMaster[i][j].visList) {
+                    v = v.concat(visitsByMaster[i][j].visList);
+                }
             }
         }
+        $scope.visits = v;
 //        console.log($scope.visits);
-        return $scope.visits;
+//        return $scope.visits;
     };
 
     /**
@@ -80,22 +84,112 @@ myApp.controller('VisitsMasterController', function ($scope, $filter, $location,
      * @description Метод для проверки существования визитов.
      */
     $scope.hasVisits = function (visit) {
-        return visit.length != 0;
+        return visit && visit.length != 0;
     }
+    
+    var VisitsMasterPage = function (date, list) {
+        this.date = new Date(date);
+        this.list = list;
+    };
 
-    $scope.$watch('date.toDateString()', function () {
-        $scope.prevdate = DateHelper.getPrevPeriod($scope.date, DateHelper.steps.DAY).begin;
-        $scope.nextdate = DateHelper.getNextPeriod($scope.date, DateHelper.steps.DAY).end;
-        $scope.pages = [];
-        var period = {
-            begin: $scope.prevdate,
-            end: $scope.nextdate
-        };
-        MastersLoader.getAllMastersPerDay(period, function (masters) {
-            $scope.page = masters[0];
-            $scope.visits = $scope.getVisits($scope.page);
-        });
-    });
+    $scope.getData = function (key, quantity, forward, callback) {
+        $scope.loading = true;
+        var resultArr = [];
+        var date;
+        if (key) {
+            Loader.get("Visit", key, function (obj) {
+                if (obj) {
+                    date = new Date(key);
+                    if (forward) {
+                        date = DateHelper.getNextPeriod(date, $scope.step).end;
+                    } else {
+                        date = DateHelper.getPrevPeriod(date, $scope.step).end;
+                    }
+                    var beginDate = date,
+                        endDate = date;
+                    for (var i = 0; i < quantity; i++) {
+                        if (forward) {
+                            endDate = DateHelper.getNextPeriod(endDate, $scope.step).end;
+                        } else {
+                            beginDate = DateHelper.getPrevPeriod(beginDate, $scope.step).begin;
+                        }
+                    }
+                    if (beginDate == endDate && $scope.step != DateHelper.steps.DAY) {
+                        var period = DateHelper.getPeriod(beginDate, $scope.step);
+                        beginDate = period.begin;
+                        endDate = period.end;
+                    }
+                    MastersLoader.getAllMastersPerDay({
+                        begin: new Date(beginDate),
+                        end: new Date(endDate)
+                    }, function (data) {
+                        console.log(data)
+                        var list = [];
+                        var i = 0;
+
+                        console.log("beginEnd", beginDate, endDate)
+                        for (var tmpdate = new Date(beginDate); tmpdate < endDate || tmpdate.toDateString() == endDate.toDateString(); tmpdate.setDate(tmpdate.getDate() + 1)) {
+                            var page = new VisitsMasterPage(new Date(tmpdate), data[i]);
+                            list.push(page);
+                            i++;
+                        }
+                        $scope.loading = false;
+                        callback(list);
+                    });
+                }
+            });
+        } else {
+            date = $scope.date;
+            var beginDate = date,
+                endDate = date;
+            for (var i = 0; i < quantity; i++) {
+                endDate = DateHelper.getNextPeriod(endDate, $scope.step).end;
+                beginDate = DateHelper.getPrevPeriod(beginDate, $scope.step).begin;
+            }
+            if (beginDate == endDate && $scope.step != DateHelper.steps.DAY) {
+                var period = DateHelper.getPeriod(beginDate, $scope.step);
+                beginDate = period.begin;
+                endDate = period.end;
+
+            }
+            MastersLoader.getAllMastersPerDay({
+                begin: new Date(beginDate),
+                end: new Date(endDate)
+            }, function (data) {
+                console.log(data)
+                var list = [];
+                var i = 0;
+
+                console.log("beginEnd", beginDate, endDate)
+                for (var tmpdate = new Date(beginDate); tmpdate < endDate || tmpdate.toDateString() == endDate.toDateString(); tmpdate.setDate(tmpdate.getDate() + 1)) {
+                    var page = new VisitsMasterPage(new Date(tmpdate), data[i]);
+                    list.push(page);
+                    i++;
+                }
+                $scope.loading = false;
+                console.log("list", list)
+                callback(list);
+            });
+        }
+    };
+
+    $scope.getKey = function (obj) {
+        return obj && obj.date.toDateString();
+    };
+
+//    $scope.$watch('date.toDateString()', function () {
+//        $scope.prevdate = DateHelper.getPrevPeriod($scope.date, DateHelper.steps.DAY).begin;
+//        $scope.nextdate = DateHelper.getNextPeriod($scope.date, DateHelper.steps.DAY).end;
+//        $scope.pages = [];
+//        var period = {
+//            begin: $scope.prevdate,
+//            end: $scope.nextdate
+//        };
+//        MastersLoader.getAllMastersPerDay(period, function (masters) {
+//            $scope.page = masters[0];
+//            $scope.visits = $scope.getVisits($scope.page);
+//        });
+//    });
 
     /**
      *
