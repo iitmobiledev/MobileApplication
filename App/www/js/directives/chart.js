@@ -101,7 +101,6 @@ myApp.directive('chart', function () {
             scope.$watch(attrs.chartData, function (list) {
                 var chart = $('#container').highcharts();
                 if (chart) {
-                    console.log("chart-data:", list);
                     chart.series[0].update({
                         data: list
                     }, true);

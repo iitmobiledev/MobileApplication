@@ -112,7 +112,7 @@ myApp.factory('Visit', function (Model, Client, Service) {
                 //                console.log(cursor.value);
                 result.push(cursor.value);
                 cursor.
-                continue ();
+                continue();
             }
         };
 
@@ -208,13 +208,16 @@ myApp.factory('MastersLoader', function (DateHelper, Loader, $filter) {
             index: "date"
         }, function (visits) {
             var visitsByDate = {};
-            for (var tmpDate = new Date(period.begin); tmpDate < new Date(period.end); tmpDate.setDate(tmpDate.getDate() + 1)) {
+            for (var tmpDate = new Date(period.begin); tmpDate <= new Date(period.end); tmpDate.setDate(tmpDate.getDate() + 1)) {
                 var key = tmpDate.toDateString();
                 visitsByDate[key] = [];
             }
+            console.log(" visitsByDate", visitsByDate);
             angular.forEach(visits, function (visit) {
+                console.log(visit);
                 visitsByDate[visit.date.toDateString()].push(visit);
             });
+
             var list = [];
             for (var date = period.begin; date < period.end || date.toDateString() == period.end.toDateString(); date.setDate(date.getDate() + 1)) {
                 if (visitsByDate[date.toDateString()]) {
