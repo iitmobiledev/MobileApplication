@@ -14,10 +14,7 @@
  * @requires myApp.service:OperationalStatisticLoader
  * @requires myApp.service:DateHelper
  */
-myApp.controller('OperationalStatisticController', function ($scope, $location, DateHelper, Loader) {
-    //    var getStatistic = OperationalStatisticLoader.getData;
-    //    var minDate = OperationalStatisticLoader.getMinDate();
-    //    var maxDate = OperationalStatisticLoader.getMaxDate();
+myApp.controller('OperationalStatisticController', function ($scope, $location, DateHelper, Loader, $rootScope) {
 
     var today = new Date();
     $scope.date = new Date(today.getFullYear(), today.getMonth(), today.getDate());
@@ -117,13 +114,18 @@ myApp.controller('OperationalStatisticController', function ($scope, $location, 
     $scope.futureData = function (currentDate) {
         Loader.hasFutureData("OperationalStatistics", currentDate);
     }
-
-    document.addEventListener('received', function () {
+    
+    $rootScope.$on('received', function(){
         //updatePage
+//        console.log('received on');
+    });
 
-        //        console.log("past ", Loader.hasPastData("OperationalStatistics", new Date()));
-        //        console.log("future ", Loader.hasFutureData("OperationalStatistics", "2014-10-04 09:00:00"));
-    }, false);
+//    document.addEventListener('received', function () {
+//        //updatePage
+//
+//        //        console.log("past ", Loader.hasPastData("OperationalStatistics", new Date()));
+//        //        console.log("future ", Loader.hasFutureData("OperationalStatistics", "2014-10-04 09:00:00"));
+//    }, false);
 
     $scope.$watch('step', function (newValue, oldValue) {
         var period = DateHelper.getPeriod($scope.date, newValue);

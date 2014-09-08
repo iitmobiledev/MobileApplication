@@ -1,5 +1,5 @@
-myApp.service("Synchronizer", ["Storage", "Server", "ModelConverter",
-    function (Storage, Server, ModelConverter) {
+myApp.service("Synchronizer", ["Storage", "Server", "ModelConverter", "Loader",
+    function (Storage, Server, ModelConverter, Loader) {
 
         function save(data, className, offset, callback) {
             if (offset >= data.length) {
@@ -35,10 +35,8 @@ myApp.service("Synchronizer", ["Storage", "Server", "ModelConverter",
                                         type: className,
                                         field: "date"
                                     }], function (serverStat) {
-                                        //                                   console.log("serverStat in synch ", serverStat);
                                         Storage.saveFieldStat(serverStat, function () {
                                             save(data, className, 0, callback);
-                                            //                                            callback();
                                         });
                                     });
                                 });
@@ -48,7 +46,6 @@ myApp.service("Synchronizer", ["Storage", "Server", "ModelConverter",
                                 });
                             }
                         });
-
                     } else {
                         save(data, className, 0, function () {
                             var nextOffset = offset + count;
@@ -76,19 +73,21 @@ myApp.service("Synchronizer", ["Storage", "Server", "ModelConverter",
 
 var $inj = angular.injector(['myApp']);
 var synchronizer = $inj.get('Synchronizer');
-var storage = $inj.get('Storage');
+var loader = $inj.get('Loader');
 
-//(function beginSynch() {
-//    synchronizer.synchCheck.call(synchronizer, "OperationalStatistics", function () {
-//        //        console.log("synch end OperationalStatistics0");
-//        synchronizer.synchCheck.call(synchronizer, "Visit", function () {
-//            //            console.log("synch end Visit0");
-//            synchronizer.synchCheck.call(synchronizer, "Expenditures", function () {
-//                console.log("synch end");
+(function beginSynch() {
+    synchronizer.synchCheck.call(synchronizer, "OperationalStatistics", function () {
+        //        console.log("synch end OperationalStatistics0");
+        synchronizer.synchCheck.call(synchronizer, "Visit", function () {
+            //            console.log("synch end Visit0");
+            synchronizer.synchCheck.call(synchronizer, "Expenditures", function () {
+                console.log("synch end");
+                loader.scope.$emit('synchEnd', '');
+                
 //                var synchEndEvent = new CustomEvent('synchEnd', {});
 //                document.dispatchEvent(synchEndEvent);
-//                setTimeout(beginSynch, 70000);
-//            });
-//        });
-//    });
-//})();
+                setTimeout(beginSynch, 70000);
+            });
+        });
+    });
+})();

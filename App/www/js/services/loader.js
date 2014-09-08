@@ -6,8 +6,8 @@
  * этих данных.
  * @name myApp.service:Loader
  */
-myApp.service("Loader", ["ModelConverter", "Server", "Storage",
-    function (ModelConverter, Server, Storage) {
+myApp.service("Loader", ["ModelConverter", "Server", "Storage", "$rootScope",
+    function (ModelConverter, Server, Storage, $rootScope) {
 
         var localStat = null;
         var serverStat = null;
@@ -30,17 +30,19 @@ myApp.service("Loader", ["ModelConverter", "Server", "Storage",
                 Server.getFieldStat(query, function (stat) {
                     serverStat = stat;
 
-                    console.log("received");
+                    $rootScope.$emit('received', '');
 
-                    var event = new CustomEvent('received', {});
-                    document.dispatchEvent(event);
+                    //                    var event = new CustomEvent('received', {});
+                    //                    document.dispatchEvent(event);
                 });
             });
         };
 
         getFieldStat();
 
-        document.addEventListener('synchEnd', getFieldStat, false);
+        $rootScope.$on('synchEnd', getFieldStat);
+
+        //        document.addEventListener('synchEnd', getFieldStat, false);
 
         return {
             hasFutureData: function (className, date) {
@@ -93,78 +95,69 @@ myApp.service("Loader", ["ModelConverter", "Server", "Storage",
              * объекта по первичному ключу.
              */
             get: function (className, primaryKey, callback) {
-
-                Server.get(className, primaryKey, function (data) {
-                    callback(ModelConverter.getObject(className, data))
-                });
-
-                //                if (localStat && serverStat) {
-                //                    var typeStatLocal = localStat.filter(function (stat) {
-                //                        return stat.type == className;
-                //                    })[0];
-                //                    var typeStatServer = serverStat.filter(function (stat) {
-                //                        return stat.type == className;
-                //                    })[0];
-                //                    if (typeStatServer.min == typeStatLocal.min && typeStatServer.max == typeStatLocal.max) {
-                //                        console.log("Storage.get");
-                //                        Storage.get(className, primaryKey, function (result) {
-                //                            if (result == null) {
-                //                                console.log("Storage empty!");
-                //                                callback(null);
-                //                            } else {
-                //                                callback(ModelConverter.getObject(className, result));
-                //                            }
-                //                        });
-                //                    } else {
-                //                        console.log("server.get ", primaryKey);
-                //                        Server.get(className, primaryKey, function (data) {
-                //                            callback(ModelConverter.getObject(className, data))
-                //                        });
-                //                    }
-                //                } else {
-                //                    setTimeout(this.get, 500, className, primaryKey, callback);
-                //                }
+                if (localStat && serverStat) {
+                    var typeStatLocal = localStat.filter(function (stat) {
+                        return stat.type == className;
+                    })[0];
+                    var typeStatServer = serverStat.filter(function (stat) {
+                        return stat.type == className;
+                    })[0];
+                    if (typeStatServer.min == typeStatLocal.min && typeStatServer.max == typeStatLocal.max) {
+                        console.log("Storage.get");
+                        Storage.get(className, primaryKey, function (result) {
+                            if (result == null) {
+                                console.log("Storage empty!");
+                                callback(null);
+                            } else {
+                                callback(ModelConverter.getObject(className, result));
+                            }
+                        });
+                    } else {
+                        console.log("server.get ", primaryKey);
+                        Server.get(className, primaryKey, function (data) {
+                            callback(ModelConverter.getObject(className, data))
+                        });
+                    }
+                } else {
+                    setTimeout(this.get, 500, className, primaryKey, callback);
+                }
             },
 
             //получение объектов за период
             search: function (className, params, callback) {
 
-                Server.searchForPeriod(className, params, function (result) {
-                    console.log("server.search ", result);
-                    var objs = ModelConverter.getObjects(className, result);
-                    callback(objs);
-                });
+                if (localStat && serverStat) {
+                    var typeStatLocal = localStat.filter(function (stat) {
+                        return stat.type == className;
+                    })[0];
+                    var typeStatServer = serverStat.filter(function (stat) {
+                        return stat.type == className;
+                    })[0];
+                    if (typeStatServer.min == typeStatLocal.min && typeStatServer.max == typeStatLocal.max) {
+                        Storage.search(className, params, function (data) {
+                            console.log("Storage.search ", data);
+                            if (data == null) {
+                                console.log("Storage empty!");
+                                callback([]);
+                            } else {
+                                var objs = ModelConverter.getObjects(className, data);
+                                callback(objs);
+                            }
+                        });
+                    } else {
+                        Server.searchForPeriod(className, params, function (result) {
+                            console.log("server.search ", result);
+                            var objs = ModelConverter.getObjects(className, result);
+                            callback(objs);
+                        });
+                    }
 
-                //                if (localStat && serverStat) {
-                //                    var typeStatLocal = localStat.filter(function (stat) {
-                //                        return stat.type == className;
-                //                    })[0];
-                //                    var typeStatServer = serverStat.filter(function (stat) {
-                //                        return stat.type == className;
-                //                    })[0];
-                //                    if (typeStatServer.min == typeStatLocal.min && typeStatServer.max == typeStatLocal.max) {
-                //                        Storage.search(className, params, function (data) {
-                //                            console.log("Storage.search ", data);
-                //                            if (data == null) {
-                //                                console.log("Storage empty!");
-                //                                callback([]);
-                //                            } else {
-                //                                var objs = ModelConverter.getObjects(className, data);
-                //                                callback(objs);
-                //                            }
-                //                        });
-                //                    } else {
-                //                        Server.searchForPeriod(className, params, function (result) {
-                //                            console.log("server.search ", result);
-                //                            var objs = ModelConverter.getObjects(className, result);
-                //                            callback(objs);
-                //                        });
-                //                    }
-                //
-                //                } else {
-                //                    setTimeout(this.search, 500, className, params, callback);
-                //                }
-            }
+                } else {
+                    setTimeout(this.search, 500, className, params, callback);
+                }
+            },
+
+            scope: $rootScope
         }
 }]);
 

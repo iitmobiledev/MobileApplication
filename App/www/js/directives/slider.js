@@ -191,13 +191,13 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
                             clonedElement.attr("contentkey", keyFunc(contentData[i]))
                             $('.my-slider').slickAdd(clonedElement);
                         });
-//                        newscope.$apply();
+                        newscope.$apply();
                     }
 
                     $('.my-slider').slickSetOption('speed', 0).slickGoTo(curIndex).slickSetOption('speed', 300);
 
                     scope.loading = false;
-//                    scope.$apply();
+                    scope.$apply();
                     ready = true;
                 }
             }
