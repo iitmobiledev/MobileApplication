@@ -98,21 +98,15 @@ myApp.directive('chart', function () {
             /*
              *watch, смотрящий за изменением данных для графика
              */
-            scope.$watch(attrs.chartData, function (data) {
-                updateChart(data);
-            }, true);
-
-
-            function updateChart(list) {
+            scope.$watch(attrs.chartData, function (list) {
                 var chart = $('#container').highcharts();
                 if (chart) {
+                    console.log("chart-data:", list);
                     chart.series[0].update({
                         data: list
                     }, true);
-                } else {
-                    setTimeout(updateChart, 100, list);
                 }
-            }
+            }, true);
         }
     }
 });

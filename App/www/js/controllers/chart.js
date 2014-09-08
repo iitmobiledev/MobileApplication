@@ -15,18 +15,34 @@
  * @requires myApp.service:ChartDataLoader
  */
 
-myApp.controller('GraphicController', function ($scope, $routeParams, ChartDataLoader) {
+myApp.controller('GraphicController', function ($scope, $routeParams, Loader, DateHelper) {
     $scope.type = $routeParams.type;
-    $scope.period = 12;
-    //    $scope.chartStep = 1;
-    ChartDataLoader.getGoodData($scope.type, $scope.period, function (data) {
-        $scope.loading = false;
-        $scope.data = data;
-//        $scope.$apply();
-    });
     $scope.step;
     $scope.title = '';
     $scope.yFormat = '';
+
+    var goodData = [];
+    var today = new Date();
+    $scope.loading = true;
+    Loader.search("OperationalStatistics", {
+            dateFrom: new Date(today.getFullYear() - 1, today.getMonth(), today.getDate()),
+            dateTill: today,
+            step: DateHelper.steps.DAY,
+        },
+        function (data) {
+            for (var i = 0; i < data.length; i++) {
+                var item = [];
+                item.push(Date.UTC(data[i].date.getFullYear(), data[i].date.getMonth(), data[i].date.getDate()));
+                item.push(data[i][$scope.type.toString()]);
+                goodData.push(item);
+            }
+            goodData = goodData.sort();
+            $scope.loading = false;
+            $scope.data = goodData;
+            console.log("Data for chart in chart contorller:", goodData);
+            $scope.$apply();
+        });
+
     switch ($scope.type) {
     case 'proceeds':
         $scope.yFormat = ' руб.';
@@ -46,28 +62,4 @@ myApp.controller('GraphicController', function ($scope, $routeParams, ChartDataL
     default:
         break;
     }
-
-
-    /**
-     *
-     * @ngdoc method
-     * @name myApp.controller:GraphicController#changePeriod
-     * @methodOf myApp.controller:GraphicController
-     * @param {Number} p Период, на который нужно изменить в месяцах
-     * @description Метод изменяющий период для отображения
-     */
-    $scope.changePeriod = function (p) {
-        $scope.period = p;
-    };
-    /*
-     *watch, следящий за изменением период, в случае изменения подгружает новые данные
-     */
-    $scope.$watch('period', function (newValue) {
-        $scope.loading = true;
-        ChartDataLoader.getGoodData($scope.type, $scope.period, function (data) {
-            $scope.loading = false;
-            $scope.data = data;
-//            $scope.$apply();
-        });
-    });
 });

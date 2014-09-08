@@ -16,6 +16,7 @@
             <status-statistics visits="visits"></status-statistics>
             <ul class="list inset" ng-repeat="masterVis in page.list" id="visitsPerMasters">
                 <li class="divider" ng-click="toMaster(masterVis.master.id)">
+                <img style="border-radius: 50%;border: 1px solid rgb(149,24,185);max-height: 40px;" src="images/profit.png">
                     {{$parent.getMasterInfo(masterVis.master)}}
                 </li>
                 <div ng-repeat="visit in masterVis.visList">
