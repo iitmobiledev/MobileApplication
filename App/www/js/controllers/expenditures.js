@@ -59,12 +59,11 @@ myApp.controller('ExpendituresController', function ($scope, $filter, Loader, Da
     function updatePages() {
         $scope.prevdate = DateHelper.getPrevPeriod($scope.date, DateHelper.steps.DAY).begin;
         $scope.nextdate = DateHelper.getNextPeriod($scope.date, DateHelper.steps.DAY).end;
-        Loader.search("Expenditures", {
+        Loader.search("Expenditure", {
             dateFrom: $scope.prevdate,
             dateTill: $scope.nextdate,
-            step: DateHelper.steps.DAY,
-            index: "date"
         }, function (data) {
+
             $scope.pages = data;
 //            $scope.$apply();
         });

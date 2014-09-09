@@ -1,3 +1,45 @@
+var APPID = "test";
+var SECRET_PHRASE = 'WatchThatStupidLeech';
+var VERSION = "1.0";
+var randomString = function(len, chars){
+    chars = chars || "abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    len = len || 20;
+    var res = [];
+    for(var i = 0; i < len; i++){
+        res.push(chars.charAt(Math.random()*chars.length));
+    }
+    return res.join("");
+}
+var flatObject = function(params){
+    var items = [];
+    for(var i in params) {
+        if (!params.hasOwnProperty(i)){
+            continue;
+        }
+        items.push([i, params[i]]);
+    }
+    items.sort(function(a,b){
+        if (a[0] < b[0]){ return -1; }
+        if (a[0] > b[0]){ return 1; }
+        return 0;
+    });
+    for(var i =0; i < items.length; i++){
+        items[i] = items[i].join("");
+    }
+    return items.join("").toLowerCase();
+}
+var sign = function (method, params){
+    params.appID = params.appID || APPID;
+    params.v = VERSION;
+    params.rand = randomString();
+    var flat = flatObject(params);
+    params.sign = hex_md5(
+        hex_md5(flat + params.appID) + method + SECRET_PHRASE
+    );
+    //console.log("SIGNATURE:", params.sign,"= md5(md5(",flat, ".", params.appID,").",method, ".",SECRET_PHRASE,")");
+}
+
+
 /**
  * @ngdoc service
  * @description Сервис для аутентификации пользователя.
@@ -9,20 +51,18 @@
  */
 myApp.factory('UserAuthentification', function ($http) {
     return function (login, password, callback) {
+        var params = {
+            email: login || "",
+            password: password || ""
+        };
+        sign("login",params);
         $http({
             method: 'POST',
             url: 'http://auth.test.arnica.pro/rest/login',
-            data: {
-                v: '1.0',
-                appID: 'test',
-                rand: '11',
-                sign: hex_md5(hex_md5('appidtestrand11v1.0test') + 'login' + 'WatchThatStupidLeech'),
-                email: login,
-                password: password
-            },
+            data: params,
             responseType: 'json'
         }).
-        success(function (data, status, headers, config) {
+            success(function (data, status, headers, config) {
             callback(data.token);
         });
     };
@@ -31,26 +71,24 @@ myApp.factory('UserAuthentification', function ($http) {
 
 /**
  * @ngdoc service
- * @description Сервис для получения текущего аутентифицированного 
+ * @description Сервис для получения текущего аутентифицированного
  * пользователя.
  * @name myApp.service:UserLoader
  * @returns {UserInfo} Информация о пользователе.
  */
 myApp.factory('UserLoader', function ($http) {
     return function (token, callback) {
+        var params = {
+            token: token || ""
+        };
+        sign("getUserInfo", params);
         $http({
             method: 'POST',
             url: 'http://auth.test.arnica.pro/rest/getUserInfo',
-            data: {
-                v: '1.0',
-                appID: 'test',
-                rand: '12',
-                sign: hex_md5(hex_md5('appidtestrand12v1.0test') + 'getUserInfo' + 'WatchThatStupidLeech'),
-                token: token
-            },
+            data: params,
             responseType: 'json'
         }).
-        success(function (data, status, headers, config) {
+            success(function (data, status, headers, config) {
             callback(data);
         });
     };
@@ -65,19 +103,17 @@ myApp.factory('UserLoader', function ($http) {
  */
 myApp.factory('UserLogout', function ($http) {
     return function (token, callback) {
+        params = {
+            token: token ||  ""
+        };
+        sign("logout", params);
         $http({
             method: 'POST',
             url: 'http://auth.test.arnica.pro/rest/logout',
-            data: {
-                v: '1.0',
-                appID: 'test',
-                rand: '13',
-                sign: hex_md5(hex_md5('appidtestrand12v1.0test') + 'logout' + 'WatchThatStupidLeech'),
-                token: token
-            },
+            data: params,
             responseType: 'json'
         }).
-        success(function () {
+            success(function () {
             callback();
         });
     };

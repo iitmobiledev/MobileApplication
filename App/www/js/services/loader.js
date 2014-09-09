@@ -19,7 +19,7 @@ myApp.service("Loader", ["ModelConverter", "Server", "$rootScope",
             type: "Visit",
             field: "date"
             }, {
-            type: "Expenditures",
+            type: "Expenditure",
             field: "date"
             }];
 

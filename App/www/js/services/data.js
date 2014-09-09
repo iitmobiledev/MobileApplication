@@ -1,15 +1,62 @@
  var classesLastModifiedOnServer = {
      "OperationalStatistics": "2014-09-04 09:11:00",
      "Visit": "2014-09-01 09:00:00",
-     "Expenditures": "2014-09-01 09:00:00"
+     "Expenditure": "2014-09-01 09:00:00"
  };
 
  function ClassesLastModified() {
      this.primary = "primary";
      this.OperationalStatistics = "2011-08-25 21:00:00";
      this.Visit = "2011-08-25 21:00:00";
-     this.Expenditures = "2011-08-25 21:00:00";
+     this.Expenditure = "2011-08-25 21:00:00";
  }
+
+ myApp.service("RealServer", ["$http", function($http){
+   var DataSvc = function (t) {
+          this.token = t;
+   }
+
+   DataSvc.prototype = {
+       baseUrl: "http://auth.test.arnica.pro/api/data/",
+       get: function(className, primaryKey, callback) {
+           this.restPost("get", className, primaryKey, callback);
+       },
+       search: function(className, searchParams, callback) {
+           this.restPost("search", className, searchParams, callback);
+       },
+       lastModified: function(classNames, callback) {
+           this.restPost("lastModified", "", classNames, callback);
+       },
+       fieldStat: function(request, callback) {
+           this.restPost("fieldStat", "", request, callback);
+       },
+       restPost: function(method, className, param, callback) {
+           var url = this.baseUrl + method;
+           var params = [];
+           if (className) {
+               params.push("c=" + className);
+           }
+           if (this.token){
+               params.push("token=" + this.token);
+           }
+           url += "?" + params.join("&");
+           $http({
+               url: url,
+               method: "POST",
+               data: param,
+               responseType: "json",
+           })
+           .success( callback )
+           .error(function(data, status, headers, config) {
+               console.log(
+                   "FAILURE", url, $.extend(true, {}, param),
+                   status, headers, config
+               );
+           });
+       };
+   };
+   return DataSvc;
+ }]);
 
  /**
   * @ngdoc service
@@ -139,7 +186,7 @@
                  }
                  return visits;
              },
-             "Expenditures": function () {
+             "Expenditure": function () {
                  var allObjs = [];
                  var dayCount = 100;
                  var day = new Date(2014, 9, 30);
@@ -181,7 +228,7 @@
                  data.visible = true;
                  return data;
              },
-             "Expenditures": function (params) {
+             "Expenditure": function (params) {
                  var expenditures = {};
                  var expItemsList = [];
                  expItemsList.push({

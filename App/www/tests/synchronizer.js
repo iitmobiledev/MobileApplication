@@ -38,7 +38,7 @@ describe('tests for Synchronizer:\n', function () {
                 primary: "primary",
                 OperationalStatistics: "2000-08-25 21:00:00",
                 Visit: "2000-08-25 21:00:00",
-                Expenditures: "2000-08-25 21:00:00"
+                Expenditure: "2000-08-25 21:00:00"
             }, function () {});
 
             var flag = false;
@@ -84,7 +84,7 @@ describe('tests for Synchronizer:\n', function () {
                 primary: "primary",
                 OperationalStatistics: "2014-08-25 22:44:00",
                 Visit: "2014-08-25 22:44:00",
-                Expenditures: "2014-08-25 22:44:00"
+                Expenditure: "2014-08-25 22:44:00"
             }, function () {});
 
             var flag = false;
@@ -105,7 +105,7 @@ describe('tests for Synchronizer:\n', function () {
         it("должен заново начать синхронизацию", function () {
 
             var className = "OperationalStatistics";
-            var query = ["OperationalStatistics", "Visit", "Expenditures"];
+            var query = ["OperationalStatistics", "Visit", "Expenditure"];
 
             var lastServerModify;
             server.lastModified(query, function (date) {
@@ -119,7 +119,7 @@ describe('tests for Synchronizer:\n', function () {
                 classesLastModifiedOnServer = {
                     "OperationalStatistics": "2014-08-25 23:44:00",
                     "Visit": "2014-08-25 23:44:00",
-                    "Expenditures": "2014-08-25 23:44:00"
+                    "Expenditure": "2014-08-25 23:44:00"
                 };
                 server.lastModified(query, function (date) {
                     if (date[className] == lastServerModify) {
@@ -139,7 +139,7 @@ describe('tests for Synchronizer:\n', function () {
                 primary: "primary",
                 OperationalStatistics: "2000-08-25 21:00:00",
                 Visit: "2000-08-25 21:00:00",
-                Expenditures: "2000-08-25 21:00:00"
+                Expenditure: "2000-08-25 21:00:00"
             }, function () {});
 
             var flag = false;

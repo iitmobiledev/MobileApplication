@@ -10,8 +10,9 @@
  */
 myApp.controller('AuthentificationController', function ($scope, $location, UserAuthentification) {
     $scope.correct = true;
-    if (sessvars.token)
+    if (sessvars.token){
         $location.path('index');
+    }
 
     /**
      *
@@ -27,10 +28,11 @@ myApp.controller('AuthentificationController', function ($scope, $location, User
         var password = document.getElementById('password').value;
         UserAuthentification(login, password, function (token) {
             sessvars.token = token;
-            if (sessvars.token)
+            if (sessvars.token){
                 $location.path('index');
-            else
+            } else {
                 $scope.correct = false;
+            }
         });
     };
 });

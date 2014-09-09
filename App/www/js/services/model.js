@@ -274,7 +274,6 @@ myApp.factory("Model", function () {
         clz.prototype = {
             __class__: className,
             __primary__: options.primary,
-            indexes: options.indexes,
             /**
              *  @ngdoc method
              *  @name getKey
@@ -305,7 +304,7 @@ myApp.factory("Model", function () {
         clz.__class__ = className;
 
         clz.getIndexes = function () {
-            return this.prototype.indexes;
+            return options.indexes;
         };
 
 
