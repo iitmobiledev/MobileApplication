@@ -312,22 +312,11 @@ myApp.factory("Model", function () {
             var objectStore = db.createObjectStore(clz.__class__, {
                 keyPath: "__primary__"
             });
-
-            var indexes = [];
             angular.forEach(clz.getIndexes(), function (value, name) {
-                objectStore.createIndex(name, name, {
-                    unique: value
+                objectStore.createIndex(name, value.keyPath, {
+                    unique: value.unique
                 });
-                this.push(name.toString());
-            }, indexes);
-
-            var compositeIndex = indexes.join(":");
-            if (compositeIndex != indexes) {
-                objectStore.createIndex(compositeIndex, indexes, {
-                    unique: false
-                });
-            }
-
+            });
         }
 
         /**

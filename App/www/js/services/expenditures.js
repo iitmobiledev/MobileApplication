@@ -12,11 +12,16 @@
 
 myApp.factory('Expenditure', function (Model) {
     var Expenditure = Model("Expenditure", {
-        deserialize: function(self, data){
+        deserialize: function (self, data) {
             self.date = new Date(data.date);
         },
         primary: ['id', 'date'],
-        indexes: { date: false }
+        indexes: {
+            date: {
+                keyPath: ['date'],
+                unique: false
+            },
+        }
     });
 
     Expenditure.searchIndexedDb = function (trans, params, callback) {
@@ -34,7 +39,7 @@ myApp.factory('Expenditure', function (Model) {
             var cursor = event.target.result;
             if (cursor) {
                 result.push(cursor.value);
-                cursor.continue ();
+                cursor.continue();
             }
         };
 
