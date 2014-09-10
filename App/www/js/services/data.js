@@ -263,8 +263,8 @@
                          var salary = serviceCost - Math.round(getRandom(0, serviceCost / 2));
                          var service = {
                              description: "Маникюр",
-                             startTime: new Date(day.getFullYear(), day.getMonth(), day.getDate(), hours, Math.round(getRandom(0, 59))),
-                             endTime: new Date(day.getFullYear(), day.getMonth(), day.getDate(), hours + 2, Math.round(getRandom(0, 59))),
+                             startTime: new Date(day.getFullYear(), day.getMonth(), day.getDate(), hours, 0),
+                             endTime: new Date(day.getFullYear(), day.getMonth(), day.getDate(), hours + 1, 0),
                              master: {
                                  id: 1,
                                  firstName: "Оксана",
@@ -275,8 +275,26 @@
                              employeeSalary: salary
                          };
                          sList.push(service);
+                         
+                         serviceCost = Math.round(getRandom(500, 10000));
+                         salary = serviceCost - Math.round(getRandom(0, serviceCost / 2));
+                         service = {
+                             description: "Укладка",
+                             startTime: new Date(day.getFullYear(), day.getMonth(), day.getDate(), hours + 1, 0),
+                             endTime: new Date(day.getFullYear(), day.getMonth(), day.getDate(), hours + 2, 0),
+                             master: {
+                                 id: 2,
+                                 firstName: "Анна",
+                                 middleName: "Георгиевна",
+                                 lastName: "Алевская"
+                             },
+                             cost: serviceCost,
+                             employeeSalary: salary
+                         };
+                         sList.push(service);
+                         
                          var visit = {};
-                         visit.id = params.id || 1;
+                         visit.id = params.id || Math.round(getRandom(1, 1000));
                          visit.client = {
                              firstName: "Марина",
                              middleName: "Андреевна",
@@ -352,7 +370,7 @@
                      };
                      sList.push(service);
                      var visit = {};
-                     visit.id = params.id || 1;
+                     visit.id = params.id || Math.round(getRandom(0, 1000));
                      visit.client = {
                          firstName: "Марина",
                          middleName: "Андреевна",

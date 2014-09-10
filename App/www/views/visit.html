@@ -4,70 +4,86 @@
 
 <div class="upage-content" id="mainsub">
     <div>
-        <div style="border: 1px #E1E1E1; border-style: solid none; margin:5% 0;padding:2% 0 4%; ">
-            <div style="width:90%;text-align:left;font-size:15pt;margin: 2% 10%;">
+        
+        <load-bar param-name="loading"></load-bar>
+    <slider content-id="visit" get-data='getData' key-expression='getKey'></slider>
+    
+    <script type="text/ng-template" id="visit">
+        <div id="visitContent">
+            <div id="swipingPanel" style="height:30px">
+                <table id="dateToggle" style="height: 25px">
+                    <tr>
+                        <td class="dCell" style="width: 80%">
+                            <span style="font-weight:bold;font-size:11pt" id="Date">Визит №{{page.id}}</span>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+
+           <div style="border: 1px #E1E1E1; border-style: solid none; margin:5% 0;padding:2% 0 4%;">
+                <div style="width:90%;text-align:left;font-size:15pt;margin: 2% 10%;">
                 <span style="text-align:right;width:30%;font-size:15pt;white-space:pre;color:#969696">Сумма услуг:</span>
-                <span style="text-align:left;font-size:15pt; font-weight:bold">{{sum| money:0}} <span class="price">ю</span></span>
-            </div>
-            <div style="width:90%;text-align:left;font-size:15pt;margin: 0 10%;">
+                <span style="text-align:left;font-size:15pt; font-weight:bold">{{page.sum| money:0}} <span class="price">ю</span></span>
+                </div>
+                <div style="width:90%;text-align:left;font-size:15pt;margin: 0 10%;">
                 <span style="text-align:right;width:30%;font-size:15pt;white-space:pre;color:#969696">Оплачено:    </span>
-                <span style="text-align:left;font-size:15pt; font-weight:bold">{{paid| money:0}} <span class="price">ю</span></span>
+                <span style="text-align:left;font-size:15pt; font-weight:bold">{{page.paid| money:0}} <span class="price">ю</span></span>
+                </div>
+            </div>
+
+            <div id="clientInfo">
+                <div class="clientName">{{page.client.lastName + " " + page.client.firstName + " " + page.client.middleName}}</div>
+                <div style="width:80%;margin:5px 10%;">
+                    <visit-status status='page.status'></visit-status>
+                </div>
+                <div class="phone">
+                    <img src="images/phone.png" style="position: relative;left: 3%;">
+                    <a style="text-decoration: none; margin:0 4%;" href="tel:{{page.client.phoneNumber}}">{{page.client.phoneNumber}}</a>
+                </div>
+            </div>
+
+
+            <div style="width:90%;text-align:left;font-size:12pt;margin: 0 10%;">
+                <span style="text-align:right;width:30%;white-space:pre;color:#969696">Скидка:     </span>
+                <span style="text-align:left;font-weight:bold">{{page.client.discount + "%"}}</span>
+            </div>
+            <div style="width:90%;text-align:left;font-size:12pt;margin: 3% 10%;">
+                <span style="text-align:right;width:30%;white-space:pre;color:#969696">Баланс:     </span>
+                <span style="text-align:left;font-weight:bold;color:{{balColor}};">{{page.client.balance| money:0}} <span class="price">ю</span></span>
+            </div>
+            <div style="width:90%;text-align:left;font-size:12pt;margin: 3% 10%;">
+                <span style="text-align:right;width:30%;white-space:pre;color:#969696">Оформил: </span>
+                <span style="text-align:left;font-weight:bold">Петр</span>
+            </div>
+
+            <div id="services">
+                <ul class="list inset">
+                    <li class="divider">
+                        <span style="font-size:15pt;color:gray;margin: 0% 10%;">Услуги</span>
+                    </li>
+                    <li ng-repeat="item in page.servList">
+                        <div>
+                            <span>{{item.description}}</span>
+                            <span style="font-weight:bold; font-size: 13pt; float: right; text-align: right; ">{{item.cost| money:0}} <span class="price">ю</span></span>
+                        </div>
+                        {{item.time}}
+
+                        <div style="color:#969696">{{item.master}}
+                        </div>
+                    </li>
+                    <li class="divider">
+                        <span style="font-size:15pt;color:gray;margin: 0% 10%;">Комментарий</span>
+                    </li>
+                    <li style="position:relative">
+                        <div style="padding:10px 0;margin: 0 3%;width: 94%;">
+                            <img style="position:absolute; top:0;left: 15%;" src="images/curve.png"></img>
+                            <div class="comment">{{page.comment}}</div>
+                        </div>
+                    </li>
+                </ul>
             </div>
         </div>
-
-        <div id="clientInfo">
-            <div class="clientName">{{clientName}}</div>
-            <div style="width:80%;margin:5px 10%;">
-                <visit-status status='status'></visit-status>
-            </div>
-            <div class="phone">
-                <img src="images/phone.png" style="position: relative;left: 3%;">
-                <a style="text-decoration: none; margin:0 4%;" href="tel:{{clientPhoneNumber}}">{{clientPhoneNumber}}</a>
-            </div>
-        </div>
-
-
-        <div style="width:90%;text-align:left;font-size:12pt;margin: 0 10%;">
-            <span style="text-align:right;width:30%;white-space:pre;color:#969696">Скидка:     </span>
-            <span style="text-align:left;font-weight:bold">{{clientDiscount}}</span>
-        </div>
-        <div style="width:90%;text-align:left;font-size:12pt;margin: 3% 10%;">
-            <span style="text-align:right;width:30%;white-space:pre;color:#969696">Баланс:     </span>
-            <span style="text-align:left;font-weight:bold;color:{{balColor}};">{{clientBalance| money:0}} <span class="price">ю</span></span>
-        </div>
-        <div style="width:90%;text-align:left;font-size:12pt;margin: 3% 10%;">
-            <span style="text-align:right;width:30%;white-space:pre;color:#969696">Оформил: </span>
-            <span style="text-align:left;font-weight:bold">Петр</span>
-        </div>
-
-
-        <div id="services">
-            <ul class="list inset">
-                <li class="divider">
-                    <span style="font-size:15pt;color:gray;margin: 0% 10%;">Услуги</span>
-                </li>
-                <li ng-repeat="item in servList ">
-                    <div>
-                        <span>{{item.description}}</span>
-                        <span style="font-weight:bold; font-size: 13pt; float: right; text-align: right; ">{{item.cost| money:0}} <span class="price">ю</span></span>
-                    </div>
-                    {{item.time}}
-
-                    <div style="color:#969696">{{item.master}}
-                    </div>
-                </li>
-                <li class="divider">
-                    <span style="font-size:15pt;color:gray;margin: 0% 10%;">Комментарий</span>
-                </li>
-                <li style="position:relative">
-                    <div style="padding:10px 0;margin: 0 3%;width: 94%;">
-                        <img style="position:absolute; top:0;left: 15%;" src="images/curve.png"></img>
-                        <div class="comment">{{comment}}</div>
-                    </div>
-
-                </li>
-            </ul>
-        </div>
+    </script>
 
     </div>
 </div>
