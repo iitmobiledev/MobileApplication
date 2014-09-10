@@ -40,6 +40,12 @@ var sign = function (method, params){
 }
 
 
+//myApp.service("authService", ["$http",
+//    function ($http) {
+//        return {}
+//}]);
+
+
 /**
  * @ngdoc service
  * @description Сервис для аутентификации пользователя.
