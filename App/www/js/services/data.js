@@ -53,7 +53,7 @@
                    status, headers, config
                );
            });
-       };
+       }
    };
    return DataSvc;
  }]);
@@ -81,7 +81,7 @@
                      max: "2014-09-15 14:00:00"
                  }
              },
-             "Expenditures": {
+             "Expenditure": {
                  "date": {
                      min: "2013-01-01 15:00:00",
                      max: "2014-09-15 19:00:00"
