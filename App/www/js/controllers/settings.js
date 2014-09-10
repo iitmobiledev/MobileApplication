@@ -5,8 +5,8 @@
  * @requires myApp.service:UserLoader
  * @requires myApp.service:UserLogout
  */
-myApp.controller('SettingsController', function ($scope, UserLoader, UserLogout, $location) {
-    UserLoader(sessvars.token, function (userInfo) {
+myApp.controller('SettingsController', function ($scope, authService, $location) {
+    authService.getUserInfo(sessvars.token, function (userInfo) {
         if (userInfo)
             $scope.user = userInfo;
     });
@@ -21,7 +21,7 @@ myApp.controller('SettingsController', function ($scope, UserLoader, UserLogout,
      * пользователя и выполняет переход на страницу авторизации.
      */
     $scope.exit = function () {
-        UserLogout(sessvars.token, function () {
+        authService.logout(sessvars.token, function () {
             sessvars.$.clearMem();
             $location.path('authorization');
         });
