@@ -6,11 +6,12 @@
  * этих данных.
  * @name myApp.service:Loader
  */
-myApp.service("Loader", ["ModelConverter", "Server", "$rootScope",
+myApp.service("Loader", ["ModelConverter", "Server",/*!!"RealServer",*/ "$rootScope",
     function (ModelConverter, Server, $rootScope) {
 
         //        var localStat = null;
         var serverStat = null;
+    /*!!    var Server = new RealServer(token);*/
 
         var query = [{
             type: "OperationalStatistics",
