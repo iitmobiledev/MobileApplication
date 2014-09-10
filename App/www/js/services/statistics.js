@@ -56,6 +56,28 @@ myApp.factory('OperationalStatistics', function (Model, FinanceStatistics) {
         }
     });
 
+     opStat.initializeIndexedDb = function () {
+        var opstatStore = {
+            name: 'OperationalStatistics',
+            keyPath: '__primary__',
+            indexes: [
+                {
+                    name: 'step,date',
+                    keyPath: ['step', 'date']
+                    },
+                {
+                    name: 'date',
+                    keyPath: 'date',
+                    },
+                {
+                    name: 'step',
+                    keyPath: 'step',
+                    },
+                ]
+        };
+        return opstatStore;
+    };
+                
     opStat.searchIndexedDb = function (trans, params, callback) {
         var result = [];
         var store = trans.objectStore("OperationalStatistics"); //найдем хранилище для объектов данного класса

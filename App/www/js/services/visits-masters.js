@@ -95,6 +95,20 @@ myApp.factory('Visit', function (Model, Client, Service) {
         }
     });
 
+    visitConstructor.initializeIndexedDb = function () {
+        var visitStore = {
+            name: 'Visit',
+            keyPath: '__primary__',
+            indexes: [
+                {
+                    name: 'id',
+                    keyPath: 'id'
+                    },
+                ]
+        };
+        return visitStore;
+    };
+
     visitConstructor.searchIndexedDb = function (trans, params, callback) {
         var result = [];
         var dates = [];

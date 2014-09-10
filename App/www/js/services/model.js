@@ -308,27 +308,27 @@ myApp.factory("Model", function () {
         };
 
 
-        clz.initializeIndexedDb = function (db) {
-            var objectStore = db.createObjectStore(clz.__class__, {
-                keyPath: "__primary__"
-            });
-
-            var indexes = [];
-            angular.forEach(clz.getIndexes(), function (value, name) {
-                objectStore.createIndex(name, name, {
-                    unique: value
-                });
-                this.push(name.toString());
-            }, indexes);
-
-            var compositeIndex = indexes.join(":");
-            if (compositeIndex != indexes) {
-                objectStore.createIndex(compositeIndex, indexes, {
-                    unique: false
-                });
-            }
-
-        }
+//        clz.initializeIndexedDb = function (db) {
+//            var objectStore = db.createObjectStore(clz.__class__, {
+//                keyPath: "__primary__"
+//            });
+//
+//            var indexes = [];
+//            angular.forEach(clz.getIndexes(), function (value, name) {
+//                objectStore.createIndex(name, name, {
+//                    unique: value
+//                });
+//                this.push(name.toString());
+//            }, indexes);
+//
+//            var compositeIndex = indexes.join(":");
+//            if (compositeIndex != indexes) {
+//                objectStore.createIndex(compositeIndex, indexes, {
+//                    unique: false
+//                });
+//            }
+//
+//        }
 
         /**
          *  @ngdoc method

@@ -1,6 +1,5 @@
 myApp.service("Synchronizer", ["Storage", "Server", "ModelConverter", "Loader",
     function (Storage, Server, ModelConverter, Loader) {
-
         function save(data, className, offset, callback) {
             if (offset >= data.length) {
                 callback();
@@ -69,6 +68,7 @@ myApp.service("Synchronizer", ["Storage", "Server", "ModelConverter", "Loader",
                 });
             }
         };
+        console.log("start sync");
 }]);
 
 var $inj = angular.injector(['myApp']);
@@ -76,8 +76,9 @@ var synchronizer = $inj.get('Synchronizer');
 var loader = $inj.get('Loader');
 
 (function beginSynch() {
+    
     synchronizer.synchCheck.call(synchronizer, "OperationalStatistics", function () {
-        //        console.log("synch end OperationalStatistics0");
+        console.log("synch end OperationalStatistics0");
         synchronizer.synchCheck.call(synchronizer, "Visit", function () {
             //            console.log("synch end Visit0");
             synchronizer.synchCheck.call(synchronizer, "Expenditure", function () {
