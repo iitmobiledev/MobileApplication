@@ -14,7 +14,7 @@ myApp.factory('Storage', function (DateHelper) {
     var classesLastModified = {
         "OperationalStatistics": "2014-06-01 15:00:00",
         "Visit": "2014-07-01 15:15:00",
-        "Expenditures": "2014-08-01 15:30:00"
+        "Expenditure": "2014-08-01 15:30:00"
     }
 
     var classesFieldStat = {

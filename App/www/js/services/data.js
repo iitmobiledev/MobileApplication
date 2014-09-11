@@ -53,7 +53,7 @@
                    status, headers, config
                );
            });
-       };
+       }
    };
    return DataSvc;
  }]);
