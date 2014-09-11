@@ -6,8 +6,8 @@
  * этих данных.
  * @name myApp.service:Loader
  */
-myApp.service("Loader", ["ModelConverter", "Server", /*!!"RealServer",*/ "$rootScope",  "Storage",
-    function (ModelConverter, Server, $rootScope, Storage) {
+myApp.service("Loader", ["ModelConverter", "Server", /*!!"RealServer",*/ "$rootScope", "Storage", "dbSupport",
+    function (ModelConverter, Server, $rootScope, Storage, dbSupport) {
 
         var localStat = null;
         var serverStat = null;
@@ -24,19 +24,23 @@ myApp.service("Loader", ["ModelConverter", "Server", /*!!"RealServer",*/ "$rootS
             field: "date"
             }];
 
-        function getFieldStat() {
-            Storage.getFieldStat(query, function (stat) {
-                localStat = stat;
 
+        function getFieldStat() {
+            if (dbSupport.value) {
+                Storage.getFieldStat(query, function (stat) {
+                    localStat = stat;
+                    Server.getFieldStat(query, function (stat) {
+                        serverStat = stat;
+                        $rootScope.$emit('received', '');
+                    });
+                });
+            } else {
                 Server.getFieldStat(query, function (stat) {
                     serverStat = stat;
-
+                    console.log("work only with server");
                     $rootScope.$emit('received', '');
-
-                    // var event = new CustomEvent('received', {});
-                    // document.dispatchEvent(event);
                 });
-            });
+            }
         };
 
         getFieldStat();
@@ -59,6 +63,18 @@ myApp.service("Loader", ["ModelConverter", "Server", /*!!"RealServer",*/ "$rootS
                     } else {
                         return new Date(date) < new Date(typeStat.max);
                     }
+                } else if (serverStat && !localStat) {
+                    var typeStat = serverStat.filter(function (stat) {
+                        return stat.type == className;
+                    })[0];
+                    if (typeStat.min == null || typeStat.max == null) {
+                        typeStat = serverStat.filter(function (stat) {
+                            return stat.type == className;
+                        })[0];
+                        return new Date(date) < new Date(typeStat.max);
+                    } else {
+                        return new Date(date) < new Date(typeStat.max);
+                    }
                 } else {
                     return false;
                 }
@@ -67,6 +83,18 @@ myApp.service("Loader", ["ModelConverter", "Server", /*!!"RealServer",*/ "$rootS
             hasPastData: function (className, date) {
                 if (serverStat && localStat) {
                     var typeStat = localStat.filter(function (stat) {
+                        return stat.type == className;
+                    })[0];
+                    if (typeStat.min == null || typeStat.max == null) {
+                        typeStat = serverStat.filter(function (stat) {
+                            return stat.type == className;
+                        })[0];
+                        return new Date(date) > new Date(typeStat.min);
+                    } else {
+                        return new Date(date) > new Date(typeStat.min);
+                    }
+                } else if (serverStat && !localStat) {
+                    var typeStat = serverStat.filter(function (stat) {
                         return stat.type == className;
                     })[0];
                     if (typeStat.min == null || typeStat.max == null) {
@@ -119,6 +147,10 @@ myApp.service("Loader", ["ModelConverter", "Server", /*!!"RealServer",*/ "$rootS
                             callback(ModelConverter.getObject(className, data))
                         });
                     }
+                } else if (!localStat && serverStat) {
+                    Server.get(className, primaryKey, function (data) {
+                        callback(ModelConverter.getObject(className, data))
+                    });
                 } else {
                     setTimeout(this.get, 500, className, primaryKey, callback);
                 }
@@ -153,6 +185,12 @@ myApp.service("Loader", ["ModelConverter", "Server", /*!!"RealServer",*/ "$rootS
                         });
                     }
 
+                } else if (!localStat && serverStat) {
+                    Server.searchForPeriod(className, params, function (result) {
+                        console.log("server.search ", result);
+                        var objs = ModelConverter.getObjects(className, result);
+                        callback(objs);
+                    });
                 } else {
                     setTimeout(this.search, 500, className, params, callback);
                 }

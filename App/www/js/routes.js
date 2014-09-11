@@ -1,8 +1,19 @@
 var myApp = angular.module('myApp', ['ngRoute', 'ngAnimate']);
+var flag = true;
 
-myApp.run(function ($templateCache) {
+myApp.value('dbSupport', {
+    value: false,
+});
+
+
+myApp.run(function ($templateCache, Storage, dbSupport) {
+    //    if (flag) {
     $templateCache.put('statistic-content');
     $templateCache.put('visits');
+    dbSupport.value = Storage.isSupported();
+    //        flag = false;
+    //    }
+    console.log("Storage support:", dbSupport.value);
 });
 
 myApp.config(['$routeProvider',
@@ -52,16 +63,16 @@ myApp.config(['$routeProvider',
 (function () {
     "use strict";
 
-//    console.log = function (msg) {
-//        $('#console').append($("<p>", {
-//            text: msg
-//        }));
-//    };
-//    console.error = function (msg) {
-//        $('#console').append($("<p>", {
-//            text: msg
-//        }));
-//    };
+    //    console.log = function (msg) {
+    //        $('#console').append($("<p>", {
+    //            text: msg
+    //        }));
+    //    };
+    //    console.error = function (msg) {
+    //        $('#console').append($("<p>", {
+    //            text: msg
+    //        }));
+    //    };
 
     //    }
     //$.ui.useInternalRouting = false;

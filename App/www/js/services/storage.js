@@ -45,17 +45,17 @@ myApp.service("Storage", [
 
         var classesFieldStat = new ClassesFieldStat();
 
-        open();
 
-        var lastModified = function (query, callbacK) {
+
+        var lastModified = function (query, callback) {
             get("classesLastModified", "primary", function (data) {
-                if (data == null || typeof (callbacK) == 'undefined') {
+                if (data == null || typeof (callback) == 'undefined') {
                     setTimeout(lastModified(query), 500);
                 } else {
                     var result = new ClassesLastModified();
                     for (var i in query)
                         result[query[i]] = data[query[i]];
-                    callbacK(result);
+                    callback(result);
                 }
             });
         };
@@ -79,7 +79,7 @@ myApp.service("Storage", [
                     setTimeout(getFieldStat(query, callback), 500);
                 } else {
                     var result = [];
-                    for (var i in query) {data
+                    for (var i in query) {
                         var resType = data[query[i].type];
                         var resField = resType[query[i].field];
                         result.push({
@@ -95,6 +95,7 @@ myApp.service("Storage", [
         };
 
 
+
         /**
          *
          * @ngdoc method
@@ -102,8 +103,22 @@ myApp.service("Storage", [
          * @methodOf myApp.service:Storage
          * @description Проверяет поддержку indexedDB платформой
          */
-        function checkSupport() {
-            return window.indexedDB;
+        function isSupported() {
+            var idb = window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB || window.msIndexedDB;
+            var idbTr = window.IDBTransaction || window.webkitIDBTransaction || window.msIDBTransaction;
+            var idbKr = window.IDBKeyRange || window.webkitIDBKeyRange || window.msIDBKeyRange;
+
+            if (idb && idbKr && idbTr) {
+                var request = indexedDB.open(dbName, dbVersion);
+                if (request) {
+                    open();
+                    return true;
+                }
+            } else {
+                alert("Not supported!");
+                return false;
+
+            }
         }
 
         var saveLastModify = waitDatabase(function (obj, callback) {
@@ -162,7 +177,7 @@ myApp.service("Storage", [
             var request = indexedDB.open(dbName, dbVersion);
 
             request.onupgradeneeded = function (event) {
-
+                alert("update start");
                 var db = event.target.result;
 
                 var delModels = ['OperationalStatistics', 'Visit', 'Expenditure', 'classesLastModified', 'fieldStat'];
@@ -187,7 +202,6 @@ myApp.service("Storage", [
                     keyPath: "primary"
                 });
                 saveFieldStat(classesFieldStat, function () {});
-
             };
 
             request.onsuccess = function (event) {
@@ -332,7 +346,7 @@ myApp.service("Storage", [
             update: update,
             get: get,
             search: search,
-            checkSupport: checkSupport,
+            isSupported: isSupported,
             lastModified: lastModified,
             getFieldStat: getFieldStat,
             classesLastModified: classesLastModified,
