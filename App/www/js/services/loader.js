@@ -6,12 +6,12 @@
  * этих данных.
  * @name myApp.service:Loader
  */
-myApp.service("Loader", ["ModelConverter", "Server",/*!!"RealServer",*/ "$rootScope",
-    function (ModelConverter, Server, $rootScope) {
+myApp.service("Loader", ["ModelConverter", "Server", /*!!"RealServer",*/ "$rootScope",  "Storage",
+    function (ModelConverter, Server, $rootScope, Storage) {
 
-        //        var localStat = null;
+        var localStat = null;
         var serverStat = null;
-    /*!!    var Server = new RealServer(token);*/
+        /*!!    var Server = new RealServer(token);*/
 
         var query = [{
             type: "OperationalStatistics",
@@ -25,58 +25,58 @@ myApp.service("Loader", ["ModelConverter", "Server",/*!!"RealServer",*/ "$rootSc
             }];
 
         function getFieldStat() {
-            //            Storage.getFieldStat(query, function (stat) {
-            //                localStat = stat;
+            Storage.getFieldStat(query, function (stat) {
+                localStat = stat;
 
-            Server.getFieldStat(query, function (stat) {
-                serverStat = stat;
+                Server.getFieldStat(query, function (stat) {
+                    serverStat = stat;
 
-                $rootScope.$emit('received', '');
+                    $rootScope.$emit('received', '');
 
-                // var event = new CustomEvent('received', {});
-                // document.dispatchEvent(event);
+                    // var event = new CustomEvent('received', {});
+                    // document.dispatchEvent(event);
+                });
             });
-            //            });
         };
 
         getFieldStat();
 
-        //        $rootScope.$on('synchEnd', getFieldStat);
+        $rootScope.$on('synchEnd', getFieldStat);
 
         //        document.addEventListener('synchEnd', getFieldStat, false);
 
         return {
             hasFutureData: function (className, date) {
-                if (serverStat) {
-                    //   var typeStat = localStat.filter(function (stat) {
-                    //   return stat.type == className;
-                    //  })[0];
-                    //  if (typeStat.min == null || typeStat.max == null) {
-                    var typeStat = serverStat.filter(function (stat) {
+                if (serverStat && localStat) {
+                    var typeStat = localStat.filter(function (stat) {
                         return stat.type == className;
                     })[0];
-                    return new Date(date) < new Date(typeStat.max);
-                    // } else {
-                    //  return new Date(date) < new Date(typeStat.max);
-                    // }
+                    if (typeStat.min == null || typeStat.max == null) {
+                        typeStat = serverStat.filter(function (stat) {
+                            return stat.type == className;
+                        })[0];
+                        return new Date(date) < new Date(typeStat.max);
+                    } else {
+                        return new Date(date) < new Date(typeStat.max);
+                    }
                 } else {
                     return false;
                 }
             },
 
             hasPastData: function (className, date) {
-                if (serverStat) {
-                    //   var typeStat = localStat.filter(function (stat) {
-                    //   return stat.type == className;
-                    //  })[0];
-                    //  if (typeStat.min == null || typeStat.max == null) {
-                    var typeStat = serverStat.filter(function (stat) {
+                if (serverStat && localStat) {
+                    var typeStat = localStat.filter(function (stat) {
                         return stat.type == className;
                     })[0];
-                    return new Date(date) > new Date(typeStat.min);
-                    //   } else {
-                    // return new Date(date) > new Date(typeStat.min);
-                    //  }
+                    if (typeStat.min == null || typeStat.max == null) {
+                        typeStat = serverStat.filter(function (stat) {
+                            return stat.type == className;
+                        })[0];
+                        return new Date(date) > new Date(typeStat.min);
+                    } else {
+                        return new Date(date) > new Date(typeStat.min);
+                    }
                 } else {
                     return false;
                 }
@@ -96,77 +96,66 @@ myApp.service("Loader", ["ModelConverter", "Server",/*!!"RealServer",*/ "$rootSc
              * объекта по первичному ключу.
              */
             get: function (className, primaryKey, callback) {
-
-                Server.get(className, primaryKey, function (data) {
-                    callback(ModelConverter.getObject(className, data))
-                });
-
-                //      if (localStat && serverStat) {
-                //   var typeStatLocal = localStat.filter(function (stat) {
-                //  return stat.type == className;
-                //     })[0];
-                //  var typeStatServer = serverStat.filter(function (stat) {
-                //          return stat.type == className;
-                //      })[0];
-                //if (typeStatServer.min == typeStatLocal.min && typeStatServer.max == typeStatLocal.max) {
-                //              console.log("Storage.get");
-                //      Storage.get(className, primaryKey, function (result) {
-                //                            if (result == null) {
-                //                                console.log("Storage empty!");
-                //                                callback(null);
-                //                            } else {
-                //       callback(ModelConverter.getObject(className, result));
-                //                            }
-                //                        });
-                //                    } else {
-                //                        console.log("server.get ", primaryKey);
-                //             Server.get(className, primaryKey, function (data) {
-                //               callback(ModelConverter.getObject(className, data))
-                //                        });
-                //                    }
-                //                } else {
-                //       setTimeout(this.get, 500, className, primaryKey, callback);
-                //                }
+                if (localStat && serverStat) {
+                    var typeStatLocal = localStat.filter(function (stat) {
+                        return stat.type == className;
+                    })[0];
+                    var typeStatServer = serverStat.filter(function (stat) {
+                        return stat.type == className;
+                    })[0];
+                    if (typeStatServer.min == typeStatLocal.min && typeStatServer.max == typeStatLocal.max) {
+                        console.log("Storage.get");
+                        Storage.get(className, primaryKey, function (result) {
+                            if (result == null) {
+                                console.log("Storage empty!");
+                                callback(null);
+                            } else {
+                                callback(ModelConverter.getObject(className, result));
+                            }
+                        });
+                    } else {
+                        console.log("server.get ", primaryKey);
+                        Server.get(className, primaryKey, function (data) {
+                            callback(ModelConverter.getObject(className, data))
+                        });
+                    }
+                } else {
+                    setTimeout(this.get, 500, className, primaryKey, callback);
+                }
             },
 
             //получение объектов за период
             search: function (className, params, callback) {
 
-                Server.searchForPeriod(className, params, function (result) {
-//                    console.log("server.search ", result);
-                    var objs = ModelConverter.getObjects(className, result);
-                    callback(objs);
-                });
+                if (localStat && serverStat) {
+                    var typeStatLocal = localStat.filter(function (stat) {
+                        return stat.type == className;
+                    })[0];
+                    var typeStatServer = serverStat.filter(function (stat) {
+                        return stat.type == className;
+                    })[0];
+                    if (typeStatServer.min == typeStatLocal.min && typeStatServer.max == typeStatLocal.max) {
+                        Storage.search(className, params, function (data) {
+                            console.log("Storage.search ", data);
+                            if (data == null) {
+                                console.log("Storage empty!");
+                                callback([]);
+                            } else {
+                                var objs = ModelConverter.getObjects(className, data);
+                                callback(objs);
+                            }
+                        });
+                    } else {
+                        Server.searchForPeriod(className, params, function (result) {
+                            console.log("server.search ", result);
+                            var objs = ModelConverter.getObjects(className, result);
+                            callback(objs);
+                        });
+                    }
 
-                //                if (localStat && serverStat) {
-                //               var typeStatLocal = localStat.filter(function (stat) {
-                //                     return stat.type == className;
-                //                    })[0];
-                //           var typeStatServer = serverStat.filter(function (stat) {
-                //                     return stat.type == className;
-                //                    })[0];
-                //if (typeStatServer.min == typeStatLocal.min && typeStatServer.max == typeStatLocal.max) {
-                //                Storage.search(className, params, function (data) {
-                //                            console.log("Storage.search ", data);
-                //                          if (data == null) {
-                //                                console.log("Storage empty!");
-                //                                callback([]);
-                //                            } else {
-                //          var objs = ModelConverter.getObjects(className, data);
-                //                                callback(objs);
-                //                            }
-                //                        });
-                //                    } else {
-                //     Server.searchForPeriod(className, params, function (result) {
-                //                            console.log("server.search ", result);
-                //               var objs = ModelConverter.getObjects(className, result);
-                //                            callback(objs);
-                //                        });
-                //                    }
-                //
-                //                } else {
-                //         setTimeout(this.search, 500, className, params, callback);
-                //                }
+                } else {
+                    setTimeout(this.search, 500, className, params, callback);
+                }
             },
 
             scope: $rootScope

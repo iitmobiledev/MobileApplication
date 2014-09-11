@@ -8,7 +8,7 @@
  * логином и паролем.</p>
  * @requires myApp.service:UserAuthentification
  */
-myApp.controller('AuthentificationController', function ($scope, $location, UserAuthentification) {
+myApp.controller('AuthentificationController', function ($scope, $location, authService) {
     $scope.correct = true;
     if (sessvars.token){
         $location.path('index');
@@ -26,7 +26,7 @@ myApp.controller('AuthentificationController', function ($scope, $location, User
     $scope.enter = function () {
         var login = document.getElementById('login').value;
         var password = document.getElementById('password').value;
-        UserAuthentification(login, password, function (token) {
+        authService.login(login, password, function (token) {
             sessvars.token = token;
             if (sessvars.token){
                 $location.path('index');

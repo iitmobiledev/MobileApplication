@@ -50,9 +50,10 @@ myApp.factory('OperationalStatistics', function (Model, FinanceStatistics) {
         },
         primary: ['date', 'step'],
         indexes: {
-            step: false,
-            date: false
-
+            step_date: {
+                keyPath: ['step', 'date'],
+                unique: false
+            }
         }
     });
 
@@ -61,7 +62,7 @@ myApp.factory('OperationalStatistics', function (Model, FinanceStatistics) {
         var store = trans.objectStore("OperationalStatistics"); //найдем хранилище для объектов данного класса
         var keyRange = IDBKeyRange.bound([params.step, new Date(params.dateFrom)], [params.step, new Date(params.dateTill)]);
         console.log(keyRange);
-        var request = store.index("step:date").openCursor(keyRange);
+        var request = store.index("step_date").openCursor(keyRange);
         request.onerror = function (event) {
             callback(null);
         };

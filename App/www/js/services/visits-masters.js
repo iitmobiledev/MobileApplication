@@ -91,7 +91,10 @@ myApp.factory('Visit', function (Model, Client, Service) {
         },
         primary: ['id'],
         indexes: {
-            date: false
+            date: {
+                keyPath: ['date'],
+                unique: false
+            },
         }
     });
 
@@ -109,10 +112,8 @@ myApp.factory('Visit', function (Model, Client, Service) {
         request.onsuccess = function (event) {
             var cursor = event.target.result;
             if (cursor) {
-                //                console.log(cursor.value);
                 result.push(cursor.value);
-                cursor.
-                continue();
+                cursor.continue();
             }
         };
 
