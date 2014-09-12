@@ -141,6 +141,7 @@ myApp.controller('VisitsController', function ($scope, $filter, $location, Loade
                 endDate = period.end;
 
             }
+            console.log(beginDate, endDate);
             Loader.search("Visit", {
                 dateFrom: beginDate,
                 dateTill: endDate,

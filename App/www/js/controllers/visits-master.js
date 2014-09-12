@@ -60,7 +60,6 @@ myApp.controller('VisitsMasterController', function ($scope, $filter, $location,
 
 //    $scope.visits = [];
     $scope.getVisits = function (visitsByMaster) {
-        console.log("getVisits ", visitsByMaster);
         var v = [];
         for (var i = 0; i < visitsByMaster.length; i++) {
             for (var j = 0; j < visitsByMaster[i].length; j++){

@@ -16,7 +16,7 @@
  */
 myApp.controller('OperationalStatisticController', function ($scope, $location, DateHelper, Loader, $rootScope) {
 
-    var today = new Date();
+    var today = new Date(2014, 8, 7);
     $scope.date = new Date(today.getFullYear(), today.getMonth(), today.getDate());
 
     $scope.step = DateHelper.steps.DAY;
@@ -27,7 +27,18 @@ myApp.controller('OperationalStatisticController', function ($scope, $location, 
         var resultArr = [];
         var date;
         if (key) {
-            console.log("key", key)
+            console.log("key", key);
+//            var newKey = key.split(':');
+//            var objDate = new Date(newKey[0]);
+//            var month = objDate.getMonth().toString();
+//            if (month.length < 2)
+//                month = "0"+month;
+//            var day = objDate.getDate().toString();
+//            if (day.length < 2)
+//                day = "0"+day;
+//            var strDate = objDate.getFullYear() + "-" + month + "-" + day;
+//            key = strDate + ":" + newKey[3];
+//            console.log("key", key);
             Loader.get("OperationalStatistics", key, function (obj) {
                 if (obj) {
                     console.log("obj", obj)

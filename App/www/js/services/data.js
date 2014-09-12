@@ -17,7 +17,7 @@
    }
 
    DataSvc.prototype = {
-       baseUrl: "http://auth.test.arnica.pro/api/data/",
+       baseUrl: "http://test.arnica.pro/api/data/",
        get: function(className, primaryKey, callback) {
            this.restPost("get", className, primaryKey, callback);
        },
@@ -103,7 +103,7 @@
                      data.workload = getRandom(30, 100);
                      data.date = currentDay;
                      data.step = DateHelper.steps.DAY;
-                     data.financeStat = getFinanceStatistics(new Date(currentDay.getFullYear(), currentDay.getMonth(), currentDay.getDate()));
+                     data.financialStat = getFinanceStatistics(new Date(currentDay.getFullYear(), currentDay.getMonth(), currentDay.getDate()));
                      data.visible = true;
                      allObjects.push(data);
 
@@ -116,7 +116,7 @@
                          data.workload = getRandom(30, 100);
                          data.date = currentDay;
                          data.step = DateHelper.steps.WEEK;
-                         data.financeStat = {};
+                         data.financialStat = {};
                          data.visible = true;
                          allObjects.push(data);
                      }
@@ -222,9 +222,9 @@
                  data.date = day;
                  data.step = params.step || DateHelper.steps.DAY;
                  if (params.step == DateHelper.steps.DAY)
-                     data.financeStat = getFinanceStatistics(new Date(day.getFullYear(), day.getMonth(), day.getDate()));
+                     data.financialStat = getFinanceStatistics(new Date(day.getFullYear(), day.getMonth(), day.getDate()));
                  else
-                     data.financeStat = {};
+                     data.financialStat = {};
                  data.visible = true;
                  return data;
              },
@@ -253,7 +253,7 @@
                  callbacK(result);
              },
 
-             getFieldStat: function (query, callback) {
+             fieldStat: function (query, callback) {
                  var result = [];
                  for (var i in query) {
                      var resType = classesFieldStat[query[i].type];
@@ -363,7 +363,6 @@
                  };
 
                  setTimeout(function () {
-
                      var result = [];
                      var day = params.dateFrom;
                      while (day < params.dateTill || day.toDateString() == params.dateTill.toDateString()) {

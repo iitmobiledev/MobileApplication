@@ -18,13 +18,15 @@ myApp.controller('VisitController', function ($scope, $filter, $routeParams, Loa
         if (hasData) {
             return callback(null);
         }
+        console.log('routeParams.id ', $routeParams.id);
         Loader.get("Visit", $routeParams.id, function (obj) {
-//            console.log("Loader.get ", obj);
+            console.log("Loader.get ", obj);
             if (obj) {
                 hasData = true;
                 $scope.date = new Date(obj.date);
                 var beginDate = $scope.date,
                     endDate = $scope.date;
+                console.log(beginDate, endDate);
                 Loader.search("Visit", {
                     dateFrom: beginDate,
                     dateTill: endDate,
@@ -32,7 +34,7 @@ myApp.controller('VisitController', function ($scope, $filter, $routeParams, Loa
                 }, function (data) {
 
                     data = $filter('orderBy')(data, 'date', false);
-//                    console.log('visits ', data);
+                    //                    console.log('visits ', data);
 
                     for (var i = 0; i < data.length; i++) {
                         data[i].servList = [];
@@ -44,7 +46,7 @@ myApp.controller('VisitController', function ($scope, $filter, $routeParams, Loa
                             serviceItem.description = service.description;
                             serviceItem.time = $filter('date')(service.startTime, "H:mm") + " - " + $filter('date')(service.endTime, "H:mm");
                             serviceItem.cost = service.cost;
-                            serviceItem.master = 'Мастер: ' + service.master.lastName + " " + service.master.firstName[0];
+                            serviceItem.master = 'Мастер: ' + service.master.lastName + " " + service.master.firstName;
                             data[i].servList.push(serviceItem);
                         }
                         data[i].balColor = "red";
@@ -64,40 +66,40 @@ myApp.controller('VisitController', function ($scope, $filter, $routeParams, Loa
         return obj && obj.date.toDateString();
     };
 
-//    $scope.handlePages = [];
-//
-//    $scope.getServList = function (visit) {
-//        console.log(visit);
-//        //
-//        //        var newArr = $scope.handlePages.filter(function (elem) {
-//        //            return elem.id === visit.id;
-//        //        });
-//        //        
-//        //        console.log('newArr ', newArr);
-//        //        
-//        //        if (newArr.length > 0 && $scope.servList)
-//        //            return;
-//        //        console.log('getServList ', visit.serviceList);
-//
-//        $scope.servList = [];
-//        $scope.sum = 0;
-//        for (var i = 0; i < visit.serviceList.length; i++) {
-//            var service = visit.serviceList[i];
-//            $scope.sum += visit.serviceList[i].cost;
-//            var serviceItem = {};
-//            serviceItem.description = service.description;
-//            serviceItem.time = $filter('date')(service.startTime, "H:mm") + " - " + $filter('date')(service.endTime, "H:mm");
-//            serviceItem.cost = service.cost;
-//            serviceItem.master = 'Мастер: ' + service.master.lastName + " " + service.master.firstName[0];
-//            $scope.servList.push(serviceItem);
-//        }
-//        $scope.balColor = "red";
-//        if (visit.client.balance >= 0) {
-//            $scope.balColor = "green";
-//        }
-//
-//        //        $scope.handlePages.push(visit);
-//    }
+    //    $scope.handlePages = [];
+    //
+    //    $scope.getServList = function (visit) {
+    //        console.log(visit);
+    //        //
+    //        //        var newArr = $scope.handlePages.filter(function (elem) {
+    //        //            return elem.id === visit.id;
+    //        //        });
+    //        //        
+    //        //        console.log('newArr ', newArr);
+    //        //        
+    //        //        if (newArr.length > 0 && $scope.servList)
+    //        //            return;
+    //        //        console.log('getServList ', visit.serviceList);
+    //
+    //        $scope.servList = [];
+    //        $scope.sum = 0;
+    //        for (var i = 0; i < visit.serviceList.length; i++) {
+    //            var service = visit.serviceList[i];
+    //            $scope.sum += visit.serviceList[i].cost;
+    //            var serviceItem = {};
+    //            serviceItem.description = service.description;
+    //            serviceItem.time = $filter('date')(service.startTime, "H:mm") + " - " + $filter('date')(service.endTime, "H:mm");
+    //            serviceItem.cost = service.cost;
+    //            serviceItem.master = 'Мастер: ' + service.master.lastName + " " + service.master.firstName[0];
+    //            $scope.servList.push(serviceItem);
+    //        }
+    //        $scope.balColor = "red";
+    //        if (visit.client.balance >= 0) {
+    //            $scope.balColor = "green";
+    //        }
+    //
+    //        //        $scope.handlePages.push(visit);
+    //    }
 
 
     //    $scope.fff = false;

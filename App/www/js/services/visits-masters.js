@@ -82,7 +82,7 @@ myApp.factory('Visit', function (Model, Client, Service) {
             self.serviceList = serviceList;
 
             self.date = new Date(data.date);
-            self.paid = data.paid;
+            self.paid = parseInt(data.paid);
         },
         serialize: function (self) {
             self.constructor.prototype.call(self)
@@ -213,7 +213,7 @@ myApp.factory('MastersLoader', function (DateHelper, Loader, $filter) {
                 var key = tmpDate.toDateString();
                 visitsByDate[key] = [];
             }
-            console.log(" visitsByDate", visitsByDate);
+//            console.log(" visitsByDate", visitsByDate);
             angular.forEach(visits, function (visit) {
                 console.log(visit);
                 visitsByDate[visit.date.toDateString()].push(visit);
@@ -264,7 +264,7 @@ myApp.factory('MastersLoader', function (DateHelper, Loader, $filter) {
                     var vlist = mastersForDay[i].visList;
                     mastersForDay[i].visList = getGoodVisitsList(vlist, mastersForDay[i].master.id);
                 }
-                console.log('mastersForDay', mastersForDay);
+//                console.log('mastersForDay', mastersForDay);
                 mastersForPeriod.push(mastersForDay);
             }
             callback(mastersForPeriod);

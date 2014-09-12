@@ -1,6 +1,8 @@
-myApp.service("Synchronizer", ["Storage", "Server", "ModelConverter", "Loader",
-    function (Storage, Server, ModelConverter, Loader) {
+myApp.service("Synchronizer", ["Storage", "RealServer", "ModelConverter", "Loader",
+    function (Storage, RealServer, ModelConverter, Loader) {
 
+        var Server = new RealServer(sessvars.token);
+        
         function save(data, className, offset, callback) {
             if (offset >= data.length) {
                 callback();
@@ -31,7 +33,7 @@ myApp.service("Synchronizer", ["Storage", "Server", "ModelConverter", "Loader",
                             lastLocalModified[className] = lastServerModified[className];
                             if (date[className] == lastServerModified[className]) {
                                 Storage.saveLastModify(lastLocalModified, function () {
-                                    Server.getFieldStat([{
+                                    Server.fieldStat([{
                                         type: className,
                                         field: "date"
                                     }], function (serverStat) {
@@ -57,12 +59,16 @@ myApp.service("Synchronizer", ["Storage", "Server", "ModelConverter", "Loader",
             },
 
             synchCheck: function (className, callback) {
+                console.log('synch check');
                 var synch = this;
-                Storage.lastModified(["OperationalStatistics", "Visit", "Expenditures"], function (lastLocalModified) {
+                Storage.lastModified(["OperationalStatistics", "Visit", "Expenditure"], function (lastLocalModified) {
+                    console.log('Storage.lastModified');
                     Server.lastModified(["OperationalStatistics", "Visit", "Expenditure"], function (lastServerModified) {
+                        console.log('Server.lastModified');
                         if (lastLocalModified[className] == lastServerModified[className]) {
                             callback();
                         } else {
+                            console.log('synch need');
                             synch.updateData(className, 20, 0, callback, lastLocalModified, lastServerModified);
                         }
                     });
@@ -71,23 +77,24 @@ myApp.service("Synchronizer", ["Storage", "Server", "ModelConverter", "Loader",
         };
 }]);
 
-var $inj = angular.injector(['myApp']);
-var synchronizer = $inj.get('Synchronizer');
-var loader = $inj.get('Loader');
-
-(function beginSynch() {
-    synchronizer.synchCheck.call(synchronizer, "OperationalStatistics", function () {
-        //        console.log("synch end OperationalStatistics0");
-        synchronizer.synchCheck.call(synchronizer, "Visit", function () {
-            //            console.log("synch end Visit0");
-            synchronizer.synchCheck.call(synchronizer, "Expenditure", function () {
-                console.log("synch end");
-                loader.scope.$emit('synchEnd', '');
-
-                //                var synchEndEvent = new CustomEvent('synchEnd', {});
-                //                document.dispatchEvent(synchEndEvent);
-                setTimeout(beginSynch, 70000);
-            });
-        });
-    });
-})();
+//var $inj = angular.injector(['myApp']);
+//var synchronizer = $inj.get('Synchronizer');
+//var loader = $inj.get('Loader');
+//
+//(function beginSynch() {
+//    console.log("synch begin");
+//    synchronizer.synchCheck.call(synchronizer, "OperationalStatistics", function () {
+//                console.log("synch end OperationalStatistics0");
+//        synchronizer.synchCheck.call(synchronizer, "Visit", function () {
+//                        console.log("synch end Visit0");
+//            synchronizer.synchCheck.call(synchronizer, "Expenditure", function () {
+//                console.log("synch end");
+//                loader.scope.$emit('synchEnd', '');
+//
+//                //                var synchEndEvent = new CustomEvent('synchEnd', {});
+//                //                document.dispatchEvent(synchEndEvent);
+//                setTimeout(beginSynch, 70000);
+//            });
+//        });
+//    });
+//})();

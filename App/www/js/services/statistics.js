@@ -41,7 +41,10 @@ myApp.factory('OperationalStatistics', function (Model, FinanceStatistics) {
             self.profit = data.profit;
             self.clients = data.clients;
             self.workload = data.workload;
-            self.financeStat = new FinanceStatistics(data.financeStat);
+            if (data.financialStat)
+                self.financeStat = new FinanceStatistics(data.financialStat);
+            else
+                self.financeStat = null;
         },
         serialize: function (self) {
             self.constructor.prototype.call(self);
