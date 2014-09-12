@@ -18,7 +18,6 @@ myApp.controller('VisitController', function ($scope, $filter, $routeParams, Loa
         if (hasData) {
             return callback(null);
         }
-        console.log('routeParams.id ', $routeParams.id);
         Loader.get("Visit", $routeParams.id, function (obj) {
             console.log("Loader.get ", obj);
             if (obj) {
@@ -32,6 +31,9 @@ myApp.controller('VisitController', function ($scope, $filter, $routeParams, Loa
                     dateTill: endDate,
                     step: $scope.step
                 }, function (data) {
+                    
+                    if (data.length == 0)
+                        data.push(obj);
 
                     data = $filter('orderBy')(data, 'date', false);
                     //                    console.log('visits ', data);

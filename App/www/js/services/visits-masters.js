@@ -103,7 +103,7 @@ myApp.factory('Visit', function (Model, Client, Service) {
         var dates = [];
         var store = trans.objectStore("Visit"); //найдем хранилище для объектов данного класса
         var keyRange = IDBKeyRange.bound(new Date(params.dateFrom), new Date(params.dateTill));
-        console.log(keyRange);
+        //        console.log(keyRange);
         var request = store.index(params.index).openCursor(keyRange);
 
         request.onerror = function (event) {
@@ -113,7 +113,8 @@ myApp.factory('Visit', function (Model, Client, Service) {
             var cursor = event.target.result;
             if (cursor) {
                 result.push(cursor.value);
-                cursor.continue();
+                cursor.
+                continue ();
             }
         };
 
@@ -213,9 +214,9 @@ myApp.factory('MastersLoader', function (DateHelper, Loader, $filter) {
                 var key = tmpDate.toDateString();
                 visitsByDate[key] = [];
             }
-//            console.log(" visitsByDate", visitsByDate);
+            //            console.log(" visitsByDate", visitsByDate);
             angular.forEach(visits, function (visit) {
-                console.log(visit);
+                //                console.log(visit);
                 visitsByDate[visit.date.toDateString()].push(visit);
             });
 
@@ -228,7 +229,7 @@ myApp.factory('MastersLoader', function (DateHelper, Loader, $filter) {
 
             var result = [];
             for (var i in list) {
-                console.log(list[i]);
+                //                console.log(list[i]);
                 if (list[i].length != 0) {
                     result.push(list[i].sort(function (a, b) {
                         return new Date(a.date).getTime() - new Date(b.date).getTime()
@@ -247,12 +248,15 @@ myApp.factory('MastersLoader', function (DateHelper, Loader, $filter) {
                             if (checkVisitInList(data[k][i], mastersForDay[usl].visList) == null)
                                 mastersForDay[usl].visList.push(data[k][i]);
                         } else {
-                            mastersForDay.push(new perMaster(data[k][i].serviceList[j].master, data[k][i]));
+                            if (data[k][i].serviceList[j].master)
+                                mastersForDay.push(new perMaster(data[k][i].serviceList[j].master, data[k][i]));
                         }
                     }
                 }
 
                 mastersForDay = mastersForDay.sort(function (a, b) {
+                    if (typeof (b.master.lastName) == 'undefined')
+                        b.master.lastName = "";
                     if (a.master.lastName.toLowerCase() < b.master.lastName.toLowerCase())
                         return -1;
                     if (nameA = a.master.lastName.toLowerCase() > b.master.lastName.toLowerCase())
@@ -264,7 +268,7 @@ myApp.factory('MastersLoader', function (DateHelper, Loader, $filter) {
                     var vlist = mastersForDay[i].visList;
                     mastersForDay[i].visList = getGoodVisitsList(vlist, mastersForDay[i].master.id);
                 }
-//                console.log('mastersForDay', mastersForDay);
+                //                console.log('mastersForDay', mastersForDay);
                 mastersForPeriod.push(mastersForDay);
             }
             callback(mastersForPeriod);

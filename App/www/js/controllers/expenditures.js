@@ -16,11 +16,8 @@ myApp.controller('ExpendituresController', function ($scope, $filter, Loader, Da
     //    var minDate = ExpendituresLoader.getMinDate();
     //    var maxDate = ExpendituresLoader.getMaxDate();
 
-    var today = new Date();
+    var today = new Date(2014,8,7);
     $scope.date = new Date(today.getFullYear(), today.getMonth(), today.getDate());
-
-    $scope.pageIndex = 1;
-
 
     /**
      *
@@ -49,27 +46,127 @@ myApp.controller('ExpendituresController', function ($scope, $filter, Loader, Da
         return true;
         //        return $scope.date < maxDate && $scope.date.toDateString() != maxDate.toDateString();
     };
+    
+    var ExpenditurePage = function (date, list) {
+        this.date = new Date(date);
+        this.list = list;
+    };
+    
+    $scope.getData = function (key, quantity, forward, callback) {
+        var resultArr = [];
+        var date;
+        if (key) {
+            Loader.get("Expenditure", key, function (obj) {
+                if (obj) {
+                    date = new Date(key);
+                    if (forward) {
+                        date = DateHelper.getNextPeriod(date, $scope.step).end;
+                    } else {
+                        date = DateHelper.getPrevPeriod(date, $scope.step).end;
+                    }
+                    var beginDate = date,
+                        endDate = date;
+                    for (var i = 0; i < quantity; i++) {
+                        if (forward) {
+                            endDate = DateHelper.getNextPeriod(endDate, DateHelper.steps.DAY).end;
+                        } else {
+                            beginDate = DateHelper.getPrevPeriod(beginDate, DateHelper.steps.DAY).begin;
+                        }
+                    }
+                    Loader.search("Expenditure", {
+                        dateFrom: beginDate,
+                        dateTill: endDate,
+                        step: DateHelper.steps.DAY,
+                        index: "date"
+                    }, function (data) {
+                        var expsByDate = {};
+                        angular.forEach(data, function (exp) {
+                            var key = exp.date.toDateString();
+                            if (!expsByDate[key]) {
+                                expsByDate[key] = [];
+                            }
+                            expsByDate[key].push(exp);
+                        });
+                        var list = [];
+                        for (var tmpdate = new Date(beginDate); tmpdate < endDate || tmpdate.toDateString() == endDate.toDateString(); tmpdate.setDate(tmpdate.getDate() + 1)) {
+                            var page = new ExpenditurePage(new Date(tmpdate), expsByDate[tmpdate.toDateString()].sort(function (a, b) {
+                                return new Date(a.date).getTime() - new Date(b.date).getTime();
+                            }));
+                            list.push(page);
+                        }
+                        callback(list);
+                    });
+                }
+            });
+        } else {
+            date = $scope.date;
+            var beginDate = date,
+                endDate = date;
+            for (var i = 0; i < quantity; i++) {
+                endDate = DateHelper.getNextPeriod(endDate, $scope.step).end;
+                beginDate = DateHelper.getPrevPeriod(beginDate, $scope.step).begin;
+            }
+            if (beginDate == endDate && $scope.step != DateHelper.steps.DAY) {
+                var period = DateHelper.getPeriod(beginDate, $scope.step);
+                beginDate = period.begin;
+                endDate = period.end;
 
-    /**
-     * @description Обновляет информацию о затратах, хранящуюся в списке `pages`. В зависимости от даты, хранящейся в `$scope.date` данные будут загружаться за этот день, предыдущий и посдедующий.
-     * @ngdoc method
-     * @name myApp.controller:ExpendituresController#updatePages
-     * @methodOf myApp.controller:ExpendituresController
-     */
-    function updatePages() {
-        $scope.prevdate = DateHelper.getPrevPeriod($scope.date, DateHelper.steps.DAY).begin;
-        $scope.nextdate = DateHelper.getNextPeriod($scope.date, DateHelper.steps.DAY).end;
-        Loader.search("Expenditure", {
-            dateFrom: $scope.prevdate,
-            dateTill: $scope.nextdate,
-        }, function (data) {
+            }
+            console.log(beginDate, endDate);
+            Loader.search("Expenditure", {
+                dateFrom: beginDate,
+                dateTill: endDate,
+                step: DateHelper.steps.DAY,
+                index: "date"
+            }, function (data) {
+                var expsByDate = {};
+                angular.forEach(data, function (exp) {
+                    var key = exp.date.toDateString();
+                    if (!expsByDate[key]) {
+                        expsByDate[key] = [];
+                    }
+                    expsByDate[key].push(exp);
+                });
+                var list = [];
+                for (var tmpdate = new Date(beginDate); tmpdate < endDate || tmpdate.toDateString() == endDate.toDateString(); tmpdate.setDate(tmpdate.getDate() + 1)) {
+                    if (expsByDate[tmpdate.toDateString()]) {
+                        var page = new ExpenditurePage(new Date(tmpdate), expsByDate[tmpdate.toDateString()].sort(function (a, b) {
+                            return new Date(a.date).getTime() - new Date(b.date).getTime();
+                        }));
+                        list.push(page);
+                    }
+                }
+                callback(list);
+            });
+        }
+    };
 
-            $scope.pages = data;
-//            $scope.$apply();
-        });
-    }
 
-    $scope.$watch('date.toDateString()', updatePages);
+    $scope.getKey = function (obj) {
+        return obj && obj.date.toDateString();
+    };
+    
+
+//    /**
+//     * @description Обновляет информацию о затратах, хранящуюся в списке `pages`. В зависимости от даты, хранящейся в `$scope.date` данные будут загружаться за этот день, предыдущий и посдедующий.
+//     * @ngdoc method
+//     * @name myApp.controller:ExpendituresController#updatePages
+//     * @methodOf myApp.controller:ExpendituresController
+//     */
+//    function updatePages() {
+//        $scope.prevdate = DateHelper.getPrevPeriod($scope.date, DateHelper.steps.DAY).begin;
+//        $scope.nextdate = DateHelper.getNextPeriod($scope.date, DateHelper.steps.DAY).end;
+//        Loader.search("Expenditure", {
+//            dateFrom: $scope.prevdate,
+//            dateTill: $scope.nextdate,
+//        }, function (data) {
+//
+//            $scope.pages = data;
+////            $scope.$apply();
+//        });
+//    }
+
+//    $scope.$watch('date.toDateString()', updatePages);
 
     /**
      * @description Функция для определения наличия данных за
@@ -79,7 +176,7 @@ myApp.controller('ExpendituresController', function ($scope, $filter, Loader, Da
      * @name myApp.controller:ExpendituresController#hasExpenditures
      * @methodOf myApp.controller:ExpendituresController
      */
-    $scope.hasExpenditures = function (page) {
-        return page.expenditureList.length != 0;
+    $scope.hasExpenditures = function (list) {
+        return list.length != 0;
     }
 });

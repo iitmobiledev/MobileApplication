@@ -12,9 +12,9 @@
  * @requires myApp.service:MastersPerDayLoader
  * @requires myApp.service:DateHelper
  */
-myApp.controller('VisitsMasterController', function ($scope, $filter, $location, MastersLoader, DateHelper) {
+myApp.controller('VisitsMasterController', function ($scope, $filter, $location, MastersLoader, DateHelper, $routeParams) {
 
-    var today = new Date();
+    var today = new Date($routeParams.date);
     $scope.date = new Date(today.getFullYear(), today.getMonth(), today.getDate());
     $scope.step = DateHelper.steps.DAY;
 

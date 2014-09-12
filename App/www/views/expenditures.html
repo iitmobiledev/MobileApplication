@@ -2,7 +2,27 @@
 <orient orientation="'portrait'"></orient>
 <footer-content show="true"></footer-content>
 <!--<div class="upage-content" id="mainsub">-->
-    <date-changer step="'day'" date='date' steps='["day"]' has-future-data='hasFutureData()' has-prev-data='hasPrevData()' index='pageIndex'></date-changer>
+
+<load-bar param-name="loading"></load-bar>
+    <slider content-id="expenditures" get-data='getData' key-expression='getKey'></slider>
+    <!--  
+-->
+    <script type="text/ng-template" id="expenditures">
+        <div id="expendituresContent">
+            <date-changer date='page.date' step='"day"' has-future-data='$parent.hasFutureData(page.date)' has-prev-data='$parent.hasPrevData(page.date)'></date-changer>
+            <ul class="list inset" ng-repeat="exp in page.list">
+                <li style="font-size: 11pt;">
+                    <span style="float:left;  width:80%;white-space:nowrap;text-overflow:ellipsis;overflow: hidden;">{{exp.description}}</span>
+                    <span style='text-align: right;'>{{exp.amount | money:0}} <span class="price">ю</span></span>
+                </li>
+            </ul>
+            <ul class="list inset" ng-hide="hasExpenditures(page.list)">
+                <li style='text-align: center; font-size: 14pt'>Нет расходов</li>
+            </ul>
+
+        </div>
+    </script>
+<!--
     <ul style="height: 100%">
 
         <li ng-repeat="page in pages">
@@ -18,4 +38,5 @@
         </li>
 
     </ul>
+-->
 <!--</div>-->

@@ -32,7 +32,7 @@ myApp.service("Loader", ["ModelConverter", "Server", "RealServer", "$rootScope",
                 });
             }
             Server.fieldStat(query, function (stat) {
-//                console.log('server stat ', stat);
+                console.log('server stat ', stat);
                 serverStat = stat;
                 $rootScope.$emit('received', '');
             });
@@ -167,7 +167,7 @@ myApp.service("Loader", ["ModelConverter", "Server", "RealServer", "$rootScope",
                     }
 
                 } else if (serverStat) {
-                    console.log('server.search begin');
+//                    console.log('server.search begin');
                     Server.searchForPeriod(className, params, function (result) {
                         console.log("server.search ", result);
                         var objs = ModelConverter.getObjects(className, result);

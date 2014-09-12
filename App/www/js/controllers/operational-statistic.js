@@ -16,7 +16,7 @@
  */
 myApp.controller('OperationalStatisticController', function ($scope, $location, DateHelper, Loader, $rootScope) {
 
-    var today = new Date(2014, 8, 7);
+    var today = new Date();
     $scope.date = new Date(today.getFullYear(), today.getMonth(), today.getDate());
 
     $scope.step = DateHelper.steps.DAY;

@@ -15,9 +15,8 @@ myApp.directive('password', function () {
         },
         template: '<div>' +
 
-        '<input id="password" placeholder="Ваш пароль" type="password" style="width:65%;" value="demo">' +
-            
-        '<img id="eye" src="images/eye.png" width="38" height="38" align="right" position="absolute" margin-right: 25%;>'+
+        '<input id="password" placeholder="Ваш пароль" type="password" value="demo" style="width:65%; border-right: 0px;">' +
+            '<input id="passwordEye" type="text" readonly style="width:15%; background-image:url(images/eye.png); background-repeat: no-repeat; border-left: 0px;">' +
             '</div>'
     }
 });

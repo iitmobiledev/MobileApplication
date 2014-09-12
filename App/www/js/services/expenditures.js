@@ -14,6 +14,9 @@ myApp.factory('Expenditure', function (Model) {
     var Expenditure = Model("Expenditure", {
         deserialize: function (self, data) {
             self.date = new Date(data.date);
+            self.amount = data.amount;
+            self.id = data.id;
+            self.description = data.description || "Расход№"+data.id;
         },
         primary: ['id', 'date'],
         indexes: {
