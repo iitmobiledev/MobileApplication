@@ -69,8 +69,10 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
                                 //                            console.log("key", key)
                                 if ($('.my-slider').slickCurrentSlide() == 0) {
                                     dataCallback(key, count, false, addPastData);
+                                    scope.$apply();
                                 } else if ($('.my-slider').slickCurrentSlide() == ($('.my-slider').getSlick().slideCount - 1)) {
                                     dataCallback(key, count, true, addFutureData);
+                                    scope.$apply();
                                 }
                             }
                         },
