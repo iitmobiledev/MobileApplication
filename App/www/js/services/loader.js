@@ -6,8 +6,8 @@
  * этих данных.
  * @name myApp.service:Loader
  */
-myApp.service("Loader", ["ModelConverter", "Server", "RealServer", "$rootScope", "Storage", "dbSupport",
-    function (ModelConverter, Server, RealServer, $rootScope, Storage, dbSupport) {
+myApp.service("Loader", ["ModelConverter", "Server", "RealServer", "$rootScope", "Storage", 
+    function (ModelConverter, Server, RealServer, $rootScope, Storage) {
 
         var localStat = null;
         var serverStat = null;
@@ -26,9 +26,10 @@ myApp.service("Loader", ["ModelConverter", "Server", "RealServer", "$rootScope",
 
 
         function getFieldStat() {
-            if (dbSupport.value && false) {
+            if (Storage.isSupported()) {
                 Storage.getFieldStat(query, function (stat) {
                     localStat = stat;
+                     console.log('localStat ', stat);
                 });
             }
             Server.fieldStat(query, function (stat) {

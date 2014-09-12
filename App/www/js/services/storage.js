@@ -109,15 +109,14 @@ myApp.service("Storage", [
             var idbKr = window.IDBKeyRange || window.webkitIDBKeyRange || window.msIDBKeyRange;
 
             if (idb && idbKr && idbTr) {
-                var request = indexedDB.open(dbName, dbVersion);
-                if (request) {
-                    open();
-                    return true;
-                }
+                //                var request = indexedDB.open(dbName, dbVersion);
+                //                if (request) {
+                open();
+                return true;
+                //        }
             } else {
                 alert("Not supported!");
                 return false;
-
             }
         }
 
@@ -353,4 +352,4 @@ myApp.service("Storage", [
             saveLastModify: saveLastModify,
             saveFieldStat: saveFieldStat
         };
-    }]);
+}]);

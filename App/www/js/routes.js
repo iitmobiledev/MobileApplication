@@ -1,19 +1,15 @@
 var myApp = angular.module('myApp', ['ngRoute', 'ngAnimate']);
 var flag = true;
 
-myApp.value('dbSupport', {
-    value: false,
-});
 
 
-myApp.run(function ($templateCache, Storage, dbSupport) {
+myApp.run(function ($templateCache, Storage) {
     //    if (flag) {
     $templateCache.put('statistic-content');
     $templateCache.put('visits');
-    dbSupport.value = Storage.isSupported();
     //        flag = false;
     //    }
-    console.log("Storage support:", dbSupport.value);
+    console.log("Storage support:", Storage.isSupported());
 });
 
 myApp.config(['$routeProvider',
