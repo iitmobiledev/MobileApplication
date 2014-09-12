@@ -74,7 +74,8 @@ myApp.controller('VisitsController', function ($scope, $filter, $location, Loade
     };
 
     $scope.getData = function (key, quantity, forward, callback) {
-        console.log("scope.visit",$scope.visit);
+        $scope.loading = true;
+//        console.log("scope.visit",$scope.visit);
         var resultArr = [];
         var date;
         if (key) {
@@ -123,6 +124,7 @@ myApp.controller('VisitsController', function ($scope, $filter, $location, Loade
                             }));
                             list.push(page);
                         }
+                        $scope.loading = false;
                         callback(list);
                     });
                 }
@@ -166,6 +168,7 @@ myApp.controller('VisitsController', function ($scope, $filter, $location, Loade
                         list.push(page);
                     }
                 }
+                $scope.loading = false;
                 callback(list);
             });
         }

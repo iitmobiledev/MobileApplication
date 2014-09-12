@@ -17,7 +17,7 @@ myApp.controller('VisitsMasterController', function ($scope, $filter, $location,
     var today = new Date($routeParams.date);
     $scope.date = new Date(today.getFullYear(), today.getMonth(), today.getDate());
     $scope.step = DateHelper.steps.DAY;
-
+    $scope.loading = true;
     $scope.pageIndex = 0;
 
     /**

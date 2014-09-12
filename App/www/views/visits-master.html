@@ -7,8 +7,8 @@
     </div>
 <!--<status-statistics visits="visits"></status-statistics>-->
 <!--    {{$parent.getVisits(page.list)}}-->
-    <load-bar param-name="loading"></load-bar>
     <slider content-id="visits-master" get-data='getData' key-expression='getKey'></slider>
+    <load-bar param-name="loading" ></load-bar>
     <script type="text/ng-template" id="visits-master">
         <div id="visitsContent">
             <date-changer date='page.date' step='$parent.step' has-future-data='hasFutureData(page.date)' has-prev-data='hasPrevData(page.date)'></date-changer>
