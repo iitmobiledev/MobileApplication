@@ -2,14 +2,12 @@ var myApp = angular.module('myApp', ['ngRoute', 'ngAnimate']);
 var flag = true;
 
 
-
 myApp.run(function ($templateCache, Storage) {
     //    if (flag) {
     $templateCache.put('statistic-content');
     $templateCache.put('visits');
     //        flag = false;
     //    }
-    console.log("Storage support:", Storage.isSupported());
 });
 
 myApp.config(['$routeProvider',

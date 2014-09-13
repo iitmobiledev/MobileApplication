@@ -6,12 +6,12 @@
  * этих данных.
  * @name myApp.service:Loader
  */
-myApp.service("Loader", ["ModelConverter", "Server", "RealServer", "$rootScope", "Storage", 
+myApp.service("Loader", ["ModelConverter", "Server", "RealServer", "$rootScope", "Storage",
     function (ModelConverter, Server, RealServer, $rootScope, Storage) {
 
         var localStat = null;
         var serverStat = null;
-//        var Server = new RealServer(sessvars.token);
+        //        var Server = new RealServer(sessvars.token);
 
         var query = [{
             type: "OperationalStatistics",
@@ -26,10 +26,15 @@ myApp.service("Loader", ["ModelConverter", "Server", "RealServer", "$rootScope",
 
 
         function getFieldStat() {
-            if (Storage.isSupported()) {
+            var storageSupport;
+            Storage.isSupported(function (isSupport) {
+                storageSupport = isSupport;
+                console.log("Support:", storageSupport);
+            })
+            if (storageSupport) {
                 Storage.getFieldStat(query, function (stat) {
                     localStat = stat;
-                     console.log('localStat ', stat);
+                    console.log('localStat ', stat);
                 });
             }
             Server.fieldStat(query, function (stat) {
@@ -139,9 +144,9 @@ myApp.service("Loader", ["ModelConverter", "Server", "RealServer", "$rootScope",
 
             //получение объектов за период
             search: function (className, params, callback) {
-//                console.log('in search');
+                //                console.log('in search');
                 if (localStat && serverStat) {
-//                    console.log('localStat && serverStat');
+                    //                    console.log('localStat && serverStat');
                     var typeStatLocal = localStat.filter(function (stat) {
                         return stat.type == className;
                     })[0];
@@ -168,14 +173,14 @@ myApp.service("Loader", ["ModelConverter", "Server", "RealServer", "$rootScope",
                     }
 
                 } else if (serverStat) {
-//                    console.log('server.search begin');
+                    //                    console.log('server.search begin');
                     Server.searchForPeriod(className, params, function (result) {
                         console.log("server.search ", result);
                         var objs = ModelConverter.getObjects(className, result);
                         callback(objs);
                     });
                 } else {
-//                    console.log('server stat not determ');
+                    //                    console.log('server stat not determ');
                     setTimeout(this.search, 500, className, params, callback);
                 }
             },

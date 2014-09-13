@@ -8,7 +8,7 @@ myApp.service("Synchronizer", ["Storage", "RealServer", "ModelConverter", "Loade
                 callback();
             } else {
                 if (data[offset].visible) {
-                    console.log("data[offset]",data[offset]);
+                    console.log("data[offset]", data[offset]);
                     Storage.update(ModelConverter.getObject(className, data[offset]));
                     save(data, className, offset + 1, callback)
                 } else {
@@ -28,7 +28,7 @@ myApp.service("Synchronizer", ["Storage", "RealServer", "ModelConverter", "Loade
                     "count": count,
                     "offset": offset
                 }, function (data) {
-                    console.log("data",data);
+                    console.log("data", data);
                     if (data == null || data.length < count) {
                         Server.lastModified(["OperationalStatistics", "Visit", "Expenditure"], function (date) {
                             lastLocalModified[className] = lastServerModified[className];
@@ -63,9 +63,9 @@ myApp.service("Synchronizer", ["Storage", "RealServer", "ModelConverter", "Loade
                 console.log('synch check');
                 var synch = this;
                 Storage.lastModified(["OperationalStatistics", "Visit", "Expenditure"], function (lastLocalModified) {
-                    console.log('Storage.lastModified',lastLocalModified[className]);
+                    console.log('Storage.lastModified', lastLocalModified[className]);
                     Server.lastModified(["OperationalStatistics", "Visit", "Expenditure"], function (lastServerModified) {
-                        console.log('Server.lastModified',lastServerModified[className]);
+                        console.log('Server.lastModified', lastServerModified[className]);
                         if (lastLocalModified[className] == lastServerModified[className]) {
                             callback();
                         } else {
@@ -84,7 +84,12 @@ var loader = $inj.get('Loader');
 var Storage = $inj.get('Storage');
 
 (function beginSynch() {
-    if (Storage.isSupported()) {
+    var storageSupport;
+    Storage.isSupported(function (isSupport) {
+        storageSupport = isSupport;
+        console.log("Support:", storageSupport);
+    })
+    if (storageSupport) {
         console.log("synch begin");
         synchronizer.synchCheck.call(synchronizer, "OperationalStatistics", function () {
             console.log("synch end OperationalStatistics0");
