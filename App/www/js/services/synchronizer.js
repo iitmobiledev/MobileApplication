@@ -1,14 +1,13 @@
-myApp.service("Synchronizer", ["Storage", "RealServer", "ModelConverter", "Loader",
-    function (Storage, RealServer, ModelConverter, Loader) {
+myApp.service("Synchronizer", ["Storage", "Server", "ModelConverter", "Loader",
+    function (Storage, Server, ModelConverter, Loader) {
 
-        var Server = new RealServer(sessvars.token);
+//        var Server = new RealServer(sessvars.token);
 
         function save(data, className, offset, callback) {
             if (offset >= data.length) {
                 callback();
             } else {
                 if (data[offset].visible) {
-                    console.log("data[offset]", data[offset]);
                     Storage.update(ModelConverter.getObject(className, data[offset]));
                     save(data, className, offset + 1, callback)
                 } else {
@@ -28,7 +27,6 @@ myApp.service("Synchronizer", ["Storage", "RealServer", "ModelConverter", "Loade
                     "count": count,
                     "offset": offset
                 }, function (data) {
-                    console.log("data", data);
                     if (data == null || data.length < count) {
                         Server.lastModified(["OperationalStatistics", "Visit", "Expenditure"], function (date) {
                             lastLocalModified[className] = lastServerModified[className];
@@ -60,16 +58,16 @@ myApp.service("Synchronizer", ["Storage", "RealServer", "ModelConverter", "Loade
             },
 
             synchCheck: function (className, callback) {
-                console.log('synch check');
+//                console.log('synch check');
                 var synch = this;
                 Storage.lastModified(["OperationalStatistics", "Visit", "Expenditure"], function (lastLocalModified) {
-                    console.log('Storage.lastModified', lastLocalModified[className]);
+//                    console.log('Storage.lastModified', lastLocalModified[className]);
                     Server.lastModified(["OperationalStatistics", "Visit", "Expenditure"], function (lastServerModified) {
-                        console.log('Server.lastModified', lastServerModified[className]);
+//                        console.log('Server.lastModified', lastServerModified[className]);
                         if (lastLocalModified[className] == lastServerModified[className]) {
                             callback();
                         } else {
-                            console.log('synch need');
+//                            console.log('synch need');
                             synch.updateData(className, 20, 0, callback, lastLocalModified, lastServerModified);
                         }
                     });
@@ -87,20 +85,21 @@ var Storage = $inj.get('Storage');
     var storageSupport;
     Storage.isSupported(function (isSupport) {
         storageSupport = isSupport;
-        console.log("Support:", storageSupport);
-    })
-    if (storageSupport) {
-        console.log("synch begin");
-        synchronizer.synchCheck.call(synchronizer, "OperationalStatistics", function () {
-            console.log("synch end OperationalStatistics0");
-            synchronizer.synchCheck.call(synchronizer, "Visit", function () {
-                console.log("synch end Visit0");
-                synchronizer.synchCheck.call(synchronizer, "Expenditure", function () {
-                    console.log("synch end");
-                    loader.scope.$emit('synchEnd', '');
-                    setTimeout(beginSynch, 70000);
+//        console.log("Support:", storageSupport);
+        if (storageSupport) {
+            console.log("synch begin");
+            synchronizer.synchCheck.call(synchronizer, "OperationalStatistics", function () {
+//                console.log("synch end OperationalStatistics0");
+                synchronizer.synchCheck.call(synchronizer, "Visit", function () {
+//                    console.log("synch end Visit0");
+                    synchronizer.synchCheck.call(synchronizer, "Expenditure", function () {
+                        console.log("synch end");
+                        loader.scope.$emit('synchEnd', '');
+                        setTimeout(beginSynch, 70000);
+                    });
                 });
             });
-        });
-    }
+        }
+    });
+
 })();

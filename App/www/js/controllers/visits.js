@@ -14,9 +14,6 @@
  * @requires myApp.service:DateHelper
  */
 myApp.controller('VisitsController', function ($scope, $filter, $location, Loader, DateHelper, Visit) {
-    //    var minDate = VisitsLoader.getMinDate();
-    //    var maxDate = VisitsLoader.getMaxDate();
-
     var today = new Date();
     $scope.date = new Date(today.getFullYear(), today.getMonth(), today.getDate());
     $scope.step = DateHelper.steps.DAY;
@@ -167,8 +164,11 @@ myApp.controller('VisitsController', function ($scope, $filter, $location, Loade
                         }));
                         list.push(page);
                     }
+                    else
+                        list.push(new VisitsPage(new Date(tmpdate), []));
                 }
                 $scope.loading = false;
+                console.log("list", list);
                 callback(list);
             });
         }

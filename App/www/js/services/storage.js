@@ -4,49 +4,17 @@
  * @description Сервис для кэширования данных
  * @name myApp.service:Storage
  */
-myApp.service("Storage", [
+myApp.service("Storage", ["ClassesLastModified", "ClassesFieldStat",
 
-    function (DateHelper) {
+    function (ClassesLastModified, ClassesFieldStat) {
 
         var dbName = "storage";
         var database = null;
         var dbVersion = 1.0;
 
-
-        function ClassesLastModified() {
-            this.primary = "primary";
-            this.OperationalStatistics = null;
-            this.Visit = null;
-            this.Expenditure = null;
-        }
-
-        function ClassesFieldStat() {
-            this.primary = "primary";
-            this.OperationalStatistics = {
-                date: {
-                    min: null,
-                    max: null
-                }
-            };
-            this.Visit = {
-                date: {
-                    min: null,
-                    max: null
-                }
-            };
-            this.Expenditure = {
-                date: {
-                    min: null,
-                    max: null
-                }
-            };
-        }
-
         var classesLastModified = new ClassesLastModified();
 
         var classesFieldStat = new ClassesFieldStat();
-
-
 
         var lastModified = function (query, callback) {
             get("classesLastModified", "primary", function (data) {
@@ -56,6 +24,7 @@ myApp.service("Storage", [
                     var result = new ClassesLastModified();
                     for (var i in query)
                         result[query[i]] = data[query[i]];
+                    console.log(result);
                     callback(result);
                 }
             });

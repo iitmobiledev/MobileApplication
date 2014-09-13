@@ -16,9 +16,9 @@ myApp.factory('Expenditure', function (Model) {
             self.date = new Date(data.date);
             self.amount = data.amount;
             self.id = data.id;
-            self.description = data.description || "Расход№"+data.id;
+            self.description = data.description || "Расход№" + data.id;
         },
-        primary: ['id', 'date'],
+        primary: ['id'],
         indexes: {
             date: {
                 keyPath: ['date'],

@@ -71,20 +71,20 @@
          var classesFieldStat = {
              "OperationalStatistics": {
                  "date": {
-                     min: "2013-01-01 09:01:00",
-                     max: "2014-10-04 09:00:00"
+                     min: "2014-05-19 00:00:00",
+                     max: "2014-09-10 00:00:00"
                  }
              },
              "Visit": {
                  "date": {
-                     min: "2013-01-01 13:00:00",
-                     max: "2014-09-15 14:00:00"
+                     min: "2014-05-19 00:00:00",
+                     max: "2014-09-10 00:00:00"
                  }
              },
              "Expenditure": {
                  "date": {
                      min: "2013-01-01 15:00:00",
-                     max: "2014-09-15 19:00:00"
+                     max: "2014-09-07 00:00:00"
                  }
              }
          };
@@ -170,7 +170,7 @@
                              firstName: "Марина",
                              middleName: "Андреевна",
                              lastName: "Пекарская",
-                             phoneNumber: "+79021565814",
+                             phone: "+79021565814",
                              balance: getRandom(-1000, 10000),
                              discount: Math.round(getRandom(3, 30))
                          };
@@ -346,7 +346,7 @@
                              firstName: "Марина",
                              middleName: "Андреевна",
                              lastName: "Пекарская",
-                             phoneNumber: "+79021565814",
+                             phone: "+79021565814",
                              balance: getRandom(-1000, 10000),
                              discount: Math.round(getRandom(3, 30))
                          };

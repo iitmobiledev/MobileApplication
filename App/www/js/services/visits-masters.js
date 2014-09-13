@@ -12,7 +12,7 @@ myApp.factory('Client', function (Model) {
             var data = angular.extend({}, self);
             return data;
         },
-        primary: ['firstName', 'middleName', 'lastName']
+        primary: ['id']
     });
 });
 

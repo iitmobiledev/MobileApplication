@@ -58,6 +58,7 @@ myApp.controller('ExpendituresController', function ($scope, $filter, Loader, Da
         if (key) {
             Loader.get("Expenditure", key, function (obj) {
                 if (obj) {
+                    console.log(obj);
                     date = new Date(key);
                     if (forward) {
                         date = DateHelper.getNextPeriod(date, $scope.step).end;
@@ -143,7 +144,8 @@ myApp.controller('ExpendituresController', function ($scope, $filter, Loader, Da
 
 
     $scope.getKey = function (obj) {
-        return obj && obj.date.toDateString();
+        console.log(obj, obj.list[0].__primary__);
+        return obj && obj.list[0].__primary__;
     };
     
 
