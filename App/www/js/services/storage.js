@@ -11,6 +11,18 @@ myApp.service("Storage", [
         var dbName = "storage";
         var database = null;
         var dbVersion = 1.0;
+        var support = null;
+
+        //проверяет поддержку
+        checkSupport();
+
+        var isSupported = function () {
+            if (support !== null && (support == false || support == true)) {
+                return support;
+            } else {
+                setTimeout(isSupported, 500);
+            }
+        }
 
         function ClassesLastModified() {
             this.primary = "primary";
@@ -95,7 +107,6 @@ myApp.service("Storage", [
         };
 
 
-
         /**
          *
          * @ngdoc method
@@ -103,21 +114,42 @@ myApp.service("Storage", [
          * @methodOf myApp.service:Storage
          * @description Проверяет поддержку indexedDB платформой
          */
-        function isSupported() {
+        function checkSupport() {
+
             var idb = window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB || window.msIndexedDB;
             var idbTr = window.IDBTransaction || window.webkitIDBTransaction || window.msIDBTransaction;
             var idbKr = window.IDBKeyRange || window.webkitIDBKeyRange || window.msIDBKeyRange;
 
             if (idb && idbKr && idbTr) {
-                //                var request = indexedDB.open(dbName, dbVersion);
-                //                if (request) {
-                open();
-                return true;
-                //        }
+                var request = indexedDB.open("test_db", 1);
+                request.onsuccess = function (event) {
+                    if (request.readyState == "done" && request.result) {
+                        open();
+                        alert("IDB supported!");
+                        support = true;
+                        console.error("isSupport", support);
+                    } else {
+                        support = false;
+                        console.error("support", support);
+                        alert("IDB not support");
+                    }
+                };
+
+                request.onerror = function (event) {
+                    support = false;
+                    console.error("support", support);
+                    alert("req-error", request);
+                    console.log(event)
+                };
+
             } else {
-                alert("Not supported!");
-                return false;
+                alert("IDB not supported at all!");
+                console.error("support", support);
+                support = false;
             }
+
+            console.error("support-return", support);
+            return support;
         }
 
         var saveLastModify = waitDatabase(function (obj, callback) {
