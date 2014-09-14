@@ -1076,7 +1076,7 @@ only screen and (min-width: 768px) {
 }
 #afui .list.inset {
     border: 1px solid #ccc;
-    border-radius: 6px;
+/*    border-radius: 6px;*/
     margin: 10px;
 }
 #afui .list.inset li:first-child {
@@ -1545,7 +1545,7 @@ only screen and (min-width: 768px) {
     border-color: #666;
 }
 #afui .header .button {
-    color: #000;
+    color: rgb(154,25,185);
     background: none;
     border-color: transparent;
     font-size: 12px;
