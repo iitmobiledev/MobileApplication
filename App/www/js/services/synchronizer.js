@@ -76,30 +76,30 @@ myApp.service("Synchronizer", ["Storage", "Server", "ModelConverter", "Loader",
         };
 }]);
 
-var $inj = angular.injector(['myApp']);
-var synchronizer = $inj.get('Synchronizer');
-var loader = $inj.get('Loader');
-var Storage = $inj.get('Storage');
-
-(function beginSynch() {
-    var storageSupport;
-    Storage.isSupported(function (isSupport) {
-        storageSupport = isSupport;
-//        console.log("Support:", storageSupport);
-        if (storageSupport) {
-            console.log("synch begin");
-            synchronizer.synchCheck.call(synchronizer, "OperationalStatistics", function () {
-//                console.log("synch end OperationalStatistics0");
-                synchronizer.synchCheck.call(synchronizer, "Visit", function () {
-//                    console.log("synch end Visit0");
-                    synchronizer.synchCheck.call(synchronizer, "Expenditure", function () {
-                        console.log("synch end");
-                        loader.scope.$emit('synchEnd', '');
-                        setTimeout(beginSynch, 70000);
-                    });
-                });
-            });
-        }
-    });
-
-})();
+//var $inj = angular.injector(['myApp']);
+//var synchronizer = $inj.get('Synchronizer');
+//var loader = $inj.get('Loader');
+//var Storage = $inj.get('Storage');
+//
+//(function beginSynch() {
+//    var storageSupport;
+//    Storage.isSupported(function (isSupport) {
+//        storageSupport = isSupport;
+////        console.log("Support:", storageSupport);
+//        if (storageSupport) {
+//            console.log("synch begin");
+//            synchronizer.synchCheck.call(synchronizer, "OperationalStatistics", function () {
+////                console.log("synch end OperationalStatistics0");
+//                synchronizer.synchCheck.call(synchronizer, "Visit", function () {
+////                    console.log("synch end Visit0");
+//                    synchronizer.synchCheck.call(synchronizer, "Expenditure", function () {
+//                        console.log("synch end");
+//                        loader.scope.$emit('synchEnd', '');
+//                        setTimeout(beginSynch, 70000);
+//                    });
+//                });
+//            });
+//        }
+//    });
+//
+//})();

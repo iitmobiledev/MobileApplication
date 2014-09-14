@@ -28,4 +28,14 @@ value('ClassesFieldStat', function () {
             max: null
         }
     };
-});
+}).
+value('fieldStatQuery', [{
+    type: "OperationalStatistics",
+    field: "date"
+    }, {
+    type: "Visit",
+    field: "date"
+    }, {
+    type: "Expenditure",
+    field: "date"
+}]);

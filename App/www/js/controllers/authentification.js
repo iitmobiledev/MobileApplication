@@ -9,8 +9,10 @@
  * @requires myApp.service:UserAuthentification
  */
 myApp.controller('AuthentificationController', function ($scope, $location, authService) {
+    
+    
     $scope.correct = true;
-    if (sessvars.token){
+    if (sessvars.token) {
         $location.path('index');
     }
 
@@ -28,10 +30,16 @@ myApp.controller('AuthentificationController', function ($scope, $location, auth
         var password = document.getElementById('password').value;
         authService.login(login, password, function (token) {
             sessvars.token = token;
-            if (sessvars.token){
-                $location.path('index');
-            } else {
+            if (sessvars.token == 'error') {
+                $scope.errorText = "Не удается подключиться к интернету.";
                 $scope.correct = false;
+            } else {
+                if (sessvars.token) {
+                    $location.path('index');
+                } else {
+                    $scope.errorText = "Вы указали неправильный пароль, попробуйте повторить попытку.";
+                    $scope.correct = false;
+                }
             }
         });
     };

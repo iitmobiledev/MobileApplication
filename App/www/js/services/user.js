@@ -1,9 +1,5 @@
 myApp.service("authService", ["$http", "APPID", "SECRET_PHRASE", "VERSION",
     function ($http, APPID, SECRET_PHRASE, VERSION) {
-
-//        var APPID = "test";
-//        var SECRET_PHRASE = 'WatchThatStupidLeech';
-//        var VERSION = "1.0";
         var randomString = function (len, chars) {
             chars = chars || "abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
             len = len || 20;
@@ -61,6 +57,9 @@ myApp.service("authService", ["$http", "APPID", "SECRET_PHRASE", "VERSION",
                 }).
                 success(function (data, status, headers, config) {
                     callback(data.token);
+                }).
+                error(function(){
+                    callback('error');
                 });
             },
             logout: function (token, callback) {
