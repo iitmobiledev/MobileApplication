@@ -21,6 +21,7 @@ myApp.controller('VisitController', function ($scope, $filter, $routeParams, Loa
         Loader.get("Visit", $routeParams.id, function (obj) {
             console.log("Loader.get ", obj);
             if (obj) {
+                obj.client.phone = formatLocal("RU", obj.client.phone);
                 hasData = true;
                 $scope.date = new Date(obj.date);
                 var beginDate = $scope.date,
@@ -31,7 +32,7 @@ myApp.controller('VisitController', function ($scope, $filter, $routeParams, Loa
                     dateTill: endDate,
                     step: $scope.step
                 }, function (data) {
-                    
+
                     if (data.length == 0)
                         data.push(obj);
 

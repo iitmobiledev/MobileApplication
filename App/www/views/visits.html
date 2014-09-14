@@ -9,38 +9,39 @@
     <slider content-id="visits" get-data='getData' key-expression='getKey'></slider>
     <load-bar param-name="loading" ></load-bar>
     <script type="text/ng-template" id="visits">
-        <div id="visitsContent">
-            <date-changer date='page.date' step='$parent.step' has-future-data='$parent.hasFutureData(page.date)' has-prev-data='$parent.hasPrevData(page.date)'></date-changer>
-           <status-statistics visits='page.list'></status-statistics>
-<ul class="list inset">
-                <li ng-repeat="visit in page.list" id="visitsPerTime">
-                    {{$parent.getVisitInfo(visit)}}
-                    <a href="#/visit/{{visitInfo.id}}">
-                        <div style="width:100%">
-                            <visit-status status='visitInfo.status' style=""></visit-status>
-                            <img style="float:right;top:-25px;position:relative;left: -95px;" src="images/time.png">
-                            <span style="float:right;top:-25px;position:relative">{{visitInfo.time}}</span>
-                            <div>
-                                <span style="width:65%;white-space:nowrap;text-overflow:ellipsis;overflow: hidden; font-size:18px; font-weight:500; margin-bottom:5px;">
-                                    {{visitInfo.client}}
-                                </span>
+    <div id="visitsContent">
+        <date-changer date='page.date' step='$parent.step' has-future-data='$parent.hasFutureData(page.date)' has-prev-data='$parent.hasPrevData(page.date)'></date-changer>
+        <status-statistics visits='page.list'></status-statistics>
+        <ul class="list inset">
+            <li ng-repeat="visit in page.list" id="visitsPerTime" style="border-radius:0;">
+                {{$parent.getVisitInfo(visit)}}
+                <a href="#/visit/{{visitInfo.id}}">
+                    <div style="width:100%">
+                        <visit-status status='visitInfo.status' style=""></visit-status>
+                        <img style="float:right;top:-25px;position:relative;left: -95px;" src="images/time.png">
+                        <span style="float:right;top:-25px;position:relative">{{visitInfo.time}}</span>
+                        <div>
+                            <span style="width:65%;white-space:nowrap;text-overflow:ellipsis;overflow: hidden; font-size:18px; font-weight:500; margin-bottom:5px;">
+                                        {{visitInfo.client}}
+                                    </span>
 
-                            </div>
-                            <div>
-                                <span style="text-align:left;width:65%;white-space:nowrap;text-overflow:ellipsis;overflow: hidden;">
-                                   {{visitInfo.services}} — {{visitInfo.cost| money:0}} <span class="price">ю</span>
-                                </span>
-                            </div>
                         </div>
-                    </a>
-                </li>
-                </ul>
-                <ul class="list inset" ng-hide="hasVisits(page.list)">
+                        <div>
+                            <span style="text-align:left;width:65%;white-space:nowrap;text-overflow:ellipsis;overflow: hidden;">
+                                       {{visitInfo.services}} — {{visitInfo.cost| money:0}} <span class="price">ю</span>
+                            </span>
+                        </div>
+                    </div>
+                </a>
+            </li>
+            <li style="text-align: center; font-size: 14pt;" ng-hide="hasVisits(page.list)">Нет визитов</li>
+        </ul>
+    </div>
+    </script>
+<!--
+<ul class="list inset" ng-hide="hasVisits(page.list)">
                     <li style='text-align: center; font-size: 14pt;'>Нет визитов</li>
                 </ul>
-            
-        </div>
-    </script>
-
+-->
 </div>
 <footer-content show="true"></footer-content>

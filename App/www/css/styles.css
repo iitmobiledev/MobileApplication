@@ -32,10 +32,9 @@
     border: 1px solid #D3D3D3;
     border-top: none;
     width: 50%;
-      border-left: none;
+    border-left: none;
     padding: 20px 0;
 }
-
 /*Data navigation*/
 
 #dateToggle {
@@ -82,7 +81,7 @@
 .comment {
     padding: 5%;
     width: 100%;
-    border: 1px solid #969696;
+    border: 1px solid #B9B9B9;
     border-radius: 10px;
     font-size: 12pt;
 }
@@ -178,4 +177,9 @@ a.settings {
 }
 .price {
     font-family: 'PT Sans';
+}
+#backArrow {
+    top: 9px;
+    left: 5px;
+    position: relative;
 }

@@ -15,7 +15,7 @@
  */
 myApp.controller('VisitsController', function ($scope, $filter, $location, Loader, DateHelper, Visit) {
     var today = new Date();
-    $scope.date = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+    $scope.date = new Date(today.getFullYear(), today.getMonth(), today.getDate()-7);
     $scope.step = DateHelper.steps.DAY;
     $scope.pageIndex = 1;
     $scope.loading = true;

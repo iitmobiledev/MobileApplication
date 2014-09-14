@@ -73,6 +73,7 @@ myApp.directive('headerContent', function () {
             function setBackButton() {
                 if (backButtonLink) {
                     $(element).find("a").replaceWith('<a class="button" id="backButton" href="' + backButtonLink + '">Назад</a>');
+                    $(element).find("img").replaceWith('<img id="backArrow" src="images/backArrow.png" style="max-height: 20px;">');
                 }
             }
 
@@ -88,7 +89,8 @@ myApp.directive('headerContent', function () {
             '<div class="widget-container wrapping-col single-centered">' +
             '</div>' +
             '<div id="divForBackButton" class="widget-container content-area horiz-area wrapping-col left">' +
-            '<a style:"display: none !important"></a>' +
+            '<img style="display: none !important">'+
+            '<a style="display: none !important"></a>' +
             '</div>' +
             '<div class="widget-container content-area horiz-area wrapping-col right" >' +
             '</div>' +
