@@ -110,7 +110,7 @@ myApp.factory('MastersForPeriod', function (DateHelper, Loader, $filter) {
         });
 
         var list = [];
-        for (var date = period.begin; date < period.end || date.toDateString() == period.end.toDateString(); date.setDate(date.getDate() + 1)) {
+        for (var date = new Date(period.begin); date < period.end || date.toDateString() == period.end.toDateString(); date.setDate(date.getDate() + 1)) {
             if (visitsByDate[date.toDateString()]) {
                 list.push(visitsByDate[date.toDateString()]);
             }
@@ -118,7 +118,6 @@ myApp.factory('MastersForPeriod', function (DateHelper, Loader, $filter) {
 
         var result = [];
         for (var i in list) {
-            //                console.log(list[i]);
             if (list[i].length != 0) {
                 result.push(list[i].sort(function (a, b) {
                     return new Date(a.date).getTime() - new Date(b.date).getTime()
@@ -128,38 +127,83 @@ myApp.factory('MastersForPeriod', function (DateHelper, Loader, $filter) {
         var data = result;
 
         var mastersForPeriod = [];
-        for (var k = 0; k < data.length; k++) {
+
+        for (var date = period.begin; date < period.end || date.toDateString() == period.end.toDateString(); date.setDate(date.getDate() + 1)) {
             var mastersForDay = [];
-            for (var i = 0; i < data[k].length; i++) {
-                for (var j = 0; j < data[k][i].serviceList.length; j++) {
-                    var usl = checkMasterInList(data[k][i].serviceList[j].master, mastersForDay);
-                    if (usl !== null) {
-                        if (checkVisitInList(data[k][i], mastersForDay[usl].visList) == null)
-                            mastersForDay[usl].visList.push(data[k][i]);
-                    } else {
-                        if (data[k][i].serviceList[j].master)
-                            mastersForDay.push(new perMaster(data[k][i].serviceList[j].master, data[k][i]));
+            var needData = [];
+            for (var l = 0; l < data.length; l++){
+                if (data[l][0].date.toDateString() == date.toDateString())
+                    needData = data[l];
+            }
+            if (needData.length == 0) {
+                mastersForPeriod.push(mastersForDay);
+            } else {
+                for (var i = 0; i < needData.length; i++) {
+                    for (var j = 0; j < needData[i].serviceList.length; j++) {
+                        var usl = checkMasterInList(needData[i].serviceList[j].master, mastersForDay);
+                        if (usl !== null) {
+                            if (checkVisitInList(needData[i], mastersForDay[usl].visList) == null)
+                                mastersForDay[usl].visList.push(needData[i]);
+                        } else {
+                            if (needData[i].serviceList[j].master)
+                                mastersForDay.push(new perMaster(needData[i].serviceList[j].master, needData[i]));
+                        }
                     }
                 }
-            }
 
-            mastersForDay = mastersForDay.sort(function (a, b) {
-                if (typeof (b.master.lastName) == 'undefined')
-                    b.master.lastName = "";
-                if (a.master.lastName.toLowerCase() < b.master.lastName.toLowerCase())
-                    return -1;
-                if (nameA = a.master.lastName.toLowerCase() > b.master.lastName.toLowerCase())
-                    return 1;
-                return 0;
-            });
+                mastersForDay = mastersForDay.sort(function (a, b) {
+                    if (typeof (b.master.lastName) == 'undefined')
+                        b.master.lastName = "";
+                    if (a.master.lastName.toLowerCase() < b.master.lastName.toLowerCase())
+                        return -1;
+                    if (nameA = a.master.lastName.toLowerCase() > b.master.lastName.toLowerCase())
+                        return 1;
+                    return 0;
+                });
 
-            for (var i in mastersForDay) {
-                var vlist = mastersForDay[i].visList;
-                mastersForDay[i].visList = getGoodVisitsList(vlist, mastersForDay[i].master.id);
+                for (var i in mastersForDay) {
+                    var vlist = mastersForDay[i].visList;
+                    mastersForDay[i].visList = getGoodVisitsList(vlist, mastersForDay[i].master.id);
+                }
+                //                console.log('mastersForDay', mastersForDay);
+                mastersForPeriod.push(mastersForDay);
             }
-            //                console.log('mastersForDay', mastersForDay);
-            mastersForPeriod.push(mastersForDay);
         }
+
+
+
+        //        for (var k = 0; k < data.length; k++) {
+        //            var mastersForDay = [];
+        //            for (var i = 0; i < data[k].length; i++) {
+        //                for (var j = 0; j < data[k][i].serviceList.length; j++) {
+        //                    var usl = checkMasterInList(data[k][i].serviceList[j].master, mastersForDay);
+        //                    if (usl !== null) {
+        //                        if (checkVisitInList(data[k][i], mastersForDay[usl].visList) == null)
+        //                            mastersForDay[usl].visList.push(data[k][i]);
+        //                    } else {
+        //                        if (data[k][i].serviceList[j].master)
+        //                            mastersForDay.push(new perMaster(data[k][i].serviceList[j].master, data[k][i]));
+        //                    }
+        //                }
+        //            }
+        //
+        //            mastersForDay = mastersForDay.sort(function (a, b) {
+        //                if (typeof (b.master.lastName) == 'undefined')
+        //                    b.master.lastName = "";
+        //                if (a.master.lastName.toLowerCase() < b.master.lastName.toLowerCase())
+        //                    return -1;
+        //                if (nameA = a.master.lastName.toLowerCase() > b.master.lastName.toLowerCase())
+        //                    return 1;
+        //                return 0;
+        //            });
+        //
+        //            for (var i in mastersForDay) {
+        //                var vlist = mastersForDay[i].visList;
+        //                mastersForDay[i].visList = getGoodVisitsList(vlist, mastersForDay[i].master.id);
+        //            }
+        //            //                console.log('mastersForDay', mastersForDay);
+        //            mastersForPeriod.push(mastersForDay);
+        //        }
         return mastersForPeriod;
     };
 });

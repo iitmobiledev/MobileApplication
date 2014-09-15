@@ -243,7 +243,9 @@ myApp.controller('VisitsMasterController', function ($scope, $filter, $location,
      */
     $scope.getMasterInfo = function (master) {
         $scope.masterId = master.id;
-        return master.lastName + " " + master.firstName;
+        if (master.lastName && master.firstName)
+            return master.lastName + " " + master.firstName;
+        return "(нет мастера)";
     };
 
     $scope.log = function (str) {
