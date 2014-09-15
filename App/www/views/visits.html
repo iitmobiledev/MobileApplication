@@ -18,19 +18,16 @@
                 <a href="#/visit/{{visitInfo.id}}">
                     <div style="width:100%">
                         <visit-status status='visitInfo.status' style=""></visit-status>
-                        <img style="float:right;top:-25px;position:relative;left: -95px;" src="images/time.png">
+                        <img style="float:right;top:-23px;position:relative;left: -95px;max-height: 13px;" src="images/time.png">
                         <span style="float:right;top:-25px;position:relative">{{visitInfo.time}}</span>
                         <div>
                             <span style="width:65%;white-space:nowrap;text-overflow:ellipsis;overflow: hidden; font-size:18px; font-weight:500; margin-bottom:5px;">
                                         {{visitInfo.client}}
                                     </span>
-
                         </div>
-                        <div>
-                            <span style="text-align:left;width:65%;white-space:nowrap;text-overflow:ellipsis;overflow: hidden;">
-                                       {{visitInfo.services}} — {{visitInfo.cost| money:0}} <span class="price">ю</span>
+                            <span style="display: inline-block;max-width:75%;white-space:nowrap;text-overflow:ellipsis;overflow: hidden;">{{visitInfo.services}} —</span>
+                            <span style="display: inline-block;text-align:right;max-width:18%;white-space:nowrap;text-overflow:ellipsis;overflow: hidden;">{{visitInfo.cost| money:0}} <span class="price">ю</span>
                             </span>
-                        </div>
                     </div>
                 </a>
             </li>
@@ -42,6 +39,14 @@
 <ul class="list inset" ng-hide="hasVisits(page.list)">
                     <li style='text-align: center; font-size: 14pt;'>Нет визитов</li>
                 </ul>
+-->
+<!--
+ <span style="text-align:left;width:65%;white-space:nowrap;text-overflow:ellipsis;overflow: hidden;">
+                                                               {{visitInfo.services}} — 
+                                                    </span>
+<span style="text-align:right;width:15%;white-space:nowrap;text-overflow:ellipsis;overflow: hidden;">
+                            {{visitInfo.cost| money:0}} <span class="price">ю</span>
+</span>
 -->
 </div>
 <footer-content show="true"></footer-content>

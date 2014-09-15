@@ -15,8 +15,7 @@
             <status-statistics visits='page.visits'></status-statistics>
             <ul class="list inset" ng-repeat="masterVis in page.list" id="visitsPerMasters">
                 <li class="divider" ng-click="toMaster(masterVis.master.id)">
-                <img style="border-radius: 50%;border: 1px solid rgb(149,24,185);max-height: 40px;" src="images/profit.png">
-                    {{$parent.getMasterInfo(masterVis.master)}}
+                    <img style="border-radius: 50%;margin-right: 10px;border: 1px solid rgb(149,24,185);max-height: 40px;" src="images/profit.png">{{$parent.getMasterInfo(masterVis.master)}}
                 </li>
                 <div ng-repeat="visit in masterVis.visList">
                     <li style="border-top: none;">
@@ -28,26 +27,26 @@
                                 <span style="float:right;top:-25px;position:relative">{{masterVisitInfo.time}}</span>
                                 <div>
                                     <span style="width:65%;white-space:nowrap;text-overflow:ellipsis;overflow: hidden; font-size:18px; font-weight:500; margin-bottom:5px;">
-                                            {{masterVisitInfo.client}}
-                                        </span>
+                                                    {{masterVisitInfo.client}}
+                                                </span>
                                 </div>
                                 <div>
-                                    <span style="text-align:left;width:65%;white-space:nowrap;text-overflow:ellipsis;overflow: hidden;">
-                                           {{masterVisitInfo.service}} — {{masterVisitInfo.cost| money:0}} <span class="price">ю</span>
-                                    </span>
+
+                                    <span style="display: inline-block;max-width:75%;white-space:nowrap;text-overflow:ellipsis;overflow: hidden;">{{masterVisitInfo.service}} —</span>
+                                    <span style="display: inline-block;text-align:right;max-width:18%;white-space:nowrap;text-overflow:ellipsis;overflow: hidden;">{{masterVisitInfo.cost| money:0}}  <span class="price">ю</span>
                                 </div>
                             </div>
                         </a>
-                    </li>    
+                    </li>
                     <li style="font-weight:lighter; border-bottom: 1px solid #ccc;font-size:12pt; color:#b8b8b8" ng-show="visit.isDownTime">Простой мастера {{visit.downTime}}</li>
-                    </div>
+                </div>
             </ul>
 
 
             <ul class="list inset" ng-hide="hasVisits(page.list)">
                 <li style='text-align: center; font-size: 14pt;'>Нет визитов</li>
             </ul>
-        </div
+            </div
     </script>
 </div>
 <footer-content show="true"></footer-content>
