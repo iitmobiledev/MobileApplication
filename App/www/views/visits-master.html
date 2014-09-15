@@ -5,8 +5,6 @@
         <a ng-click="onTime()" class="button widget uib_w_25 d-margins" data-uib="app_framework/button" data-ver="1">По времени</a>
         <a id="mastersButton" class="button widget uib_w_26 d-margins active" data-uib="app_framework/button" data-ver="1">По мастерам</a>
     </div>
-<!--<status-statistics visits="visits"></status-statistics>-->
-<!--    {{$parent.getVisits(page.list)}}-->
     <slider content-id="visits-master" get-data='getData' key-expression='getKey'></slider>
     <load-bar param-name="loading" ></load-bar>
     <script type="text/ng-template" id="visits-master">
