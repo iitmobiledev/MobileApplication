@@ -12,8 +12,7 @@
     <script type="text/ng-template" id="visits-master">
         <div id="visitsContent">
             <date-changer date='page.date' step='$parent.step' has-future-data='hasFutureData(page.date)' has-prev-data='hasPrevData(page.date)'></date-changer>
-            
-            
+            <status-statistics visits='page.visits'></status-statistics>
             <ul class="list inset" ng-repeat="masterVis in page.list" id="visitsPerMasters">
                 <li class="divider" ng-click="toMaster(masterVis.master.id)">
                 <img style="border-radius: 50%;border: 1px solid rgb(149,24,185);max-height: 40px;" src="images/profit.png">

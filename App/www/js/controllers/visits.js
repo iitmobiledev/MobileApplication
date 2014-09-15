@@ -76,6 +76,7 @@ myApp.controller('VisitsController', function ($scope, $filter, $location, Loade
         var resultArr = [];
         var date;
         if (key) {
+            console.log('key ', key);
             Loader.get("Visit", key, function (obj) {
                 if (obj) {
                     date = new Date(key);

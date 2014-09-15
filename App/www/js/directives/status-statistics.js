@@ -7,8 +7,8 @@ myApp.directive('statusStatistics', function (Visit) {
 
             var updateStatus = function () {
                 visits = scope.$eval(attrs.visits);
-//                console.log("visits in dir ", visits);
-                
+                console.log("visits in dir ", visits);
+
                 salary = 0;
 
                 var statuses = {
@@ -21,7 +21,9 @@ myApp.directive('statusStatistics', function (Visit) {
                 for (var i = 0; i < visits.length; i++) {
                     salary += getEmployeeSalary(visits[i].serviceList);
 
-                    switch (visits[i].status) {
+                    //                    Visit.statuses.titles[visits[i].status]
+
+                    switch (Visit.statuses.titles[visits[i].status]) {
                     case Visit.statuses.titles.NEW:
                         statuses.newRecord.count++;
                         statuses.newRecord.amount = getServicesCost(visits[i].serviceList);
@@ -30,7 +32,7 @@ myApp.directive('statusStatistics', function (Visit) {
                         statuses.notCome.count++;
                         statuses.notCome.amount = getServicesCost(visits[i].serviceList);
                         break;
-                    case Visit.statuses.titles.COME:
+                    case Visit.statuses.titles.come:
                         statuses.come.count++;
                         statuses.come.amount = getServicesCost(visits[i].serviceList);
                         break;
@@ -51,23 +53,23 @@ myApp.directive('statusStatistics', function (Visit) {
                 element.find('#confirmedAmount').html(statuses.confirmed.amount);
                 element.find('#salary').html(salary);
             }
-//            scope.$watch(attrs.visits, updateStatus);
+            //            scope.$watch(attrs.visits, updateStatus);
 
-            function getServicesCost(services) {
-                var amount = 0;
-                for (var j = 0; j < services.length; j++) {
-                    amount += services[j].cost;
+                function getServicesCost(services) {
+                    var amount = 0;
+                    for (var j = 0; j < services.length; j++) {
+                        amount += services[j].cost;
+                    }
+                    return amount;
                 }
-                return amount;
-            }
 
-            function getEmployeeSalary(services) {
-                var salary = 0;
-                for (var j = 0; j < services.length; j++) {
-                    salary += services[j].employeeSalary;
+                function getEmployeeSalary(services) {
+                    var salary = 0;
+                    for (var j = 0; j < services.length; j++) {
+                        salary += services[j].employeeSalary;
+                    }
+                    return salary;
                 }
-                return salary;
-            }
             updateStatus();
         },
         templateUrl: 'views/statuses-statistics.html'

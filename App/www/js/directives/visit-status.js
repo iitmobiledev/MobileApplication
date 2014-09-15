@@ -5,7 +5,7 @@ myApp.directive('visitStatus', function (Visit) {
         link: function (scope, element, attrs) {
             var statuses = Visit.statuses;
             var updateStatus = function () {
-                var status = scope.$eval(attrs.status);
+                var status = statuses.titles[scope.$eval(attrs.status)];
                 var classes = scope.$eval(attrs.classes);
 
                 switch (status) {
@@ -23,7 +23,7 @@ myApp.directive('visitStatus', function (Visit) {
                             text: status
                         }));
                     break;
-                case statuses.titles.COME:
+                case statuses.titles.come:
                     element.append(
                         $("<div>", {
                             "class": statuses.classesNames.COME,

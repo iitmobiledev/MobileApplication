@@ -104,7 +104,9 @@ myApp.service("Loader", ["ModelConverter", "RealServer", "$rootScope", "Storage"
              */
             get: function (className, primaryKey, callback) {
                 Server.get(className, primaryKey, function (data) {
-                    callback(ModelConverter.getObject(className, data))
+                    console.log('server.get ', data);
+                    callback(ModelConverter.getObject(className, data));
+
                 });
 
                 //        if (localStat && serverStat) {
@@ -142,6 +144,7 @@ myApp.service("Loader", ["ModelConverter", "RealServer", "$rootScope", "Storage"
             //получение объектов за период
             search: function (className, params, callback) {
                 Server.search(className, params, function (result) {
+                    console.log('server.search ', result);
                     var objs = ModelConverter.getObjects(className, result);
                     callback(objs);
                 });

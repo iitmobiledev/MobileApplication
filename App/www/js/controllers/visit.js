@@ -23,9 +23,9 @@ myApp.controller('VisitController', function ($scope, $filter, $routeParams, Loa
             if (obj) {
                 obj.client.phone = formatLocal("RU", obj.client.phone);
                 hasData = true;
-                $scope.date = new Date(obj.date);
-                var beginDate = $scope.date,
-                    endDate = $scope.date;
+                $scope.date = new Date(obj.date.getFullYear(), obj.date.getMonth(), obj.date.getDate(), 0, 0, 0);
+                var beginDate = new Date(obj.date.getFullYear(), obj.date.getMonth(), obj.date.getDate(), 0, 0, 0),
+                    endDate = new Date(obj.date.getFullYear(), obj.date.getMonth(), obj.date.getDate(), 23, 59, 59);
                 console.log(beginDate, endDate);
                 Loader.search("Visit", {
                     dateFrom: beginDate,
