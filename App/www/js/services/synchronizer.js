@@ -1,7 +1,7 @@
-myApp.service("Synchronizer", ["Storage", "Server", "ModelConverter", "Loader",
-    function (Storage, Server, ModelConverter, Loader) {
+myApp.service("Synchronizer", ["Storage", "RealServer", "ModelConverter", "Loader",
+    function (Storage, RealServer, ModelConverter, Loader) {
 
-//        var Server = new RealServer(sessvars.token);
+        var Server = new RealServer(sessvars.token);
 
         function save(data, className, offset, callback) {
             if (offset >= data.length) {
@@ -27,6 +27,7 @@ myApp.service("Synchronizer", ["Storage", "Server", "ModelConverter", "Loader",
                     "count": count,
                     "offset": offset
                 }, function (data) {
+                    console.log('Server.search', data);
                     if (data == null || data.length < count) {
                         Server.lastModified(["OperationalStatistics", "Visit", "Expenditure"], function (date) {
                             lastLocalModified[className] = lastServerModified[className];
@@ -58,16 +59,16 @@ myApp.service("Synchronizer", ["Storage", "Server", "ModelConverter", "Loader",
             },
 
             synchCheck: function (className, callback) {
-//                console.log('synch check');
+                //                console.log('synch check');
                 var synch = this;
                 Storage.lastModified(["OperationalStatistics", "Visit", "Expenditure"], function (lastLocalModified) {
-//                    console.log('Storage.lastModified', lastLocalModified[className]);
+                    //                    console.log('Storage.lastModified', lastLocalModified[className]);
                     Server.lastModified(["OperationalStatistics", "Visit", "Expenditure"], function (lastServerModified) {
-//                        console.log('Server.lastModified', lastServerModified[className]);
+                        //                        console.log('Server.lastModified', lastServerModified[className]);
                         if (lastLocalModified[className] == lastServerModified[className]) {
                             callback();
                         } else {
-//                            console.log('synch need');
+                            //                            console.log('synch need');
                             synch.updateData(className, 20, 0, callback, lastLocalModified, lastServerModified);
                         }
                     });
@@ -76,10 +77,25 @@ myApp.service("Synchronizer", ["Storage", "Server", "ModelConverter", "Loader",
         };
 }]);
 
-//var $inj = angular.injector(['myApp']);
+var $inj = angular.injector(['myApp']);
 //var synchronizer = $inj.get('Synchronizer');
 //var loader = $inj.get('Loader');
 //var Storage = $inj.get('Storage');
+
+
+//var RealServer = $inj.get('RealServer');
+//var Server = new RealServer(sessvars.token);
+//console.log('synch');
+//Server.search("OperationalStatistics", {
+//    "modifiedSince": "2014-09-15 00:00:00",
+//    "count": 10,
+//    "offset": 0
+//}, function (data) {
+//    console.log('Server.search', data);
+//});
+
+
+
 //
 //(function beginSynch() {
 //    var storageSupport;

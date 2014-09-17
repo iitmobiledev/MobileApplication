@@ -23,6 +23,7 @@ myApp.controller('OperationalStatisticController', function ($scope, $location, 
     $scope.loading = true;
 
     $scope.getData = function (key, quantity, forward, callback) {
+//        if (forward && $scope.futureData($scope.date))
         $scope.loading = true;
         var resultArr = [];
         var date;
@@ -119,6 +120,9 @@ myApp.controller('OperationalStatisticController', function ($scope, $location, 
     $scope.hasPrevData = function (currentDate) {
         Loader.hasPastData("OperationalStatistics", currentDate);
     };
+    
+    $scope.past = false;
+    $scope.future = false;
 
     /**
      *
@@ -129,7 +133,7 @@ myApp.controller('OperationalStatisticController', function ($scope, $location, 
      * @description Метод для проверки наличия данных за будущий период.
      */
     $scope.futureData = function (currentDate) {
-        Loader.hasFutureData("OperationalStatistics", currentDate);
+        return Loader.hasFutureData("OperationalStatistics", currentDate);
     }
 
     $rootScope.$on('received', function () {

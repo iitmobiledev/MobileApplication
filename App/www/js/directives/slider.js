@@ -67,10 +67,13 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
                             if (ready) {
                                 var key = getCurrentKey();
                                 //                            console.log("key", key)
+//                                console.log('scope element slContent ', angular.element('#slContent').scope().date);
+//                                    console.log('scope element my-slider', angular.element('.my-slider').scope().date);
                                 if ($('.my-slider').slickCurrentSlide() == 0) {
                                     dataCallback(key, count, false, addPastData);
                                     scope.$apply();
                                 } else if ($('.my-slider').slickCurrentSlide() == ($('.my-slider').getSlick().slideCount - 1)) {
+//                                    console.log(scope.date);
                                     dataCallback(key, count, true, addFutureData);
                                     scope.$apply();
                                 }
@@ -150,15 +153,15 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
                         newscope.page = contentData[i];
 
                         compiled(newscope, function (clonedElement, scope) {
-                            
+
                             clonedElement.attr("contentkey", keyFunc(contentData[i]))
                             $('.my-slider').slickAdd(clonedElement);
-//                            newscope.$apply();
+                            //                            newscope.$apply();
                         });
-                                                newscope.$apply();
+                        newscope.$apply();
                     }
                 }
-//                scope.$apply();
+                //                scope.$apply();
                 ready = true;
             }
 
@@ -189,14 +192,14 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
                         compiled(newscope, function (clonedElement, scope) {
                             clonedElement.attr("contentkey", keyFunc(contentData[i]))
                             $('.my-slider').slickAdd(clonedElement);
-//                            newscope.$apply();
+                            //                            newscope.$apply();
                         });
-                                                newscope.$apply();
+                        newscope.$apply();
                     }
 
                     $('.my-slider').slickSetOption('speed', 0).slickGoTo(curIndex).slickSetOption('speed', 300);
 
-//                    scope.$apply();
+                    //                    scope.$apply();
                     ready = true;
                 }
             }
