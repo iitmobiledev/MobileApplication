@@ -183,3 +183,27 @@ a.settings {
     left: 5px;
     position: relative;
 }
+
+/*Slider buttons*/
+/*
+.slider-back-button{
+    position:absolute;
+    width:10%;
+    height:5%;
+    top:25px;
+    background-image:url("'../../../images/prev.png");
+    background-position-x:15px;
+    background-repeat:no-repeat;
+    background-size:12px;
+}
+.slider-next-button{
+    float: right;
+    position:absolute;
+    width:10%;
+    height:5%;
+    top:25px;
+    background-image:url("'../../../images/next.png");
+    background-position-x:15px;
+    background-repeat:no-repeat;
+    background-size:12px;
+}*/
