@@ -1,4 +1,4 @@
-var myApp = angular.module('myApp', ['ngRoute', 'ngAnimate']);
+var myApp = angular.module('myApp', ['ngRoute', 'ngAnimate']);  //,'angulartics'
 var flag = true;
 
 
