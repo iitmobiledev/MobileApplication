@@ -36,7 +36,7 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
             var content = $templateCache.get(contentID);
             var compiled = $compile(angular.element(content));
 
-            var min, max;
+            var min, max, past = true, future = true;
 
             var updateMin = function () {
                 min = scope.$eval(attrs.min);
@@ -89,12 +89,15 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
                                     var step = splitPk[splitPk.length - 1];
                                     period = DateHelper.getPeriod(new Date(splitPk[0]), step);
                                 }
-                                if ($('.my-slider').slickCurrentSlide() == 0 && period.begin > min) {
+                                past = false, future = false;
+                                if (period.begin > min)
+                                    past = true;
+                                if (period.end < max)
+                                    future = true;
+                                if ($('.my-slider').slickCurrentSlide() == 0 && past) {
                                     dataCallback(key, count, false, addPastData);
                                     scope.$apply();
-                                } else if ($('.my-slider').slickCurrentSlide() == ($('.my-slider').getSlick().slideCount - 1) && period.end < max) {
-                                    console.log('scope element slick ', angular.element('.slick-active').attr('contentkey'));
-                                    console.log('max ', max);
+                                } else if ($('.my-slider').slickCurrentSlide() == ($('.my-slider').getSlick().slideCount - 1) && future) {
                                     dataCallback(key, count, true, addFutureData);
                                     scope.$apply();
                                 }

@@ -14,7 +14,11 @@
  * @requires myApp.service:DateHelper
  */
 myApp.controller('VisitsController', function ($scope, $filter, $location, Loader, DateHelper, Visit, $rootScope, $routeParams) {
-    var today = new Date();
+    var today;
+    if ($routeParams.date)
+        today = new Date($routeParams.date);
+    else
+        today = new Date();
     $scope.date = new Date(today.getFullYear(), today.getMonth(), today.getDate());
     $scope.step = DateHelper.steps.DAY;
     $scope.pageIndex = 1;
