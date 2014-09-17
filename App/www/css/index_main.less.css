@@ -170,6 +170,7 @@ body:not(#afui) .upage-outer {
 }
 .upage-content {
     z-index: 1;
+    height: 100%;
 }
 #afui .upage {
     padding: 0;
