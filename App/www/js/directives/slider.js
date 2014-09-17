@@ -103,6 +103,7 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
                                     dataCallback(key, count, true, addFutureData);
                                     scope.$apply();
                                 }
+                                scope.$apply();
                             }
                         },
                         useCSS: false
