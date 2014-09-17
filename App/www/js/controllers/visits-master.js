@@ -12,40 +12,23 @@
  * @requires myApp.service:MastersPerDayLoader
  * @requires myApp.service:DateHelper
  */
-myApp.controller('VisitsMasterController', function ($scope, $filter, $location, DateHelper, $routeParams, MastersForPeriod, Loader) {
+myApp.controller('VisitsMasterController', function ($scope, $filter, $location, DateHelper, $routeParams, MastersForPeriod, Loader, $rootScope) {
 
-    var today = new Date($routeParams.date);
+    var today = new Date($routeParams.date) || new Date();
     $scope.date = new Date(today.getFullYear(), today.getMonth(), today.getDate());
     $scope.step = DateHelper.steps.DAY;
     $scope.loading = true;
     $scope.pageIndex = 0;
 
-    /**
-     *
-     * @ngdoc method
-     * @name myApp.controller:VisitsMasterController#hasPrevData
-     * @methodOf myApp.controller:VisitsMasterController
-     * @returns {Boleean} Возвращает true, если есть данные за прошлое.
-     * @description Метод для проверки существования данных за прошлое.
-     */
-    $scope.hasPrevData = function () {
-        return true;
-        //        return $scope.date > minDate;
-    };
+    $scope.min = null;
+    $scope.max = null;
 
-    /**
-     *
-     * @ngdoc method
-     * @name myApp.controller:VisitsMasterController#hasFutureData
-     * @methodOf myApp.controller:VisitsMasterController
-     * @returns {Boleean} Возвращает true, если есть данные за будущее.
-     * @description Метод для проверки существования данных за будущее.
-     */
-    $scope.hasFutureData = function () {
-        return true;
-        //        return $scope.date < maxDate && $scope.date.toDateString() != maxDate.toDateString();
-    };
-
+    $rootScope.$on('minMaxGet', function () {
+//        console.log('received on');
+        $scope.min = Loader.getMinDate("Visit");
+        $scope.max = Loader.getMaxDate("Visit");
+    });
+    
     /**
      *
      * @ngdoc method
@@ -55,7 +38,8 @@ myApp.controller('VisitsMasterController', function ($scope, $filter, $location,
      * сортировкой по времени.
      */
     $scope.onTime = function () {
-        $location.path('visits');
+        var pk = angular.element('.slick-active').attr('contentkey');
+        $location.path('visits/' + pk);
     }
 
     //    $scope.visits = [];
@@ -114,7 +98,7 @@ myApp.controller('VisitsMasterController', function ($scope, $filter, $location,
         pages = pages.sort(function (a, b) {
             return a.date > b.date;
         });
-        console.log('visits pages ', pages);
+//        console.log('visits pages ', pages);
         return pages;
     }
 
@@ -162,16 +146,16 @@ myApp.controller('VisitsMasterController', function ($scope, $filter, $location,
                             begin: beginDate,
                             end: endDate
                         });
-                        console.log(data)
+//                        console.log(data)
                         var list = [];
                         var i = 0;
 
-                        console.log("beginEnd", beginDate, endDate)
+//                        console.log("beginEnd", beginDate, endDate)
                         for (var tmpdate = new Date(beginDate); tmpdate < endDate || tmpdate.toDateString() == endDate.toDateString(); tmpdate.setDate(tmpdate.getDate() + 1)) {
                             var dayVisit = visits.filter(function (vis) {
                                 return vis.date.toDateString() == tmpdate.toDateString();
                             })[0];
-                            console.log(dayVisit, tmpdate);
+//                            console.log(dayVisit, tmpdate);
                             var page = new VisitsMasterPage(new Date(tmpdate), data[i], dayVisit.list);
                             list.push(page);
                             i++;
@@ -185,7 +169,7 @@ myApp.controller('VisitsMasterController', function ($scope, $filter, $location,
             date = $scope.date;
             var beginDate = date,
                 endDate = date;
-            console.log("beginEnd", beginDate, endDate);
+//            console.log("beginEnd", beginDate, endDate);
             for (var i = 0; i < quantity; i++) {
                 endDate = DateHelper.getNextPeriod(endDate, $scope.step).end;
                 beginDate = DateHelper.getPrevPeriod(beginDate, $scope.step).begin;
@@ -195,7 +179,7 @@ myApp.controller('VisitsMasterController', function ($scope, $filter, $location,
                 beginDate = period.begin;
                 endDate = period.end;
             }
-            console.log("beginEnd", beginDate, endDate);
+//            console.log("beginEnd", beginDate, endDate);
             Loader.search("Visit", {
                 dateFrom: beginDate,
                 dateTill: endDate,
@@ -207,22 +191,22 @@ myApp.controller('VisitsMasterController', function ($scope, $filter, $location,
                     begin: new Date(beginDate),
                     end: new Date(endDate)
                 });
-                console.log(data)
+//                console.log(data)
                 var list = [];
                 var i = 0;
 
-                console.log("beginEnd", beginDate, endDate);
+//                console.log("beginEnd", beginDate, endDate);
                 for (var tmpdate = new Date(beginDate); tmpdate < endDate || tmpdate.toDateString() == endDate.toDateString(); tmpdate.setDate(tmpdate.getDate() + 1)) {
                     var dayVisit = visits.filter(function (vis) {
                         return vis.date.toDateString() == tmpdate.toDateString();
                     })[0];
-                    console.log(dayVisit, tmpdate);
+//                    console.log(dayVisit, tmpdate);
                     var page = new VisitsMasterPage(new Date(tmpdate), data[i], dayVisit.list);
                     list.push(page);
                     i++;
                 }
                 $scope.loading = false;
-                console.log("list", list)
+//                console.log("list", list)
                 callback(list);
             });
         }

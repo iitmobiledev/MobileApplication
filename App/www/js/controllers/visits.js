@@ -13,44 +13,27 @@
  * @requires myApp.service:VisitsLoader
  * @requires myApp.service:DateHelper
  */
-myApp.controller('VisitsController', function ($scope, $filter, $location, Loader, DateHelper, Visit) {
+myApp.controller('VisitsController', function ($scope, $filter, $location, Loader, DateHelper, Visit, $rootScope, $routeParams) {
     var today = new Date();
-    $scope.date = new Date(today.getFullYear(), today.getMonth(), today.getDate()-7);
+    $scope.date = new Date(today.getFullYear(), today.getMonth(), today.getDate());
     $scope.step = DateHelper.steps.DAY;
     $scope.pageIndex = 1;
     $scope.loading = true;
-    //        updatePages();
-    /**
-     *
-     * @ngdoc method
-     * @name myApp.controller:VisitsController#hasPrevData
-     * @methodOf myApp.controller:VisitsController
-     * @returns {Boleean} Возвращает true, если есть данные за прошлое.
-     * @description Метод для проверки существования данных за прошлое
-     */
-    $scope.hasPrevData = function () {
-        return true;
-        //        return $scope.date > minDate;
-    };
 
     $scope.statuses = Visit.statuses;
+    
+    $scope.min = null;
+    $scope.max = null;
 
-    /**
-     *
-     * @ngdoc method
-     * @name myApp.controller:VisitsController#hasFutureData
-     * @methodOf myApp.controller:VisitsController
-     * @returns {Boleean} Возвращает true, если есть данные за будущее.
-     * @description Метод для проверки существования данных за будущее
-     */
-    $scope.hasFutureData = function () {
-        return true;
-        //        return $scope.date < maxDate && $scope.date.toDateString() != maxDate.toDateString();
-    };
+    $rootScope.$on('minMaxGet', function () {
+//        console.log('received on');
+        $scope.min = Loader.getMinDate("Visit");
+        $scope.max = Loader.getMaxDate("Visit");
+    });
 
     $scope.onMasters = function () {
-        $location.path('visits-master/' + $scope.date);
-//        $location.path('visits-master');
+        var pk = angular.element('.slick-active').attr('contentkey');
+        $location.path('visits-master/' + pk);
     };
     /**
      *
@@ -76,7 +59,7 @@ myApp.controller('VisitsController', function ($scope, $filter, $location, Loade
         var resultArr = [];
         var date;
         if (key) {
-            console.log('key ', key);
+//            console.log('key ', key);
             Loader.get("Visit", key, function (obj) {
                 if (obj) {
                     date = new Date(key);
@@ -141,7 +124,7 @@ myApp.controller('VisitsController', function ($scope, $filter, $location, Loade
                 endDate = period.end;
 
             }
-            console.log(beginDate, endDate);
+//            console.log(beginDate, endDate);
             Loader.search("Visit", {
                 dateFrom: beginDate,
                 dateTill: endDate,
@@ -169,7 +152,7 @@ myApp.controller('VisitsController', function ($scope, $filter, $location, Loade
                         list.push(new VisitsPage(new Date(tmpdate), []));
                 }
                 $scope.loading = false;
-                console.log("list", list);
+//                console.log("list", list);
                 callback(list);
             });
         }

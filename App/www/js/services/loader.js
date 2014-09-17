@@ -11,28 +11,28 @@ myApp.service("Loader", ["ModelConverter", "Server", "$rootScope", "Storage", "f
 
         //    var localStat = null;
         var serverStat = null;
-//        var Server = new RealServer(sessvars.token);
+        //        var Server = new RealServer(sessvars.token);
 
-        //    function getFieldStat() {
-        //        var storageSupport;
-        //        Storage.isSupported(function (isSupport) {
-        //            storageSupport = isSupport;
-        //            console.log("Support:", storageSupport);
-        //            if (storageSupport) {
-        //                Storage.getFieldStat(query, function (stat) {
-        //                    localStat = stat;
-        //                    console.log('localStat ', stat);
-        //                });
-        //            }
-        //        });
-        Server.fieldStat(fieldStatQuery, function (stat) {
-            console.log('server stat ', stat);
-            serverStat = stat;
-            //            $rootScope.$emit('received', '');
-        });
-        //    };
+        function getFieldStat() {
+            //        var storageSupport;
+            //        Storage.isSupported(function (isSupport) {
+            //            storageSupport = isSupport;
+            //            console.log("Support:", storageSupport);
+            //            if (storageSupport) {
+            //                Storage.getFieldStat(query, function (stat) {
+            //                    localStat = stat;
+            //                    console.log('localStat ', stat);
+            //                });
+            //            }
+            //        });
+            Server.fieldStat(fieldStatQuery, function (stat) {
+//                console.log('server stat ', stat);
+                serverStat = stat;
+                $rootScope.$emit('minMaxGet', '');
+            });
+        };
         //
-        //    getFieldStat();
+        getFieldStat();
         //
         //    $rootScope.$on('synchEnd', function () {
         //        console.log('sunchEnd on');
@@ -40,7 +40,7 @@ myApp.service("Loader", ["ModelConverter", "Server", "$rootScope", "Storage", "f
         //    });
 
         return {
-            hasFutureData: function (className, date) {
+            getMaxDate: function (className) {
                 //        if (serverStat && localStat) {
                 //            var typeStat = localStat.filter(function (stat) {
                 //                return stat.type == className;
@@ -58,13 +58,14 @@ myApp.service("Loader", ["ModelConverter", "Server", "$rootScope", "Storage", "f
                     var typeStat = serverStat.filter(function (stat) {
                         return stat.type == className;
                     })[0];
-                    return new Date(date) < new Date(typeStat.max);
+                    return new Date(typeStat.max);
+                    //                    return new Date(date) < new Date(typeStat.max);
                 } else {
-                    return false;
+                    return null;
                 }
             },
 
-            hasPastData: function (className, date) {
+            getMinDate: function (className) {
                 //        if (serverStat && localStat) {
                 //            var typeStat = localStat.filter(function (stat) {
                 //                return stat.type == className;
@@ -82,10 +83,11 @@ myApp.service("Loader", ["ModelConverter", "Server", "$rootScope", "Storage", "f
                     var typeStat = serverStat.filter(function (stat) {
                         return stat.type == className;
                     })[0];
-                    return new Date(date) > new Date(typeStat.min);
+                    return new Date(typeStat.min);
+                    //                    return new Date(date) > new Date(typeStat.min);
 
                 } else {
-                    return false;
+                    return null;
                 }
             },
 
@@ -103,6 +105,7 @@ myApp.service("Loader", ["ModelConverter", "Server", "$rootScope", "Storage", "f
              * объекта по первичному ключу.
              */
             get: function (className, primaryKey, callback) {
+                getFieldStat();
                 Server.get(className, primaryKey, function (data) {
                     console.log('server.get ', data);
                     callback(ModelConverter.getObject(className, data));
@@ -143,6 +146,7 @@ myApp.service("Loader", ["ModelConverter", "Server", "$rootScope", "Storage", "f
 
             //получение объектов за период
             search: function (className, params, callback) {
+                getFieldStat();
                 Server.searchForPeriod(className, params, function (result) {
                     console.log('server.search ', result);
                     var objs = ModelConverter.getObjects(className, result);
@@ -189,9 +193,7 @@ myApp.service("Loader", ["ModelConverter", "Server", "$rootScope", "Storage", "f
                 //            //                    console.log('server stat not determ');
                 //            setTimeout(this.search, 500, className, params, callback);
                 //        }
-            },
-
-            scope: $rootScope
+            }
         }
 }]);
 

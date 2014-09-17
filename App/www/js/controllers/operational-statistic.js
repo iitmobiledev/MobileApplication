@@ -23,26 +23,26 @@ myApp.controller('OperationalStatisticController', function ($scope, $location, 
     $scope.loading = true;
 
     $scope.getData = function (key, quantity, forward, callback) {
-//        if (forward && $scope.futureData($scope.date))
+        //        if (forward && $scope.futureData($scope.date))
         $scope.loading = true;
         var resultArr = [];
         var date;
         if (key) {
-            console.log("key", key);
-//            var newKey = key.split(':');
-//            var objDate = new Date(newKey[0]);
-//            var month = objDate.getMonth().toString();
-//            if (month.length < 2)
-//                month = "0"+month;
-//            var day = objDate.getDate().toString();
-//            if (day.length < 2)
-//                day = "0"+day;
-//            var strDate = objDate.getFullYear() + "-" + month + "-" + day;
-//            key = strDate + ":" + newKey[3];
-//            console.log("key", key);
+            //            console.log("key", key);
+            //            var newKey = key.split(':');
+            //            var objDate = new Date(newKey[0]);
+            //            var month = objDate.getMonth().toString();
+            //            if (month.length < 2)
+            //                month = "0"+month;
+            //            var day = objDate.getDate().toString();
+            //            if (day.length < 2)
+            //                day = "0"+day;
+            //            var strDate = objDate.getFullYear() + "-" + month + "-" + day;
+            //            key = strDate + ":" + newKey[3];
+            //            console.log("key", key);
             Loader.get("OperationalStatistics", key, function (obj) {
                 if (obj) {
-                    console.log("obj", obj)
+                    //                    console.log("obj", obj)
                     date = obj.date;
                     if (forward) {
                         date = DateHelper.getNextPeriod(date, $scope.step).end;
@@ -63,7 +63,7 @@ myApp.controller('OperationalStatisticController', function ($scope, $location, 
                         beginDate = period.begin;
                         endDate = period.end;
                     }
-                    console.log("begend", beginDate, endDate)
+                    //                    console.log("begend", beginDate, endDate)
                     Loader.search("OperationalStatistics", {
                         dateFrom: beginDate,
                         dateTill: endDate,
@@ -89,7 +89,7 @@ myApp.controller('OperationalStatisticController', function ($scope, $location, 
                 endDate = period.end;
 
             }
-            console.log("begend", beginDate, endDate)
+            //            console.log("begend", beginDate, endDate)
             Loader.search("OperationalStatistics", {
                 dateFrom: beginDate,
                 dateTill: endDate,
@@ -117,28 +117,17 @@ myApp.controller('OperationalStatisticController', function ($scope, $location, 
      * @description Метод для проверки наличия данных за прошлый
      * период.
      */
-    $scope.hasPrevData = function (currentDate) {
-        Loader.hasPastData("OperationalStatistics", currentDate);
-    };
-    
-    $scope.past = false;
-    $scope.future = false;
+    //    $scope.hasPrevData = function (currentDate) {
+    //        Loader.hasPastData("OperationalStatistics", currentDate);
+    //    };
 
-    /**
-     *
-     * @ngdoc method
-     * @name myApp.controller:OperationalStatisticController#hasFutureData
-     * @methodOf myApp.controller:OperationalStatisticController
-     * @returns {Boleean} Возвращает `true`, если есть данные за будущее.
-     * @description Метод для проверки наличия данных за будущий период.
-     */
-    $scope.futureData = function (currentDate) {
-        return Loader.hasFutureData("OperationalStatistics", currentDate);
-    }
+    $scope.min = null;
+    $scope.max = null;
 
-    $rootScope.$on('received', function () {
-        //updatePage
+    $rootScope.$on('minMaxGet', function () {
         //        console.log('received on');
+        $scope.min = Loader.getMinDate("OperationalStatistics");
+        $scope.max = Loader.getMaxDate("OperationalStatistics");
     });
 
     //    document.addEventListener('received', function () {
@@ -197,22 +186,32 @@ myApp.controller('OperationalStatisticController', function ($scope, $location, 
         return false;
     };
 
+    function getCurrentPeriod() {
+        var pk = angular.element('.slick-active').attr('contentkey');
+        var splitPk = pk.split(':');
+        var step = splitPk[splitPk.length - 1];
+        return DateHelper.getPeriod(new Date(splitPk[0]), step);
+    }
+
     $scope.goForDay = function () {
         $(".periodButtons a").removeClass('active');
         $(".day").addClass("active");
         $scope.step = DateHelper.steps.DAY;
+        $scope.date = new Date(getCurrentPeriod().begin);
     };
 
     $scope.goForWeek = function () {
         $(".periodButtons a").removeClass('active');
         $(".week").addClass("active");
         $scope.step = DateHelper.steps.WEEK;
+        $scope.date = new Date(getCurrentPeriod().begin);
     };
 
     $scope.goForMonth = function () {
         $(".periodButtons a").removeClass('active');
         $(".month").addClass("active");
         $scope.step = DateHelper.steps.MONTH;
+        $scope.date = new Date(getCurrentPeriod().begin);
     };
 
 });

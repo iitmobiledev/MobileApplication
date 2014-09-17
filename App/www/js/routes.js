@@ -25,6 +25,10 @@ myApp.config(['$routeProvider',
             templateUrl: 'views/expenditures.html',
             controller: 'ExpendituresController'
         }).
+        when('/visits/:date', {
+            templateUrl: 'views/visits.html',
+            controller: 'VisitsController'
+        }).
         when('/visits', {
             templateUrl: 'views/visits.html',
             controller: 'VisitsController'

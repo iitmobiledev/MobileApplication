@@ -36,6 +36,20 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
             var content = $templateCache.get(contentID);
             var compiled = $compile(angular.element(content));
 
+            var min, max;
+
+            var updateMin = function () {
+                min = scope.$eval(attrs.min);
+            };
+            scope.$watch(attrs.min, updateMin);
+            updateMin();
+
+            var updateMax = function () {
+                max = scope.$eval(attrs.max);
+            };
+            scope.$watch(attrs.max, updateMax);
+            updateMax();
+
             //            var loadBar = $compile(angular.element("<load-bar param-name='true'></load-bar>"));
 
             var contentData;
@@ -66,14 +80,21 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
                         onAfterChange: function () {
                             if (ready) {
                                 var key = getCurrentKey();
-                                //                            console.log("key", key)
-//                                console.log('scope element slContent ', angular.element('#slContent').scope().date);
-//                                    console.log('scope element my-slider', angular.element('.my-slider').scope().date);
-                                if ($('.my-slider').slickCurrentSlide() == 0) {
+                                var period;
+                                var pk = angular.element('.slick-active').attr('contentkey');
+                                var splitPk = pk.split(':');
+                                if (splitPk.length == 1) {
+                                    period = DateHelper.getPeriod(new Date(splitPk[0]), DateHelper.steps.DAY);
+                                } else {
+                                    var step = splitPk[splitPk.length - 1];
+                                    period = DateHelper.getPeriod(new Date(splitPk[0]), step);
+                                }
+                                if ($('.my-slider').slickCurrentSlide() == 0 && period.begin > min) {
                                     dataCallback(key, count, false, addPastData);
                                     scope.$apply();
-                                } else if ($('.my-slider').slickCurrentSlide() == ($('.my-slider').getSlick().slideCount - 1)) {
-//                                    console.log(scope.date);
+                                } else if ($('.my-slider').slickCurrentSlide() == ($('.my-slider').getSlick().slideCount - 1) && period.end < max) {
+                                    console.log('scope element slick ', angular.element('.slick-active').attr('contentkey'));
+                                    console.log('max ', max);
                                     dataCallback(key, count, true, addFutureData);
                                     scope.$apply();
                                 }

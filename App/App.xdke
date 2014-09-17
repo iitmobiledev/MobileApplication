@@ -5,7 +5,8 @@
     "currentService": {
       "methodapi": "trackEvent",
       "endPoint": "Tracking",
-      "service": "google_analytics"
+      "service": "google_analytics",
+      "category": "Notifications"
     },
     "projectFiles": {},
     "projectDirectories": {}
