@@ -15,7 +15,7 @@
         <ul class="list inset">
             <li ng-repeat="visit in page.list" id="visitsPerTime" style="border-radius:0;">
                 {{$parent.getVisitInfo(visit)}}
-                <a href="#/visit/{{visitInfo.id}}">
+                <a href="#/visit/{{visitInfo.id}}/visits">
                     <div style="width:100%">
                         <visit-status status='visitInfo.status' style=""></visit-status>
                         <img style="float:right;top:-23px;position:relative;left: -95px;max-height: 13px;" src="images/time.png">

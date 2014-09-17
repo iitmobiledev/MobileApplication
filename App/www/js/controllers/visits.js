@@ -24,13 +24,15 @@ myApp.controller('VisitsController', function ($scope, $filter, $location, Loade
     $scope.pageIndex = 1;
     $scope.loading = true;
 
+//    $scope.backLink = "#/visits";
+
     $scope.statuses = Visit.statuses;
-    
+
     $scope.min = null;
     $scope.max = null;
 
     $rootScope.$on('minMaxGet', function () {
-//        console.log('received on');
+        //        console.log('received on');
         $scope.min = Loader.getMinDate("Visit");
         $scope.max = Loader.getMaxDate("Visit");
     });
@@ -59,11 +61,11 @@ myApp.controller('VisitsController', function ($scope, $filter, $location, Loade
 
     $scope.getData = function (key, quantity, forward, callback) {
         $scope.loading = true;
-//        console.log("scope.visit",$scope.visit);
+        //        console.log("scope.visit",$scope.visit);
         var resultArr = [];
         var date;
         if (key) {
-//            console.log('key ', key);
+            //            console.log('key ', key);
             Loader.get("Visit", key, function (obj) {
                 if (obj) {
                     date = new Date(key);
@@ -128,7 +130,7 @@ myApp.controller('VisitsController', function ($scope, $filter, $location, Loade
                 endDate = period.end;
 
             }
-//            console.log(beginDate, endDate);
+            //            console.log(beginDate, endDate);
             Loader.search("Visit", {
                 dateFrom: beginDate,
                 dateTill: endDate,
@@ -151,12 +153,11 @@ myApp.controller('VisitsController', function ($scope, $filter, $location, Loade
                             return new Date(a.date).getTime() - new Date(b.date).getTime();
                         }));
                         list.push(page);
-                    }
-                    else
+                    } else
                         list.push(new VisitsPage(new Date(tmpdate), []));
                 }
                 $scope.loading = false;
-//                console.log("list", list);
+                //                console.log("list", list);
                 callback(list);
             });
         }

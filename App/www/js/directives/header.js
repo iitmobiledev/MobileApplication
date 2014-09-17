@@ -16,11 +16,22 @@ myApp.directive('headerContent', function () {
         replace: true,
         transclude: false,
         link: function (scope, element, attrs) {
-            var backButtonLink = scope.$eval(attrs.backButtonLink);
-            setTitle();
-            setBackButton();
-            var show = scope.$eval(attrs.show);
-            showHeader();
+            var backButtonLink, show; // = scope.$eval(attrs.backButtonLink);
+
+            //            setTitle();
+            //            setBackButton();
+            //            var show = scope.$eval(attrs.show);
+            //            showHeader();
+
+            var updateBackButtonLink = function () {
+                backButtonLink = scope.$eval(attrs.backButtonLink);
+                setTitle();
+                setBackButton();
+                show = scope.$eval(attrs.show);
+                showHeader();
+            };
+            scope.$watch(attrs.backButtonLink, updateBackButtonLink);
+            updateBackButtonLink();
 
             /**
              * @description Отображает хедер на странице. Пытается выполнится до тех пор, пока не будет подгружена библиотека `intel.xdk`.
@@ -89,7 +100,7 @@ myApp.directive('headerContent', function () {
             '<div class="widget-container wrapping-col single-centered">' +
             '</div>' +
             '<div id="divForBackButton" class="widget-container content-area horiz-area wrapping-col left">' +
-            '<img style="display: none !important">'+
+            '<img style="display: none !important">' +
             '<a style="display: none !important"></a>' +
             '</div>' +
             '<div class="widget-container content-area horiz-area wrapping-col right" >' +

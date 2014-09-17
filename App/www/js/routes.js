@@ -37,7 +37,7 @@ myApp.config(['$routeProvider',
             templateUrl: 'views/visits-master.html',
             controller: 'VisitsMasterController'
         }).
-        when('/visit/:id', {
+        when('/visit/:id/:backLink', {
             templateUrl: 'views/visit.html',
             controller: 'VisitController'
         }).

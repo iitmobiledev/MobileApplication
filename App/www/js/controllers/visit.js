@@ -6,6 +6,8 @@
  * @requires myApp.service:VisitLoader
  */
 myApp.controller('VisitController', function ($scope, $filter, $routeParams, Loader, DateHelper) {
+    console.log($routeParams);
+
 
     var today = new Date();
     $scope.date = new Date(today.getFullYear(), today.getMonth(), today.getDate());
@@ -24,6 +26,8 @@ myApp.controller('VisitController', function ($scope, $filter, $routeParams, Loa
                 obj.client.phone = formatLocal("RU", obj.client.phone);
                 hasData = true;
                 $scope.date = new Date(obj.date.getFullYear(), obj.date.getMonth(), obj.date.getDate(), 0, 0, 0);
+                $scope.backLink = "#/" + $routeParams.backLink + "/" + $scope.date;
+                //                console.log('$scope.backLink', $scope.backLink);
                 var beginDate = new Date(obj.date.getFullYear(), obj.date.getMonth(), obj.date.getDate(), 0, 0, 0),
                     endDate = new Date(obj.date.getFullYear(), obj.date.getMonth(), obj.date.getDate(), 23, 59, 59);
                 console.log(beginDate, endDate);
