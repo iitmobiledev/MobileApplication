@@ -2,6 +2,11 @@
   "project": {
     "projectSettingsVersion": "1.1",
     "initialAutoPluginCount": 0,
+    "currentService": {
+      "methodapi": "trackEvent",
+      "endPoint": "Tracking",
+      "service": "google_analytics"
+    },
     "projectFiles": {},
     "projectDirectories": {}
   }
