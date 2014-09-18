@@ -4,25 +4,18 @@ myApp.directive('password', function () {
         replace: true,
         link: function (scope, element, attrs) {
             element.find("#passwordEye").bind('click', function () {
-                if (element.find("#password").attr('type') == "password") {
+                if (element.find("#password").attr('type') == 'password') {
                     element.find("#password").attr('type', 'text');
-                    element.find("#passwordEye").css('background-image', 'url(images/closeEye.png)');
+                    element.find('#passwordEye').attr('src', 'images/closeEye.png');
                 } else {
                     element.find("#password").attr('type', 'password');
-                    element.find("#passwordEye").css('background-image', 'url(images/eye.png)');
+                    element.find('#passwordEye').attr('src', 'images/eye.png');
                 }
             });
         },
         template: '<div>' +
-
-        '<input id="password" placeholder="Ваш пароль" type="password" value="demo" style="width:65%; border-right: 0px;">' +
-            '<input id="passwordEye" type="text" readonly style="width:15%; background-image:url(images/eye.png); background-repeat: no-repeat; border-left: 0px;">' +
+        '<input id="password" placeholder="Ваш пароль" type="password" value="demo" style="width:80%;">' +
+            '<img id="passwordEye" src="images/eye.png" style="position: fixed;right: 12%;margin-top: 10px;height: 20px;"' +
             '</div>'
     }
 });
-//'<img id="eye" src="images/password.png" width="38" height="38" align="right" position="absolute">' +
-
-//'<input id="passwordEye" type="text" readonly style="width:15%; background-image:url(images/eye.png); background-repeat: no-repeat; border-left: 0px;">' +
-
-
-//background:url(images/password.png); background-repeat: no-repeat; background-position:4px; outline:none;
