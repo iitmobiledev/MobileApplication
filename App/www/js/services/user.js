@@ -58,7 +58,7 @@ myApp.service("authService", ["$http", "APPID", "SECRET_PHRASE", "VERSION",
                 success(function (data, status, headers, config) {
                     callback(data.token);
                 }).
-                error(function(){
+                error(function () {
                     callback('error');
                 });
             },
