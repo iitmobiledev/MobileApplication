@@ -1,4 +1,4 @@
-var myApp = angular.module('myApp', ['ngRoute','angulartics', 'ngAnimate']);  //,'angulartics'      , 'angulartics.google.analytics'
+var myApp = angular.module('myApp', ['ngRoute','ngAnimate']);  //,'angulartics'      , 'angulartics.google.analytics'
 var flag = true;
 
 

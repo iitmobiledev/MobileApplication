@@ -1,3 +1,10 @@
+<head>
+    <script>
+        ga('send', 'screenview', {
+            'screenName': 'Статистика салона'
+        });
+    </script>
+</head>
 <header-content title="'Салон красоты'" show-back-button="false" show="false"></header-content>
 <orient orientation="'portrait'"></orient>
 <footer-content show="true" active-page="StatisticsFooter" inactive-pages="['VisitsFooter', 'SettingsFooter']"></footer-content>
@@ -80,16 +87,16 @@
                         <td class="financeCellLeft" align="center">
                             <table align="center">
                                 <tr>
-                                    <td style="text-align:right">Утром:</td>
+                                    <td style="text-align:left">Утром:</td>
                                     <td style="font-weight: bold;text-align:right">{{page.financeStat.morningMoney| money:0}} <span class="price">ю</span></td>
                                 </tr>
                                 <tr>
-                                    <td style="text-align:right">Приход:</td>
+                                    <td style="text-align:left">Приход:</td>
                                     <td style="font-weight: bold;text-align:right">{{page.financeStat.credit| money:0}} <span class="price">ю</span></td>
                                 </tr>
 
                                 <tr>
-                                    <td style="text-align:right">Расход:</td>
+                                    <td style="text-align:left">Расход:</td>
                                     <td style="font-weight: bold;text-align:right">{{page.financeStat.debit| money:0}} <span class="price">ю</span></td>
                                 </tr>
 
