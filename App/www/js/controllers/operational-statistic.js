@@ -50,10 +50,10 @@ myApp.controller('OperationalStatisticController', function ($scope, $location, 
                 beginDate = period.begin;
                 endDate = period.end;
             }
-            //                    console.log("begend", beginDate, endDate)
+            console.log("begend", beginDate, endDate);
             Loader.search("OperationalStatistics", {
-                dateFrom: beginDate,
-                dateTill: endDate,
+                dateFrom: beginDate.toDateString(),
+                dateTill: endDate.toDateString(),
                 step: $scope.step,
             }, function (data) {
                 $scope.loading = false;
@@ -76,10 +76,10 @@ myApp.controller('OperationalStatisticController', function ($scope, $location, 
                 endDate = period.end;
 
             }
-            //            console.log("begend", beginDate, endDate)
+            console.log("begend", beginDate, endDate)
             Loader.search("OperationalStatistics", {
-                dateFrom: beginDate,
-                dateTill: endDate,
+                dateFrom: beginDate.toDateString(),
+                dateTill: endDate.toDateString(),
                 step: $scope.step,
                 index: "date"
             }, function (data) {

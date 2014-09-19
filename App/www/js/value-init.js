@@ -38,4 +38,8 @@ value('fieldStatQuery', [{
     }, {
     type: "Expenditure",
     field: "date"
-}]);
+}]).
+value('Status', function () {
+    this.count = 0;
+    this.amount = 0;
+});

@@ -85,18 +85,18 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
                                 var period;
                                 var pk = angular.element('.slick-active').attr('contentkey');
                                 var splitPk = pk.split(':');
-//                                console.log("splitPk ", splitPk);
+                                //                                console.log("splitPk ", splitPk);
                                 if (splitPk.length < 4) {
                                     period = DateHelper.getPeriod(new Date(splitPk[0]), DateHelper.steps.DAY);
                                 } else {
                                     var step = splitPk[splitPk.length - 1];
                                     period = DateHelper.getPeriod(new Date(splitPk[0]), step);
                                 }
-//                                console.log("period ", period);
+                                //                                console.log("period ", period);
                                 scope.past = false, scope.future = false;
-                                if (period.begin > min)
+                                if (period.begin > min || min == null)
                                     scope.past = true;
-                                if (period.end < max)
+                                if (period.end < max || max == null)
                                     scope.future = true;
                                 if ($('.my-slider').slickCurrentSlide() == 0 && scope.past) {
                                     dataCallback(key, count, false, addPastData);

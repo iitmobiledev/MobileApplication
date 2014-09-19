@@ -11,10 +11,14 @@ myApp.controller('VisitController', function ($scope, $filter, $routeParams, Loa
 
     $scope.step = DateHelper.steps.DAY;
 
+    $scope.loading = true;
+    
     var hasData = false;
 
     $scope.getData = function (key, quantity, forward, callback) {
+        $scope.loading = true;
         if (hasData) {
+            $scope.loading = false;
             return callback(null);
         }
         Loader.get("Visit", $routeParams.id, function (obj) {
@@ -63,7 +67,7 @@ myApp.controller('VisitController', function ($scope, $filter, $routeParams, Loa
                             data[i].balColor = "green";
                         }
                     }
-
+                    $scope.loading = false;
                     callback(data);
                 });
             }
@@ -74,6 +78,9 @@ myApp.controller('VisitController', function ($scope, $filter, $routeParams, Loa
     $scope.getKey = function (obj) {
         return obj && obj.date.toDateString();
     };
+    
+    $scope.min = null;
+    $scope.max = null;
 
     //    $scope.handlePages = [];
     //

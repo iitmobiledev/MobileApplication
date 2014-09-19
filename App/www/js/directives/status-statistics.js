@@ -1,4 +1,4 @@
-myApp.directive('statusStatistics', function (Visit) {
+myApp.directive('statusStatistics', function (Visit, Status) {
     return {
         restrict: 'E',
         replace: true,
@@ -7,7 +7,7 @@ myApp.directive('statusStatistics', function (Visit) {
 
             var updateStatus = function () {
                 visits = scope.$eval(attrs.visits);
-//                console.log("visits in dir ", visits);
+                //                console.log("visits in dir ", visits);
 
                 salary = 0;
 
@@ -21,37 +21,35 @@ myApp.directive('statusStatistics', function (Visit) {
                 for (var i = 0; i < visits.length; i++) {
                     salary += getEmployeeSalary(visits[i].serviceList);
 
-                    //                    Visit.statuses.titles[visits[i].status]
-
                     switch (Visit.statuses.titles[visits[i].status]) {
                     case Visit.statuses.titles.NEW:
                         statuses.newRecord.count++;
-                        statuses.newRecord.amount = getServicesCost(visits[i].serviceList);
+                        statuses.newRecord.amount += getServicesCost(visits[i].serviceList);
                         break;
                     case Visit.statuses.titles.NOTCOME:
                         statuses.notCome.count++;
-                        statuses.notCome.amount = getServicesCost(visits[i].serviceList);
+                        statuses.notCome.amount += getServicesCost(visits[i].serviceList);
                         break;
                     case Visit.statuses.titles.come:
                         statuses.come.count++;
-                        statuses.come.amount = getServicesCost(visits[i].serviceList);
+                        statuses.come.amount += getServicesCost(visits[i].serviceList);
                         break;
                     case Visit.statuses.titles.CONFIRMED:
                         statuses.confirmed.count++;
-                        statuses.confirmed.amount = getServicesCost(visits[i].serviceList);
+                        statuses.confirmed.amount += getServicesCost(visits[i].serviceList);
                         break;
                     }
                 }
 
                 element.find('#newRecordCount').html(statuses.newRecord.count);
-                element.find('#newRecordAmount').html(statuses.newRecord.amount);
+                element.find('#newRecordAmount').html(Math.round(statuses.newRecord.amount));
                 element.find('#notComeCount').html(statuses.notCome.count);
-                element.find('#notComeAmount').html(statuses.notCome.amount);
+                element.find('#notComeAmount').html(Math.round(statuses.notCome.amount));
                 element.find('#comeCount').html(statuses.come.count);
-                element.find('#comeAmount').html(statuses.come.amount);
+                element.find('#comeAmount').html(Math.round(statuses.come.amount));
                 element.find('#confirmedCount').html(statuses.confirmed.count);
-                element.find('#confirmedAmount').html(statuses.confirmed.amount);
-                element.find('#salary').html(salary);
+                element.find('#confirmedAmount').html(Math.round(statuses.confirmed.amount));
+                element.find('#salary').html(Math.round(salary));
             }
             //            scope.$watch(attrs.visits, updateStatus);
 
