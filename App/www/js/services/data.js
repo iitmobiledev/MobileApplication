@@ -1,48 +1,50 @@
- myApp.service("RealServer", ["$http", function($http){
-   var DataSvc = function (t) {
-          this.token = t;
-   }
+ myApp.service("RealServer", ["$http",
+     function ($http) {
+         var DataSvc = function (t) {
+             this.token = t;
+         }
 
-   DataSvc.prototype = {
-       baseUrl: "http://test.arnica.pro/api/data/",
-       get: function(className, primaryKey, callback) {
-           this.restPost("get", className, primaryKey, callback);
-       },
-       search: function(className, searchParams, callback) {
-           this.restPost("search", className, searchParams, callback);
-       },
-       lastModified: function(classNames, callback) {
-           this.restPost("lastModified", "", classNames, callback);
-       },
-       fieldStat: function(request, callback) {
-           this.restPost("fieldStat", "", request, callback);
-       },
-       restPost: function(method, className, param, callback) {
-           var url = this.baseUrl + method;
-           var params = [];
-           if (className) {
-               params.push("c=" + className);
-           }
-           if (this.token){
-               params.push("token=" + this.token);
-           }
-           url += "?" + params.join("&");
-           $http({
-               url: url,
-               method: "POST",
-               data: param,
-               responseType: "json",
-           })
-           .success( callback )
-           .error(function(data, status, headers, config) {
-               console.log(
-                   "FAILURE", url, $.extend(true, {}, param),
-                   status, headers, config
-               );
-           });
-       }
-   };
-   return DataSvc;
+         DataSvc.prototype = {
+             baseUrl: "http://test.arnica.pro/api/data/",
+             get: function (className, primaryKey, callback) {
+                 this.restPost("get", className, primaryKey, callback);
+             },
+             search: function (className, searchParams, callback) {
+                 this.restPost("search", className, searchParams, callback);
+             },
+             lastModified: function (classNames, callback) {
+                 this.restPost("lastModified", "", classNames, callback);
+             },
+             fieldStat: function (request, callback) {
+                 this.restPost("fieldStat", "", request, callback);
+             },
+             restPost: function (method, className, param, callback) {
+                 var url = this.baseUrl + method;
+                 var params = [];
+                 if (className) {
+                     params.push("c=" + className);
+                 }
+                 if (this.token) {
+                     params.push("token=" + this.token);
+                 }
+                 url += "?" + params.join("&");
+                 $http({
+                     url: url,
+                     method: "POST",
+                     data: param,
+                     responseType: "json",
+                 })
+                     .success(callback)
+                     .error(function (data, status, headers, config) {
+                         console.log(
+                             "FAILURE", url, $.extend(true, {}, param),
+                             status, headers, config
+                         );
+                         callback();
+                     });
+             }
+         };
+         return DataSvc;
  }]);
 
 
@@ -325,7 +327,7 @@
                              employeeSalary: salary
                          };
                          sList.push(service);
-                         
+
                          serviceCost = Math.round(getRandom(500, 10000));
                          salary = serviceCost - Math.round(getRandom(0, serviceCost / 2));
                          service = {
@@ -342,7 +344,7 @@
                              employeeSalary: salary
                          };
                          sList.push(service);
-                         
+
                          var visit = {};
                          visit.id = params.id || Math.round(getRandom(1, 1000));
                          visit.client = {

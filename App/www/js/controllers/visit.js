@@ -6,9 +6,6 @@
  * @requires myApp.service:VisitLoader
  */
 myApp.controller('VisitController', function ($scope, $filter, $routeParams, Loader, DateHelper) {
-    console.log($routeParams);
-
-
     var today = new Date();
     $scope.date = new Date(today.getFullYear(), today.getMonth(), today.getDate());
 
@@ -21,7 +18,6 @@ myApp.controller('VisitController', function ($scope, $filter, $routeParams, Loa
             return callback(null);
         }
         Loader.get("Visit", $routeParams.id, function (obj) {
-            console.log("Loader.get ", obj);
             if (obj) {
                 obj.client.phone = formatLocal("RU", obj.client.phone);
                 hasData = true;
@@ -30,7 +26,7 @@ myApp.controller('VisitController', function ($scope, $filter, $routeParams, Loa
                 //                console.log('$scope.backLink', $scope.backLink);
                 var beginDate = new Date(obj.date.getFullYear(), obj.date.getMonth(), obj.date.getDate(), 0, 0, 0),
                     endDate = new Date(obj.date.getFullYear(), obj.date.getMonth(), obj.date.getDate(), 23, 59, 59);
-                console.log(beginDate, endDate);
+                //                console.log(beginDate, endDate);
                 Loader.search("Visit", {
                     dateFrom: beginDate,
                     dateTill: endDate,
@@ -51,9 +47,15 @@ myApp.controller('VisitController', function ($scope, $filter, $routeParams, Loa
                             data[i].sum += data[i].serviceList[j].cost;
                             var serviceItem = {};
                             serviceItem.description = service.description;
-                            serviceItem.time = $filter('date')(service.startTime, "H:mm") + " - " + $filter('date')(service.endTime, "H:mm");
+                            serviceItem.hasTime = false;
+                            if (service.startTime != "" && service.endTime) {
+                                serviceItem.time = $filter('date')(service.startTime, "H:mm") + " - " + $filter('date')(service.endTime, "H:mm");
+                                serviceItem.hasTime = true;
+                            }
                             serviceItem.cost = service.cost;
-                            serviceItem.master = 'Мастер: ' + service.master.lastName + " " + service.master.firstName;
+                            if (service.master.lastName && service.master.firstName) {
+                                serviceItem.master = 'Мастер: ' + service.master.lastName + " " + service.master.firstName;
+                            }
                             data[i].servList.push(serviceItem);
                         }
                         data[i].balColor = "red";

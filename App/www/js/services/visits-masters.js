@@ -1,5 +1,23 @@
 /**
  * @ngdoc service
+ * @description Сервис - конструктор класса Автор
+ * @name myApp.service:Client
+ * @requires myApp.service:Model
+ * @param {Object} data Данные в формате ключ: значение.
+ */
+myApp.factory('Author', function (Model) {
+    return Model("Author", {
+        serialize: function (self) {
+            self.constructor.prototype.call(self)
+            var data = angular.extend({}, self);
+            return data;
+        },
+        primary: ['id']
+    });
+});
+
+/**
+ * @ngdoc service
  * @description Сервис - конструктор класса Клиент
  * @name myApp.service:Client
  * @requires myApp.service:Model
@@ -68,13 +86,14 @@ myApp.factory('Service', function (Model, Master) {
  * @requires myApp.service:Model
  * @param {Object} data Данные в формате ключ: значение.
  */
-myApp.factory('Visit', function (Model, Client, Service) {
+myApp.factory('Visit', function (Model, Client, Service, Author) {
     var visitConstructor = Model("Visit", {
         deserialize: function (self, data) {
             self.id = data.id;
+            self.author = new Author(data.author);
             self.client = data.client;
             self.comment = data.comment;
-            self.status = data.status;
+            self.status = data.status || "NEW";
 
             var serviceList = [];
             if (data.serviceList) {

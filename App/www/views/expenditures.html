@@ -4,9 +4,8 @@
 <!--<div class="upage-content" id="mainsub">-->
 
 <load-bar param-name="loading"></load-bar>
-    <slider content-id="expenditures" get-data='getData' key-expression='getKey'></slider>
-    <!--  
--->
+    <slider content-id="expenditures" get-data='getData' key-expression='getKey'  min='min' max='max'></slider>
+   <load-bar param-name="loading" ></load-bar>
     <script type="text/ng-template" id="expenditures">
         <div id="expendituresContent">
             <date-changer date='page.date' step='"day"' has-future-data='$parent.hasFutureData(page.date)' has-prev-data='$parent.hasPrevData(page.date)'></date-changer>

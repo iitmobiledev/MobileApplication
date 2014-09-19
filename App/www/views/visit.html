@@ -68,11 +68,11 @@
     </div>
     <div style="width:90%;text-align:left;font-size:12pt;margin: 3% 10%;">
         <span style="text-align:right;width:30%;white-space:pre;color:#969696">Баланс:     </span>
-        <span style="text-align:left;font-weight:bold;color:{{balColor}};">{{page.client.balance| money:0}} <span class="price">ю</span></span>
+        <span style="text-align:left;font-weight:bold;color:{{page.balColor}};">{{page.client.balance| money:0}} <span class="price">ю</span></span>
     </div>
     <div style="width:90%;text-align:left;font-size:12pt;margin: 3% 10%;">
         <span style="text-align:right;width:30%;white-space:pre;color:#969696">Оформил: </span>
-        <span style="text-align:left;font-weight:bold">Петр</span>
+        <span style="text-align:left;font-weight:bold">{{page.author.lastName}} {{page.author.firstName}}</span>
     </div>
 
     <div id="services">
@@ -81,7 +81,7 @@
                 <span style="font-size:15pt;color:gray;margin: 0% 10%;">Услуги</span>
             </li>
             <li ng-repeat="item in page.servList">
-                <div style="width: 10%;height: 55%;position: absolute;background: url('images/time.png');background-position: center left;background-repeat: no-repeat;background-size: 13px;">
+                <div style="width: 10%;height: 55%;position: absolute;background: url('images/time.png');background-position: center left;background-repeat: no-repeat;background-size: 13px;" ng-show="item.hasTime">
                 </div>
                 <div style="width:90%;margin-left:10%;">
                     <div>

@@ -13,16 +13,15 @@
             <status-statistics visits='page.visits'></status-statistics>
             <ul class="list inset" ng-repeat="masterVis in page.list" id="visitsPerMasters">
                 <li class="divider" ng-click="toMaster(masterVis.master.id)">
-                    <img style="border-radius: 50%;margin-right: 10px;border: 1px solid rgb(149,24,185);max-height: 40px;" src="images/profit.png">{{$parent.getMasterInfo(masterVis.master)}}
+                    <img style="border-radius: 50%;margin-right: 10px;border: 1px solid rgb(149,24,185);max-height: 40px;" ng-src="http://test.arnica.pro{{masterVis.master.photo}}">{{$parent.getMasterInfo(masterVis.master)}}
                 </li>
                 <div ng-repeat="visit in masterVis.visList">
                     <li style="border-top: none;">
                         {{$parent.getVisitByMasterInfo(visit)}}
                         <a href="#/visit/{{visit.id}}/visits-master" style="text-decoration: none;color: black;">
-                        <a class="arrow"> &#f054</a>
                             <div style="width:100%">
                                 <visit-status status='masterVisitInfo.status'></visit-status>
-                                <img style="float:right;top:-25px;position:relative;left: -95px;" src="images/time.png">
+                                <img style="float:right;top:-25px;position:relative;left: -95px;" src="images/time.png" ng-show="hasTime">
                                 <span style="float:right;top:-25px;position:relative">{{masterVisitInfo.time}}</span>
                                 <div>
                                     <span style="width:65%;white-space:nowrap;text-overflow:ellipsis;overflow: hidden; font-size:18px; font-weight:500; margin-bottom:5px;">

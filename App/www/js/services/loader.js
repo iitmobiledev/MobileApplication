@@ -6,12 +6,12 @@
  * этих данных.
  * @name myApp.service:Loader
  */
-myApp.service("Loader", ["ModelConverter", "Server", "$rootScope", "Storage", "fieldStatQuery",
-    function (ModelConverter, Server, $rootScope, Storage, fieldStatQuery) {
+myApp.service("Loader", ["ModelConverter", "RealServer", "$rootScope", "Storage", "fieldStatQuery",
+    function (ModelConverter, RealServer, $rootScope, Storage, fieldStatQuery) {
 
         //    var localStat = null;
         var serverStat = null;
-        //        var Server = new RealServer(sessvars.token);
+                var Server = new RealServer(sessvars.token);
 
         function getFieldStat() {
             //        var storageSupport;
@@ -26,7 +26,7 @@ myApp.service("Loader", ["ModelConverter", "Server", "$rootScope", "Storage", "f
             //            }
             //        });
             Server.fieldStat(fieldStatQuery, function (stat) {
-//                console.log('server stat ', stat);
+                console.log('server stat ', stat);
                 serverStat = stat;
                 $rootScope.$emit('minMaxGet', '');
             });
@@ -147,7 +147,7 @@ myApp.service("Loader", ["ModelConverter", "Server", "$rootScope", "Storage", "f
             //получение объектов за период
             search: function (className, params, callback) {
                 getFieldStat();
-                Server.searchForPeriod(className, params, function (result) {
+                Server.search(className, params, function (result) {
                     console.log('server.search ', result);
                     var objs = ModelConverter.getObjects(className, result);
                     callback(objs);

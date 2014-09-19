@@ -24,11 +24,11 @@ myApp.controller('VisitsMasterController', function ($scope, $filter, $location,
     $scope.max = null;
 
     $rootScope.$on('minMaxGet', function () {
-//        console.log('received on');
+        //        console.log('received on');
         $scope.min = Loader.getMinDate("Visit");
         $scope.max = Loader.getMaxDate("Visit");
     });
-    
+
     /**
      *
      * @ngdoc method
@@ -98,7 +98,7 @@ myApp.controller('VisitsMasterController', function ($scope, $filter, $location,
         pages = pages.sort(function (a, b) {
             return a.date > b.date;
         });
-//        console.log('visits pages ', pages);
+        //        console.log('visits pages ', pages);
         return pages;
     }
 
@@ -113,73 +113,29 @@ myApp.controller('VisitsMasterController', function ($scope, $filter, $location,
         var resultArr = [];
         var date;
         if (key) {
-            Loader.get("Visit", key, function (obj) {
-                if (obj) {
-                    date = new Date(key);
-                    if (forward) {
-                        date = DateHelper.getNextPeriod(date, $scope.step).end;
-                    } else {
-                        date = DateHelper.getPrevPeriod(date, $scope.step).end;
-                    }
-                    var beginDate = date,
-                        endDate = date;
-                    for (var i = 0; i < quantity; i++) {
-                        if (forward) {
-                            endDate = DateHelper.getNextPeriod(endDate, $scope.step).end;
-                        } else {
-                            beginDate = DateHelper.getPrevPeriod(beginDate, $scope.step).begin;
-                        }
-                    }
-                    if (beginDate == endDate && $scope.step != DateHelper.steps.DAY) {
-                        var period = DateHelper.getPeriod(beginDate, $scope.step);
-                        beginDate = period.begin;
-                        endDate = period.end;
-                    }
-                    Loader.search("Visit", {
-                        dateFrom: beginDate,
-                        dateTill: endDate,
-                        step: DateHelper.steps.DAY,
-                        index: "date"
-                    }, function (data) {
-                        var visits = sortByDate(data, beginDate, endDate);
-                        data = MastersForPeriod(data, {
-                            begin: beginDate,
-                            end: endDate
-                        });
-//                        console.log(data)
-                        var list = [];
-                        var i = 0;
-
-//                        console.log("beginEnd", beginDate, endDate)
-                        for (var tmpdate = new Date(beginDate); tmpdate < endDate || tmpdate.toDateString() == endDate.toDateString(); tmpdate.setDate(tmpdate.getDate() + 1)) {
-                            var dayVisit = visits.filter(function (vis) {
-                                return vis.date.toDateString() == tmpdate.toDateString();
-                            })[0];
-//                            console.log(dayVisit, tmpdate);
-                            var page = new VisitsMasterPage(new Date(tmpdate), data[i], dayVisit.list);
-                            list.push(page);
-                            i++;
-                        }
-                        $scope.loading = false;
-                        callback(list);
-                    });
-                }
-            });
-        } else {
-            date = $scope.date;
+            //            Loader.get("Visit", key, function (obj) {
+            //                if (obj) {
+            date = new Date(key);
+            console.log("date ", date);
+            if (forward) {
+                date = DateHelper.getNextPeriod(date, $scope.step).end;
+            } else {
+                date = DateHelper.getPrevPeriod(date, $scope.step).end;
+            }
             var beginDate = date,
                 endDate = date;
-//            console.log("beginEnd", beginDate, endDate);
             for (var i = 0; i < quantity; i++) {
-                endDate = DateHelper.getNextPeriod(endDate, $scope.step).end;
-                beginDate = DateHelper.getPrevPeriod(beginDate, $scope.step).begin;
+                if (forward) {
+                    endDate = DateHelper.getNextPeriod(endDate, $scope.step).end;
+                } else {
+                    beginDate = DateHelper.getPrevPeriod(beginDate, $scope.step).begin;
+                }
             }
             if (beginDate == endDate && $scope.step != DateHelper.steps.DAY) {
                 var period = DateHelper.getPeriod(beginDate, $scope.step);
                 beginDate = period.begin;
                 endDate = period.end;
             }
-//            console.log("beginEnd", beginDate, endDate);
             Loader.search("Visit", {
                 dateFrom: beginDate,
                 dateTill: endDate,
@@ -191,22 +147,64 @@ myApp.controller('VisitsMasterController', function ($scope, $filter, $location,
                     begin: new Date(beginDate),
                     end: new Date(endDate)
                 });
-//                console.log(data)
                 var list = [];
                 var i = 0;
-
-//                console.log("beginEnd", beginDate, endDate);
                 for (var tmpdate = new Date(beginDate); tmpdate < endDate || tmpdate.toDateString() == endDate.toDateString(); tmpdate.setDate(tmpdate.getDate() + 1)) {
                     var dayVisit = visits.filter(function (vis) {
                         return vis.date.toDateString() == tmpdate.toDateString();
                     })[0];
-//                    console.log(dayVisit, tmpdate);
                     var page = new VisitsMasterPage(new Date(tmpdate), data[i], dayVisit.list);
                     list.push(page);
                     i++;
                 }
                 $scope.loading = false;
-//                console.log("list", list)
+                console.log("list ", list);
+                callback(list);
+            });
+            //                }
+            //            });
+        } else {
+            date = $scope.date;
+            var beginDate = date,
+                endDate = date;
+            //            console.log("beginEnd", beginDate, endDate);
+            for (var i = 0; i < quantity; i++) {
+                endDate = DateHelper.getNextPeriod(endDate, $scope.step).end;
+                beginDate = DateHelper.getPrevPeriod(beginDate, $scope.step).begin;
+            }
+            if (beginDate == endDate && $scope.step != DateHelper.steps.DAY) {
+                var period = DateHelper.getPeriod(beginDate, $scope.step);
+                beginDate = period.begin;
+                endDate = period.end;
+            }
+            //            console.log("beginEnd", beginDate, endDate);
+            Loader.search("Visit", {
+                dateFrom: beginDate,
+                dateTill: endDate,
+                step: DateHelper.steps.DAY,
+                index: "date"
+            }, function (data) {
+                var visits = sortByDate(data, beginDate, endDate);
+                data = MastersForPeriod(data, {
+                    begin: new Date(beginDate),
+                    end: new Date(endDate)
+                });
+                //                console.log(data)
+                var list = [];
+                var i = 0;
+
+                //                console.log("beginEnd", beginDate, endDate);
+                for (var tmpdate = new Date(beginDate); tmpdate < endDate || tmpdate.toDateString() == endDate.toDateString(); tmpdate.setDate(tmpdate.getDate() + 1)) {
+                    var dayVisit = visits.filter(function (vis) {
+                        return vis.date.toDateString() == tmpdate.toDateString();
+                    })[0];
+                    //                    console.log(dayVisit, tmpdate);
+                    var page = new VisitsMasterPage(new Date(tmpdate), data[i], dayVisit.list);
+                    list.push(page);
+                    i++;
+                }
+                $scope.loading = false;
+                //                console.log("list", list)
                 callback(list);
             });
         }
@@ -257,8 +255,10 @@ myApp.controller('VisitsMasterController', function ($scope, $filter, $location,
             if (service.master.id == $scope.masterId) {
                 services.push(service.description);
                 coast += service.cost;
-                startTimes.push(service.startTime);
-                endTimes.push(service.endTime);
+                if (service.startTime != "")
+                    startTimes.push(service.startTime);
+                if (service.endTime != "")
+                    endTimes.push(service.endTime);
             }
         }
         $scope.downTime = visit.downTime;
@@ -266,7 +266,11 @@ myApp.controller('VisitsMasterController', function ($scope, $filter, $location,
         $scope.masterVisitInfo.id = visit.id;
         $scope.masterVisitInfo.status = visit.status;
         $scope.masterVisitInfo.client = visit.client.lastName + ' ' + visit.client.firstName;
-        $scope.masterVisitInfo.time = $filter('date')(Math.min.apply(null, startTimes), "HH:mm") + '-' + $filter('date')(Math.max.apply(null, endTimes), "HH:mm");
+        $scope.hasTime = false;
+        if (startTimes.length > 0 && endTimes.length > 0) {
+            $scope.masterVisitInfo.time = $filter('date')(Math.min.apply(null, startTimes), "HH:mm") + '-' + $filter('date')(Math.max.apply(null, endTimes), "HH:mm");
+            $scope.hasTime = true;
+        }
         $scope.masterVisitInfo.service = services.join(", ");
         $scope.masterVisitInfo.cost = coast;
     };

@@ -56,7 +56,7 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
 
             var contentData;
             var step = DateHelper.steps.DAY;
-            var count = 5;
+            var count = 2;
 
 
             var ready = false;
@@ -85,12 +85,14 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
                                 var period;
                                 var pk = angular.element('.slick-active').attr('contentkey');
                                 var splitPk = pk.split(':');
-                                if (splitPk.length == 1) {
+//                                console.log("splitPk ", splitPk);
+                                if (splitPk.length < 4) {
                                     period = DateHelper.getPeriod(new Date(splitPk[0]), DateHelper.steps.DAY);
                                 } else {
                                     var step = splitPk[splitPk.length - 1];
                                     period = DateHelper.getPeriod(new Date(splitPk[0]), step);
                                 }
+//                                console.log("period ", period);
                                 scope.past = false, scope.future = false;
                                 if (period.begin > min)
                                     scope.past = true;

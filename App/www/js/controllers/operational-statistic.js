@@ -23,57 +23,44 @@ myApp.controller('OperationalStatisticController', function ($scope, $location, 
     $scope.loading = true;
 
     $scope.getData = function (key, quantity, forward, callback) {
-        //        if (forward && $scope.futureData($scope.date))
         $scope.loading = true;
         var resultArr = [];
         var date;
         if (key) {
-            //            console.log("key", key);
-            //            var newKey = key.split(':');
-            //            var objDate = new Date(newKey[0]);
-            //            var month = objDate.getMonth().toString();
-            //            if (month.length < 2)
-            //                month = "0"+month;
-            //            var day = objDate.getDate().toString();
-            //            if (day.length < 2)
-            //                day = "0"+day;
-            //            var strDate = objDate.getFullYear() + "-" + month + "-" + day;
-            //            key = strDate + ":" + newKey[3];
-            //            console.log("key", key);
-            Loader.get("OperationalStatistics", key, function (obj) {
-                if (obj) {
-                    //                    console.log("obj", obj)
-                    date = obj.date;
-                    if (forward) {
-                        date = DateHelper.getNextPeriod(date, $scope.step).end;
-                    } else {
-                        date = DateHelper.getPrevPeriod(date, $scope.step).end;
-                    }
-                    var beginDate = date,
-                        endDate = date;
-                    for (var i = 0; i < quantity; i++) {
-                        if (forward) {
-                            endDate = DateHelper.getNextPeriod(endDate, $scope.step).end;
-                        } else {
-                            beginDate = DateHelper.getPrevPeriod(beginDate, $scope.step).begin;
-                        }
-                    }
-                    if (beginDate == endDate && $scope.step != DateHelper.steps.DAY) {
-                        var period = DateHelper.getPeriod(beginDate, $scope.step);
-                        beginDate = period.begin;
-                        endDate = period.end;
-                    }
-                    //                    console.log("begend", beginDate, endDate)
-                    Loader.search("OperationalStatistics", {
-                        dateFrom: beginDate,
-                        dateTill: endDate,
-                        step: $scope.step,
-                    }, function (data) {
-                        $scope.loading = false;
-                        callback(data)
-                    });
+            //            Loader.get("OperationalStatistics", key, function (obj) {
+            //                if (obj) {
+            //                    console.log("obj", obj)
+            date = new Date(getCurrentPeriod().begin);
+            if (forward) {
+                date = DateHelper.getNextPeriod(date, $scope.step).end;
+            } else {
+                date = DateHelper.getPrevPeriod(date, $scope.step).end;
+            }
+            var beginDate = date,
+                endDate = date;
+            for (var i = 0; i < quantity; i++) {
+                if (forward) {
+                    endDate = DateHelper.getNextPeriod(endDate, $scope.step).end;
+                } else {
+                    beginDate = DateHelper.getPrevPeriod(beginDate, $scope.step).begin;
                 }
+            }
+            if (beginDate == endDate && $scope.step != DateHelper.steps.DAY) {
+                var period = DateHelper.getPeriod(beginDate, $scope.step);
+                beginDate = period.begin;
+                endDate = period.end;
+            }
+            //                    console.log("begend", beginDate, endDate)
+            Loader.search("OperationalStatistics", {
+                dateFrom: beginDate,
+                dateTill: endDate,
+                step: $scope.step,
+            }, function (data) {
+                $scope.loading = false;
+                callback(data)
             });
+            //                }
+            //            });
 
         } else {
             date = $scope.date;
@@ -125,7 +112,6 @@ myApp.controller('OperationalStatisticController', function ($scope, $location, 
     $scope.max = null;
 
     $rootScope.$on('minMaxGet', function () {
-        //        console.log('received on');
         $scope.min = Loader.getMinDate("OperationalStatistics");
         $scope.max = Loader.getMaxDate("OperationalStatistics");
     });
@@ -176,7 +162,8 @@ myApp.controller('OperationalStatisticController', function ($scope, $location, 
      * @description Метод для перехода на страницу расходов.
      */
     $scope.toExpenditures = function () {
-        $location.path('expenditures');
+        var currentDate = new Date(getCurrentPeriod().begin);
+        $location.path('expenditures/' + currentDate);
     };
 
     $scope.hasFinance = function (statistics) {
