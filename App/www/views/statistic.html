@@ -1,10 +1,8 @@
-<head>
     <script>
         ga('send', 'screenview', {
             'screenName': 'Статистика салона'
         });
     </script>
-</head>
 <header-content title="'Салон красоты'" show-back-button="false" show="false"></header-content>
 <orient orientation="'portrait'"></orient>
 <footer-content show="true" active-page="StatisticsFooter" inactive-pages="['VisitsFooter', 'SettingsFooter']"></footer-content>
@@ -51,24 +49,24 @@
                 <date-changer date='page.date' step='$parent.step' has-future-data='hasFutureData(page.date)' has-prev-data='hasPrevData(page.date)'></date-changer>
                 <table id="statisticTable">
                     <tr>
-                        <td class="sCell" ng-click="$parent.toChart('proceeds')" style="border-right: none;border-bottom: none;">
+                        <td class="sCell" ng-click="$parent.toChart('proceeds')" style="border-right: none;border-bottom: none;" analytics-on="click" analytics-event="ToProceedsChart" analytics-category="Statistics" >
                             <img src="images/proceeds.PNG" style="margin:5px;">
                             <p style="font-size:23pt; font-weight: bold">{{page.proceeds| money:0}} <span class="price">ю</span></p>
                             <p style="font-weight: lighter">Выручка</p>
                         </td>
-                        <td class="sCell" ng-click="$parent.toChart('profit')" style="border-bottom: none;">
+                        <td class="sCell" ng-click="$parent.toChart('profit')" style="border-bottom: none;" analytics-on="click" analytics-event="ToProfitChart" analytics-category="Statistics">
                             <img src="images/profit.PNG" style="margin:5px">
                             <p style="font-size:23pt; font-weight: bold">{{page.profit| money:0}} <span class="price">ю</span></p>
                             <p style="font-weight: lighter">Прибыль</p>
                         </td>
                     </tr>
                     <tr>
-                        <td class="sCell" ng-click="$parent.toChart('clients')" style="border-right: none;">
+                        <td class="sCell" ng-click="$parent.toChart('clients')" style="border-right: none;" analytics-on="click" analytics-event="ToClientsChart" analytics-category="Statistics">
                             <img src="images/clients.PNG" style="margin:5px">
                             <p style="font-size:23pt; font-weight: bold">{{page.clients}}</p>
                             <p style="font-weight: lighter">Оформлено визитов</p>
                         </td>
-                        <td class="sCell" ng-click="$parent.toChart('workload')" ;>
+                        <td class="sCell" ng-click="$parent.toChart('workload')" analytics-on="click" analytics-event="ToWorkloadChart" analytics-category="Statistics">
                             <img src="images/workload.PNG" style="margin:5px">
                             <p style="font-size:23pt; font-weight: bold">{{page.workload| money:0}}%</p>
                             <p style="font-weight: lighter">Загруженность</p>
@@ -84,7 +82,7 @@
                             <span style="font-size:14px; font-weight: lighter">В кассе</span>
                             </div>
                         </td>
-                        <td class="financeCellLeft" align="center">
+                        <td class="financeCellLeft" align="center" analytics-on="click" analytics-event="ToExpenditure" analytics-category="Statistics">
                             <table align="center">
                                 <tr>
                                     <td style="text-align:left">Утром:</td>

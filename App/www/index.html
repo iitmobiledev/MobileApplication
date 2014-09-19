@@ -110,10 +110,10 @@
         })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
 
         ga('create', 'UA-54895554-3', 'auto');
-        ga('send', 'pageview', {
-            'page': '/index.html',
-            'title': 'Index of app'
-        });
+//        ga('send', 'pageview', {
+//            'page': '/index.html',
+//            'title': 'Index of app'
+//        });
     </script>
     <!-- End Google Analytics -->
 </head>
@@ -190,9 +190,9 @@
     </div>
 
     <div id="navbar" class="inner-element uib_w_22" style="font-weight: lighter" data-uib="app_framework/footer" data-ver="1">
-        <a class="statistic" href="#/index" id="StatisticsFooter">Отчетность</a>
-        <a class="visits" href="#/visits" id="VisitsFooter">Визиты</a>
-        <a class="settings" href="#/settings" id="SettingsFooter">Настройки</a>
+        <a class="statistic" href="#/index" id="StatisticsFooter" analytics-on="click" analytics-event="ToStatisticPage" analytics-category="Меню">Отчетность</a>
+        <a class="visits" href="#/visits" id="VisitsFooter" analytics-on="click" analytics-event="ToVisitsPage" analytics-category="Меню">Визиты</a>
+        <a class="settings" href="#/settings" id="SettingsFooter" analytics-on="click" analytics-event="ToSettingsPage" analytics-category="Меню">Настройки</a>
     </div>
 </body>
 
