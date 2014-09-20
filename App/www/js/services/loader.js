@@ -149,8 +149,11 @@ myApp.service("Loader", ["ModelConverter", "RealServer", "$rootScope", "Storage"
                 getFieldStat();
                 Server.search(className, params, function (result) {
                     console.log('server.search ', result);
+                    if (result instanceof Array){
                     var objs = ModelConverter.getObjects(className, result);
-                    callback(objs);
+                    callback(objs);}
+                    else
+                        callback([]);
                 });
 
 
