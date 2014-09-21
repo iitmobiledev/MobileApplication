@@ -1,16 +1,13 @@
-var myApp = angular.module('myApp', ['ngRoute','ngAnimate','angulartics', 'angulartics.google.analytics']);  //,'angulartics'      , 'angulartics.google.analytics'
+var myApp = angular.module('myApp', ['ngRoute', 'ngAnimate', 'angulartics']); //, 'angulartics', 'angulartics.google.analytics'
 var flag = true;
 
 
 myApp.run(function ($templateCache, Storage) {
-    //    if (flag) {
     $templateCache.put('statistic-content');
     $templateCache.put('visits');
-    //        flag = false;
-    //    }
 });
 
-myApp.config(['$routeProvider',
+myApp.config(['$routeProvider', //'$analyticsProvider',
     function ($routeProvider) {
         $routeProvider.
         when('/index', {
@@ -58,19 +55,19 @@ myApp.config(['$routeProvider',
     }]);
 
 
-(function () {
-    "use strict";
+//(function () {
+//    "use strict";
 
-//        console.log = function (msg) {
-//            $('#console').append($("<p>", {
-//                text: msg
-//            }));
-//        };
-//        console.error = function (msg) {
-//            $('#console').append($("<p>", {
-//                text: msg
-//            }));
-//        };
+    //        console.log = function (msg) {
+    //            $('#console').append($("<p>", {
+    //                text: msg
+    //            }));
+    //        };
+    //        console.error = function (msg) {
+    //            $('#console').append($("<p>", {
+    //                text: msg
+    //            }));
+    //        };
 
     //    }
     //$.ui.useInternalRouting = false;
@@ -86,4 +83,4 @@ myApp.config(['$routeProvider',
     //
     //        function register_event_handlers() {}
     //        $(document).ready(register_event_handlers);
-})();
+//})();
