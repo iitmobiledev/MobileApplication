@@ -100,10 +100,10 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
                                     scope.future = true;
                                 if ($('.my-slider').slickCurrentSlide() == 0 && scope.past) {
                                     dataCallback(key, count, false, addPastData);
-                                    scope.$apply();
+                                    //scope.$apply();
                                 } else if ($('.my-slider').slickCurrentSlide() == ($('.my-slider').getSlick().slideCount - 1) && scope.future) {
                                     dataCallback(key, count, true, addFutureData);
-                                    scope.$apply();
+                                    //scope.$apply();
                                 }
                                 scope.$apply();
                             }
@@ -159,9 +159,10 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
                             $('.my-slider').slickSetOption('speed', 0).slickGoTo(ind + c).slickSetOption('speed', 300);
                             $('.my-slider').getSlick().$slides[0].setAttribute("contentkey", keyFunc(contentData[i]));
                         });
+                         //newscope.$apply();
                     }
                 }
-                scope.$apply();
+                //scope.$apply();
                 ready = true;
             }
 
@@ -187,7 +188,7 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
                             $('.my-slider').slickAdd(clonedElement);
                             //                            newscope.$apply();
                         });
-                        newscope.$apply();
+                        //newscope.$apply();
                     }
                 }
                 //                scope.$apply();
@@ -223,7 +224,7 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
                             $('.my-slider').slickAdd(clonedElement);
                             //                            newscope.$apply();
                         });
-                        newscope.$apply();
+                        //newscope.$apply();
                     }
 
                     $('.my-slider').slickSetOption('speed', 0).slickGoTo(curIndex).slickSetOption('speed', 300);
