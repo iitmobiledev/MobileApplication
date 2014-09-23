@@ -71,16 +71,12 @@ myApp.factory('MastersForPeriod', function (DateHelper, Loader, $filter) {
      */
     function selectVisitInfo(visit, id) {
         var services = [],
-            startTimes = [],
-            endTimes = [],
             coast = 0;
         for (var j = 0; j < visit.serviceList.length; j++) {
             var service = visit.serviceList[j]
             if (id == service.master.id) {
                 services.push(service);
                 coast += service.cost
-                startTimes.push(service.startTime);
-                endTimes.push(service.endTime);
             }
         }
         var result = {};
@@ -89,10 +85,10 @@ myApp.factory('MastersForPeriod', function (DateHelper, Loader, $filter) {
         result.client = visit.client;
         result.serviceList = services;
         result.cost = coast + ' р.';
-        result.startTime = Math.min.apply(null, startTimes);
-        result.endTime = Math.max.apply(null, endTimes);
         result.isDownTime = false;
         result.downTime = '';
+        result.startTime = visit.startTime;
+        result.endTime = visit.endTime;
         //        console.log("res-visit", result);
         return result;
     }
@@ -119,9 +115,7 @@ myApp.factory('MastersForPeriod', function (DateHelper, Loader, $filter) {
         var result = [];
         for (var i in list) {
             if (list[i].length != 0) {
-                result.push(list[i].sort(function (a, b) {
-                    return new Date(a.date).getTime() - new Date(b.date).getTime()
-                }));
+                result.push($filter('orderBy')(list[i], 'startTime'));
             }
         }
         var data = result;
@@ -131,7 +125,7 @@ myApp.factory('MastersForPeriod', function (DateHelper, Loader, $filter) {
         for (var date = period.begin; date < period.end || date.toDateString() == period.end.toDateString(); date.setDate(date.getDate() + 1)) {
             var mastersForDay = [];
             var needData = [];
-            for (var l = 0; l < data.length; l++){
+            for (var l = 0; l < data.length; l++) {
                 if (data[l][0].date.toDateString() == date.toDateString())
                     needData = data[l];
             }
@@ -154,6 +148,8 @@ myApp.factory('MastersForPeriod', function (DateHelper, Loader, $filter) {
                 mastersForDay = mastersForDay.sort(function (a, b) {
                     if (typeof (b.master.lastName) == 'undefined')
                         b.master.lastName = "";
+                    if (typeof (a.master.lastName) == 'undefined')
+                        a.master.lastName = "";
                     if (a.master.lastName.toLowerCase() < b.master.lastName.toLowerCase())
                         return -1;
                     if (nameA = a.master.lastName.toLowerCase() > b.master.lastName.toLowerCase())

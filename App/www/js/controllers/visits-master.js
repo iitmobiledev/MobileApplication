@@ -13,9 +13,10 @@
  * @requires myApp.service:DateHelper
  */
 myApp.controller('VisitsMasterController', function ($scope, $filter, $location, DateHelper, $routeParams, MastersForPeriod, Loader, $rootScope) {
-
-    var today = new Date($routeParams.date) || new Date();
+    //    new Date($routeParams.date) || 
+    var today = new Date();
     $scope.date = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+    console.log($routeParams.date);
     $scope.step = DateHelper.steps.DAY;
     $scope.loading = true;
     $scope.pageIndex = 0;
@@ -38,8 +39,8 @@ myApp.controller('VisitsMasterController', function ($scope, $filter, $location,
      * сортировкой по времени.
      */
     $scope.onTime = function () {
-        var pk = angular.element('.slick-active').attr('contentkey');
-        $location.path('visits/' + pk);
+        //        var pk = angular.element('.slick-active').attr('contentkey');
+        $location.path('visits/' + $scope.date);
     }
 
     //    $scope.visits = [];
@@ -158,7 +159,6 @@ myApp.controller('VisitsMasterController', function ($scope, $filter, $location,
                     i++;
                 }
                 $scope.loading = false;
-                console.log("list ", list);
                 callback(list);
             });
             //                }
@@ -225,14 +225,15 @@ myApp.controller('VisitsMasterController', function ($scope, $filter, $location,
      */
     $scope.getMasterInfo = function (master) {
         $scope.masterId = master.id;
-        if (master.lastName && master.firstName)
-            return master.lastName + " " + master.firstName;
-        return "(нет мастера)";
+        $scope.master = "(нет мастера)";
+        if (master.lastName && master.firstName) {
+            $scope.hasMaster = true;
+            $scope.master = master.lastName + " " + master.firstName;
+        } else
+            $scope.hasMaster = false;
     };
 
-    $scope.log = function (str) {
-        console.log("log:", str);
-    }
+    $scope.hasMaster = true;
 
     $scope.downTime;
     $scope.isDownTime;
@@ -247,18 +248,16 @@ myApp.controller('VisitsMasterController', function ($scope, $filter, $location,
     $scope.getVisitByMasterInfo = function (visit) {
         $scope.masterVisitInfo = {};
         var services = [],
-            startTimes = [],
-            endTimes = [],
             coast = 0;
         for (var j = 0; j < visit.serviceList.length; j++) {
             var service = visit.serviceList[j];
             if (service.master.id == $scope.masterId) {
                 services.push(service.description);
                 coast += service.cost;
-                if (service.startTime != "")
-                    startTimes.push(service.startTime);
-                if (service.endTime != "")
-                    endTimes.push(service.endTime);
+                //                if (service.startTime != "")
+                //                    startTimes.push(service.startTime);
+                //                if (service.endTime != "")
+                //                    endTimes.push(service.endTime);
             }
         }
         $scope.downTime = visit.downTime;
@@ -267,8 +266,9 @@ myApp.controller('VisitsMasterController', function ($scope, $filter, $location,
         $scope.masterVisitInfo.status = visit.status;
         $scope.masterVisitInfo.client = visit.client.lastName + ' ' + visit.client.firstName;
         $scope.hasTime = false;
-        if (startTimes.length > 0 && endTimes.length > 0) {
-            $scope.masterVisitInfo.time = $filter('date')(Math.min.apply(null, startTimes), "HH:mm") + '-' + $filter('date')(Math.max.apply(null, endTimes), "HH:mm");
+        if (visit.startTime != "" && visit.endTime != "") {
+            //            $scope.masterVisitInfo.time = $filter('date')(Math.min.apply(null, startTimes), "HH:mm") + '-' + $filter('date')(Math.max.apply(null, endTimes), "HH:mm");
+            $scope.masterVisitInfo.time = $filter('date')(visit.startTime, "HH:mm") + '-' + $filter('date')(visit.endTime, "HH:mm");
             $scope.hasTime = true;
         }
         $scope.masterVisitInfo.service = services.join(", ");

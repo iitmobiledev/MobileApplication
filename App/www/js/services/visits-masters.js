@@ -63,8 +63,6 @@ myApp.factory('Service', function (Model, Master) {
     return Model("Service", {
         deserialize: function (self, data) {
             self.description = data.description;
-            self.startTime = data.startTime;
-            self.endTime = data.endTime;
             self.master = new Master(data.master);
             self.cost = data.cost;
             self.employeeSalary = data.employeeSalary;
@@ -93,7 +91,7 @@ myApp.factory('Visit', function (Model, Client, Service, Author) {
             self.author = new Author(data.author);
             self.client = data.client;
             self.comment = data.comment;
-            self.status = data.status || "NEW";
+            self.status = data.status;
 
             var serviceList = [];
             if (data.serviceList) {
@@ -104,6 +102,16 @@ myApp.factory('Visit', function (Model, Client, Service, Author) {
 
             self.date = new Date(data.date);
             self.paid = parseInt(data.paid);
+            var parseTime = data.startTime.split(':');
+            if (parseTime.length > 2) {
+                self.startTime = new Date(self.date.getFullYear(), self.date.getMonth(), self.date.getDate(), parseTime[0], parseTime[1]);
+            } else
+                self.startTime = "";
+            parseTime = data.endTime.split(':');
+            if (parseTime.length > 2) {
+                self.endTime = new Date(self.date.getFullYear(), self.date.getMonth(), self.date.getDate(), parseTime[0], parseTime[1]);
+            } else
+                self.endTime = "";
         },
         serialize: function (self) {
             self.constructor.prototype.call(self)
@@ -150,10 +158,10 @@ myApp.factory('Visit', function (Model, Client, Service, Author) {
     visitConstructor.statuses = {
         titlesArray: ["Новая запись", "Клиент не пришел", "Клиент пришел", "Подтверждена"],
         titles: {
-            NEW: "Новая запись",
-            NOTCOME: "Клиент не пришел",
-            come: "Клиент пришел",
-            CONFIRMED: "Подтверждена"
+            "new": "Новая запись",
+            "not-come": "Клиент не пришел",
+            "come": "Клиент пришел",
+            "confirmed": "Подтверждена"
         },
         classesNames: {
             NEW: "new",

@@ -15,10 +15,10 @@
  */
 myApp.controller('VisitsController', function ($scope, $filter, $location, Loader, DateHelper, Visit, $rootScope, $routeParams) {
     var today;
-    if ($routeParams.date)
-        today = new Date($routeParams.date);
-    else
-        today = new Date();
+    //    if ($routeParams.date)
+    //        today = new Date($routeParams.date);
+    //    else
+    today = new Date();
     $scope.date = new Date(today.getFullYear(), today.getMonth(), today.getDate());
     $scope.step = DateHelper.steps.DAY;
     $scope.loading = true;
@@ -27,7 +27,7 @@ myApp.controller('VisitsController', function ($scope, $filter, $location, Loade
 
     $scope.min = null;
     $scope.max = null;
-    
+
     $scope.future = true;
     $scope.past = true;
 
@@ -37,8 +37,8 @@ myApp.controller('VisitsController', function ($scope, $filter, $location, Loade
     });
 
     $scope.onMasters = function () {
-        var pk = angular.element('.slick-active').attr('contentkey');
-        $location.path('visits-master/' + pk);
+        //        console.log('$scope.date ', $scope.date);
+        $location.path('visits-master/' + $scope.date);
     };
     /**
      *
@@ -106,9 +106,7 @@ myApp.controller('VisitsController', function ($scope, $filter, $location, Loade
                 for (var tmpdate = new Date(beginDate); tmpdate < endDate || tmpdate.toDateString() == endDate.toDateString(); tmpdate.setDate(tmpdate.getDate() + 1)) {
                     var page;
                     if (visitsByDate[tmpdate.toDateString()]) {
-                        page = new VisitsPage(new Date(tmpdate), visitsByDate[tmpdate.toDateString()].sort(function (a, b) {
-                            return new Date(a.date).getTime() - new Date(b.date).getTime();
-                        }));
+                        page = new VisitsPage(new Date(tmpdate), $filter('orderBy')(visitsByDate[tmpdate.toDateString()], 'startTime'));
                     } else
                         page = new VisitsPage(new Date(tmpdate), []);
                     list.push(page);
@@ -148,9 +146,7 @@ myApp.controller('VisitsController', function ($scope, $filter, $location, Loade
                 for (var tmpdate = new Date(beginDate); tmpdate < endDate || tmpdate.toDateString() == endDate.toDateString(); tmpdate.setDate(tmpdate.getDate() + 1)) {
                     //                    console.log("date ", tmpdate);
                     if (visitsByDate[tmpdate.toDateString()]) {
-                        var page = new VisitsPage(new Date(tmpdate), visitsByDate[tmpdate.toDateString()].sort(function (a, b) {
-                            return new Date(a.date).getTime() - new Date(b.date).getTime();
-                        }));
+                        var page = new VisitsPage(new Date(tmpdate), $filter('orderBy')(visitsByDate[tmpdate.toDateString()], 'startTime'));
                         list.push(page);
                     } else
                         list.push(new VisitsPage(new Date(tmpdate), []));
@@ -165,16 +161,16 @@ myApp.controller('VisitsController', function ($scope, $filter, $location, Loade
     $scope.getKey = function (obj) {
         return obj && obj.date.toDateString();
     };
-    
-//    $scope.$watch('date', function (newValue, oldValue) {
-//        var period = DateHelper.getPeriod(new Date($scope.date), $scope.step);
-//        $scope.past = false, $scope.future = false;
-//        if (period.begin > $scope.min || $scope.min == null)
-//            $scope.past = true;
-//        if (period.end < $scope.max || $scope.max == null)
-//            $scope.future = true;
-//    });
-    
+
+    //    $scope.$watch('date', function (newValue, oldValue) {
+    //        var period = DateHelper.getPeriod(new Date($scope.date), $scope.step);
+    //        $scope.past = false, $scope.future = false;
+    //        if (period.begin > $scope.min || $scope.min == null)
+    //            $scope.past = true;
+    //        if (period.end < $scope.max || $scope.max == null)
+    //            $scope.future = true;
+    //    });
+
 
     /**
      *
@@ -187,20 +183,12 @@ myApp.controller('VisitsController', function ($scope, $filter, $location, Loade
     $scope.getVisitInfo = function (visit) {
         var services = [],
             masters = [],
-            startTimes = [],
-            endTimes = [],
             coast = 0;
         for (var j = 0; j < visit.serviceList.length; j++) {
             var service = visit.serviceList[j];
             services.push(service.description);
             masters.push(service.master.lastName);
             coast += service.cost;
-            if (service.startTime != "")
-                startTimes.push(service.startTime);
-            if (service.endTime != "")
-                endTimes.push(service.endTime);
-            //            startTimes.push(service.startTime);
-            //            endTimes.push(service.endTime);
             $scope.noVisit = false;
         }
         masters = $.unique(masters);
@@ -209,12 +197,11 @@ myApp.controller('VisitsController', function ($scope, $filter, $location, Loade
         $scope.visitInfo.status = visit.status;
         $scope.visitInfo.client = visit.client.lastName + ' ' + visit.client.firstName;
         $scope.hasTime = false;
-        if (startTimes.length > 0 && endTimes.length > 0) {
-            $scope.masterVisitInfo.time = $filter('date')(Math.min.apply(null, startTimes), "HH:mm") + '-' + $filter('date')(Math.max.apply(null, endTimes), "HH:mm");
+        if (visit.startTime != "" && visit.endTime != "") {
+            //            $scope.masterVisitInfo.time = $filter('date')(Math.min.apply(null, startTimes), "HH:mm") + '-' + $filter('date')(Math.max.apply(null, endTimes), "HH:mm");
+            $scope.visitInfo.time = $filter('date')(visit.startTime, "HH:mm") + '-' + $filter('date')(visit.endTime, "HH:mm");
             $scope.hasTime = true;
         }
-        //        $scope.visitInfo.time = $filter('date')(Math.min.apply(null, startTimes), "HH:mm") + '-' +
-        //            $filter('date')(Math.max.apply(null, endTimes), "HH:mm");
         $scope.visitInfo.masters = masters.join(",");
         $scope.visitInfo.services = services.join(", ");
         $scope.visitInfo.cost = coast;

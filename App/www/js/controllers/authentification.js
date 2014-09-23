@@ -10,9 +10,9 @@
  */
 myApp.controller('AuthentificationController', function ($scope, $location, authService) {
     $scope.correct = true;
-    if (sessvars.token) {
-        $location.path('index');
-    }
+//    if (sessvars.token) {
+//        $location.path('index');
+//    }
 
     /**
      *

@@ -7,8 +7,6 @@ myApp.directive('statusStatistics', function (Visit, Status) {
 
             var updateStatus = function () {
                 visits = scope.$eval(attrs.visits);
-                //                console.log("visits in dir ", visits);
-
                 salary = 0;
 
                 var statuses = {
@@ -22,19 +20,19 @@ myApp.directive('statusStatistics', function (Visit, Status) {
                     salary += getEmployeeSalary(visits[i].serviceList);
 
                     switch (Visit.statuses.titles[visits[i].status]) {
-                    case Visit.statuses.titles.NEW:
+                    case Visit.statuses.titles['new']:
                         statuses.newRecord.count++;
                         statuses.newRecord.amount += getServicesCost(visits[i].serviceList);
                         break;
-                    case Visit.statuses.titles.NOTCOME:
+                    case Visit.statuses.titles['not-come']:
                         statuses.notCome.count++;
                         statuses.notCome.amount += getServicesCost(visits[i].serviceList);
                         break;
-                    case Visit.statuses.titles.come:
+                    case Visit.statuses.titles['come']:
                         statuses.come.count++;
                         statuses.come.amount += getServicesCost(visits[i].serviceList);
                         break;
-                    case Visit.statuses.titles.CONFIRMED:
+                    case Visit.statuses.titles['confirmed']:
                         statuses.confirmed.count++;
                         statuses.confirmed.amount += getServicesCost(visits[i].serviceList);
                         break;

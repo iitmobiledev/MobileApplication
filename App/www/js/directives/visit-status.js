@@ -9,28 +9,28 @@ myApp.directive('visitStatus', function (Visit) {
                 var classes = scope.$eval(attrs.classes);
 
                 switch (status) {
-                case statuses.titles.NEW:
+                case statuses.titles['new']:
                     element.append(
                         $("<div>", {
                             "class": statuses.classesNames.NEW,
                             text: status
                         }));
                     break;
-                case statuses.titles.NOTCOME:
+                case statuses.titles['not-come']:
                     element.append(
                         $("<div>", {
                             "class": statuses.classesNames.NOTCOME,
                             text: status
                         }));
                     break;
-                case statuses.titles.come:
+                case statuses.titles['come']:
                     element.append(
                         $("<div>", {
                             "class": statuses.classesNames.COME,
                             text: status
                         }));
                     break;
-                case statuses.titles.CONFIRMED:
+                case statuses.titles['confirmed']:
                     element.append(
                         $("<div>", {
                             "class": statuses.classesNames.CONFIRMED,
