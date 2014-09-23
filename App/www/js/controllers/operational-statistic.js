@@ -176,7 +176,6 @@ myApp.controller('OperationalStatisticController', function ($scope, $location, 
      * @description Метод для перехода на страницу расходов.
      */
     $scope.toExpenditures = function () {
-//        var currentDate = new Date(getCurrentPeriod().begin);
         $location.path('expenditures/' + $scope.date);
     };
 

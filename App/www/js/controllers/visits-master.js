@@ -23,6 +23,9 @@ myApp.controller('VisitsMasterController', function ($scope, $filter, $location,
 
     $scope.min = null;
     $scope.max = null;
+    
+    $scope.future = true;
+    $scope.past = true;
 
     $rootScope.$on('minMaxGet', function () {
         //        console.log('received on');

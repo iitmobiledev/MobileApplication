@@ -169,7 +169,6 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
                         var todayPeriod = DateHelper.getPeriod(today, scope.step);
                         var curPeriod = DateHelper.getPeriod(contentData[i].date, scope.step);
                         
-                            console.log(curPeriod.begin.toDateString() , todayPeriod.begin.toDateString())
                         if (contentData[i].date &&
                             curPeriod.begin.toDateString() == todayPeriod.begin.toDateString()) {
                             curIndex = i;
@@ -231,7 +230,6 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
              * @returns {Number} ключ объекта
              */
             function getCurrentKey() {
-                console.log($($('.my-slider').getCurrentSlide()).attr('contentkey'))
                 return $($('.my-slider').getCurrentSlide()).attr('contentkey');
             }
 

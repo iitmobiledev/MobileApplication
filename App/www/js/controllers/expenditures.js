@@ -18,8 +18,11 @@ myApp.controller('ExpendituresController', function ($scope, $filter, Loader, Da
 
     $scope.loading = true;
 
-    $scope.min = null;
-    $scope.max = null;
+//    $scope.min = null;
+//    $scope.max = null;
+    
+    $scope.future = true;
+    $scope.past = true;
 
     $rootScope.$on('minMaxGet', function () {
         $scope.min = Loader.getMinDate("Expenditure");
@@ -35,6 +38,7 @@ myApp.controller('ExpendituresController', function ($scope, $filter, Loader, Da
         $scope.loading = true;
         var resultArr = [];
         var date;
+        console.log("get")
         if (key) {
             //            Loader.get("Expenditure", key, function (obj) {
             //                if (obj) {
@@ -135,6 +139,18 @@ myApp.controller('ExpendituresController', function ($scope, $filter, Loader, Da
         //        console.log(obj, obj.list[0].__primary__);
         return obj && obj.date;
     };
+    
+    
+    $scope.$watch('date', function (newValue, oldValue) {
+        var period = DateHelper.getPeriod(new Date($scope.date), DateHelper.steps.DAY);
+        
+        console.log("minmaxx", $scope.min, $scope.max, period.begin, period.end, newValue)
+        $scope.past = false, $scope.future = false;
+        if (period.begin > $scope.min || $scope.min === null)
+            $scope.past = true;
+        if (period.end < $scope.max || $scope.max === null)
+            $scope.future = true;
+    });
 
 
     //    /**

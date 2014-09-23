@@ -14,6 +14,9 @@ myApp.controller('VisitController', function ($scope, $filter, $routeParams, Loa
     $scope.loading = true;
     
     var hasData = false;
+    
+    $scope.future = true;
+    $scope.past = true;
 
     $scope.getData = function (key, quantity, forward, callback) {
         $scope.loading = true;
