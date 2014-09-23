@@ -3,14 +3,16 @@ myApp.directive('password', function () {
         restrict: 'E',
         replace: true,
         link: function (scope, element, attrs) {
-            element.find("#password").attr('type', 'password');
+            scope.show = false;
             element.find("#passwordEye").bind('click', function () {
-                if (element.find("#password").attr('type') == 'password') {
-                    element.find("#password").attr('type', 'text');
+                if (element.find("#passwordEye").attr('src') == 'images/eye.png') {
                     element.find('#passwordEye').attr('src', 'images/closeEye.png');
+                    scope.show = true;
+                    scope.$apply();
                 } else {
-                    element.find("#password").attr('type', 'password');
                     element.find('#passwordEye').attr('src', 'images/eye.png');
+                    scope.show = false;
+                    scope.$apply();
                 }
             });
 
@@ -24,8 +26,9 @@ myApp.directive('password', function () {
 
         },
         template: '<div>' +
-            '<input id="password" placeholder="Ваш пароль" type="password" value="demo" style="width:80%;">' +
-            '<img id="passwordEye" src="images/eye.png" style="position: fixed;right: 12%;margin-top: 10px;height: 20px;"' +
+            '<input id="password" placeholder="Ваш пароль" type="password" value="demo" style="width:80%; margin-left: 29px;" ng-hide="show">' +
+            '<input id="passwordShow" placeholder="Ваш пароль" type="text" value="demo" style="width:80%; margin-left: 29px;" ng-show="show">' +
+            '<img id="passwordEye" src="images/eye.png" style="position: relative;right: 12%;margin-top: 10px;height: 20px;"' +
             '</div>'
     }
 });
