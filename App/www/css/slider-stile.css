@@ -1,0 +1,43 @@
+.outer{
+	white-space: no-wrap;
+}
+
+.slide{
+	position: relative;
+	display: inline-block;
+	vertical-align: top;
+	width: 100px;
+	
+	z-index:999;
+	/*display: none;*/
+
+	/*margin-left: 25%;*/
+}
+
+.slide-track{
+	position: relative;
+	display: block;
+	vertical-align: top;
+	width: 100px;
+}
+
+.slide-active{
+	display: block;
+}
+
+.my-slider{ 
+	position: relative;
+	overflow: hidden;
+
+	display: block;
+	box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+	-ms-touch-action: none;
+	-webkit-tap-highlight-color: transparent;
+}

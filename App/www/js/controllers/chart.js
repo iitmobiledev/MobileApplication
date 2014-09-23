@@ -39,7 +39,7 @@ myApp.controller('GraphicController', function ($scope, $routeParams, Loader, Da
             goodData = goodData.sort();
             $scope.loading = false;
             $scope.data = goodData;
-            $scope.$apply();
+            //$scope.$apply();
         });
 
     switch ($scope.type) {

@@ -36,27 +36,9 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
             var content = $templateCache.get(contentID);
             var compiled = $compile(angular.element(content));
 
-            var min, max;
-            scope.future = true;
-            scope.past = true;
-
-            var updateMin = function () {
-                min = scope.$eval(attrs.min);
-            };
-            scope.$watch(attrs.min, updateMin);
-            updateMin();
-
-            var updateMax = function () {
-                max = scope.$eval(attrs.max);
-            };
-            scope.$watch(attrs.max, updateMax);
-            updateMax();
-
-            //            var loadBar = $compile(angular.element("<load-bar param-name='true'></load-bar>"));
-
             var contentData;
             var step = DateHelper.steps.DAY;
-            var count = 2;
+            var count = 5;
 
 
             var ready = false;
@@ -73,42 +55,23 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
             function toSlick() {
                 var width = $(".content").width()
                 if (width !== 0) {
-                    $('.my-slider').slick({
-                        infinite: false,
-                        slidesToShow: 1,
-                        slidesToScroll: 1,
-                        slideWidth: width,
-                        touchThreshold: 100,
+                    console.log(width)
+                    $('.my-slider').initSlider({
+                        width: width,
+                        maxSlideCount: 20,
                         onAfterChange: function () {
                             if (ready) {
                                 var key = getCurrentKey();
-                                var period;
-                                var pk = angular.element('.slick-active').attr('contentkey');
-                                var splitPk = pk.split(':');
-                                //                                console.log("splitPk ", splitPk);
-                                if (splitPk.length < 4) {
-                                    period = DateHelper.getPeriod(new Date(splitPk[0]), DateHelper.steps.DAY);
-                                } else {
-                                    var step = splitPk[splitPk.length - 1];
-                                    period = DateHelper.getPeriod(new Date(splitPk[0]), step);
-                                }
-                                //                                console.log("period ", period);
-                                scope.past = false, scope.future = false;
-                                if (period.begin > min || min == null)
-                                    scope.past = true;
-                                if (period.end < max || max == null)
-                                    scope.future = true;
-                                if ($('.my-slider').slickCurrentSlide() == 0 && scope.past) {
+                                updateDate();
+                                if ($('.my-slider').whichFromLeft($('.my-slider').getCurrentSlide()) == 0 && scope.past) {
                                     dataCallback(key, count, false, addPastData);
-                                    //scope.$apply();
-                                } else if ($('.my-slider').slickCurrentSlide() == ($('.my-slider').getSlick().slideCount - 1) && scope.future) {
+                                } else if ($('.my-slider').whichFromRight($('.my-slider').getCurrentSlide()) == 0 && scope.future) {
                                     dataCallback(key, count, true, addFutureData);
-                                    //scope.$apply();
                                 }
+                                
                                 scope.$apply();
                             }
-                        },
-                        useCSS: false
+                        }
                     });
                 } else {
                     setTimeout(toSlick, 10);
@@ -122,9 +85,9 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
              * @description Первоначальная инициализация слайдера, добавляются первые данные
              */
             function initSlider() {
-                $('.my-slider').unslick();
+                //$('.my-slider').destroySlider();
                 $('.my-slider').html("")
-                toSlick($('.my-slider'));
+                toSlick();
                 dataCallback(null, count, true, addCurrentDayData);
             }
 
@@ -147,17 +110,8 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
                         // не реализует эту фичу
                         // (оставаться на текущем слайде при добавлении слайда в начало)
                         compiled(newscope, function (clonedElement, scope) {
-                            var ind = $('.my-slider').slickCurrentSlide();
-                            if ($('.my-slider').getSlick().slideCount !== 0) {
-                                c = 1;
-                            } else {
-                                c = 0;
-                            }
-                            $('.my-slider').unslick();
-                            $('.my-slider').prepend(clonedElement);
-                            toSlick();
-                            $('.my-slider').slickSetOption('speed', 0).slickGoTo(ind + c).slickSetOption('speed', 300);
-                            $('.my-slider').getSlick().$slides[0].setAttribute("contentkey", keyFunc(contentData[i]));
+                            clonedElement.attr("contentkey", keyFunc(contentData[i]))
+                            $('.my-slider').addSlideLeft(clonedElement);
                         });
                          //newscope.$apply();
                     }
@@ -185,7 +139,7 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
                         compiled(newscope, function (clonedElement, scope) {
 
                             clonedElement.attr("contentkey", keyFunc(contentData[i]))
-                            $('.my-slider').slickAdd(clonedElement);
+                            $('.my-slider').addSlideRight(clonedElement);
                             //                            newscope.$apply();
                         });
                         //newscope.$apply();
@@ -205,14 +159,17 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
              * @param {Array} contentData Список объектов, чьи данные будут отображаться на слайдах
              */
             function addCurrentDayData(contentData) {
+                console.log("contentData", contentData)
                 ready = false;
-                var curIndex = 0;
+                var curIndex = null;
                 if (contentData) {
                     for (var i = 0; i < contentData.length; i++) {
                         var now = scope.date;
                         var today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
                         var todayPeriod = DateHelper.getPeriod(today, scope.step);
                         var curPeriod = DateHelper.getPeriod(contentData[i].date, scope.step);
+                        
+                            console.log(curPeriod.begin.toDateString() , todayPeriod.begin.toDateString())
                         if (contentData[i].date &&
                             curPeriod.begin.toDateString() == todayPeriod.begin.toDateString()) {
                             curIndex = i;
@@ -221,25 +178,30 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
                         newscope.page = contentData[i];
                         compiled(newscope, function (clonedElement, scope) {
                             clonedElement.attr("contentkey", keyFunc(contentData[i]))
-                            $('.my-slider').slickAdd(clonedElement);
+                            if ((curIndex !== null && curIndex === i) || (i === contentData.length - 1 && curIndex === null)){
+                                $('.my-slider').addSlideRight(clonedElement, true);
+                            }
+                            else{
+                                $('.my-slider').addSlideRight(clonedElement);
+                            }
                             //                            newscope.$apply();
                         });
                         //newscope.$apply();
                     }
 
-                    $('.my-slider').slickSetOption('speed', 0).slickGoTo(curIndex).slickSetOption('speed', 300);
-
                     //                    scope.$apply();
                     ready = true;
                 }
+                
+                updateDate();
             }
 
             $('.slider-back-button').on('click', function () {
-                $('.my-slider').slickPrev();
+                $('.my-slider').shiftLeft();
             });
 
             $('.slider-next-button').on('click', function () {
-                $('.my-slider').slickNext();
+                $('.my-slider').shiftRight();
             });
 
 
@@ -250,6 +212,15 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
                     initSlider();
                 }
             })
+            
+            function updateDate() {
+                var key = getCurrentKey();
+                var splitPk = key.split(':');
+                var step = splitPk[splitPk.length - 1];
+                var period = DateHelper.getPeriod(new Date(splitPk[0]), step);
+                scope.date = period.begin;
+                //scope.$apply();
+            }
 
             /**
              * @ngdoc method
@@ -260,11 +231,8 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
              * @returns {Number} ключ объекта
              */
             function getCurrentKey() {
-                if ($('.my-slider').getSlick().slideCount !== 0) {
-                    return $('.my-slider').getSlick().$slides[$('.my-slider').slickCurrentSlide()].getAttribute("contentkey");
-                } else {
-                    return null;
-                }
+                console.log($($('.my-slider').getCurrentSlide()).attr('contentkey'))
+                return $($('.my-slider').getCurrentSlide()).attr('contentkey');
             }
 
 

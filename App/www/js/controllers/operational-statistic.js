@@ -21,6 +21,9 @@ myApp.controller('OperationalStatisticController', function ($scope, $location, 
 
     $scope.step = DateHelper.steps.DAY;
     $scope.loading = true;
+    
+    $scope.future = true;
+    $scope.past = true;
 
     $scope.getData = function (key, quantity, forward, callback) {
         $scope.loading = true;
@@ -30,7 +33,9 @@ myApp.controller('OperationalStatisticController', function ($scope, $location, 
             //            Loader.get("OperationalStatistics", key, function (obj) {
             //                if (obj) {
             //                    console.log("obj", obj)
-            date = new Date(getCurrentPeriod().begin);
+            //date = new Date(getCurrentPeriod().begin);
+            date = new Date(key.split(':')[0]);
+            console.log("date", date)
             if (forward) {
                 date = DateHelper.getNextPeriod(date, $scope.step).end;
             } else {
@@ -141,6 +146,15 @@ myApp.controller('OperationalStatisticController', function ($scope, $location, 
         //        $scope.page = getStatistic($scope.date, $scope.step);
     });
 
+    $scope.$watch('date', function (newValue, oldValue) {
+        var period = DateHelper.getPeriod(new Date($scope.date), $scope.step);
+        $scope.past = false, $scope.future = false;
+        if (period.begin > $scope.min || $scope.min == null)
+            $scope.past = true;
+        if (period.end < $scope.max || $scope.max == null)
+            $scope.future = true;
+    });
+
     /**
      *
      * @ngdoc method
@@ -163,7 +177,7 @@ myApp.controller('OperationalStatisticController', function ($scope, $location, 
      */
     $scope.toExpenditures = function () {
         var currentDate = new Date(getCurrentPeriod().begin);
-        $location.path('expenditures/' + currentDate);
+        $location.path('expenditures/' + scope.date);
     };
 
     $scope.hasFinance = function (statistics) {
@@ -172,33 +186,33 @@ myApp.controller('OperationalStatisticController', function ($scope, $location, 
         }
         return false;
     };
-
+    /*
     function getCurrentPeriod() {
         var pk = angular.element('.slick-active').attr('contentkey');
         var splitPk = pk.split(':');
         var step = splitPk[splitPk.length - 1];
         return DateHelper.getPeriod(new Date(splitPk[0]), step);
     }
-
+*/
     $scope.goForDay = function () {
         $(".periodButtons a").removeClass('active');
         $(".day").addClass("active");
         $scope.step = DateHelper.steps.DAY;
-        $scope.date = new Date(getCurrentPeriod().begin);
+        //$scope.date = new Date(getCurrentPeriod().begin);
     };
 
     $scope.goForWeek = function () {
         $(".periodButtons a").removeClass('active');
         $(".week").addClass("active");
         $scope.step = DateHelper.steps.WEEK;
-        $scope.date = new Date(getCurrentPeriod().begin);
+        //$scope.date = new Date(getCurrentPeriod().begin);
     };
 
     $scope.goForMonth = function () {
         $(".periodButtons a").removeClass('active');
         $(".month").addClass("active");
         $scope.step = DateHelper.steps.MONTH;
-        $scope.date = new Date(getCurrentPeriod().begin);
+        //$scope.date = new Date(getCurrentPeriod().begin);
     };
 
 });
