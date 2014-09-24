@@ -214,9 +214,19 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
             
             function updateDate() {
                 var key = getCurrentKey();
+                
+                console.log("key", key)
                 var splitPk = key.split(':');
+                console.log("splitPk", splitPk)
                 var step = splitPk[splitPk.length - 1];
-                var period = DateHelper.getPeriod(new Date(splitPk[0]), step);
+                if (step == DateHelper.steps.DAY || step == DateHelper.steps.WEEK || step == DateHelper.steps.MONTH){
+                    var period = DateHelper.getPeriod(new Date(splitPk[0]), step);
+                }
+                else {
+                    var period = DateHelper.getPeriod(new Date(key), DateHelper.steps.DAY);
+                }
+                
+                console.log("period.begin", period.begin)
                 scope.date = period.begin;
                 //scope.$apply();
             }
