@@ -52,7 +52,11 @@ myApp.factory('MastersForPeriod', function (DateHelper, Loader, $filter) {
         }
         for (var j = 1; j < nmav.length; j++) {
             if (nmav[j].startTime != nmav[j - 1].endTime) {
-                nmav[j - 1].downTime = $filter('date')(nmav[j - 1].endTime, "HH:mm") + '-' + $filter('date')(nmav[j].startTime, "HH:mm");
+                if (nmav[j - 1].endTime == "") {
+                    nmav[j - 1].downTime = "до " + $filter('date')(nmav[j].startTime, "HH:mm");
+                } else {
+                    nmav[j - 1].downTime = $filter('date')(nmav[j - 1].endTime, "HH:mm") + '-' + $filter('date')(nmav[j].startTime, "HH:mm");
+                }
                 nmav[j - 1].isDownTime = true;
             }
         }

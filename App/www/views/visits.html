@@ -18,8 +18,8 @@
                 <a href="#/visit/{{visitInfo.id}}/visits">
                     <div style="width:100%">
                         <visit-status status='visitInfo.status' style=""></visit-status>
-                        <img style="float:right;top:-23px;position:relative;left: -95px;max-height: 13px;" src="images/time.png" ng-show="hasTime">
-                        <span style="float:right;top:-25px;position:relative">{{visitInfo.time}}</span>
+                        
+                        <span style="float:right;top:-25px;position:relative"><img style="top:-23px;left: -95px;max-height: 13px;" src="images/time.png" ng-show="hasTime"> {{visitInfo.time}}</span>
                         <div>
                             <span style="width:65%;white-space:nowrap;text-overflow:ellipsis;overflow: hidden; font-size:18px; font-weight:500; margin-bottom:5px;">
                                         {{visitInfo.client}}

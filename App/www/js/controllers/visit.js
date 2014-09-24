@@ -55,10 +55,24 @@ myApp.controller('VisitController', function ($scope, $filter, $routeParams, Loa
                             var serviceItem = {};
                             serviceItem.description = service.description;
                             serviceItem.hasTime = false;
-                            if (service.startTime != "" && service.endTime) {
-                                serviceItem.time = $filter('date')(service.startTime, "H:mm") + " - " + $filter('date')(service.endTime, "H:mm");
+                            var time = [];
+                            if (service.startTime != ""){
+                                console.log(service.startTime);
+                                time.push($filter('date')(service.startTime, "H:mm"));
                                 serviceItem.hasTime = true;
                             }
+                            if (service.endTime != ""){
+                                console.log(service.endTime);
+                                time.push($filter('date')(service.endTime, "H:mm"));
+                                serviceItem.hasTime = true;
+                            }
+                            
+                            serviceItem.time = time.join("-");
+                            
+//                            if (service.startTime != "" && service.endTime != "") {
+//                                serviceItem.time = $filter('date')(service.startTime, "H:mm") + " - " + $filter('date')(service.endTime, "H:mm");
+//                                serviceItem.hasTime = true;
+//                            }
                             serviceItem.cost = service.cost;
                             if (service.master.lastName && service.master.firstName) {
                                 serviceItem.master = 'Мастер: ' + service.master.lastName + " " + service.master.firstName;

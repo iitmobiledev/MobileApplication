@@ -66,6 +66,16 @@ myApp.factory('Service', function (Model, Master) {
             self.master = new Master(data.master);
             self.cost = data.cost;
             self.employeeSalary = data.employeeSalary;
+            var parseTime = data.startTime.split(':');
+            if (parseTime.length > 2) {
+                self.startTime = new Date(self.date.getFullYear(), self.date.getMonth(), self.date.getDate(), parseTime[0], parseTime[1]);
+            } else
+                self.startTime = "";
+            parseTime = data.endTime.split(':');
+            if (parseTime.length > 2) {
+                self.endTime = new Date(self.date.getFullYear(), self.date.getMonth(), self.date.getDate(), parseTime[0], parseTime[1]);
+            } else
+                self.endTime = "";
         },
         serialize: function (self) {
             self.constructor.prototype.call(self)

@@ -198,11 +198,16 @@ myApp.controller('VisitsController', function ($scope, $filter, $location, Loade
         $scope.visitInfo.status = visit.status;
         $scope.visitInfo.client = visit.client.lastName + ' ' + visit.client.firstName;
         $scope.hasTime = false;
-        if (visit.startTime != "" && visit.endTime != "") {
-            //            $scope.masterVisitInfo.time = $filter('date')(Math.min.apply(null, startTimes), "HH:mm") + '-' + $filter('date')(Math.max.apply(null, endTimes), "HH:mm");
-            $scope.visitInfo.time = $filter('date')(visit.startTime, "HH:mm") + '-' + $filter('date')(visit.endTime, "HH:mm");
+        var time = [];
+        if (visit.startTime != "") {
+            time.push($filter('date')(visit.startTime, "H:mm"));
             $scope.hasTime = true;
         }
+        if (visit.endTime != "") {
+            time.push($filter('date')(visit.endTime, "H:mm"));
+            $scope.hasTime = true;
+        }
+        $scope.visitInfo.time = time.join("-");
         $scope.visitInfo.masters = masters.join(",");
         $scope.visitInfo.services = services.join(", ");
         $scope.visitInfo.cost = coast;

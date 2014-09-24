@@ -257,10 +257,6 @@ myApp.controller('VisitsMasterController', function ($scope, $filter, $location,
             if (service.master.id == $scope.masterId) {
                 services.push(service.description);
                 coast += service.cost;
-                //                if (service.startTime != "")
-                //                    startTimes.push(service.startTime);
-                //                if (service.endTime != "")
-                //                    endTimes.push(service.endTime);
             }
         }
         $scope.downTime = visit.downTime;
@@ -269,11 +265,16 @@ myApp.controller('VisitsMasterController', function ($scope, $filter, $location,
         $scope.masterVisitInfo.status = visit.status;
         $scope.masterVisitInfo.client = visit.client.lastName + ' ' + visit.client.firstName;
         $scope.hasTime = false;
-        if (visit.startTime != "" && visit.endTime != "") {
-            //            $scope.masterVisitInfo.time = $filter('date')(Math.min.apply(null, startTimes), "HH:mm") + '-' + $filter('date')(Math.max.apply(null, endTimes), "HH:mm");
-            $scope.masterVisitInfo.time = $filter('date')(visit.startTime, "HH:mm") + '-' + $filter('date')(visit.endTime, "HH:mm");
+        var time = [];
+        if (visit.startTime != "") {
+            time.push($filter('date')(visit.startTime, "H:mm"));
             $scope.hasTime = true;
         }
+        if (visit.endTime != "") {
+            time.push($filter('date')(visit.endTime, "H:mm"));
+            $scope.hasTime = true;
+        }
+        $scope.masterVisitInfo.time = time.join("-");
         $scope.masterVisitInfo.service = services.join(", ");
         $scope.masterVisitInfo.cost = coast;
     };
