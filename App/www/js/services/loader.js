@@ -6,12 +6,12 @@
  * этих данных.
  * @name myApp.service:Loader
  */
-myApp.service("Loader", ["ModelConverter", "RealServer", "$rootScope", "Storage", "fieldStatQuery",
-    function (ModelConverter, RealServer, $rootScope, Storage, fieldStatQuery) {
+myApp.service("Loader", ["ModelConverter", "RealServer", "$rootScope", "fieldStatQuery",
+    function (ModelConverter, RealServer, $rootScope, fieldStatQuery) {
 
         //    var localStat = null;
         var serverStat = null;
-                var Server = new RealServer(sessvars.token);
+        var Server = new RealServer(sessvars.token);
 
         function getFieldStat() {
             //        var storageSupport;
@@ -149,10 +149,10 @@ myApp.service("Loader", ["ModelConverter", "RealServer", "$rootScope", "Storage"
                 getFieldStat();
                 Server.search(className, params, function (result) {
                     console.log('server.search ', result);
-                    if (result instanceof Array){
-                    var objs = ModelConverter.getObjects(className, result);
-                    callback(objs);}
-                    else
+                    if (result instanceof Array) {
+                        var objs = ModelConverter.getObjects(className, result);
+                        callback(objs);
+                    } else
                         callback([]);
                 });
 

@@ -1,8 +1,6 @@
 var myApp = angular.module('myApp', ['ngRoute', 'ngAnimate', 'angulartics', 'angulartics.google.analytics']); //, 'angulartics'
-var flag = true;
 
-
-myApp.run(function ($templateCache, Storage) {
+myApp.run(function ($templateCache) {
     $templateCache.put('statistic-content');
     $templateCache.put('visits');
 });

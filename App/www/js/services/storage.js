@@ -4,9 +4,9 @@
  * @description Сервис для кэширования данных
  * @name myApp.service:Storage
  */
-myApp.service("Storage", ["ClassesLastModified", "ClassesFieldStat",
-
-    function (ClassesLastModified, ClassesFieldStat) {
+//myApp.service("Storage", ["ClassesLastModified", "ClassesFieldStat",
+//
+//    function (ClassesLastModified, ClassesFieldStat) {
 //
 //        var dbName = "storage";
 //        var database = null;
@@ -333,4 +333,4 @@ myApp.service("Storage", ["ClassesLastModified", "ClassesFieldStat",
 //            saveLastModify: saveLastModify,
 //            saveFieldStat: saveFieldStat
 //        };
-}]);
+//}]);
