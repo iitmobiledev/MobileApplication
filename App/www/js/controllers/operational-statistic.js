@@ -14,14 +14,17 @@
  * @requires myApp.service:OperationalStatisticLoader
  * @requires myApp.service:DateHelper
  */
-myApp.controller('OperationalStatisticController', function ($scope, $location, DateHelper, Loader, $rootScope) {
-
-    var today = new Date();
+myApp.controller('OperationalStatisticController', function ($scope, $location, DateHelper, Loader, $rootScope, $routeParams) {
+    var today;
+    if (typeof ($routeParams.date) != 'undefined')
+        today = new Date($routeParams.date);
+    else
+        today = new Date();
     $scope.date = new Date(today.getFullYear(), today.getMonth(), today.getDate());
 
     $scope.step = DateHelper.steps.DAY;
     $scope.loading = true;
-    
+
     $scope.future = true;
     $scope.past = true;
 
@@ -164,7 +167,7 @@ myApp.controller('OperationalStatisticController', function ($scope, $location, 
      * @description Метод для перехода на страницу графика.
      */
     $scope.toChart = function (type) {
-        $location.path('chart/' + type);
+        $location.path('chart/' + type + '/' + $scope.date);
     };
 
 

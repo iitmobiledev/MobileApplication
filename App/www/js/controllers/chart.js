@@ -22,7 +22,10 @@ myApp.controller('GraphicController', function ($scope, $routeParams, Loader, Da
     $scope.yFormat = '';
 
     var goodData = [];
-    var today = new Date();
+    var today = new Date($routeParams.date);
+    
+    $scope.backLink = '#/index/' + new Date(today);
+    
     $scope.loading = true;
     Loader.search("OperationalStatistics", {
             dateFrom: new Date(today.getFullYear() - 1, today.getMonth(), today.getDate()),

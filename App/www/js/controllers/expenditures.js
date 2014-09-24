@@ -15,7 +15,9 @@
 myApp.controller('ExpendituresController', function ($scope, $filter, Loader, DateHelper, $routeParams, $rootScope) {
     var today = new Date($routeParams.date) || new Date();
     $scope.date = new Date(today.getFullYear(), today.getMonth(), today.getDate());
-    console.log("$scope.date", $scope.date)
+    console.log("$scope.date", $scope.date);
+    
+    $scope.backLink = '#/index/' + $scope.date;
 
     $scope.loading = true;
 

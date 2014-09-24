@@ -12,7 +12,11 @@ myApp.config(['$routeProvider', '$analyticsProvider',
             templateUrl: 'views/statistic.html',
             controller: 'OperationalStatisticController'
         }).
-        when('/chart/:type', {
+        when('/index/:date', {
+            templateUrl: 'views/statistic.html',
+            controller: 'OperationalStatisticController'
+        }).
+        when('/chart/:type/:date', {
             templateUrl: 'views/chart.html',
             controller: 'GraphicController'
         }).

@@ -15,11 +15,10 @@
  */
 myApp.controller('VisitsController', function ($scope, $filter, $location, Loader, DateHelper, Visit, $rootScope, $routeParams) {
     var today;
-    console.log($routeParams.date);
-    //    if ($routeParams.date)
-    //        today = new Date($routeParams.date);
-    //    else
-    today = new Date();
+    if (typeof($routeParams.date) != 'undefined')
+        today = new Date($routeParams.date);
+    else
+        today = new Date();
     $scope.date = new Date(today.getFullYear(), today.getMonth(), today.getDate());
     $scope.step = DateHelper.steps.DAY;
     $scope.loading = true;
