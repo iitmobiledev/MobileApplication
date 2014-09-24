@@ -38,7 +38,6 @@ myApp.controller('VisitsController', function ($scope, $filter, $location, Loade
     });
 
     $scope.onMasters = function () {
-        console.log('$scope.date ', $scope);
         $location.path('visits-master/' + $scope.date);
     };
     /**
@@ -207,7 +206,10 @@ myApp.controller('VisitsController', function ($scope, $filter, $location, Loade
             time.push($filter('date')(visit.endTime, "H:mm"));
             $scope.hasTime = true;
         }
-        $scope.visitInfo.time = time.join("-");
+        if (time.length > 1 && time[0] == time[1])
+            time.pop();
+        time = time.join("-");
+        $scope.visitInfo.time = time;
         $scope.visitInfo.masters = masters.join(",");
         $scope.visitInfo.services = services.join(", ");
         $scope.visitInfo.cost = coast;

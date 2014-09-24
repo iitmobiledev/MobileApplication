@@ -192,22 +192,17 @@ myApp.controller('VisitsMasterController', function ($scope, $filter, $location,
                     begin: new Date(beginDate),
                     end: new Date(endDate)
                 });
-                //                console.log(data)
                 var list = [];
                 var i = 0;
-
-                //                console.log("beginEnd", beginDate, endDate);
                 for (var tmpdate = new Date(beginDate); tmpdate < endDate || tmpdate.toDateString() == endDate.toDateString(); tmpdate.setDate(tmpdate.getDate() + 1)) {
                     var dayVisit = visits.filter(function (vis) {
                         return vis.date.toDateString() == tmpdate.toDateString();
                     })[0];
-                    //                    console.log(dayVisit, tmpdate);
                     var page = new VisitsMasterPage(new Date(tmpdate), data[i], dayVisit.list);
                     list.push(page);
                     i++;
                 }
                 $scope.loading = false;
-                //                console.log("list", list)
                 callback(list);
             });
         }
@@ -274,7 +269,10 @@ myApp.controller('VisitsMasterController', function ($scope, $filter, $location,
             time.push($filter('date')(visit.endTime, "H:mm"));
             $scope.hasTime = true;
         }
-        $scope.masterVisitInfo.time = time.join("-");
+        if (time.length > 1 && time[0] == time[1])
+            time.pop();
+        time = time.join("-");
+        $scope.masterVisitInfo.time = time;
         $scope.masterVisitInfo.service = services.join(", ");
         $scope.masterVisitInfo.cost = coast;
     };

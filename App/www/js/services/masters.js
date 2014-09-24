@@ -93,7 +93,6 @@ myApp.factory('MastersForPeriod', function (DateHelper, Loader, $filter) {
         result.downTime = '';
         result.startTime = visit.startTime;
         result.endTime = visit.endTime;
-        //        console.log("res-visit", result);
         return result;
     }
 
@@ -103,9 +102,7 @@ myApp.factory('MastersForPeriod', function (DateHelper, Loader, $filter) {
             var key = tmpDate.toDateString();
             visitsByDate[key] = [];
         }
-        //            console.log(" visitsByDate", visitsByDate);
         angular.forEach(visits, function (visit) {
-            //                console.log(visit);
             visitsByDate[visit.date.toDateString()].push(visit);
         });
 
