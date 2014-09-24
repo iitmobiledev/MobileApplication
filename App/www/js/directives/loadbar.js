@@ -9,7 +9,7 @@ myApp.directive('loadBar', function () {
     return {
         restrict: 'E',
         replace: true,
-        template: '<div class="loading-image"><div id="loading"> </div></div>',
+        template: '<div class="loading-image"> <div class="square spin"></div> </div>',
         link: function (scope, element, attrs) {
             /*
              *wath, следящий за изменением параметра loading в контроллере
