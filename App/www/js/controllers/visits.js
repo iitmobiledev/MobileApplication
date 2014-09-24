@@ -15,6 +15,7 @@
  */
 myApp.controller('VisitsController', function ($scope, $filter, $location, Loader, DateHelper, Visit, $rootScope, $routeParams) {
     var today;
+    console.log($routeParams.date);
     //    if ($routeParams.date)
     //        today = new Date($routeParams.date);
     //    else
@@ -37,7 +38,7 @@ myApp.controller('VisitsController', function ($scope, $filter, $location, Loade
     });
 
     $scope.onMasters = function () {
-        //        console.log('$scope.date ', $scope.date);
+        console.log('$scope.date ', $scope);
         $location.path('visits-master/' + $scope.date);
     };
     /**
