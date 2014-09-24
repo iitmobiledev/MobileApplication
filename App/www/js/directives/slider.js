@@ -42,8 +42,17 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
 
 
             var ready = false;
-
-            initSlider();
+            
+            var checkWidth = function(){
+                if ($(".content").width() < $(".content").height()){
+                    initSlider();
+                }
+                else {
+                    setTimeout(checkWidth, 10);
+                }
+            }
+            
+            checkWidth();
 
             /**
              * @ngdoc method
