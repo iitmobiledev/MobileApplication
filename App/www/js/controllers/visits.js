@@ -15,7 +15,7 @@
  */
 myApp.controller('VisitsController', function ($scope, $filter, $location, Loader, DateHelper, Visit, $rootScope, $routeParams) {
     var today;
-    if (typeof($routeParams.date) != 'undefined')
+    if (typeof ($routeParams.date) != 'undefined')
         today = new Date($routeParams.date);
     else
         today = new Date();
@@ -25,8 +25,10 @@ myApp.controller('VisitsController', function ($scope, $filter, $location, Loade
 
     $scope.statuses = Visit.statuses;
 
-    $scope.min = null;
-    $scope.max = null;
+    //    $scope.min = null;
+    //    $scope.max = null;
+    $scope.min = Loader.getMinDate("Visit");
+    $scope.max = Loader.getMaxDate("Visit");
 
     $scope.future = true;
     $scope.past = true;
@@ -155,8 +157,8 @@ myApp.controller('VisitsController', function ($scope, $filter, $location, Loade
             });
         }
     };
-    
-    $scope.updateDate = function(curScope){
+
+    $scope.updateDate = function (curScope) {
         $scope.date = new Date(curScope.page.date);
     }
 
