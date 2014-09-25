@@ -155,6 +155,10 @@ myApp.controller('VisitsController', function ($scope, $filter, $location, Loade
             });
         }
     };
+    
+    $scope.updateDate = function(curScope){
+        $scope.date = new Date(curScope.page.date);
+    }
 
 
     $scope.getKey = function (obj) {

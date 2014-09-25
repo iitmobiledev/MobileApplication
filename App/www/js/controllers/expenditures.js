@@ -154,6 +154,10 @@ myApp.controller('ExpendituresController', function ($scope, $filter, Loader, Da
         if (period.end < $scope.max || $scope.max === null)
             $scope.future = true;
     });
+    
+    $scope.updateDate = function(curScope){
+        $scope.date = new Date(curScope.page.date);
+    }
 
 
     //    /**

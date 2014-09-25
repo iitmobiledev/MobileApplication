@@ -31,6 +31,7 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
         link: function (scope, element, attrs) {
             var dataCallback = scope.$eval(attrs.getData);
             var keyFunc = scope.$eval(attrs.keyExpression);
+            var updateDate = scope.$eval(attrs.updateDate);
 
             var contentID = attrs.contentId;
             var content = $templateCache.get(contentID);
@@ -42,16 +43,15 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
 
 
             var ready = false;
-            
-            var checkWidth = function(){
-                if ($(".content").width() < $(".content").height()){
+
+            var checkWidth = function () {
+                if ($(".content").width() < $(".content").height()) {
                     initSlider();
-                }
-                else {
+                } else {
                     setTimeout(checkWidth, 10);
                 }
             }
-            
+
             checkWidth();
 
             /**
@@ -71,14 +71,15 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
                         onAfterChange: function () {
                             if (ready) {
                                 var key = getCurrentKey();
-                                updateDate();
+                                var curScope = angular.element($('.my-slider').getCurrentSlide()).scope();
+                                console.log(curScope)
+                                updateDate(curScope);
                                 if ($('.my-slider').whichFromLeft($('.my-slider').getCurrentSlide()) == 0 && scope.past) {
                                     dataCallback(key, count, false, addPastData);
                                 } else if ($('.my-slider').whichFromRight($('.my-slider').getCurrentSlide()) == 0 && scope.future) {
                                     dataCallback(key, count, true, addFutureData);
                                 }
-                                
-                                scope.$apply();
+
                             }
                         }
                     });
@@ -122,7 +123,7 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
                             clonedElement.attr("contentkey", keyFunc(contentData[i]))
                             $('.my-slider').addSlideLeft(clonedElement);
                         });
-                         //newscope.$apply();
+                        //newscope.$apply();
                     }
                 }
                 //scope.$apply();
@@ -177,7 +178,7 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
                         var today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
                         var todayPeriod = DateHelper.getPeriod(today, scope.step);
                         var curPeriod = DateHelper.getPeriod(contentData[i].date, scope.step);
-                        
+
                         if (contentData[i].date &&
                             curPeriod.begin.toDateString() == todayPeriod.begin.toDateString()) {
                             curIndex = i;
@@ -186,10 +187,9 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
                         newscope.page = contentData[i];
                         compiled(newscope, function (clonedElement, scope) {
                             clonedElement.attr("contentkey", keyFunc(contentData[i]))
-                            if ((curIndex !== null && curIndex === i) || (i === contentData.length - 1 && curIndex === null)){
+                            if ((curIndex !== null && curIndex === i) || (i === contentData.length - 1 && curIndex === null)) {
                                 $('.my-slider').addSlideRight(clonedElement, true);
-                            }
-                            else{
+                            } else {
                                 $('.my-slider').addSlideRight(clonedElement);
                             }
                             //                            newscope.$apply();
@@ -200,8 +200,9 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
                     //                    scope.$apply();
                     ready = true;
                 }
-                
-                updateDate();
+
+                var curScope = angular.element($('.my-slider').getCurrentSlide()).scope();
+                updateDate(curScope);
             }
 
             $('.slider-back-button').on('click', function () {
@@ -220,25 +221,25 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
                     initSlider();
                 }
             })
-            
-            function updateDate() {
-                var key = getCurrentKey();
-                
-                console.log("key", key)
-                var splitPk = key.split(':');
-                console.log("splitPk", splitPk)
-                var step = splitPk[splitPk.length - 1];
-                if (step == DateHelper.steps.DAY || step == DateHelper.steps.WEEK || step == DateHelper.steps.MONTH){
-                    var period = DateHelper.getPeriod(new Date(splitPk[0]), step);
-                }
-                else {
-                    var period = DateHelper.getPeriod(new Date(key), DateHelper.steps.DAY);
-                }
-                
-                console.log("period.begin", period.begin)
-                scope.date = period.begin;
-                //scope.$apply();
-            }
+
+            //            function updateDate() {
+            //                var key = getCurrentKey();
+            //                
+            //                console.log("key", key)
+            //                var splitPk = key.split(':');
+            //                console.log("splitPk", splitPk)
+            //                var step = splitPk[splitPk.length - 1];
+            //                if (step == DateHelper.steps.DAY || step == DateHelper.steps.WEEK || step == DateHelper.steps.MONTH){
+            //                    var period = DateHelper.getPeriod(new Date(splitPk[0]), step);
+            //                }
+            //                else {
+            //                    var period = DateHelper.getPeriod(new Date(key), DateHelper.steps.DAY);
+            //                }
+            //                
+            //                console.log("period.begin", period.begin)
+            //                scope.date = period.begin;
+            //                //scope.$apply();
+            //            }
 
             /**
              * @ngdoc method

@@ -211,7 +211,11 @@ myApp.controller('VisitsMasterController', function ($scope, $filter, $location,
     $scope.getKey = function (obj) {
         return obj && obj.date.toDateString();
     };
-
+    
+    $scope.updateDate = function(curScope){
+        $scope.date = new Date(curScope.page.date);
+    }
+    
     /**
      *
      * @ngdoc method

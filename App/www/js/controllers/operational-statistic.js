@@ -156,7 +156,12 @@ myApp.controller('OperationalStatisticController', function ($scope, $location, 
             $scope.past = true;
         if (period.end < $scope.max || $scope.max == null)
             $scope.future = true;
+        
     });
+    
+    $scope.updateDate = function(curScope){
+        $scope.date = new Date(curScope.page.date);
+    }
 
     /**
      *
