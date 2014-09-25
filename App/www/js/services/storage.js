@@ -4,15 +4,116 @@
  * @description Сервис для кэширования данных
  * @name myApp.service:Storage
  */
-//myApp.service("Storage", ["ClassesLastModified", "ClassesFieldStat",
+myApp.service("Storage", ["ClassesLastModified", "ClassesFieldStat",
+
+    function (ClassesLastModified, ClassesFieldStat) {
+
+
+        /**
+         *
+         * @ngdoc method
+         * @name myApp.service:Storage#isSupported
+         * @methodOf myApp.service:Storage
+         * @description Проверяет поддержку localStorage платформой
+         */
+        function isSupported() {
+            try {
+                return 'localStorage' in window && window['localStorage'] !== null;
+            } catch (e) {
+                return false;
+            }
+        }
+
+        /**  
+         *
+         *  @ngdoc method
+         *  @name myApp.service:Storage#clearStorage
+         *  @methodOf myApp.service:Storage
+         *  @description Полностью очищает localStorage
+         */
+        var clearStorage = function () {
+            try {
+                localStorage.clear();
+            } catch (e) {
+                console.log(e.message);
+            }
+        }
+
+        /**
+         *
+         * @ngdoc method
+         * @name myApp.service:Storage#update
+         * @methodOf myApp.service:Storage
+         * @param {Object} obj объект модель
+         * @description Добавляет объект в контейнер, если объект с таким же первичным ключом уже присутствует в контейнере, данные должны быть обновлены Вложенные объекты также должны быть добавлены
+         */
+        var update = function (obj) {
+            try {
+                localStorage.setItem(obj.getKey(), obj.json);
+            } catch (e) {
+                if (e == QUOTA_EXCEEDED_ERR) {
+                    console.log('Локальное хранилище переполнено');
+                }
+            }
+
+        };
+
+        /**  
+         *
+         *  @ngdoc method
+         *  @name myApp.service:Storage#get
+         *  @methodOf myApp.service:Storage
+         *  @param {Array|String|Number} primary первичный ключ. Массив, еслиключсоставной
+         *  @return {Object} экземпляр класса  className
+         *  @description возвращает объект по первичному ключу. Объект должен быть предварительно добавлены с помощью
+         */
+        var get = function (primary, callback) {
+            try {
+                var item = localStorage.getItem(primary);
+                console.log("storage.get():", item);
+                callback(item);
+            } catch (e) {
+                console.log(e.message);
+            }
+        };
+
+
+        /**
+         *
+         * @ngdoc method
+         * @name myApp.service:Storage#del
+         * @methodOf myApp.service:Storage
+         * @param {Object} obj объект модель
+         * @description удаляет объект из контейнера. Вложенные объекты не удаляются
+         */
+        var del = function (obj, callback) {
+            try {
+                localStorage.removeItem(obj.getKey());
+            } catch (e) {
+                console.log(e.message);
+            }
+
+        };
+
+        return {
+            del: del,
+            update: update,
+            get: get,
+            isSupported: isSupported,
+            clearStorage: clearStorage,
+            //            lastModified: lastModified,
+            //            getFieldStat: getFieldStat,
+            //            classesLastModified: classesLastModified,
+            //            saveLastModify: saveLastModify,
+            //            saveFieldStat: saveFieldStat
+        };
+}]);
+
+
 //
-//    function (ClassesLastModified, ClassesFieldStat) {
 //
-//        var dbName = "storage";
-//        var database = null;
-//        var dbVersion = 1.0;
 //
-//        var classesLastModified = new ClassesLastModified();
+//  var classesLastModified = new ClassesLastModified();
 //
 //        var classesFieldStat = new ClassesFieldStat();
 //
@@ -64,42 +165,6 @@
 //            });
 //        };
 //
-//        /**
-//         *
-//         * @ngdoc method
-//         * @name myApp.service:Storage#isSupported
-//         * @methodOf myApp.service:Storage
-//         * @description Проверяет поддержку indexedDB платформой
-//         */
-//        function isSupported(callback) {
-//            var idb = window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB || window.msIndexedDB;
-//            var idbTr = window.IDBTransaction || window.webkitIDBTransaction || window.msIDBTransaction;
-//            var idbKr = window.IDBKeyRange || window.webkitIDBKeyRange || window.msIDBKeyRange;
-//
-//            if (idb && idbKr && idbTr) {
-//                var request = indexedDB.open("test_db", 1);
-//                request.onsuccess = function (event) {
-//                    if (request.readyState == "done" && request.result) {
-//                        open();
-//                        callback(true);
-//                    } else {
-//                        callback(false);
-//                        alert("IDB not support");
-//                    }
-//                };
-//
-//                request.onerror = function (event) {
-//                    callback(false);
-//                    console.error("support", support);
-//                    alert("req-error", request);
-//                    console.log(event)
-//                };
-//
-//            } else {
-//                alert("IDB not supported at all!");
-//                callback(false);
-//            }
-//        }
 //
 //        var saveLastModify = waitDatabase(function (obj, callback) {
 //            var db = database;
@@ -144,193 +209,3 @@
 //                callback();
 //            }
 //        });
-//
-//        /**
-//         *
-//         * @ngdoc method
-//         * @name myApp.service:Storage#init
-//         * @methodOf myApp.service:Storage
-//         * @description Инициализирует ибд
-//         */
-//        function open(callback) {
-//
-//            var request = indexedDB.open(dbName, dbVersion);
-//
-//            request.onupgradeneeded = function (event) {
-//                alert("update start");
-//                var db = event.target.result;
-//
-//                var delModels = ['OperationalStatistics', 'Visit', 'Expenditure', 'classesLastModified', 'fieldStat'];
-//                for (var i in delModels) {
-//                    if (db.objectStoreNames.contains(delModels[i])) {
-//                        db.deleteObjectStore(delModels[i]);
-//                    }
-//                }
-//
-//                var models = ['OperationalStatistics', 'Visit', 'Expenditure'];
-//                var $inj = angular.injector(['myApp']);
-//                for (var i in models) {
-//                    var serv = $inj.get(models[i]);
-//                    serv.initializeIndexedDb(db);
-//                }
-//                db.createObjectStore("classesLastModified", {
-//                    keyPath: "primary"
-//                });
-//                saveLastModify(classesLastModified, function () {});
-//
-//                db.createObjectStore("fieldStat", {
-//                    keyPath: "primary"
-//                });
-//                saveFieldStat(classesFieldStat, function () {});
-//            };
-//
-//            request.onsuccess = function (event) {
-//                database = request.result;
-//            };
-//
-//            request.onerror = function (event) {};
-//        }
-//
-//        /**
-//         *
-//         * @ngdoc method
-//         * @name myApp.service:Storage#waitDatabase
-//         * @methodOf myApp.service:Storage
-//         * @param {Function} fn функция,которую нужно выполнить когда бд инициализирована
-//         * @description Ждет, пока бд инициализурется
-//         */
-//        function waitDatabase(fn) {
-//            var f = function () {
-//                var args = arguments;
-//                if (database) {
-//                    return fn.apply(null, args);
-//                }
-//                setTimeout(function () {
-//                    f.apply(null, args);
-//                }, 100);
-//            }
-//            return f;
-//        };
-//
-//
-//        /**
-//         *
-//         * @ngdoc method
-//         * @name myApp.service:Storage#update
-//         * @methodOf myApp.service:Storage
-//         * @param {Object} obj объект модель
-//         * @description Добавляет объект в контейнер, если объект с таким же первичным ключом уже присутствует в контейнере, данные должны быть обновлены Вложенные объекты также должны быть добавлены
-//         */
-//        var update = waitDatabase(function (obj) {
-//            var db = database;
-//            var objClass = obj.getClass(); //получим класс объекта
-//            var trans = db.transaction([objClass], "readwrite");
-//            var store = trans.objectStore(objClass); //найдем хранилище для объектов данного класса
-//
-//            var request = store.put(obj); //положим в хранилище
-//
-//            request.onsuccess = function (e) { //если транзакт прошел успешно
-//            };
-//
-//            trans.onerror = function (e) { //если что-то пошло не так
-//                //            console.log("update() transaction: Error", event);
-//            };
-//            request.onerror = function (e) { //если что-то пошло не так
-//                //            console.log("update(): Error", event);
-//            };
-//
-//        });
-//
-//        /**  
-//         *
-//         *  @ngdoc method
-//         *  @name myApp.service:Storage#get
-//         *  @methodOf myApp.service:Storage
-//         *  @param {String} className имя класса определенного с помощью angular.factory
-//         *  @param {Array|String|Number} primary первичный ключ. Массив, еслиключсоставной
-//         *  @return {Object} экземпляр класса  className
-//         *  @description возвращает объект по первичному ключу. Объект должен быть предварительно добавлены с помощью
-//         */
-//        var get = waitDatabase(function (className, primary, callback) {
-//            var db = database;
-//            if (db.objectStoreNames.contains(className)) {
-//                var trans = db.transaction([className], "readwrite");
-//                var store = trans.objectStore(className); //найдем хранилище для объектов данного класса
-//
-//                var request = store.get(primary);
-//                request.onerror = function (event) {
-//                    //make something
-//                };
-//                request.onsuccess = function (event) {
-//                    if (request.result) {
-//                        callback(request.result);
-//                    } else {
-//                        callback(null);
-//                    }
-//                };
-//            } else
-//                callback(null);
-//        });
-//
-//        /**
-//         *
-//         * @ngdoc method
-//         * @name myApp.service:Storage#search
-//         * @methodOf myApp.service:Storage
-//         * @param {String} className имя класса определенного с помощью angular.factory
-//         * @param {Array|String|Number} params параметры поиска
-//         * @param {Function} callback функция callback
-//         * @return {Object} экземпляр класса  className
-//         * @description Ищет объект по параметрам в базе данных
-//         */
-//        var search = waitDatabase(function (className, params, callback) {
-//            var db = database;
-//            if (db.objectStoreNames.contains(className)) {
-//                var trans = db.transaction([className], "readwrite");
-//                var $inj = angular.injector(['myApp']);
-//                var serv = $inj.get(className);
-//                serv.searchIndexedDb(trans, params, callback);
-//            } else
-//                callback(null);
-//        });
-//
-//
-//        /**
-//         *
-//         * @ngdoc method
-//         * @name myApp.service:Storage#del
-//         * @methodOf myApp.service:Storage
-//         * @param {Object} obj объект модель
-//         * @description удаляет объект из контейнера. Вложенные объекты не удаляются
-//         */
-//        var del = waitDatabase(function (obj, callback) {
-//            var db = database;
-//            var objClass = obj.getClass();
-//            var trans = db.transaction([objClass], "readwrite");
-//            var store = trans.objectStore(objClass); //найдем хранилище для объектов данного класса
-//
-//            var request = store.delete(obj.getKey()); //получим PK объекта, далее удалим по PK из бд нужный объект
-//
-//            request.onsuccess = function (e) {
-//                callback();
-//                //        make something
-//            };
-//
-//            request.onerror = function (e) {
-//                console.log(e);
-//            };
-//        });
-//        return {
-//            del: del,
-//            open: open,
-//            update: update,
-//            get: get,
-//            search: search,
-//            isSupported: isSupported,
-//            lastModified: lastModified,
-//            getFieldStat: getFieldStat,
-//            classesLastModified: classesLastModified,
-//            saveLastModify: saveLastModify,
-//            saveFieldStat: saveFieldStat
-//        };
-//}]);

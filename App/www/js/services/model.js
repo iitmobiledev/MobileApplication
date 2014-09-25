@@ -294,7 +294,7 @@ myApp.factory("Model", function () {
                 return options.serialize(this);
             }
         };
-
+        
         Object.defineProperty(clz.prototype, "__primary__", {
             get: function () {
                 return this.getKey().join(":");
@@ -303,21 +303,21 @@ myApp.factory("Model", function () {
         clz.__primary__ = options.primary;
         clz.__class__ = className;
 
-        clz.getIndexes = function () {
-            return options.indexes;
-        };
-
-
-        clz.initializeIndexedDb = function (db) {
-            var objectStore = db.createObjectStore(clz.__class__, {
-                keyPath: "__primary__"
-            });
-            angular.forEach(clz.getIndexes(), function (value, name) {
-                objectStore.createIndex(name, value.keyPath, {
-                    unique: value.unique
-                });
-            });
-        }
+        //        clz.getIndexes = function () {
+        //            return options.indexes;
+        //        };
+        //
+        //
+        //        clz.initializeIndexedDb = function (db) {
+        //            var objectStore = db.createObjectStore(clz.__class__, {
+        //                keyPath: "__primary__"
+        //            });
+        //            angular.forEach(clz.getIndexes(), function (value, name) {
+        //                objectStore.createIndex(name, value.keyPath, {
+        //                    unique: value.unique
+        //                });
+        //            });
+        //        }
 
         /**
          *  @ngdoc method
