@@ -6,15 +6,16 @@
  * @requires myApp.service:VisitLoader
  */
 myApp.controller('VisitController', function ($scope, $filter, $routeParams, Loader, DateHelper) {
+    window.scrollTo(0,0);
     var today = new Date();
     $scope.date = new Date(today.getFullYear(), today.getMonth(), today.getDate());
 
     $scope.step = DateHelper.steps.DAY;
 
     $scope.loading = true;
-    
+
     var hasData = false;
-    
+
     $scope.future = true;
     $scope.past = true;
 
@@ -26,7 +27,6 @@ myApp.controller('VisitController', function ($scope, $filter, $routeParams, Loa
         }
         Loader.get("Visit", $routeParams.id, function (obj) {
             if (obj) {
-                obj.client.phone = formatLocal("RU", obj.client.phone);
                 hasData = true;
                 $scope.date = new Date(obj.date.getFullYear(), obj.date.getMonth(), obj.date.getDate(), 0, 0, 0);
                 $scope.backLink = "#/" + $routeParams.backLink + "/" + $scope.date;
@@ -40,6 +40,9 @@ myApp.controller('VisitController', function ($scope, $filter, $routeParams, Loa
                     step: $scope.step
                 }, function (data) {
 
+
+                    obj.client.phone = formatLocal("RU", obj.client.phone);
+                    console.log(obj.client.phone);
                     if (data.length == 0)
                         data.push(obj);
 
@@ -56,23 +59,23 @@ myApp.controller('VisitController', function ($scope, $filter, $routeParams, Loa
                             serviceItem.description = service.description;
                             serviceItem.hasTime = false;
                             var time = [];
-                            if (service.startTime != ""){
+                            if (service.startTime != "") {
                                 console.log(service.startTime);
                                 time.push($filter('date')(service.startTime, "H:mm"));
                                 serviceItem.hasTime = true;
                             }
-                            if (service.endTime != ""){
+                            if (service.endTime != "") {
                                 console.log(service.endTime);
                                 time.push($filter('date')(service.endTime, "H:mm"));
                                 serviceItem.hasTime = true;
                             }
-                            
+
                             serviceItem.time = time.join("-");
-                            
-//                            if (service.startTime != "" && service.endTime != "") {
-//                                serviceItem.time = $filter('date')(service.startTime, "H:mm") + " - " + $filter('date')(service.endTime, "H:mm");
-//                                serviceItem.hasTime = true;
-//                            }
+
+                            //                            if (service.startTime != "" && service.endTime != "") {
+                            //                                serviceItem.time = $filter('date')(service.startTime, "H:mm") + " - " + $filter('date')(service.endTime, "H:mm");
+                            //                                serviceItem.hasTime = true;
+                            //                            }
                             serviceItem.cost = service.cost;
                             if (service.master.lastName && service.master.firstName) {
                                 serviceItem.master = 'Мастер: ' + service.master.lastName + " " + service.master.firstName;
@@ -95,7 +98,7 @@ myApp.controller('VisitController', function ($scope, $filter, $routeParams, Loa
     $scope.getKey = function (obj) {
         return obj && obj.date.toDateString();
     };
-    
+
     $scope.min = null;
     $scope.max = null;
 
