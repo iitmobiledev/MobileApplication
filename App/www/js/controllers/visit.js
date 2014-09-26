@@ -88,15 +88,16 @@ myApp.controller('VisitController', function ($scope, $filter, $routeParams, Loa
                         }
                     }
                     $scope.loading = false;
-                    callback(data);
+                    callback(data, $routeParams.id);
                 });
             }
         });
     };
+    
 
 
     $scope.getKey = function (obj) {
-        return obj && obj.date.toDateString();
+        return obj && obj.__primary__;
     };
 
     $scope.min = null;

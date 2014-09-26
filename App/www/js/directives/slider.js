@@ -31,7 +31,7 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
         link: function (scope, element, attrs) {
             var dataCallback = scope.$eval(attrs.getData);
             var keyFunc = scope.$eval(attrs.keyExpression);
-            var updateDate = scope.$eval(attrs.updateDate);
+            var updateDate = scope.$eval(attrs.updateDate) || function(){return;};
 
             var contentID = attrs.contentId;
             var content = $templateCache.get(contentID);
@@ -165,26 +165,23 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
              * используется для первоначальной инициализации слайдера
              * @param {Array} contentData Список объектов, чьи данные будут отображаться на слайдах
              */
-            function addCurrentDayData(contentData) {
+            function addCurrentDayData(contentData, startPageKey) {
+                if (!startPageKey){
+                    startPageKey = null;
+                }
                 console.log("contentData", contentData)
                 ready = false;
                 var curIndex = null;
                 if (contentData) {
                     for (var i = 0; i < contentData.length; i++) {
-                        var now = scope.date;
-                        var today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-                        var todayPeriod = DateHelper.getPeriod(today, scope.step);
-                        var curPeriod = DateHelper.getPeriod(contentData[i].date, scope.step);
-
-                        if (contentData[i].date &&
-                            curPeriod.begin.toDateString() == todayPeriod.begin.toDateString()) {
-                            curIndex = i;
-                        }
                         newscope = scope.$new();
                         newscope.page = contentData[i];
+                        var k = keyFunc(contentData[i])
+                        
+                        console.log("startPageKey", startPageKey, k)
                         compiled(newscope, function (clonedElement, scope) {
-                            clonedElement.attr("contentkey", keyFunc(contentData[i]))
-                            if ((curIndex !== null && curIndex === i) || (i === contentData.length - 1 && curIndex === null)) {
+                            clonedElement.attr("contentkey", k)
+                            if (k == startPageKey || (startPageKey == null && i==contentData.length)) {
                                 $('.my-slider').addSlideRight(clonedElement, true);
                             } else {
                                 $('.my-slider').addSlideRight(clonedElement);
@@ -197,9 +194,7 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
                     //                    scope.$apply();
                     ready = true;
                 }
-
                 var curScope = angular.element($('.my-slider').getCurrentSlide()).scope();
-                console.log("curScope", curScope)
                 if (curScope)
                     updateDate(curScope);
             }

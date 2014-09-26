@@ -202,8 +202,18 @@ myApp.controller('VisitsMasterController', function ($scope, $filter, $location,
                     list.push(page);
                     i++;
                 }
+                var todayPeriod = DateHelper.getPeriod($scope.date, $scope.step);
+                var curIndex;
+                for (var i = 0; i<list.length; i++){
+                    var curPeriod = DateHelper.getPeriod(list[i].date, $scope.step);
+
+                    if (curPeriod.begin.toDateString() == todayPeriod.begin.toDateString()) {
+                        curIndex = i;
+                    }
+                }
+                
                 $scope.loading = false;
-                callback(list);
+                callback(list, curIndex);
             });
         }
     };

@@ -152,8 +152,19 @@ myApp.controller('VisitsController', function ($scope, $filter, $location, Loade
                     } else
                         list.push(new VisitsPage(new Date(tmpdate), []));
                 }
+                
+                var todayPeriod = DateHelper.getPeriod($scope.date, $scope.step);
+                var curIndex;
+                for (var i = 0; i<list.length; i++){
+                    var curPeriod = DateHelper.getPeriod(list[i].date, $scope.step);
+
+                    if (curPeriod.begin.toDateString() == todayPeriod.begin.toDateString()) {
+                        curIndex = i;
+                    }
+                }
+                
                 $scope.loading = false;
-                callback(list);
+                callback(list, curIndex);
             });
         }
     };
