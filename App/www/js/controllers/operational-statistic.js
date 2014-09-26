@@ -65,7 +65,7 @@ myApp.controller('OperationalStatisticController', function ($scope, $location, 
                 step: $scope.step,
             }, function (data) {
                 $scope.loading = false;
-                data.reverse(); 
+                data.reverse();
                 callback(data)
             });
             //                }
@@ -93,10 +93,10 @@ myApp.controller('OperationalStatisticController', function ($scope, $location, 
                 index: "date"
             }, function (data) {
                 $scope.loading = false;
-                data.reverse(); 
+                data.reverse();
                 var todayPeriod = DateHelper.getPeriod($scope.date, $scope.step);
                 var curIndex;
-                for (var i = 0; i<data.length; i++){
+                for (var i = 0; i < data.length; i++) {
                     var curPeriod = DateHelper.getPeriod(data[i].date, $scope.step);
 
                     if (curPeriod.begin.toDateString() == todayPeriod.begin.toDateString()) {
@@ -126,7 +126,7 @@ myApp.controller('OperationalStatisticController', function ($scope, $location, 
     //    $scope.hasPrevData = function (currentDate) {
     //        Loader.hasPastData("OperationalStatistics", currentDate);
     //    };
-    
+
     function setMinMax() {
         $scope.min = Loader.getMinDate("OperationalStatistics");
         $scope.max = Loader.getMaxDate("OperationalStatistics");
@@ -135,13 +135,6 @@ myApp.controller('OperationalStatisticController', function ($scope, $location, 
     $rootScope.$on('minMaxGet', setMinMax);
 
     setMinMax();
-
-    //    document.addEventListener('received', function () {
-    //        //updatePage
-    //
-    //        //        console.log("past ", Loader.hasPastData("OperationalStatistics", new Date()));
-    //        //        console.log("future ", Loader.hasFutureData("OperationalStatistics", "2014-10-04 09:00:00"));
-    //    }, false);
 
     $scope.$watch('step', function (newValue, oldValue) {
         var period = DateHelper.getPeriod($scope.date, newValue);
@@ -168,10 +161,10 @@ myApp.controller('OperationalStatisticController', function ($scope, $location, 
             $scope.past = true;
         if (period.end < $scope.max || $scope.max == null)
             $scope.future = true;
-        
+
     });
-    
-    $scope.updateDate = function(curScope){
+
+    $scope.updateDate = function (curScope) {
         $scope.date = new Date(curScope.page.date);
     }
 
