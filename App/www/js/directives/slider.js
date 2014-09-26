@@ -116,9 +116,6 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
                     for (var i = contentData.length - 1; i >= 0; i--) {
                         newscope = scope.$new();
                         newscope.page = contentData[i];
-                        // костыль, до тех пор пока разраб библиотеки slick
-                        // не реализует эту фичу
-                        // (оставаться на текущем слайде при добавлении слайда в начало)
                         compiled(newscope, function (clonedElement, scope) {
                             clonedElement.attr("contentkey", keyFunc(contentData[i]))
                             $('.my-slider').addSlideLeft(clonedElement);
@@ -202,7 +199,9 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
                 }
 
                 var curScope = angular.element($('.my-slider').getCurrentSlide()).scope();
-                updateDate(curScope);
+                console.log("curScope", curScope)
+                if (curScope)
+                    updateDate(curScope);
             }
 
             $('.slider-back-button').on('click', function () {

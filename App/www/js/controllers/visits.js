@@ -33,10 +33,10 @@ myApp.controller('VisitsController', function ($scope, $filter, $location, Loade
     $scope.future = true;
     $scope.past = true;
 
-    $rootScope.$on('minMaxGet', function () {
+//    $rootScope.$on('minMaxGet', function () {
         $scope.min = Loader.getMinDate("Visit");
         $scope.max = Loader.getMaxDate("Visit");
-    });
+//    });
 
     $scope.onMasters = function () {
         $location.path('visits-master/' + $scope.date);

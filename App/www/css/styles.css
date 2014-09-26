@@ -65,8 +65,9 @@
 
 #clientInfo .clientName {
     padding: 0 10% 0 10%;
-    font-size: 15pt;
+    font-size: 16pt;
     font-style: normal;
+    height: 50px;
 }
 #clientInfo .phone {
     text-decoration: none;
