@@ -90,7 +90,10 @@ myApp.service("Storage", ["ClassesLastModified", "ClassesFieldStat",
          * @description Ищет объект по параметрам в localStorage
          */
         var search = function (className, params, callback) {
-
+            var startDate = new Date(params.dateFrom);
+            var endDate = new Date(params.dateTill);
+            var result=[];
+            //бежать по дню или по шагу?!
         };
 
         /**
