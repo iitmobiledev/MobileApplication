@@ -126,14 +126,15 @@ myApp.controller('OperationalStatisticController', function ($scope, $location, 
     //    $scope.hasPrevData = function (currentDate) {
     //        Loader.hasPastData("OperationalStatistics", currentDate);
     //    };
-
-    $scope.min = null;
-    $scope.max = null;
-
-    $rootScope.$on('minMaxGet', function () {
+    
+    function setMinMax() {
         $scope.min = Loader.getMinDate("OperationalStatistics");
         $scope.max = Loader.getMaxDate("OperationalStatistics");
-    });
+    }
+
+    $rootScope.$on('minMaxGet', setMinMax);
+
+    setMinMax();
 
     //    document.addEventListener('received', function () {
     //        //updatePage
