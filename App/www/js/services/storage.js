@@ -49,7 +49,7 @@ myApp.service("Storage", ["ClassesLastModified", "ClassesFieldStat",
          */
         var update = function (obj) {
             try {
-                localStorage.setItem(obj.getKey(), obj.json);
+                localStorage.setItem(obj.getClass() + ":" + obj.getKey(), obj.json);
             } catch (e) {
                 if (e == QUOTA_EXCEEDED_ERR) {
                     console.log('Локальное хранилище переполнено');
@@ -63,13 +63,14 @@ myApp.service("Storage", ["ClassesLastModified", "ClassesFieldStat",
          *  @ngdoc method
          *  @name myApp.service:Storage#get
          *  @methodOf myApp.service:Storage
+         * @param {String} className имя класса определенного с помощью angular.factory
          *  @param {Array|String|Number} primary первичный ключ. Массив, еслиключсоставной
          *  @return {Object} экземпляр класса  className
          *  @description возвращает объект по первичному ключу. Объект должен быть предварительно добавлены с помощью
          */
-        var get = function (primary, callback) {
+        var get = function (className, primary, callback) {
             try {
-                var item = localStorage.getItem(primary);
+                var item = localStorage.getItem(className + ":" + primary);
                 console.log("storage.get():", item);
                 callback(item);
             } catch (e) {
@@ -77,6 +78,20 @@ myApp.service("Storage", ["ClassesLastModified", "ClassesFieldStat",
             }
         };
 
+        /**
+         *
+         * @ngdoc method
+         * @name myApp.service:Storage#search
+         * @methodOf myApp.service:Storage
+         * @param {String} className имя класса определенного с помощью angular.factory
+         * @param {Array|String|Number} params параметры поиска
+         * @param {Function} callback функция callback
+         * @return {Object} экземпляр класса  className
+         * @description Ищет объект по параметрам в localStorage
+         */
+        var search = function (className, params, callback) {
+
+        };
 
         /**
          *
@@ -84,7 +99,7 @@ myApp.service("Storage", ["ClassesLastModified", "ClassesFieldStat",
          * @name myApp.service:Storage#del
          * @methodOf myApp.service:Storage
          * @param {Object} obj объект модель
-         * @description удаляет объект из контейнера. Вложенные объекты не удаляются
+         * @description удаляет объект из контейнера.
          */
         var del = function (obj, callback) {
             try {
