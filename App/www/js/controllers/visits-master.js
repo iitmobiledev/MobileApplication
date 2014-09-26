@@ -208,7 +208,7 @@ myApp.controller('VisitsMasterController', function ($scope, $filter, $location,
                     var curPeriod = DateHelper.getPeriod(list[i].date, $scope.step);
 
                     if (curPeriod.begin.toDateString() == todayPeriod.begin.toDateString()) {
-                        curIndex = i;
+                        curIndex = $scope.getKey(list[i]);
                     }
                 }
                 

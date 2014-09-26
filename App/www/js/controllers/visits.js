@@ -15,6 +15,7 @@
  */
 myApp.controller('VisitsController', function ($scope, $filter, $location, Loader, DateHelper, Visit, $rootScope, $routeParams) {
     var today;
+    console.log($routeParams.date);
     if (typeof ($routeParams.date) != 'undefined')
         today = new Date($routeParams.date);
     else
@@ -163,7 +164,8 @@ myApp.controller('VisitsController', function ($scope, $filter, $location, Loade
                     var curPeriod = DateHelper.getPeriod(list[i].date, $scope.step);
 
                     if (curPeriod.begin.toDateString() == todayPeriod.begin.toDateString()) {
-                        curIndex = i;
+                        curIndex = $scope.getKey(list[i]);
+                        console.log("curIndex", curIndex);
                     }
                 }
                 
