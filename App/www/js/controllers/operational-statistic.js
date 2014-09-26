@@ -65,6 +65,7 @@ myApp.controller('OperationalStatisticController', function ($scope, $location, 
                 step: $scope.step,
             }, function (data) {
                 $scope.loading = false;
+                data.reverse(); 
                 callback(data)
             });
             //                }
@@ -92,6 +93,7 @@ myApp.controller('OperationalStatisticController', function ($scope, $location, 
                 index: "date"
             }, function (data) {
                 $scope.loading = false;
+                data.reverse(); 
                 callback(data)
             });
         };
