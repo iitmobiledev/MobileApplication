@@ -15,7 +15,8 @@
  */
 myApp.controller('VisitsController', function ($scope, $filter, $location, Loader, DateHelper, Visit, $rootScope, $routeParams) {
     var today;
-    if (typeof($routeParams.date) != 'undefined')
+    console.log($routeParams.date);
+    if (typeof ($routeParams.date) != 'undefined')
         today = new Date($routeParams.date);
     else
         today = new Date();
@@ -25,16 +26,22 @@ myApp.controller('VisitsController', function ($scope, $filter, $location, Loade
 
     $scope.statuses = Visit.statuses;
 
-    $scope.min = null;
-    $scope.max = null;
+    //    $scope.min = null;
+    //    $scope.max = null;
+    $scope.min = Loader.getMinDate("Visit");
+    $scope.max = Loader.getMaxDate("Visit");
 
     $scope.future = true;
     $scope.past = true;
-
-//    $rootScope.$on('minMaxGet', function () {
+    
+    function setMinMax() {
         $scope.min = Loader.getMinDate("Visit");
         $scope.max = Loader.getMaxDate("Visit");
-//    });
+    }
+
+    $rootScope.$on('minMaxGet', setMinMax);
+
+    setMinMax();
 
     $scope.onMasters = function () {
         $location.path('visits-master/' + $scope.date);
@@ -150,13 +157,25 @@ myApp.controller('VisitsController', function ($scope, $filter, $location, Loade
                     } else
                         list.push(new VisitsPage(new Date(tmpdate), []));
                 }
+                
+                var todayPeriod = DateHelper.getPeriod($scope.date, $scope.step);
+                var curIndex;
+                for (var i = 0; i<list.length; i++){
+                    var curPeriod = DateHelper.getPeriod(list[i].date, $scope.step);
+
+                    if (curPeriod.begin.toDateString() == todayPeriod.begin.toDateString()) {
+                        curIndex = $scope.getKey(list[i]);
+                        console.log("curIndex", curIndex);
+                    }
+                }
+                
                 $scope.loading = false;
-                callback(list);
+                callback(list, curIndex);
             });
         }
     };
-    
-    $scope.updateDate = function(curScope){
+
+    $scope.updateDate = function (curScope) {
         $scope.date = new Date(curScope.page.date);
     }
 

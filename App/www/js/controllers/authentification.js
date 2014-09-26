@@ -9,6 +9,7 @@
  * @requires myApp.service:UserAuthentification
  */
 myApp.controller('AuthentificationController', function ($scope, $location, authService) {
+    $scope.loading = false;
     $scope.correct = true;
 //    if (sessvars.token) {
 //        $location.path('index');
@@ -24,9 +25,11 @@ myApp.controller('AuthentificationController', function ($scope, $location, auth
      * сообщение об ошибке аутентификации.
      */
     $scope.enter = function () {
+        $scope.loading = true;
         var login = document.getElementById('login').value;
         var password = document.getElementById('password').value;
         authService.login(login, password, function (token) {
+            $scope.loading = false;
             if (token == 'error') {
                 $scope.errorText = "Не удается подключиться к интернету.";
                 $scope.correct = false;
