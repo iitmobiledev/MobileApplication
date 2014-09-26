@@ -94,7 +94,16 @@ myApp.controller('OperationalStatisticController', function ($scope, $location, 
             }, function (data) {
                 $scope.loading = false;
                 data.reverse(); 
-                callback(data)
+                var todayPeriod = DateHelper.getPeriod($scope.date, $scope.step);
+                var curIndex;
+                for (var i = 0; i<data.length; i++){
+                    var curPeriod = DateHelper.getPeriod(data[i].date, $scope.step);
+
+                    if (curPeriod.begin.toDateString() == todayPeriod.begin.toDateString()) {
+                        curIndex = i;
+                    }
+                }
+                callback(data, curIndex);
             });
         };
     }
