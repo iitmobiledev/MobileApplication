@@ -33,7 +33,7 @@ myApp.controller('VisitsController', function ($scope, $filter, $location, Loade
 
     $scope.future = true;
     $scope.past = true;
-    
+
     function setMinMax() {
         $scope.min = Loader.getMinDate("Visit");
         $scope.max = Loader.getMaxDate("Visit");
@@ -157,10 +157,10 @@ myApp.controller('VisitsController', function ($scope, $filter, $location, Loade
                     } else
                         list.push(new VisitsPage(new Date(tmpdate), []));
                 }
-                
+
                 var todayPeriod = DateHelper.getPeriod($scope.date, $scope.step);
                 var curIndex;
-                for (var i = 0; i<list.length; i++){
+                for (var i = 0; i < list.length; i++) {
                     var curPeriod = DateHelper.getPeriod(list[i].date, $scope.step);
 
                     if (curPeriod.begin.toDateString() == todayPeriod.begin.toDateString()) {
@@ -168,7 +168,7 @@ myApp.controller('VisitsController', function ($scope, $filter, $location, Loade
                         console.log("curIndex", curIndex);
                     }
                 }
-                
+
                 $scope.loading = false;
                 callback(list, curIndex);
             });
@@ -184,14 +184,14 @@ myApp.controller('VisitsController', function ($scope, $filter, $location, Loade
         return obj && obj.date.toDateString();
     };
 
-    //    $scope.$watch('date', function (newValue, oldValue) {
-    //        var period = DateHelper.getPeriod(new Date($scope.date), $scope.step);
-    //        $scope.past = false, $scope.future = false;
-    //        if (period.begin > $scope.min || $scope.min == null)
-    //            $scope.past = true;
-    //        if (period.end < $scope.max || $scope.max == null)
-    //            $scope.future = true;
-    //    });
+    $scope.$watch('date', function (newValue, oldValue) {
+        var period = DateHelper.getPeriod(new Date($scope.date), $scope.step);
+        $scope.past = false, $scope.future = false;
+        if (period.begin > $scope.min || $scope.min == null)
+            $scope.past = true;
+        if (period.end < $scope.max || $scope.max == null)
+            $scope.future = true;
+    });
 
 
     /**

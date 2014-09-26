@@ -155,6 +155,7 @@ myApp.controller('OperationalStatisticController', function ($scope, $location, 
     });
 
     $scope.$watch('date', function (newValue, oldValue) {
+        console.log('watchDate')
         var period = DateHelper.getPeriod(new Date($scope.date), $scope.step);
         $scope.past = false, $scope.future = false;
         if (period.begin > $scope.min || $scope.min == null)
@@ -164,7 +165,22 @@ myApp.controller('OperationalStatisticController', function ($scope, $location, 
 
     });
 
+    $scope.$watch('min', function (newValue) {
+        var period = DateHelper.getPeriod(new Date($scope.date), $scope.step);
+        $scope.past = false;
+        if (period.begin > newValue || newValue == null)
+            $scope.past = true;
+    });
+
+    $scope.$watch('max', function (newValue) {
+        var period = DateHelper.getPeriod(new Date($scope.date), $scope.step);
+        $scope.future = false;
+        if (period.end < $scope.max || $scope.max == null)
+            $scope.future = true;
+    });
+
     $scope.updateDate = function (curScope) {
+        console.log('updateDate')
         $scope.date = new Date(curScope.page.date);
     }
 
