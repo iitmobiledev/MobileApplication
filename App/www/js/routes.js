@@ -5,14 +5,18 @@ myApp.run(function ($templateCache, Storage) {
     if(Storage.isSupported())
     {
         console.log("localStorage is supported!");
+        sessvars.support = true;
     }
     else
     {
         console.log("localStorage not supported!");
+        sessvars.support = false;
     }
+//    myApp.value('storageSupport', support);
     $templateCache.put('statistic-content');
     $templateCache.put('visits');
-});
+})
+
 
 myApp.config(['$routeProvider', '$analyticsProvider',
     function ($routeProvider, $analyticsProvider) {

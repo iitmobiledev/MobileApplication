@@ -7,12 +7,14 @@
  * @requires myApp.service:Visit
  * @requires myApp.service:Expenditures
  */
-myApp.service("ModelConverter", ["OperationalStatistics", "Visit", "Expenditure",
-    function (OperationalStatistics, Visit, Expenditure) {
+myApp.service("ModelConverter", ["OperationalStatistics", "Visit", "Expenditure", "FieldStat", "LastModified",
+    function (OperationalStatistics, Visit, Expenditure, FieldStat, LastModified) {
         var classes = {
             "OperationalStatistics": OperationalStatistics,
             "Visit": Visit,
-            "Expenditure": Expenditure
+            "Expenditure": Expenditure,
+            "FieldStat": FieldStat,
+            "LastModified": LastModified
         };
         return {
             /**

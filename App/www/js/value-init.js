@@ -4,9 +4,9 @@ value('SECRET_PHRASE', "WatchThatStupidLeech").
 value('VERSION', "1.0").
 value('ClassesLastModified', function () {
     this.primary = "primary";
-    this.OperationalStatistics = null;
-    this.Visit = null;
-    this.Expenditure = null;
+    this.OperationalStatistics = new Date();
+    this.Visit = new Date();
+    this.Expenditure = new Date();
 }).
 value('ClassesFieldStat', function () {
     this.primary = "primary";
