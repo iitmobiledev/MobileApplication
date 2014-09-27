@@ -4,10 +4,9 @@
  * @description Сервис для кэширования данных
  * @name myApp.service:Storage
  */
-myApp.service("Storage", ["ClassesLastModified", "ClassesFieldStat",
+myApp.service("Storage", ["$injector",
 
-    function (ClassesLastModified, ClassesFieldStat) {
-
+    function ($injector) {
 
         /**
          *
@@ -90,14 +89,14 @@ myApp.service("Storage", ["ClassesLastModified", "ClassesFieldStat",
          * @description Ищет объект по параметрам в localStorage
          */
         var search = function (className, params, callback) {
-            var $inj = angular.injector(['myApp']);
-            var serv = $inj.get(className);
+//            var $inj = angular.injector(['myApp']);
+            var serv = $injector.get(className);
             var keys = serv.searchIndexedDb(trans, params, callback);
             var results = [];
-            for (var i = 0; i < keys.length(); i++) {
+            for (var i = 0; i < keys.length; i++) {
                 var item = localStorage.getItem(i.join(":"));
                 console.log("storage.search():", item);
-                results.push(item.);
+                results.push(item);
             }
             if (results.length != keys.length) {
                 callback(null);
@@ -129,6 +128,7 @@ myApp.service("Storage", ["ClassesLastModified", "ClassesFieldStat",
             get: get,
             isSupported: isSupported,
             clearStorage: clearStorage,
+            search: search
             //            lastModified: lastModified,
             //            getFieldStat: getFieldStat,
             //            classesLastModified: classesLastModified,

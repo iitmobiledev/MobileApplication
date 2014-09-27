@@ -40,7 +40,7 @@
                              "FAILURE", url, $.extend(true, {}, param),
                              status, headers, config
                          );
-                         callback();
+                         callback(null);
                      });
              }
          };
