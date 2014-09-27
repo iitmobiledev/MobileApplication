@@ -50,9 +50,7 @@ myApp.service("Storage", ["$injector",
             try {
                 localStorage.setItem(obj.getClass() + ":" + obj.getKey(), obj.json());
             } catch (e) {
-                if (e == QUOTA_EXCEEDED_ERR) {
-                    console.log('Локальное хранилище переполнено');
-                }
+                console.log(e.message);
             }
 
         };
@@ -71,7 +69,12 @@ myApp.service("Storage", ["$injector",
             try {
                 var item = localStorage.getItem(className + ":" + primary);
                 console.log("storage.get():", item);
-                callback(item);
+                if (item) {
+                    callback(item);
+                } else {
+                    callback(null);
+                }
+
             } catch (e) {
                 console.log(e.message);
             }
@@ -96,7 +99,9 @@ myApp.service("Storage", ["$injector",
             for (var i = 0; i < keys.length; i++) {
                 var item = localStorage.getItem(keys[i].join(":"));
                 console.log("storage.search():", item);
-                results.push(item);
+                if (item) {
+                    results.push(item);
+                }
             }
             if (results.length != keys.length) {
                 callback(null);

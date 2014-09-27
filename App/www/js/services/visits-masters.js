@@ -168,7 +168,7 @@ myApp.factory('Visit', function (Model, Client, Service, Author, DateHelper) {
         var keys = [];
         var startDate = new Date(params.dateFrom);
         var endDate = new Date(params.dateTill);
-        for (var i = startDate; i < endDate; i = DateHelper.getNextPeriod(new Date(i), params.step).begin) {
+        for (var i = startDate; i < endDate || i.toDateString() == endDate.toDateString(); i = DateHelper.getNextPeriod(new Date(i), params.step).begin) {
             var item = [];
             item.push("Visit");
             item.push(i);
