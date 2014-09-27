@@ -90,10 +90,20 @@ myApp.service("Storage", ["ClassesLastModified", "ClassesFieldStat",
          * @description Ищет объект по параметрам в localStorage
          */
         var search = function (className, params, callback) {
-            var startDate = new Date(params.dateFrom);
-            var endDate = new Date(params.dateTill);
-            var result=[];
-            //бежать по дню или по шагу?!
+            var $inj = angular.injector(['myApp']);
+            var serv = $inj.get(className);
+            var keys = serv.searchIndexedDb(trans, params, callback);
+            var results = [];
+            for (var i = 0; i < keys.length(); i++) {
+                var item = localStorage.getItem(i.join(":"));
+                console.log("storage.search():", item);
+                results.push(item.);
+            }
+            if (results.length != keys.length) {
+                callback(null);
+            } else {
+                callback(results);
+            }
         };
 
         /**

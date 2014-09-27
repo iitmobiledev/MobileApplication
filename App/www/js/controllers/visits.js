@@ -33,7 +33,7 @@ myApp.controller('VisitsController', function ($scope, $filter, $location, Loade
 
     $scope.future = true;
     $scope.past = true;
-    
+
     function setMinMax() {
         $scope.min = Loader.getMinDate("Visit");
         $scope.max = Loader.getMaxDate("Visit");
@@ -96,8 +96,7 @@ myApp.controller('VisitsController', function ($scope, $filter, $location, Loade
             Loader.search("Visit", {
                 dateFrom: beginDate,
                 dateTill: endDate,
-                step: DateHelper.steps.DAY,
-                index: "date"
+                step: DateHelper.steps.DAY
             }, function (data) {
                 var visitsByDate = {};
                 angular.forEach(data, function (visit) {
@@ -157,10 +156,10 @@ myApp.controller('VisitsController', function ($scope, $filter, $location, Loade
                     } else
                         list.push(new VisitsPage(new Date(tmpdate), []));
                 }
-                
+
                 var todayPeriod = DateHelper.getPeriod($scope.date, $scope.step);
                 var curIndex;
-                for (var i = 0; i<list.length; i++){
+                for (var i = 0; i < list.length; i++) {
                     var curPeriod = DateHelper.getPeriod(list[i].date, $scope.step);
 
                     if (curPeriod.begin.toDateString() == todayPeriod.begin.toDateString()) {
@@ -168,7 +167,7 @@ myApp.controller('VisitsController', function ($scope, $filter, $location, Loade
                         console.log("curIndex", curIndex);
                     }
                 }
-                
+
                 $scope.loading = false;
                 callback(list, curIndex);
             });

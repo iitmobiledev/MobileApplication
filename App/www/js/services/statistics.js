@@ -59,30 +59,42 @@ myApp.factory('OperationalStatistics', function (Model, FinanceStatistics) {
             }
         }
     });
-
-    opStat.searchIndexedDb = function (trans, params, callback) {
-        var result = [];
-        var store = trans.objectStore("OperationalStatistics"); //найдем хранилище для объектов данного класса
-        var keyRange = IDBKeyRange.bound([params.step, new Date(params.dateFrom)], [params.step, new Date(params.dateTill)]);
-        console.log(keyRange);
-        var request = store.index("step_date").openCursor(keyRange);
-        request.onerror = function (event) {
-            callback(null);
-        };
-        request.onsuccess = function (event) {
-            var cursor = event.target.result;
-            if (cursor) {
-                result.push(cursor.value);
-                cursor.continue();
-            }
-        };
-
-        trans.oncomplete = function (e) {
-            if (result.length != 0) {
-                callback(result);
-            } else
-                callback(null);
+    opStat.searchInLocalStorage = function (params, callback) {
+        var keys = [];
+        var startDate = new Date(params.dateFrom);
+        var endDate = new Date(params.dateTill);
+        for (var i = startDate; i < endDate; i = DateHelper.getNextPeriod(new Date(i), step).begin) {
+            var item = [];
+            item.push("OperationalStatistics");
+            item.push(i);
+            item.push(params.step);
+            keys.push(item);
         }
+        return keys;
     }
+    //    opStat.searchIndexedDb = function (trans, params, callback) {
+    //        var result = [];
+    //        var store = trans.objectStore("OperationalStatistics"); //найдем хранилище для объектов данного класса
+    //        var keyRange = IDBKeyRange.bound([params.step, new Date(params.dateFrom)], [params.step, new Date(params.dateTill)]);
+    //        console.log(keyRange);
+    //        var request = store.index("step_date").openCursor(keyRange);
+    //        request.onerror = function (event) {
+    //            callback(null);
+    //        };
+    //        request.onsuccess = function (event) {
+    //            var cursor = event.target.result;
+    //            if (cursor) {
+    //                result.push(cursor.value);
+    //                cursor.continue();
+    //            }
+    //        };
+    //
+    //        trans.oncomplete = function (e) {
+    //            if (result.length != 0) {
+    //                callback(result);
+    //            } else
+    //                callback(null);
+    //        }
+    //    }
     return opStat;
 });
