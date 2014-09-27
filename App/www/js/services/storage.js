@@ -48,7 +48,7 @@ myApp.service("Storage", ["$injector",
          */
         var update = function (obj) {
             try {
-                localStorage.setItem(obj.getClass() + ":" + obj.getKey(), obj.json);
+                localStorage.setItem(obj.getClass() + ":" + obj.getKey(), obj.json());
             } catch (e) {
                 if (e == QUOTA_EXCEEDED_ERR) {
                     console.log('Локальное хранилище переполнено');
@@ -89,12 +89,12 @@ myApp.service("Storage", ["$injector",
          * @description Ищет объект по параметрам в localStorage
          */
         var search = function (className, params, callback) {
-//            var $inj = angular.injector(['myApp']);
+            //            var $inj = angular.injector(['myApp']);
             var serv = $injector.get(className);
-            var keys = serv.searchIndexedDb(trans, params, callback);
+            var keys = serv.searchInLocalStorage(params, callback);
             var results = [];
             for (var i = 0; i < keys.length; i++) {
-                var item = localStorage.getItem(i.join(":"));
+                var item = localStorage.getItem(keys[i].join(":"));
                 console.log("storage.search():", item);
                 results.push(item);
             }

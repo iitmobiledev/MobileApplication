@@ -31,7 +31,7 @@ myApp.factory('FinanceStatistics', function (Model, DateHelper) {
  * @requires myApp.service:FinanceStatistics
  * @param {Object} data Данные в формате ключ: значение.
  */
-myApp.factory('OperationalStatistics', function (Model, FinanceStatistics) {
+myApp.factory('OperationalStatistics', function (Model, FinanceStatistics, DateHelper) {
 
     var opStat = Model("OperationalStatistics", {
         deserialize: function (self, data) {
@@ -63,7 +63,7 @@ myApp.factory('OperationalStatistics', function (Model, FinanceStatistics) {
         var keys = [];
         var startDate = new Date(params.dateFrom);
         var endDate = new Date(params.dateTill);
-        for (var i = startDate; i < endDate; i = DateHelper.getNextPeriod(new Date(i), step).begin) {
+        for (var i = startDate; i < endDate; i = DateHelper.getNextPeriod(new Date(i), params.step).begin) {
             var item = [];
             item.push("OperationalStatistics");
             item.push(i);

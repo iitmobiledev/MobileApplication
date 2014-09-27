@@ -94,7 +94,7 @@ myApp.factory('Service', function (Model, Master) {
  * @requires myApp.service:Model
  * @param {Object} data Данные в формате ключ: значение.
  */
-myApp.factory('Visit', function (Model, Client, Service, Author) {
+myApp.factory('Visit', function (Model, Client, Service, Author, DateHelper) {
     var visitConstructor = Model("Visit", {
         deserialize: function (self, data) {
             self.id = data.id;
@@ -168,7 +168,7 @@ myApp.factory('Visit', function (Model, Client, Service, Author) {
         var keys = [];
         var startDate = new Date(params.dateFrom);
         var endDate = new Date(params.dateTill);
-        for (var i = startDate; i < endDate; i = DateHelper.getNextPeriod(new Date(i), step).begin) {
+        for (var i = startDate; i < endDate; i = DateHelper.getNextPeriod(new Date(i), params.step).begin) {
             var item = [];
             item.push("Visit");
             item.push(i);
