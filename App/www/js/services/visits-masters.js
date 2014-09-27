@@ -7,11 +7,6 @@
  */
 myApp.factory('Author', function (Model) {
     return Model("Author", {
-        serialize: function (self) {
-            self.constructor.prototype.call(self)
-            var data = angular.extend({}, self);
-            return data;
-        },
         primary: ['id']
     });
 });
@@ -25,11 +20,6 @@ myApp.factory('Author', function (Model) {
  */
 myApp.factory('Client', function (Model) {
     return Model("Client", {
-        serialize: function (self) {
-            self.constructor.prototype.call(self)
-            var data = angular.extend({}, self);
-            return data;
-        },
         primary: ['id']
     });
 });
@@ -43,11 +33,6 @@ myApp.factory('Client', function (Model) {
  */
 myApp.factory('Master', function (Model) {
     return Model("Master", {
-        serialize: function (self) {
-            self.constructor.prototype.call(self)
-            var data = angular.extend({}, self);
-            return data;
-        },
         primary: ['id']
     });
 });
@@ -76,11 +61,6 @@ myApp.factory('Service', function (Model, Master) {
                 self.endTime = new Date(self.date.getFullYear(), self.date.getMonth(), self.date.getDate(), parseTime[0], parseTime[1]);
             } else
                 self.endTime = "";
-        },
-        serialize: function (self) {
-            self.constructor.prototype.call(self)
-            var data = angular.extend({}, self);
-            return data;
         },
         primary: ['id']
     });
@@ -122,11 +102,6 @@ myApp.factory('Visit', function (Model, Client, Service, Author, DateHelper) {
                 self.endTime = new Date(self.date.getFullYear(), self.date.getMonth(), self.date.getDate(), parseTime[0], parseTime[1]);
             } else
                 self.endTime = "";
-        },
-        serialize: function (self) {
-            self.constructor.prototype.call(self)
-            var data = angular.extend({}, self);
-            return data;
         },
         primary: ['id'],
         indexes: {

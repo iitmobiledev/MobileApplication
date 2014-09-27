@@ -62,13 +62,13 @@ myApp.service("Synchronizer", ["Storage", "RealServer", "ModelConverter", "Loade
             //console.log('synch check');
             Storage.get("LastModified", 'primary', function (lastLocalModified) {
                 Server.lastModified(["OperationalStatistics", "Visit", "Expenditure"], function (lastServerModified) {
-                    //                    console.log(lastLocalModified, lastServerModified);
-                    //                    if (lastLocalModified == null || lastLocalModified[className] == lastServerModified[className]) {
-                    callback();
-                    //                    } else {
-                    //                        console.log('synch need');
-                    //                        updateData(className, 20, 0, callback, lastLocalModified, lastServerModified);
-                    //                    }
+//                    console.log(lastLocalModified, lastServerModified);
+//                    if (lastLocalModified == null || lastLocalModified[className] == lastServerModified[className]) {
+                        callback();
+//                    } else {
+//                        console.log('synch need');
+//                        updateData(className, 20, 0, callback, lastLocalModified, lastServerModified);
+//                    }
                 });
             });
         }
@@ -83,10 +83,9 @@ myApp.service("Synchronizer", ["Storage", "RealServer", "ModelConverter", "Loade
                         synchCheck("Visit", function () {
                             //                    console.log("synch end Visit0");
                             synchCheck("Expenditure", function () {
-                                //                                console.log("synch end");
+                                console.log("synch end");
                                 $rootScope.$emit('synchEnd', '');
-                                //                                console.log(this);
-//                                setInterval(synch.beginSynch, 10000);
+                                setInterval(synch.beginSynch, 10000);
                             });
                         });
                     });

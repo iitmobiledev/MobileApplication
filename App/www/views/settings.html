@@ -2,9 +2,9 @@
 <footer-content show="true"></footer-content>
 
 <div style="margin: 2% 5%;padding: 5px;" class="ng-scope">
-    
+    <div id="console">{{console}}</div>
     <p style="font-size: 16pt;">{{user.salon}}</p>
-    <h1 style="margin: 15px 0;font-weight: lighter;">{{user.firstname}} {{user.lastname}}</h1>
+    <h1 style="margin: 15px 0;font-weight: lighter;" ng-click="showConsole()">{{user.firstname}} {{user.lastname}}</h1>
     <p></p>
     <p>{{user.email}}</p>
 </div>

@@ -14,11 +14,6 @@ myApp.factory('FinanceStatistics', function (Model, DateHelper) {
             self.credit = data.credit;
             self.debit = data.debit;
         },
-        serialize: function (self) {
-            self.constructor.prototype.call(self)
-            var data = angular.extend({}, self);
-            return data;
-        },
         primary: ['date']
     });
 });

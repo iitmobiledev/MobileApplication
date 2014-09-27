@@ -257,11 +257,11 @@ myApp.factory("Model", function () {
             options.serialize = function (self) {
                 var data = {};
                 angular.forEach(self, function (key, value) {
-                    if (value.json instanceof Function) {
-                        data[key] = value.json();
-                    } else {
-                        data[key] = value;
-                    }
+                    //                    if (value.json && value.json instanceof Function) {
+                    //                        data[key] = value.json();
+                    //                    } else {
+                    data[value] = key;
+                    //                    }
                 });
                 data.__class__ = className;
                 return data;
@@ -294,7 +294,7 @@ myApp.factory("Model", function () {
                 return options.serialize(this);
             }
         };
-        
+
         Object.defineProperty(clz.prototype, "__primary__", {
             get: function () {
                 return this.getKey().join(":");
