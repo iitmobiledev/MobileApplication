@@ -79,7 +79,7 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
                                 } else if ($('.my-slider').whichFromRight($('.my-slider').getCurrentSlide()) == 0 && scope.future) {
                                     dataCallback(key, count, true, addFutureData);
                                 }
-
+                                scope.$apply();
                             }
                         }
                     });
@@ -96,6 +96,7 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
              */
             function initSlider() {
                 //$('.my-slider').destroySlider();
+                $(window).scrollTop(0);
                 $('.my-slider').html("")
                 toSlick();
                 dataCallback(null, count, true, addCurrentDayData);

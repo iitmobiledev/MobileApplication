@@ -222,6 +222,15 @@ myApp.controller('VisitsMasterController', function ($scope, $filter, $location,
         return obj && obj.date.toDateString();
     };
     
+    $scope.$watch('date', function (newValue, oldValue) {
+        var period = DateHelper.getPeriod(new Date($scope.date), $scope.step);
+        $scope.past = false, $scope.future = false;
+        if (period.begin > $scope.min || $scope.min == null)
+            $scope.past = true;
+        if (period.end < $scope.max || $scope.max == null)
+            $scope.future = true;
+    });
+    
     $scope.updateDate = function(curScope){
         $scope.date = new Date(curScope.page.date);
     }
