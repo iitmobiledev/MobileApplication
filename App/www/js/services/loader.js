@@ -25,7 +25,7 @@ myApp.service("Loader", ["ModelConverter", "RealServer", "$rootScope", "fieldSta
             if (sessvars.support) {
                 Storage.get("FieldStat", 'primary', function (stat) {
                     if (stat)
-                        fieldStat = stat;
+                        fieldStat = ModelConverter.getObject("FieldStat", stat);
                     else
                         getServerFieldStat();
                 });
@@ -107,9 +107,12 @@ myApp.service("Loader", ["ModelConverter", "RealServer", "$rootScope", "fieldSta
             get: function (className, primaryKey, callback) {
                 if (sessvars.support) {
                     Storage.get(className, primaryKey, function (result) {
-                        if (result)
-                            callback(ModelConverter.getObject(className, result));
-                        else {
+                        if (result) {
+                            console.log(result);
+                            var model = ModelConverter.getObject(className, result);
+                            console.log("model", model);
+                            callback(model);
+                        } else {
                             Server.get(className, primaryKey, function (data) {
                                 callback(ModelConverter.getObject(className, data))
                             });

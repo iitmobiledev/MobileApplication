@@ -49,7 +49,6 @@ myApp.service("Storage", ["$injector",
         var update = function (obj) {
             try {
                 localStorage.setItem(obj.getClass() + ":" + obj.getKey(), obj.json());
-                console.log('storage.update');
             } catch (e) {
                 console.log(e.message);
             }
