@@ -313,8 +313,10 @@
                     this.setCSS(this.getLeft(this.currentSlide));
                 }
                 if (isCurrent) {
-                    this.currentSlide = this.slideCount - 1;
-                    this.setCSS(this.getLeft(this.currentSlide))
+                    if (this.currentSlide !== this.slideCount - 1) {
+                        this.currentSlide = this.slideCount - 1;
+                        this.setCSS(this.getLeft(this.currentSlide));
+                    }
                 }
             } else {
                 //this.index(this.getCurrentSlide())

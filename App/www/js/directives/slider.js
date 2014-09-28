@@ -39,7 +39,8 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
 
             var contentData;
             var step = DateHelper.steps.DAY;
-            var count = 5;
+            var count = scope.$eval(attrs.loadedSlideCount) || 5;
+            var maxCount = scope.$eval(attrs.maxSlideCount) || 15;
 
 
             var ready = false;
@@ -67,7 +68,7 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
                     console.log(width)
                     $('.my-slider').initSlider({
                         width: width,
-                        maxSlideCount: 20,
+                        maxSlideCount: maxCount,
                         onAfterChange: function () {
                             if (ready) {
                                 var key = getCurrentKey();
@@ -193,6 +194,7 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
                     }
 
                     //                    scope.$apply();
+                    $(window).scrollTop(0);
                     ready = true;
                 }
                 var curScope = angular.element($('.my-slider').getCurrentSlide()).scope();
@@ -212,7 +214,14 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
             scope.$watch('step', function (newValue, oldValue) {
                 if (oldValue != newValue) {
                     scope.loading = true;
-                    //                    scope.$apply();
+                    initSlider();
+                }
+            })
+            
+            scope.$watch('reinit', function(newValue, oldValue){
+                if (newValue == true){
+                    scope.loading = true;
+                    //scope.reinit = false;
                     initSlider();
                 }
             })

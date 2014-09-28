@@ -15,6 +15,7 @@
  * @requires myApp.service:DateHelper
  */
 myApp.controller('OperationalStatisticController', function ($scope, $location, DateHelper, Loader, $rootScope, $routeParams) {
+    setMinMax();
     var today;
     if (typeof ($routeParams.date) != 'undefined')
         today = new Date($routeParams.date);
@@ -29,6 +30,8 @@ myApp.controller('OperationalStatisticController', function ($scope, $location, 
     $scope.past = true;
     
     $scope.needUpdating = false;
+
+    $scope.reinit = false;
 
     $scope.getData = function (key, quantity, forward, callback) {
         $scope.needUpdating = false; //???
@@ -50,11 +53,10 @@ myApp.controller('OperationalStatisticController', function ($scope, $location, 
             var beginDate = date,
                 endDate = date;
             for (var i = 0; i < quantity; i++) {
-                if (forward) {
+                if (endDate.toDateString() !== $scope.max.toDateString() && endDate < $scope.max && forward)
                     endDate = DateHelper.getNextPeriod(endDate, $scope.step).end;
-                } else {
+                if (beginDate.toDateString() !== $scope.min.toDateString() && beginDate > $scope.min && !forward)
                     beginDate = DateHelper.getPrevPeriod(beginDate, $scope.step).begin;
-                }
             }
             if (beginDate == endDate && $scope.step != DateHelper.steps.DAY) {
                 var period = DateHelper.getPeriod(beginDate, $scope.step);
@@ -75,39 +77,50 @@ myApp.controller('OperationalStatisticController', function ($scope, $location, 
             //            });
 
         } else {
-            date = $scope.date;
-            var beginDate = date,
-                endDate = date;
-            for (var i = 0; i < quantity; i++) {
-                endDate = DateHelper.getNextPeriod(endDate, $scope.step).end;
-                beginDate = DateHelper.getPrevPeriod(beginDate, $scope.step).begin;
-            }
-            if (beginDate == endDate && $scope.step != DateHelper.steps.DAY) {
-                var period = DateHelper.getPeriod(beginDate, $scope.step);
-                beginDate = period.begin;
-                endDate = period.end;
-
-            }
-            console.log("begend", beginDate, endDate)
-            Loader.search("OperationalStatistics", {
-                dateFrom: beginDate.toDateString(),
-                dateTill: endDate.toDateString(),
-                step: $scope.step,
-                index: "date"
-            }, function (data) {
-                $scope.loading = false;
-                data.reverse();
-                var todayPeriod = DateHelper.getPeriod($scope.date, $scope.step);
-                var curIndex;
-                for (var i = 0; i < data.length; i++) {
-                    var curPeriod = DateHelper.getPeriod(data[i].date, $scope.step);
-
-                    if (curPeriod.begin.toDateString() == todayPeriod.begin.toDateString()) {
-                        curIndex = i;
-                    }
+            if ($scope.min !== null && $scope.max !== null) {
+                if ($scope.date > $scope.max) {
+                    $scope.date = new Date($scope.max)
+                } else if ($scope.date < $scope.min) {
+                    $scope.date = new Date($scope.min)
                 }
-                callback(data, curIndex);
-            });
+                date = $scope.date;
+                var beginDate = date,
+                    endDate = date;
+                for (var i = 0; i < quantity; i++) {
+                    if (endDate.toDateString() !== $scope.max.toDateString() && endDate < $scope.max)
+                        endDate = DateHelper.getNextPeriod(endDate, $scope.step).end;
+                    if (beginDate.toDateString() !== $scope.min.toDateString() && beginDate > $scope.min)
+                        beginDate = DateHelper.getPrevPeriod(beginDate, $scope.step).begin;
+                }
+                if (beginDate == endDate && $scope.step != DateHelper.steps.DAY) {
+                    var period = DateHelper.getPeriod(beginDate, $scope.step);
+                    beginDate = period.begin;
+                    endDate = period.end;
+
+                }
+                console.log("begend", beginDate, endDate)
+                Loader.search("OperationalStatistics", {
+                    dateFrom: beginDate.toDateString(),
+                    dateTill: endDate.toDateString(),
+                    step: $scope.step,
+                    index: "date"
+                }, function (data) {
+                    $scope.loading = false;
+                    data.reverse();
+                    var todayPeriod = DateHelper.getPeriod($scope.date, $scope.step);
+                    var curIndex;
+                    for (var i = 0; i < data.length; i++) {
+                        var curPeriod = DateHelper.getPeriod(data[i].date, $scope.step);
+
+                        if (curPeriod.begin.toDateString() == todayPeriod.begin.toDateString()) {
+                            curIndex = $scope.getKey(data[i]);
+                        }
+                    }
+                    callback(data, curIndex);
+                });
+            } else {
+                $scope.loading = false;
+            }
         };
     }
 
@@ -133,16 +146,22 @@ myApp.controller('OperationalStatisticController', function ($scope, $location, 
     function setMinMax() {
         $scope.min = Loader.getMinDate("OperationalStatistics");
         $scope.max = Loader.getMaxDate("OperationalStatistics");
+        $scope.reinit = true;
+        console.log("setMinMax", $scope.min, $scope.max);
     }
 
     $rootScope.$on('minMaxGet', setMinMax);
 
+<<<<<<< HEAD
     setMinMax();
     
     $rootScope.$on('synchEnd', function () {
         setMinMax();
         $scope.needUpdating = true;
     });
+=======
+
+>>>>>>> origin/master
 
     $scope.$watch('step', function (newValue, oldValue) {
         var period = DateHelper.getPeriod($scope.date, newValue);
