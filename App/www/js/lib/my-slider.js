@@ -343,6 +343,45 @@
             //setActive();
         }
 
+        MySlider.prototype.addLoadBar = function (element, toRight) {
+            this.slideCount++;
+
+            //var slider = $(this).data("slider");
+            if (toRight) {
+                $(element).css("width", this.options.width);
+                $(element).addClass("slide loadbar");
+                this.$slideTrack.append(element);
+                this.$slideTrack.css("width", this.options.width * this.slideCount)
+                if (this.currentSlide === null) {
+                    this.currentSlide = 0;
+                }
+            } else {
+                //this.index(this.getCurrentSlide())
+                $(element).css("width", this.options.width);
+                $(element).addClass("slide");
+                this.$slideTrack.prepend(element);
+                this.$slideTrack.css("width", this.options.width * this.slideCount)
+                if (this.currentSlide === null) {
+                    this.currentSlide = 0;
+                } else {
+                    this.currentSlide += 1;
+                    this.setCSS(this.getLeft(this.currentSlide));
+                }
+            }
+        }
+
+        MySlider.prototype.removeLoadBar = function (fromRight) {
+            if (fromRight) {
+                if ($('.slide').get(this.slideCount - 1).hasClass('loadbar')) {
+                    $('.slide').get(this.slideCount - 1).remove();
+                }
+            } else {
+                if ($($('.slide').get(0)).hasClass('loadbar')) {
+                    $('.slide').get(0).remove();
+                }
+            }
+        }
+
         MySlider.prototype.shiftSlide = function (toRight) {
             if (toRight) {
                 if (this.currentSlide !== null) {
@@ -408,6 +447,30 @@
 
         $.fn.whichFromRight = function (current) {
             return this.get(0).slider.whichFrom(current, true);
+        }
+
+        $.fn.addLoadBarLeft = function (content) {
+            return this.each(function (index, element) {
+                element.slider.addSlide(content, false);
+            });
+        }
+
+        $.fn.addLoadBarLeft = function (content) {
+            return this.each(function (index, element) {
+                element.slider.addSlide(content, true);
+            });
+        }
+
+        $.fn.removeLoadBarLeft = function (content) {
+            return this.each(function (index, element) {
+                element.slider.removeLoadBar(false);
+            });
+        }
+
+        $.fn.removeLoadBarRight = function (content) {
+            return this.each(function (index, element) {
+                element.slider.removeLoadBar(false);
+            });
         }
 
         $.fn.initSlider = function (options) {
