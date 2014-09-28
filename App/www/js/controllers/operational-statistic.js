@@ -19,7 +19,7 @@ myApp.controller('OperationalStatisticController', function ($scope, $location, 
     if (typeof ($routeParams.date) != 'undefined')
         today = new Date($routeParams.date);
     else
-        today = new Date();
+        today = new Date(2014, 8, 20);
     $scope.date = new Date(today.getFullYear(), today.getMonth(), today.getDate());
 
     $scope.step = DateHelper.steps.DAY;

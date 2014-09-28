@@ -48,7 +48,7 @@ myApp.service("Storage", ["$injector",
          */
         var update = function (obj) {
             try {
-                localStorage.setItem(obj.getClass() + ":" + obj.getKey(), JSON.stringify(obj));
+                localStorage.setItem(obj.getClass() + ":" + obj.getKey(), JSON.stringify(obj.json()));
             } catch (e) {
                 console.log(e.message);
             }
@@ -67,10 +67,10 @@ myApp.service("Storage", ["$injector",
          */
         var get = function (className, primary, callback) {
             try {
-                var item = JSON.parse(localStorage.getItem(className + ":" + primary));
-                console.log("storage.get():", item);
+                var item = localStorage.getItem(className + ":" + primary);
+//                console.log("storage.get():", item);
                 if (item) {
-                    callback(item);
+                    callback(JSON.parse(item));
                 } else {
                     callback(null);
                 }
@@ -97,7 +97,7 @@ myApp.service("Storage", ["$injector",
             var keys = serv.searchInLocalStorage(params, callback);
             var results = [];
             for (var i = 0; i < keys.length; i++) {
-                var item = JSON.parse(localStorage.getItem(keys[i].join(":")));
+                var item = localStorage.getItem(keys[i].join(":"));
                 console.log("storage.search():", item);
                 if (item) {
                     results.push(item);

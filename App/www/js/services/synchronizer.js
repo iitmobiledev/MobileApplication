@@ -43,6 +43,7 @@ myApp.service("Synchronizer", ["Storage", "RealServer", "ModelConverter", "Loade
                                 var fieldStat = ModelConverter.getObject("FieldStat", stat);
                                 Storage.update(fieldStat);
                                 save(data, className, 0, callback);
+                                $rootScope.$emit('synchEnd', '');
                             });
                         } else {
                             updateData(className, count, 0, callback, lastLocalModified, date);
@@ -62,13 +63,14 @@ myApp.service("Synchronizer", ["Storage", "RealServer", "ModelConverter", "Loade
             //console.log('synch check');
             Storage.get("LastModified", 'primary', function (lastLocalModified) {
                 Server.lastModified(["OperationalStatistics", "Visit", "Expenditure"], function (lastServerModified) {
-//                    console.log(ModelConverter.getObject("LastModified", lastLocalModified), lastServerModified);
-//                    if (lastLocalModified == null || lastLocalModified[className] == lastServerModified[className]) {
+                    lastLocalModified = ModelConverter.getObject("LastModified", lastLocalModified);
+                    //                    console.log(lastLocalModified, lastServerModified);
+                    if (lastLocalModified[className] && new Date(lastLocalModified[className]) < new Date(lastServerModified[className])) {
+                        console.log('synch need');
+                        updateData(className, 20, 0, callback, lastLocalModified, lastServerModified);
+                    } else {
                         callback();
-//                    } else {
-//                        console.log('synch need');
-//                        updateData(className, 20, 0, callback, lastLocalModified, lastServerModified);
-//                    }
+                    }
                 });
             });
         }
@@ -83,8 +85,7 @@ myApp.service("Synchronizer", ["Storage", "RealServer", "ModelConverter", "Loade
                         synchCheck("Visit", function () {
                             //                    console.log("synch end Visit0");
                             synchCheck("Expenditure", function () {
-                                console.log("synch end");
-                                $rootScope.$emit('synchEnd', '');
+                                //                                console.log("synch end");
                                 setInterval(synch.beginSynch, 10000);
                             });
                         });

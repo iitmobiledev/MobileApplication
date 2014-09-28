@@ -41,11 +41,6 @@ myApp.factory('OperationalStatistics', function (Model, FinanceStatistics, DateH
             else
                 self.financeStat = null;
         },
-        serialize: function (self) {
-            self.constructor.prototype.call(self);
-            var data = angular.extend({}, self);
-            return data;
-        },
         primary: ['date', 'step'],
         indexes: {
             step_date: {
