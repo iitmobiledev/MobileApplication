@@ -19,7 +19,7 @@ myApp.controller('OperationalStatisticController', function ($scope, $location, 
     if (typeof ($routeParams.date) != 'undefined')
         today = new Date($routeParams.date);
     else
-        today = new Date(2014, 8, 20);
+        today = new Date(2014, 8, 21);
     $scope.date = new Date(today.getFullYear(), today.getMonth(), today.getDate());
 
     $scope.step = DateHelper.steps.DAY;
@@ -217,8 +217,8 @@ myApp.controller('OperationalStatisticController', function ($scope, $location, 
     };
 
     $scope.hasFinance = function (statistics) {
-        if (statistics.financeStat) {
-            return typeof (statistics.financeStat.credit) !== 'undefined';
+        if (statistics.financialStat) {
+            return typeof (statistics.financialStat.credit) !== 'undefined';
         }
         return false;
     };

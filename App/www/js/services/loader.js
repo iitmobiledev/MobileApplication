@@ -46,10 +46,10 @@ myApp.service("Loader", ["ModelConverter", "RealServer", "$rootScope", "fieldSta
             Server.search(className, params, function (result) {
                 var lastMod = ModelConverter.getObject("LastModified", new ClassesLastModified());
                 Storage.update(lastMod);
-                console.log('server.search ', result);
+
                 if (result instanceof Array) {
                     var objs = ModelConverter.getObjects(className, result);
-
+                    console.log('server.search ', objs);
                     for (var i in objs)
                         Storage.update(objs[i]);
 
@@ -200,7 +200,8 @@ myApp.service("Loader", ["ModelConverter", "RealServer", "$rootScope", "fieldSta
                 if (sessvars.support) {
                     Storage.search(className, params, function (data) {
                         if (data) {
-                            var objs = ModelConverter.getObjects(className, data);
+                            var objs = ModelConverter.getObjects(className, data).reverse();
+                            console.log('storage.search ', objs);
                             callback(objs);
                         } else {
                             serverSearch(className, params, callback);

@@ -30,16 +30,17 @@ myApp.factory('OperationalStatistics', function (Model, FinanceStatistics, DateH
 
     var opStat = Model("OperationalStatistics", {
         deserialize: function (self, data) {
-            self.date = new Date(data.date);
+            var date = new Date(data.date);
+            self.date = new Date(date.getFullYear(), date.getMonth(), date.getDate());
             self.step = data.step;
             self.proceeds = data.proceeds;
             self.profit = data.profit;
             self.clients = data.clients;
             self.workload = data.workload;
             if (data.financialStat)
-                self.financeStat = new FinanceStatistics(data.financialStat);
+                self.financialStat = new FinanceStatistics(data.financialStat);
             else
-                self.financeStat = null;
+                self.financialStat = null;
         },
         primary: ['date', 'step'],
         indexes: {
