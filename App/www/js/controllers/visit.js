@@ -6,7 +6,6 @@
  * @requires myApp.service:VisitLoader
  */
 myApp.controller('VisitController', function ($scope, $filter, $routeParams, Loader, DateHelper) {
-    window.scrollTo(0,0);
     var today = new Date();
     $scope.date = new Date(today.getFullYear(), today.getMonth(), today.getDate());
 
@@ -18,6 +17,7 @@ myApp.controller('VisitController', function ($scope, $filter, $routeParams, Loa
 
     $scope.future = true;
     $scope.past = true;
+    $scope.maxSlideCount = 100;
 
     $scope.getData = function (key, quantity, forward, callback) {
         $scope.loading = true;
@@ -39,7 +39,7 @@ myApp.controller('VisitController', function ($scope, $filter, $routeParams, Loa
                     dateTill: endDate,
                     step: $scope.step
                 }, function (data) {
-
+                    $scope.maxSlideCount = data.length + 1;
 
                     obj.client.phone = formatLocal("RU", obj.client.phone);
                     console.log(obj.client.phone);
@@ -87,6 +87,7 @@ myApp.controller('VisitController', function ($scope, $filter, $routeParams, Loa
                             data[i].balColor = "green";
                         }
                     }
+                    data.reverse();
                     $scope.loading = false;
                     callback(data, $routeParams.id);
                 });

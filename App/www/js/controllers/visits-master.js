@@ -16,22 +16,28 @@ myApp.controller('VisitsMasterController', function ($scope, $filter, $location,
     //    new Date($routeParams.date) || 
     var today = new Date($routeParams.date) || new Date();
     $scope.date = new Date(today.getFullYear(), today.getMonth(), today.getDate());
-//    console.log($routeParams.date);
+    //    console.log($routeParams.date);
     $scope.step = DateHelper.steps.DAY;
     $scope.loading = true;
-    $scope.pageIndex = 0;
+    
+    $scope.loadedSlideCount = 3;
+    $scope.maxSlideCount = 10;
 
     $scope.min = null;
     $scope.max = null;
-    
+
     $scope.future = true;
     $scope.past = true;
 
-    $rootScope.$on('minMaxGet', function () {
-        //        console.log('received on');
+    function setMinMax() {
         $scope.min = Loader.getMinDate("Visit");
         $scope.max = Loader.getMaxDate("Visit");
-    });
+    }
+
+    $rootScope.$on('minMaxGet', setMinMax);
+
+    setMinMax();
+
 
     /**
      *
@@ -117,8 +123,6 @@ myApp.controller('VisitsMasterController', function ($scope, $filter, $location,
         var resultArr = [];
         var date;
         if (key) {
-            //            Loader.get("Visit", key, function (obj) {
-            //                if (obj) {
             date = new Date(key);
             console.log("date ", date);
             if (forward) {
@@ -129,11 +133,10 @@ myApp.controller('VisitsMasterController', function ($scope, $filter, $location,
             var beginDate = date,
                 endDate = date;
             for (var i = 0; i < quantity; i++) {
-                if (forward) {
+                if (endDate.toDateString() !== $scope.max.toDateString() && endDate < $scope.max && forward)
                     endDate = DateHelper.getNextPeriod(endDate, $scope.step).end;
-                } else {
+                if (beginDate.toDateString() !== $scope.min.toDateString() && beginDate > $scope.min && !forward)
                     beginDate = DateHelper.getPrevPeriod(beginDate, $scope.step).begin;
-                }
             }
             if (beginDate == endDate && $scope.step != DateHelper.steps.DAY) {
                 var period = DateHelper.getPeriod(beginDate, $scope.step);
@@ -167,61 +170,72 @@ myApp.controller('VisitsMasterController', function ($scope, $filter, $location,
             //                }
             //            });
         } else {
-            date = $scope.date;
-            var beginDate = date,
-                endDate = date;
-            //            console.log("beginEnd", beginDate, endDate);
-            for (var i = 0; i < quantity; i++) {
-                endDate = DateHelper.getNextPeriod(endDate, $scope.step).end;
-                beginDate = DateHelper.getPrevPeriod(beginDate, $scope.step).begin;
-            }
-            if (beginDate == endDate && $scope.step != DateHelper.steps.DAY) {
-                var period = DateHelper.getPeriod(beginDate, $scope.step);
-                beginDate = period.begin;
-                endDate = period.end;
-            }
-            //            console.log("beginEnd", beginDate, endDate);
-            Loader.search("Visit", {
-                dateFrom: beginDate,
-                dateTill: endDate,
-                step: DateHelper.steps.DAY,
-                index: "date"
-            }, function (data) {
-                var visits = sortByDate(data, beginDate, endDate);
-                data = MastersForPeriod(data, {
-                    begin: new Date(beginDate),
-                    end: new Date(endDate)
-                });
-                var list = [];
-                var i = 0;
-                for (var tmpdate = new Date(beginDate); tmpdate < endDate || tmpdate.toDateString() == endDate.toDateString(); tmpdate.setDate(tmpdate.getDate() + 1)) {
-                    var dayVisit = visits.filter(function (vis) {
-                        return vis.date.toDateString() == tmpdate.toDateString();
-                    })[0];
-                    var page = new VisitsMasterPage(new Date(tmpdate), data[i], dayVisit.list);
-                    list.push(page);
-                    i++;
+            if ($scope.min !== null && $scope.max !== null) {
+                if ($scope.date > $scope.max) {
+                    $scope.date = new Date($scope.max)
+                } else if ($scope.date < $scope.min) {
+                    $scope.date = new Date($scope.min)
                 }
-                var todayPeriod = DateHelper.getPeriod($scope.date, $scope.step);
-                var curIndex;
-                for (var i = 0; i<list.length; i++){
-                    var curPeriod = DateHelper.getPeriod(list[i].date, $scope.step);
+                date = $scope.date;
+                var beginDate = date,
+                    endDate = date;
+                for (var i = 0; i < quantity; i++) {
+                    if (endDate.toDateString() !== $scope.max.toDateString() && endDate < $scope.max)
+                        endDate = DateHelper.getNextPeriod(endDate, $scope.step).end;
+                    if (beginDate.toDateString() !== $scope.min.toDateString() && beginDate > $scope.min)
+                        beginDate = DateHelper.getPrevPeriod(beginDate, $scope.step).begin;
+                }
+                if (beginDate == endDate && $scope.step != DateHelper.steps.DAY) {
+                    var period = DateHelper.getPeriod(beginDate, $scope.step);
+                    beginDate = period.begin;
+                    endDate = period.end;
 
-                    if (curPeriod.begin.toDateString() == todayPeriod.begin.toDateString()) {
-                        curIndex = $scope.getKey(list[i]);
-                    }
                 }
-                
+                Loader.search("Visit", {
+                    dateFrom: beginDate,
+                    dateTill: endDate,
+                    step: DateHelper.steps.DAY,
+                    index: "date"
+                }, function (data) {
+                    var visits = sortByDate(data, beginDate, endDate);
+                    data = MastersForPeriod(data, {
+                        begin: new Date(beginDate),
+                        end: new Date(endDate)
+                    });
+                    var list = [];
+                    var i = 0;
+                    for (var tmpdate = new Date(beginDate); tmpdate < endDate || tmpdate.toDateString() == endDate.toDateString(); tmpdate.setDate(tmpdate.getDate() + 1)) {
+                        var dayVisit = visits.filter(function (vis) {
+                            return vis.date.toDateString() == tmpdate.toDateString();
+                        })[0];
+                        var page = new VisitsMasterPage(new Date(tmpdate), data[i], dayVisit.list);
+                        list.push(page);
+                        i++;
+                    }
+                    var todayPeriod = DateHelper.getPeriod($scope.date, $scope.step);
+                    var curIndex;
+                    for (var i = 0; i < list.length; i++) {
+                        var curPeriod = DateHelper.getPeriod(list[i].date, $scope.step);
+
+                        if (curPeriod.begin.toDateString() == todayPeriod.begin.toDateString()) {
+                            curIndex = $scope.getKey(list[i]);
+                        }
+                    }
+
+                    $scope.loading = false;
+                    callback(list, curIndex);
+                });
+            } else {
+                console.log("else")
                 $scope.loading = false;
-                callback(list, curIndex);
-            });
+            }
         }
     };
 
     $scope.getKey = function (obj) {
         return obj && obj.date.toDateString();
     };
-    
+
     $scope.$watch('date', function (newValue, oldValue) {
         var period = DateHelper.getPeriod(new Date($scope.date), $scope.step);
         $scope.past = false, $scope.future = false;
@@ -230,11 +244,11 @@ myApp.controller('VisitsMasterController', function ($scope, $filter, $location,
         if (period.end < $scope.max || $scope.max == null)
             $scope.future = true;
     });
-    
-    $scope.updateDate = function(curScope){
+
+    $scope.updateDate = function (curScope) {
         $scope.date = new Date(curScope.page.date);
     }
-    
+
     /**
      *
      * @ngdoc method
