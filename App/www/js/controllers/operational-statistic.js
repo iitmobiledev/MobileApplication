@@ -28,7 +28,7 @@ myApp.controller('OperationalStatisticController', function ($scope, $location, 
 
     $scope.future = true;
     $scope.past = true;
-    
+
     $scope.needUpdating = false;
 
     $scope.reinit = false;
@@ -152,16 +152,13 @@ myApp.controller('OperationalStatisticController', function ($scope, $location, 
 
     $rootScope.$on('minMaxGet', setMinMax);
 
-<<<<<<< HEAD
     setMinMax();
-    
+
     $rootScope.$on('synchEnd', function () {
         setMinMax();
         $scope.needUpdating = true;
     });
-=======
 
->>>>>>> origin/master
 
     $scope.$watch('step', function (newValue, oldValue) {
         var period = DateHelper.getPeriod($scope.date, newValue);

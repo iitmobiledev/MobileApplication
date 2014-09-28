@@ -92,7 +92,6 @@ myApp.service("Storage", ["$injector",
          * @description Ищет объект по параметрам в localStorage
          */
         var search = function (className, params, callback) {
-            //            var $inj = angular.injector(['myApp']);
             var serv = $injector.get(className);
             var keys = serv.searchInLocalStorage(params, callback);
             var results = [];
