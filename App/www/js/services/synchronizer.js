@@ -62,7 +62,7 @@ myApp.service("Synchronizer", ["Storage", "RealServer", "ModelConverter", "Loade
             //console.log('synch check');
             Storage.get("LastModified", 'primary', function (lastLocalModified) {
                 Server.lastModified(["OperationalStatistics", "Visit", "Expenditure"], function (lastServerModified) {
-                    console.log(ModelConverter.getObject("LastModified", lastLocalModified), lastServerModified);
+//                    console.log(ModelConverter.getObject("LastModified", lastLocalModified), lastServerModified);
 //                    if (lastLocalModified == null || lastLocalModified[className] == lastServerModified[className]) {
                         callback();
 //                    } else {

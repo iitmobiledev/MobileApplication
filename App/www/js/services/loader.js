@@ -22,14 +22,14 @@ myApp.service("Loader", ["ModelConverter", "RealServer", "$rootScope", "fieldSta
 
         function getFieldStat() {
             //            console.log('getFieldStat');
-            if (sessvars.support) {
-                Storage.get("FieldStat", 'primary', function (stat) {
-                    if (stat)
-                        fieldStat = ModelConverter.getObject("FieldStat", stat);
-                    else
-                        getServerFieldStat();
-                });
-            } else
+//            if (sessvars.support) {
+//                Storage.get("FieldStat", 'primary', function (stat) {
+//                    if (stat)
+//                        fieldStat = ModelConverter.getObject("FieldStat", stat);
+//                    else
+//                        getServerFieldStat();
+//                });
+//            } else
                 getServerFieldStat();
         };
         getFieldStat();
