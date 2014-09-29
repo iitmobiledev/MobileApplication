@@ -1,5 +1,5 @@
- myApp.service("RealServer", ["$http",
-     function ($http) {
+ myApp.service("RealServer", ["$http", "$rootScope",
+     function ($http, $rootScope) {
          var DataSvc = function (t) {
              this.token = t;
          }
@@ -40,6 +40,7 @@
                              "FAILURE", url, $.extend(true, {}, param),
                              status, headers, config
                          );
+                         $rootScope.$emit('serverError', '');
                          callback(null);
                      });
              }

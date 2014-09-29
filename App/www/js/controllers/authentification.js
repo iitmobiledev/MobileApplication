@@ -8,7 +8,8 @@
  * логином и паролем.</p>
  * @requires myApp.service:UserAuthentification
  */
-myApp.controller('AuthentificationController', function ($scope, $location, authService, Synchronizer) {
+myApp.controller('AuthentificationController', function ($scope, $location, authService, Synchronizer, Loader) {
+    sessvars.$.clearMem();
     $scope.loading = false;
     $scope.correct = true;
 //    if (sessvars.token) {
@@ -36,6 +37,7 @@ myApp.controller('AuthentificationController', function ($scope, $location, auth
             } else {
                 if (token) {
                     sessvars.token = token;
+                    Loader.getFieldStat();
                     Synchronizer.beginSynch();
                     $location.path('index');
                 } else {

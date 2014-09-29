@@ -192,4 +192,9 @@ myApp.controller('ExpendituresController', function ($scope, $filter, Loader, Da
     $scope.hasExpenditures = function (list) {
         return list.length != 0;
     }
+    
+    $rootScope.$on('serverError', function () {
+        $scope.correct = false;
+        $scope.errorText = "Не удается подключиться к серверу. Пожалуйста, попробуйте зайти еще раз.";
+    });
 });

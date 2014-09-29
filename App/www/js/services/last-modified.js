@@ -4,7 +4,8 @@ myApp.factory('LastModified', function (Model) {
             angular.extend(self, data);
             self.primary = 'primary';
         },
-        primary: ['primary']
+        primary: ['primary'],
+        indexes: ['primary']
     });
     return lastModified;
 });

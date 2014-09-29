@@ -3,12 +3,7 @@
         <load-bar param-name="loading" ></load-bar>
         <img src="images/logo.png" style="padding:10%; max-height: 80%; max-width: 80%;margin-top:10%;">
         <div style="margin-top:5%">
-            <div style="background-color: rgb(255,66,91); color: white; margin: 4% 10%;padding:15px 10px;position:relative" ng-hide="correct">
-                <img src="images/auth_error.png" style="max-height: 15px;position: absolute;left: 15px;">
-                <div style="text-align: left;padding: 0 30px; ">
-                    {{errorText}}
-                </div>
-            </div>
+            <error-show correct='correct' error='errorText'></error-show>
             <input id="login" class="wide-control" placeholder="Ваш логин" type="text" style="width:80%" value="demo@arnica.pro">
             <password correct='correct'></password>
             <a class="loginButton widget uib_w_4 d-margins" style="width:80%" data-uib="app_framework/button" data-ver="1" ng-click="enter()">Войти</a>

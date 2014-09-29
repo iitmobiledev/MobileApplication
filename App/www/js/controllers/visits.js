@@ -15,7 +15,7 @@
  */
 myApp.controller('VisitsController', function ($scope, $filter, $location, Loader, DateHelper, Visit, $rootScope, $routeParams) {
     var today;
-    console.log($routeParams.date);
+//    console.log($routeParams.date);
     if (typeof ($routeParams.date) != 'undefined')
         today = new Date($routeParams.date);
     else
@@ -246,4 +246,10 @@ myApp.controller('VisitsController', function ($scope, $filter, $location, Loade
         $scope.visitInfo.services = services.join(", ");
         $scope.visitInfo.cost = coast;
     };
+    
+    $rootScope.$on('serverError', function () {
+        console.log('serverError');
+        $scope.correct = false;
+        $scope.errorText = "Не удается подключиться к серверу. Пожалуйста, попробуйте зайти еще раз.";
+    });
 });

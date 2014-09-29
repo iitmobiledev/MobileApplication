@@ -13,7 +13,11 @@ myApp.service("Loader", ["ModelConverter", "RealServer", "$rootScope", "fieldSta
         var Server = new RealServer(sessvars.token);
 
         function getServerFieldStat() {
+//            Server = new RealServer(sessvars.token);
             Server.fieldStat(fieldStatQuery, function (stat) {
+//                console.log(stat);
+                if (stat.error)
+                    $rootScope.$emit('serverError', '');
                 fieldStat = stat;
                 Storage.update(ModelConverter.getObject("FieldStat", stat));
                 $rootScope.$emit('minMaxGet', '');
@@ -36,7 +40,7 @@ myApp.service("Loader", ["ModelConverter", "RealServer", "$rootScope", "fieldSta
             } else
                 getServerFieldStat();
         };
-        getFieldStat();
+//        getFieldStat();
 
         $rootScope.$on('synchEnd', function () {
             getFieldStat();
@@ -60,7 +64,9 @@ myApp.service("Loader", ["ModelConverter", "RealServer", "$rootScope", "fieldSta
         }
 
         return {
+            getFieldStat: getFieldStat,
             getMaxDate: function (className) {
+//                $rootScope.$emit('serverError', '');
                 //        if (serverStat && localStat) {
                 //            var typeStat = localStat.filter(function (stat) {
                 //                return stat.type == className;
@@ -197,6 +203,7 @@ myApp.service("Loader", ["ModelConverter", "RealServer", "$rootScope", "fieldSta
 
             //получение объектов за период
             search: function (className, params, callback) {
+                console.log('search');
                 if (sessvars.support) {
                     Storage.search(className, params, function (data) {
                         if (data) {

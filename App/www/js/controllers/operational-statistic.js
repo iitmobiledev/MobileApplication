@@ -267,4 +267,8 @@ myApp.controller('OperationalStatisticController', function ($scope, $location, 
         //$scope.date = new Date(getCurrentPeriod().begin);
     };
 
+    $rootScope.$on('serverError', function () {
+        $scope.correct = false;
+        $scope.errorText = "Не удается подключиться к серверу. Пожалуйста, попробуйте зайти еще раз.";
+    });
 });

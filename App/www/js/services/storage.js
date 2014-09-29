@@ -48,6 +48,7 @@ myApp.service("Storage", ["$injector",
          */
         var update = function (obj) {
             try {
+//                console.log( obj.getKey());
                 localStorage.setItem(obj.getClass() + ":" + obj.getKey().join(':'), JSON.stringify(obj.json()));
             } catch (e) {
                 console.log(e.message);
@@ -67,6 +68,7 @@ myApp.service("Storage", ["$injector",
          */
         var get = function (className, primary, callback) {
             try {
+//                console.log(primary);
                 var item = localStorage.getItem(className + ":" + primary);
                 //                console.log("storage.get():", item);
                 if (item) {

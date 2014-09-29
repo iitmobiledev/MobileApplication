@@ -20,15 +20,9 @@ myApp.controller('SettingsController', function ($scope, authService, $location)
             counter = 0;
             console.log = function (msg) {
                 $scope.console += msg;
-                //                $('#console').append($("<p>", {
-                //                    text: msg
-                //                }));
             };
             console.error = function (msg) {
                 $scope.console += msg;
-                //                $('#console').append($("<p>", {
-                //                    text: msg
-                //                }));
             };
         }
     }

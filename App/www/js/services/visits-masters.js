@@ -104,12 +104,7 @@ myApp.factory('Visit', function (Model, Client, Service, Author, DateHelper) {
                 self.endTime = "";
         },
         primary: ['id'],
-        indexes: {
-            date: {
-                keyPath: ['date'],
-                unique: false
-            },
-        }
+        indexes: ['date']
     });
 
     //    visitConstructor.searchIndexedDb = function (trans, params, callback) {
@@ -147,7 +142,6 @@ myApp.factory('Visit', function (Model, Client, Service, Author, DateHelper) {
             var item = [];
             item.push("Visit");
             item.push(i);
-            item.push(params.step);
             keys.push(item);
         }
         return keys;

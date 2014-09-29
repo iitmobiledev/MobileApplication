@@ -43,12 +43,7 @@ myApp.factory('OperationalStatistics', function (Model, FinanceStatistics, DateH
                 self.financialStat = null;
         },
         primary: ['date', 'step'],
-        indexes: {
-            step_date: {
-                keyPath: ['step', 'date'],
-                unique: false
-            }
-        }
+        indexes: ['step', 'date']
     });
     opStat.searchInLocalStorage = function (params, callback) {
         var keys = [];

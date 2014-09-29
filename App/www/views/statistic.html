@@ -39,6 +39,7 @@
 
         <slider content-id="statistic-content" get-data='getData' key-expression='getKey' update-date='updateDate' reinit='reinit'></slider>
         <load-bar param-name="loading" ></load-bar>
+        <error-show correct='correct' error='errorText'></error-show>
         <script type="text/ng-template" id="statistic-content">
             <div>
                 <date-changer date='page.date' step='$parent.step' has-future-data='hasFutureData(page.date)' has-prev-data='hasPrevData(page.date)'></date-changer>

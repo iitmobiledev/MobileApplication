@@ -314,6 +314,8 @@ myApp.controller('VisitsMasterController', function ($scope, $filter, $location,
         $scope.masterVisitInfo.cost = coast;
     };
 
-
-
+    $rootScope.$on('serverError', function () {
+        $scope.correct = false;
+        $scope.errorText = "Не удается подключиться к серверу. Пожалуйста, попробуйте зайти еще раз.";
+    });
 });

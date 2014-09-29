@@ -19,12 +19,7 @@ myApp.factory('Expenditure', function (Model, DateHelper) {
             self.description = data.description || "Расход№" + data.id;
         },
         primary: ['id'],
-        indexes: {
-            date: {
-                keyPath: ['date'],
-                unique: false
-            },
-        }
+        indexes: ['date']
     });
 
     //    Expenditure.searchIndexedDb = function (trans, params, callback) {
@@ -62,7 +57,6 @@ myApp.factory('Expenditure', function (Model, DateHelper) {
             var item = [];
             item.push("Expenditure");
             item.push(i);
-            item.push(params.step);
             keys.push(item);
         }
         return keys;

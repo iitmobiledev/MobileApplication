@@ -274,6 +274,14 @@ myApp.factory("Model", function () {
         clz.prototype = {
             __class__: className,
             __primary__: options.primary,
+            __indexes__: options.indexes,
+
+            getIndexes: function () {
+                var indexes = [];
+                for (var i in this.__proto__.__indexes__)
+                    indexes.push(this[this.__proto__.__indexes__[i]]);
+                return indexes.join(":");
+            },
             /**
              *  @ngdoc method
              *  @name getKey
@@ -302,6 +310,7 @@ myApp.factory("Model", function () {
         });
         clz.__primary__ = options.primary;
         clz.__class__ = className;
+        clz.__indexes__ = options.indexes;
 
         //        clz.getIndexes = function () {
         //            return options.indexes;
