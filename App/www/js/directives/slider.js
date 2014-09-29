@@ -31,7 +31,9 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
         link: function (scope, element, attrs) {
             var dataCallback = scope.$eval(attrs.getData);
             var keyFunc = scope.$eval(attrs.keyExpression);
-            var updateDate = scope.$eval(attrs.updateDate) || function(){return;};
+            var updateDate = scope.$eval(attrs.updateDate) || function () {
+                return;
+            };
 
             var contentID = attrs.contentId;
             var content = $templateCache.get(contentID);
@@ -39,7 +41,7 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
 
             var contentData;
             var step = DateHelper.steps.DAY;
-            var count = scope.$eval(attrs.loadedSlideCount) || 5;
+            var count = scope.$eval(attrs.loadedSlideCount) || 10;
             var maxCount = scope.$eval(attrs.maxSlideCount) || 15;
 
 
@@ -168,7 +170,7 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
              * @param {Array} contentData Список объектов, чьи данные будут отображаться на слайдах
              */
             function addCurrentDayData(contentData, startPageKey) {
-                if (!startPageKey){
+                if (!startPageKey) {
                     startPageKey = null;
                 }
                 console.log("contentData", contentData)
@@ -179,11 +181,11 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
                         newscope = scope.$new();
                         newscope.page = contentData[i];
                         var k = keyFunc(contentData[i])
-                        
+
                         console.log("startPageKey", startPageKey, k)
                         compiled(newscope, function (clonedElement, scope) {
                             clonedElement.attr("contentkey", k)
-                            if (k == startPageKey || (startPageKey == null && i==contentData.length)) {
+                            if (k == startPageKey || (startPageKey == null && i == contentData.length)) {
                                 $('.my-slider').addSlideRight(clonedElement, true);
                             } else {
                                 $('.my-slider').addSlideRight(clonedElement);
@@ -217,9 +219,9 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
                     initSlider();
                 }
             })
-            
-            scope.$watch('reinit', function(newValue, oldValue){
-                if (newValue == true){
+
+            scope.$watch('reinit', function (newValue, oldValue) {
+                if (newValue == true) {
                     scope.loading = true;
                     //scope.reinit = false;
                     initSlider();
