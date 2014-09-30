@@ -61,7 +61,8 @@ myApp.config(['$routeProvider', '$analyticsProvider',
             controller: 'AuthentificationController'
         }).
         when('/about', {
-            templateUrl: 'views/about.html'
+            templateUrl: 'views/about.html',
+            controller: 'AboutController'
         }).
         otherwise({
             redirectTo: 'authorization'
