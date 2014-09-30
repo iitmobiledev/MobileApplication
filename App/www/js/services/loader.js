@@ -13,7 +13,7 @@ myApp.service("Loader", ["ModelConverter", "RealServer", "$rootScope", "fieldSta
         var Server = new RealServer(sessvars.token);
 
         function getServerFieldStat() {
-//            Server = new RealServer(sessvars.token);
+            Server = new RealServer(sessvars.token);
             Server.fieldStat(fieldStatQuery, function (stat) {
                 console.log(stat);
                 if (stat.error)
