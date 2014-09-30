@@ -15,6 +15,6 @@ myApp.controller('AboutController', function ($scope) {
      * @description Метод для открытия ссылки в нативных браузерах
      */
     $scope.openUrl = function () {
-        intel.xdk.device.launchExternal("http://www.google.com");
+        intel.xdk.device.launchExternal("http://www.arnica.pro");
     };
 });
