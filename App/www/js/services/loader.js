@@ -6,8 +6,8 @@
  * этих данных.
  * @name myApp.service:Loader
  */
-myApp.service("Loader", ["ModelConverter", "RealServer", "$rootScope", "fieldStatQuery", "Storage", "ClassesLastModified",
-    function (ModelConverter, RealServer, $rootScope, fieldStatQuery, Storage, ClassesLastModified) {
+myApp.service("Loader", ["ModelConverter", "RealServer", "$rootScope", "fieldStatQuery", "Storage", "ClassesLastModified", "storageSupport",
+    function (ModelConverter, RealServer, $rootScope, fieldStatQuery, Storage, ClassesLastModified, storageSupport) {
 
         var fieldStat = null;
         var Server = new RealServer(sessvars.token);
@@ -15,7 +15,7 @@ myApp.service("Loader", ["ModelConverter", "RealServer", "$rootScope", "fieldSta
         function getServerFieldStat() {
 //            Server = new RealServer(sessvars.token);
             Server.fieldStat(fieldStatQuery, function (stat) {
-//                console.log(stat);
+                console.log(stat);
                 if (stat.error)
                     $rootScope.$emit('serverError', '');
                 fieldStat = stat;
@@ -25,7 +25,7 @@ myApp.service("Loader", ["ModelConverter", "RealServer", "$rootScope", "fieldSta
         }
 
         function getFieldStat() {
-            if (sessvars.support) {
+            if (storageSupport) {
                 Storage.get("FieldStat", 'primary', function (stat) {
                     if (stat) {
                         stat = ModelConverter.getObject("FieldStat", stat);
@@ -33,7 +33,7 @@ myApp.service("Loader", ["ModelConverter", "RealServer", "$rootScope", "fieldSta
                         angular.forEach(stat, function (value, key) {
                             fieldStat.push(value);
                         });
-                        console.log(fieldStat);
+//                        console.log(fieldStat);
                     } else
                         getServerFieldStat();
                 });
@@ -42,7 +42,13 @@ myApp.service("Loader", ["ModelConverter", "RealServer", "$rootScope", "fieldSta
         };
 //        getFieldStat();
 
-        $rootScope.$on('synchEnd', function () {
+        $rootScope.$on('synchEndOperationalStatistics', function () {
+            getFieldStat();
+        });
+        $rootScope.$on('synchEndVisit', function () {
+            getFieldStat();
+        });
+        $rootScope.$on('synchEndExpenditure', function () {
             getFieldStat();
         });
 
@@ -138,7 +144,7 @@ myApp.service("Loader", ["ModelConverter", "RealServer", "$rootScope", "fieldSta
              * объекта по первичному ключу.
              */
             get: function (className, primaryKey, callback) {
-                if (sessvars.support) {
+                if (storageSupport) {
                     Storage.get(className, primaryKey, function (result) {
                         if (result) {
                             console.log(result);
@@ -203,8 +209,7 @@ myApp.service("Loader", ["ModelConverter", "RealServer", "$rootScope", "fieldSta
 
             //получение объектов за период
             search: function (className, params, callback) {
-                console.log('search');
-                if (sessvars.support) {
+                if (storageSupport) {
                     Storage.search(className, params, function (data) {
                         if (data) {
                             var objs = ModelConverter.getObjects(className, data).reverse();

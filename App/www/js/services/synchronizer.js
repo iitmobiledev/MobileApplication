@@ -1,5 +1,5 @@
-myApp.service("Synchronizer", ["Storage", "RealServer", "ModelConverter", "Loader", "$rootScope",
-    function (Storage, RealServer, ModelConverter, Loader, $rootScope) {
+myApp.service("Synchronizer", ["Storage", "RealServer", "ModelConverter", "Loader", "$rootScope", "storageSupport",
+    function (Storage, RealServer, ModelConverter, Loader, $rootScope, storageSupport) {
 
         var Server;
 
@@ -43,7 +43,7 @@ myApp.service("Synchronizer", ["Storage", "RealServer", "ModelConverter", "Loade
                                 var fieldStat = ModelConverter.getObject("FieldStat", stat);
                                 Storage.update(fieldStat);
                                 save(data, className, 0, callback);
-                                $rootScope.$emit('synchEnd', '');
+                                $rootScope.$emit('synchEnd'+className, '');
                             });
                         } else {
                             updateData(className, count, 0, callback, lastLocalModified, date);
@@ -64,7 +64,7 @@ myApp.service("Synchronizer", ["Storage", "RealServer", "ModelConverter", "Loade
             Storage.get("LastModified", 'primary', function (lastLocalModified) {
                 Server.lastModified(["OperationalStatistics", "Visit", "Expenditure"], function (lastServerModified) {
                     lastLocalModified = ModelConverter.getObject("LastModified", lastLocalModified);
-                    //                    console.log(lastLocalModified, lastServerModified);
+//                    console.log(lastLocalModified, lastServerModified);
                     if (lastLocalModified != null && new Date(lastLocalModified[className]) < new Date(lastServerModified[className])) {
                         console.log('synch need');
                         updateData(className, 20, 0, callback, lastLocalModified, lastServerModified);
@@ -79,14 +79,14 @@ myApp.service("Synchronizer", ["Storage", "RealServer", "ModelConverter", "Loade
             beginSynch: function () {
                 Server = new RealServer(sessvars.token);
                 var synch = this;
-                if (sessvars.support) {
+                if (storageSupport) {
                     synchCheck("OperationalStatistics", function () {
-                        //                console.log("synch end OperationalStatistics0");
                         synchCheck("Visit", function () {
-                            //                    console.log("synch end Visit0");
                             synchCheck("Expenditure", function () {
-                                //                                console.log("synch end");
-                                setInterval(synch.beginSynch, 10000);
+                                $rootScope.$emit('synchEndOperationalStatistics', '');
+                                $rootScope.$emit('synchEndVisit', '');
+                                $rootScope.$emit('synchEndExpenditure', '');
+                                setInterval(synch.beginSynch, 50000);
                             });
                         });
                     });

@@ -32,8 +32,8 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
             var dataCallback = scope.$eval(attrs.getData);
             var keyFunc = scope.$eval(attrs.keyExpression);
             var updateDate = scope.$eval(attrs.updateDate) || function () {
-                return;
-            };
+                    return;
+                };
 
             var contentID = attrs.contentId;
             var content = $templateCache.get(contentID);
@@ -43,6 +43,15 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
             var step = DateHelper.steps.DAY;
             var count = scope.$eval(attrs.loadedSlideCount) || 10;
             var maxCount = scope.$eval(attrs.maxSlideCount) || 15;
+
+            var needUpdating;
+            var updateNeedUpdating = function () {
+                needUpdating = scope.$eval(attrs.needUpdating);
+                if (needUpdating)
+                    updateSlider();
+            };
+            scope.$watch(attrs.needUpdating, updateNeedUpdating);
+            updateNeedUpdating();
 
 
             var ready = false;
@@ -75,7 +84,7 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
                             if (ready) {
                                 var key = getCurrentKey();
                                 var curScope = angular.element($('.my-slider').getCurrentSlide()).scope();
-                                console.log(curScope)
+                                //                                console.log(curScope)
                                 updateDate(curScope);
                                 if ($('.my-slider').whichFromLeft($('.my-slider').getCurrentSlide()) == 0 && scope.past) {
                                     dataCallback(key, count, false, addPastData);
@@ -173,7 +182,7 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
                 if (!startPageKey) {
                     startPageKey = null;
                 }
-                console.log("contentData", contentData)
+                //                console.log("contentData", contentData)
                 ready = false;
                 var curIndex = null;
                 if (contentData) {
@@ -182,7 +191,7 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
                         newscope.page = contentData[i];
                         var k = keyFunc(contentData[i])
 
-                        console.log("startPageKey", startPageKey, k)
+                        //                        console.log("startPageKey", startPageKey, k)
                         compiled(newscope, function (clonedElement, scope) {
                             clonedElement.attr("contentkey", k)
                             if (k == startPageKey || (startPageKey == null && i == contentData.length)) {
@@ -221,9 +230,10 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
             })
 
             scope.$watch('reinit', function (newValue, oldValue) {
+                console.log('watch reinit');
                 if (newValue == true) {
                     scope.loading = true;
-                    //scope.reinit = false;
+                    scope.reinit = false;
                     initSlider();
                 }
             })
@@ -259,6 +269,10 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
                 return $($('.my-slider').getCurrentSlide()).attr('contentkey');
             }
 
+            function updateSlider() {
+//                var curScope = angular.element($('.my-slider').getCurrentSlide()).scope();
+                dataCallback(getCurrentKey(), count, true, addCurrentDayData);
+            }
 
         },
         templateUrl: 'views/slider.html'

@@ -16,20 +16,32 @@ myApp.controller('ExpendituresController', function ($scope, $filter, Loader, Da
     var today = new Date($routeParams.date) || new Date();
     $scope.date = new Date(today.getFullYear(), today.getMonth(), today.getDate());
     console.log("$scope.date", $scope.date);
-    
+
     $scope.backLink = '#/index/' + $scope.date;
 
     $scope.loading = true;
 
-//    $scope.min = null;
-//    $scope.max = null;
-    
+    $scope.min = null;
+    $scope.max = null;
+
     $scope.future = true;
     $scope.past = true;
 
-    $rootScope.$on('minMaxGet', function () {
-        $scope.min = Loader.getMinDate("Expenditure");
-        $scope.max = Loader.getMaxDate("Expenditure");
+    $scope.needUpdating = false;
+
+    function setMinMax() {
+        $scope.min = Loader.getMinDate("Visit");
+        $scope.max = Loader.getMaxDate("Visit");
+    }
+
+    $rootScope.$on('minMaxGet', setMinMax);
+
+    setMinMax();
+
+    $rootScope.$on('synchEndExpenditure', function () {
+        console.log('synchEndExpenditure');
+        setMinMax();
+        $scope.needUpdating = true;
     });
 
     var ExpenditurePage = function (date, list) {
@@ -38,6 +50,7 @@ myApp.controller('ExpendituresController', function ($scope, $filter, Loader, Da
     };
 
     $scope.getData = function (key, quantity, forward, callback) {
+        $scope.needUpdating = false;
         $scope.loading = true;
         var resultArr = [];
         var date;
@@ -142,11 +155,11 @@ myApp.controller('ExpendituresController', function ($scope, $filter, Loader, Da
         //        console.log(obj, obj.list[0].__primary__);
         return obj && obj.date;
     };
-    
-    
+
+
     $scope.$watch('date', function (newValue, oldValue) {
         var period = DateHelper.getPeriod(new Date($scope.date), DateHelper.steps.DAY);
-        
+
         console.log("minmaxx", $scope.min, $scope.max, period.begin, period.end, newValue)
         $scope.past = false, $scope.future = false;
         if (period.begin > $scope.min || $scope.min === null)
@@ -154,8 +167,8 @@ myApp.controller('ExpendituresController', function ($scope, $filter, Loader, Da
         if (period.end < $scope.max || $scope.max === null)
             $scope.future = true;
     });
-    
-    $scope.updateDate = function(curScope){
+
+    $scope.updateDate = function (curScope) {
         $scope.date = new Date(curScope.page.date);
     }
 
@@ -192,7 +205,7 @@ myApp.controller('ExpendituresController', function ($scope, $filter, Loader, Da
     $scope.hasExpenditures = function (list) {
         return list.length != 0;
     }
-    
+
     $rootScope.$on('serverError', function () {
         $scope.correct = false;
         $scope.errorText = "Не удается подключиться к серверу. Пожалуйста, попробуйте зайти еще раз.";

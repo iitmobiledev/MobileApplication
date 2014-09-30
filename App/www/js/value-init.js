@@ -42,4 +42,5 @@ value('fieldStatQuery', [{
 value('Status', function () {
     this.count = 0;
     this.amount = 0;
-});
+}).
+value('storageSupport', true);

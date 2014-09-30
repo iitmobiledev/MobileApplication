@@ -1,18 +1,17 @@
 var myApp = angular.module('myApp', ['ngRoute', 'ngAnimate', 'angulartics', 'angulartics.google.analytics']); //, 'angulartics'
 
-myApp.run(function ($templateCache, Storage) {
+myApp.run(function ($templateCache, Storage, storageSupport) {
     Storage.clearStorage();
     if(Storage.isSupported())
     {
         console.log("localStorage is supported!");
-        sessvars.support = true;
+        storageSupport = true;
     }
     else
     {
         console.log("localStorage not supported!");
-        sessvars.support = false;
+        storageSupport = false;
     }
-//    myApp.value('storageSupport', support);
     $templateCache.put('statistic-content');
     $templateCache.put('visits');
 })

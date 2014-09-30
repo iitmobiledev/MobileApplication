@@ -15,12 +15,12 @@
  * @requires myApp.service:DateHelper
  */
 myApp.controller('OperationalStatisticController', function ($scope, $location, DateHelper, Loader, $rootScope, $routeParams) {
-    setMinMax();
+//    setMinMax();
     var today;
     if (typeof ($routeParams.date) != 'undefined')
         today = new Date($routeParams.date);
     else
-        today = new Date(2014, 8, 21);
+        today = new Date();
     $scope.date = new Date(today.getFullYear(), today.getMonth(), today.getDate());
 
     $scope.step = DateHelper.steps.DAY;
@@ -154,7 +154,8 @@ myApp.controller('OperationalStatisticController', function ($scope, $location, 
 
     setMinMax();
 
-    $rootScope.$on('synchEnd', function () {
+    $rootScope.$on('synchEndOperationalStatistics', function () {
+        console.log('synchEndOperationalStatistics');
         setMinMax();
         $scope.needUpdating = true;
     });
