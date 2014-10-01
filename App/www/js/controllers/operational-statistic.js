@@ -38,10 +38,10 @@ myApp.controller('OperationalStatisticController', function ($scope, $location, 
         if (key) {
             //            Loader.get("OperationalStatistics", key, function (obj) {
             //                if (obj) {
-            //                    console.log("obj", obj)
+            //                    //console.log("obj", obj)
             //date = new Date(getCurrentPeriod().begin);
             date = new Date(key.split(':')[0]);
-            console.log("date", date)
+            //console.log("date", date)
             if (forward) {
                 date = DateHelper.getNextPeriod(date, $scope.step).end;
             } else {
@@ -60,7 +60,7 @@ myApp.controller('OperationalStatisticController', function ($scope, $location, 
                 beginDate = period.begin;
                 endDate = period.end;
             }
-            console.log("begend", beginDate, endDate);
+            //console.log("begend", beginDate, endDate);
             Loader.search("OperationalStatistics", {
                 dateFrom: beginDate.toDateString(),
                 dateTill: endDate.toDateString(),
@@ -95,7 +95,7 @@ myApp.controller('OperationalStatisticController', function ($scope, $location, 
                     endDate = period.end;
 
                 }
-                console.log("begend", beginDate, endDate)
+                //console.log("begend", beginDate, endDate)
                 Loader.search("OperationalStatistics", {
                     dateFrom: beginDate.toDateString(),
                     dateTill: endDate.toDateString(),
@@ -144,7 +144,7 @@ myApp.controller('OperationalStatisticController', function ($scope, $location, 
         $scope.min = Loader.getMinDate("OperationalStatistics");
         $scope.max = Loader.getMaxDate("OperationalStatistics");
         $scope.reinit = true;
-        console.log("setMinMax", $scope.min, $scope.max);
+        //console.log("setMinMax", $scope.min, $scope.max);
     }
 
     $rootScope.$on('minMaxGet', setMinMax);
@@ -170,7 +170,7 @@ myApp.controller('OperationalStatisticController', function ($scope, $location, 
     });
 
     $scope.$watch('date', function (newValue, oldValue) {
-        console.log('watchDate')
+        //console.log('watchDate')
         var period = DateHelper.getPeriod(new Date($scope.date), $scope.step);
         $scope.past = false, $scope.future = false;
         if (period.begin > $scope.min || $scope.min == null)
@@ -195,7 +195,7 @@ myApp.controller('OperationalStatisticController', function ($scope, $location, 
     });
 
     $scope.updateDate = function (curScope) {
-        console.log('updateDate')
+        //console.log('updateDate')
         $scope.date = new Date(curScope.page.date);
     }
 

@@ -1,0 +1,200 @@
+(function (factory) {
+        'use strict';
+        if (typeof define === 'function' && define.amd) {
+            define(['jquery'], factory);
+        } else {
+            factory(jQuery);
+        }
+
+    }
+    (function ($) {
+        var MyScroller = window.MyScroller || {};
+
+        MyScroller = //(function () {
+        function MyScroller(element, settings) {
+            this.initials = {
+                swipe: false,
+                curX: null,
+                curY: null,
+                startX: null,
+                startY: null,
+                minSwipe: null,
+                swipeLength: null,
+                swipeTop: 0,
+                scrollerEnable: true,
+                verticalSwipe: false
+            };
+
+            $.extend(this, this.initials);
+
+            this.$scroller = $(element);
+
+            this.swipeHandler = $.proxy(this.swipeHandler, this);
+
+            this.initEvents();
+
+        }
+        //});
+
+        MyScroller.prototype.initEvents = function () {
+            this.$scroller.on('touchstart mousedown', {
+                action: 'start'
+            }, this.swipeHandler);
+            this.$scroller.on('touchmove mousemove', {
+                action: 'move'
+            }, this.swipeHandler);
+            this.$scroller.on('touchend mouseup', {
+                action: 'end'
+            }, this.swipeHandler);
+            this.$scroller.on('touchcancel mouseleave', {
+                action: 'end'
+            }, this.swipeHandler);
+            this.$scroller.on('touchleave', {
+                action: 'end'
+            }, this.swipeHandler);
+        };
+
+        MyScroller.prototype.swipeHandler = function (event) {
+            if (!this.scrollerEnable) {
+                console.log("DISABLED!");
+                return;
+            }
+            this.minSwipe = 20 //this.options.width / 20; //touchThreshold;
+            switch (event.data.action) {
+            case 'start':
+                if (!this.swipe) {
+                    this.swipe = true;
+                    this.swipeStart(event);
+                }
+                break;
+
+            case 'move':
+                if (this.swipe) {
+                    this.swipeMove(event);
+                }
+                break;
+
+            case 'end':
+                if (this.swipe) {
+                    this.swipe = false;
+                    console.log("swipeEnd")
+                    //this.swipeEnd(event);
+                }
+                break;
+            }
+
+        };
+
+        MyScroller.prototype.swipeStart = function (event) {
+            var touches;
+            if (event.originalEvent !== undefined && event.originalEvent.touches !== undefined) {
+                touches = event.originalEvent.touches[0];
+            }
+
+            this.startY = touches !== undefined ? touches.pageY : event.clientY;
+        };
+
+        MyScroller.prototype.swipeMove = function (event) {
+            var curLeft,
+                positionOffset,
+                touches;
+
+            touches = event.originalEvent !== undefined ? event.originalEvent.touches : null;
+
+
+            if (touches && touches.length !== 1) {
+                return false;
+            }
+
+            this.curY = touches !== undefined ? touches[0].pageY : event.clientY;
+
+            this.swipeLength = Math.round(Math.sqrt(
+                Math.pow(this.curY - this.startY, 2)));
+
+
+
+
+            if (this.swipeLength > 20) {
+                this.verticalSwipe = true;
+            }
+
+            if (this.verticalSwipe) {
+                event.preventDefault();
+                event.stopPropagation();
+                positionOffset = this.curY > this.startY ? 1 : -1;
+
+                this.swipeTop = this.swipeLength * positionOffset;
+
+                this.setTranslatePosition(this.swipeTop);
+            }
+
+
+
+        };
+
+        MyScroller.prototype.setTranslatePosition = function (position) {
+            //            console.log(this)
+            this.$scroller.css({
+                'top': position + 'px'
+            });
+        };
+        
+        MyScroller.prototype.getTop = function (position) {
+            return Number((this.$scroller.css("top") || 0).replace(/\D/g,""));
+        }
+
+        MyScroller.prototype.swipeEnd = function (event) {
+            this.verticalSwipe = false;
+            if (this.curY === undefined) {
+                return false;
+            }
+
+            if (this.swipeLength >= this.minSwipe) {
+                $(event.target).on('click', function (event) {
+                    event.stopImmediatePropagation();
+                    event.stopPropagation();
+                    event.preventDefault();
+                    $(event.target).off('click');
+                });
+            } else {
+                if (this.startY !== this.curY) {
+                   // this.slideHandler(this.currentSlide);
+                    this.startX = null;
+                    this.startY = null;
+                }
+            }
+
+
+        };
+
+        MyScroller.prototype.scrollTop = function (position) {
+            this.swipeTop = 0;
+            this.setTranslatePosition(this.swipeTop);
+        };
+
+        $.fn.scroller = function () {
+            return this.each(function (index, element) {
+                element.scroller = new MyScroller(element);
+
+            });
+        };
+
+        $.fn.scrollerEnable = function () {
+            return this.each(function (index, element) {
+                console.log("ENABLED")
+                element.scroller.scrollerEnable = true;
+            });
+        };
+
+        $.fn.scrollerDisable = function () {
+            return this.each(function (index, element) {
+                element.scroller.scrollerEnable = false;
+            });
+        };
+
+        $.fn.scrollerRewind = function () {
+            return this.each(function (index, element) {
+                element.scroller.scrollTop();
+            });
+        };
+    }));
