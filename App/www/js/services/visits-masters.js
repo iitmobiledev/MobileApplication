@@ -143,7 +143,7 @@ myApp.factory('Visit', function (Model, Client, Service, Author, DateHelper) {
     }
 
 
-    visitConstructor.searchInLocalStorage = function (params, callback) {
+    visitConstructor.searchInLocalStorage = function (params) {
         console.log("saved_keys:", visitConstructor.keysByDates);
         var keys = [];
         var startDate = new Date(params.dateFrom);
