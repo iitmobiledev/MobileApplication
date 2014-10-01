@@ -83,10 +83,10 @@ myApp.service("Synchronizer", ["Storage", "RealServer", "ModelConverter", "Loade
                     synchCheck("OperationalStatistics", function () {
                         synchCheck("Visit", function () {
                             synchCheck("Expenditure", function () {
-                                $rootScope.$emit('synchEndOperationalStatistics', '');
-                                $rootScope.$emit('synchEndVisit', '');
-                                $rootScope.$emit('synchEndExpenditure', '');
-                                setInterval(synch.beginSynch, 50000);
+//                                $rootScope.$emit('synchEndOperationalStatistics', '');
+//                                $rootScope.$emit('synchEndVisit', '');
+//                                $rootScope.$emit('synchEndExpenditure', '');
+                                setInterval(synch.beginSynch, 5000);
                             });
                         });
                     });
