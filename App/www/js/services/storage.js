@@ -95,20 +95,17 @@ myApp.service("Storage", ["$injector",
          * @description Ищет объект по параметрам в localStorage
          */
         var search = function (className, params, callback) {
-            
             var serv = $injector.get(className);
-            var keys = serv.searchInLocalStorage(params);
-            if (keys.length == 0)
-                callback(null);
+            var keys = serv.searchInLocalStorage(params, callback);
             var results = [];
             for (var i = 0; i < keys.length; i++) {
-                var item = localStorage.getItem(keys[i]);
+                var item = localStorage.getItem(keys[i].join(":"));
                 //                console.log("storage.search():", item);
                 if (item) {
                     results.push(JSON.parse(item));
                 }
             }
-            if (results.length != keys.length || results.length == 0) {
+            if (results.length != keys.length) {
                 callback(null);
             } else {
                 callback(results);
