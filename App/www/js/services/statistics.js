@@ -58,6 +58,10 @@ myApp.factory('OperationalStatistics', function (Model, FinanceStatistics, DateH
         }
         return keys;
     }
+
+    opStat.keysByDates = {};
+    opStat.onUpdate = function (obj) {
+    }
     //    opStat.searchIndexedDb = function (trans, params, callback) {
     //        var result = [];
     //        var store = trans.objectStore("OperationalStatistics"); //найдем хранилище для объектов данного класса

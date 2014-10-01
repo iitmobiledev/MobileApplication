@@ -49,6 +49,14 @@ myApp.factory('Expenditure', function (Model, DateHelper) {
     //            }
     //        }
     //    }
+
+    Expenditure.keysByDates = {};
+    Expenditure.onUpdate = function (obj) {
+        var key = Expenditure.keyByDates[obj.date.toDateString()] || [];
+        key.push(obj.getPrimaryKey());
+        Expenditure.keyByDates[obj.date.toDateString()] = key;
+    }
+
     Expenditure.searchInLocalStorage = function (params, callback) {
         var keys = [];
         var startDate = new Date(params.dateFrom);

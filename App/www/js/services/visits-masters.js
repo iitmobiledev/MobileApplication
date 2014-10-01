@@ -147,6 +147,15 @@ myApp.factory('Visit', function (Model, Client, Service, Author, DateHelper) {
         return keys;
     }
 
+    visitConstructor.keysByDates = {};
+    visitConstructor.onUpdate = function (obj) {
+        var key = visitConstructor.keyByDates[obj.date.toDateString()] || [];
+        key.push(obj.getPrimaryKey());
+        visitConstructor.keyByDates[obj.date.toDateString()] = key;
+        console.log(keyByDates);
+    }
+    
+
     visitConstructor.statuses = {
         titlesArray: ["Новая запись", "Клиент не пришел", "Клиент пришел", "Подтверждена"],
         titles: {
