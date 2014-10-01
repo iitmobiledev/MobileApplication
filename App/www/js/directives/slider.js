@@ -32,6 +32,7 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
             var dataCallback = scope.$eval(attrs.getData);
             var keyFunc = scope.$eval(attrs.keyExpression);
             var updateDate = scope.$eval(attrs.updateDate) || function(){return;};
+            
 
             var contentID = attrs.contentId;
             var content = $templateCache.get(contentID);
@@ -183,7 +184,7 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
                 if (!startPageKey){
                     startPageKey = null;
                 }
-                //console.log("contentData", contentData)
+                console.log("contentData", contentData)
                 var curIndex = null;
                 if (contentData) {
                     for (var i = 0; i < contentData.length; i++) {
@@ -221,21 +222,20 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
                 $('.my-slider').shiftRight();
             });
 
-
-            scope.$watch('step', function (newValue, oldValue) {
+            scope.$watch(attrs.reinit, function (newValue, oldValue) {
                 if (oldValue != newValue) {
-                    scope.loading = true;
+//                    scope.loading = true;
                     initSlider();
                 }
             })
             
-            scope.$watch('reinit', function(newValue, oldValue){
-                if (newValue == true){
-                    scope.loading = true;
-                    //scope.reinit = false;
-                    initSlider();
-                }
-            })
+//            scope.$watch('reinit', function(newValue, oldValue){
+//                if (newValue == true){
+//                    scope.loading = true;
+//                    //scope.reinit = false;
+//                    initSlider();
+//                }
+//            })
 
             //            function updateDate() {
             //                var key = getCurrentKey();

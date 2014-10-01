@@ -143,8 +143,14 @@ myApp.controller('OperationalStatisticController', function ($scope, $location, 
     function setMinMax() {
         $scope.min = Loader.getMinDate("OperationalStatistics");
         $scope.max = Loader.getMaxDate("OperationalStatistics");
+        $scope.loading = true;
         $scope.reinit = true;
         //console.log("setMinMax", $scope.min, $scope.max);
+    }
+    $scope.reinitStamp = function(){
+        return [
+            $scope.min, $scope.max, $scope.step
+        ].join("##");
     }
 
     $rootScope.$on('minMaxGet', setMinMax);

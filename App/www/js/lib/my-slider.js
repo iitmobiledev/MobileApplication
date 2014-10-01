@@ -95,21 +95,22 @@
             if (this.curX === undefined) {
                 return false;
             }
+//            this.curX = null;
 
             if (this.swipeLength >= this.minSwipe) {
-                $(event.target).on('click', function (event) {
-                    event.stopImmediatePropagation();
-                    event.stopPropagation();
-                    event.preventDefault();
-                    $(event.target).off('click');
-                });
+//                $(event.target).on('click', function (event) {
+//                    event.stopImmediatePropagation();
+//                    event.stopPropagation();
+//                    event.preventDefault();
+//                    $(event.target).off('click');
+//                });
                 var current = this.getCurrent();
                 //current.scrollerRewind()
                 switch (this.swipeDirection()) {
                 case 'left':
                     this.slideHandler(this.currentSlide + 1, function () {
                         current.scrollerRewind();
-                        //                        console.log("current after slideHandler", current);
+                                                console.log("current after slideHandler", current);
                     });
                     this.startX = null;
                     this.startY = null;
@@ -118,7 +119,7 @@
                 case 'right':
                     this.slideHandler(this.currentSlide - 1, function () {
                         current.scrollerRewind();
-                        //                        console.log("current after slideHandler", current);
+                                                console.log("current after slideHandler", current);
                     });
                     this.startX = null;
                     this.startY = null;
@@ -131,6 +132,8 @@
                     this.startY = null;
                 }
             }
+            
+            this.swipeLength = null;
 
 
         };
@@ -373,7 +376,9 @@
         MySlider.prototype.appendSlide = function (element) {
             this.slideCount++;
             $(element).css("width", this.options.width + 'px');
-            $(element).addClass("slide").scroller();
+            $(element).addClass("slide").scroller({
+                height: this.$slideTrack.height()
+            });
             this.$slideTrack.append(element);
             this.$slideTrack.css("width", this.options.width * this.slideCount + 'px');
             if (this.currentSlide === null) {
@@ -386,7 +391,9 @@
         MySlider.prototype.prependSlide = function (element) {
             this.slideCount++;
             $(element).css("width", this.options.width + 'px');
-            $(element).addClass("slide").scroller();
+            $(element).addClass("slide").scroller({
+                height: this.$slideTrack.height()
+            });
             this.$slideTrack.prepend(element);
             this.$slideTrack.css("width", this.options.width * this.slideCount + 'px');
             if (this.currentSlide === null) {
@@ -406,17 +413,22 @@
         //удаляем слайд слева
         MySlider.prototype.removeSlideLeft = function () {
             //            return;
-            $('.slide').get(0).remove();
+            $('.slide:first').remove();
             this.slideCount--;
             this.currentSlide--;
             this.setTranslatePosition(this.getLeft(this.currentSlide));
         }
 
         MySlider.prototype.shiftSlide = function (toRight) {
+            var current = this.getCurrent();
+            
+            //если текущий слайд - крайний, то ничего не делать
             if (toRight) {
                 if (this.currentSlide !== null) {
                     if (this.currentSlide + 1 < this.slideCount) {
-                        this.slideHandler(this.currentSlide + 1);
+                        this.slideHandler(this.currentSlide + 1, function () {
+                            current.scrollerRewind();
+                        });
                         return $('.slide').get(this.currentSlide + 1);
                     }
                 }
@@ -424,7 +436,9 @@
             } else {
                 if (this.currentSlide !== null) {
                     if (this.currentSlide - 1 >= 0) {
-                        this.slideHandler(this.currentSlide - 1);
+                        this.slideHandler(this.currentSlide - 1, function () {
+                            current.scrollerRewind();
+                        });
                         return $('.slide').get(this.currentSlide - 1);
                     }
                 }

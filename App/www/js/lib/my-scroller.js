@@ -12,6 +12,10 @@
 
         MyScroller = //(function () {
         function MyScroller(element, settings) {
+            this.defaults = {
+                height: null
+            };
+
             this.initials = {
                 swipe: false,
                 curX: null,
@@ -22,12 +26,17 @@
                 swipeLength: null,
                 swipeTop: 0,
                 scrollerEnable: true,
-                verticalSwipe: false
+                verticalSwipe: false,
+                scrollerHeight: null
             };
 
             $.extend(this, this.initials);
 
+            this.options = $.extend({}, this.defaults, settings);
+
             this.$scroller = $(element);
+            
+//            console.log("this.scrollerHeight", this.$scroller, this.scrollerHeight)
 
             this.swipeHandler = $.proxy(this.swipeHandler, this);
 
@@ -35,8 +44,23 @@
 
         }
         //});
+        
+        MyScroller.prototype.getScrollerHeight = function(){
+            if (!this.scrollerHeight){
+                this.scrollerHeight = this.$scroller.height();
+            }
+            return this.scrollerHeight;
+        }
 
         MyScroller.prototype.initEvents = function () {
+            //            this.$scroller.on('click', function(event){
+            //                if (this.verticalSwipe){
+            //                    event.stopImmediatePropagation();
+            //                    event.stopPropagation();
+            //                    event.preventDefault();
+            ////                    $(event.target).off('click');
+            //                }
+            //            })
             this.$scroller.on('touchstart mousedown', {
                 action: 'start'
             }, this.swipeHandler);
@@ -77,8 +101,8 @@
             case 'end':
                 if (this.swipe) {
                     this.swipe = false;
-                    console.log("swipeEnd")
-                    //this.swipeEnd(event);
+                    //                    console.log("swipeEnd")
+                    this.swipeEnd(event);
                 }
                 break;
             }
@@ -92,6 +116,7 @@
             }
 
             this.startY = touches !== undefined ? touches.pageY : event.clientY;
+            this.distanceFromTop = this.getTop();
         };
 
         MyScroller.prototype.swipeMove = function (event) {
@@ -108,28 +133,33 @@
 
             this.curY = touches !== undefined ? touches[0].pageY : event.clientY;
 
-            this.swipeLength = Math.round(Math.sqrt(
-                Math.pow(this.curY - this.startY, 2)));
+            this.swipeLength = this.curY - this.startY;
 
 
 
 
-            if (this.swipeLength > 20) {
+            if (Math.abs(this.swipeLength) > 20) {
                 this.verticalSwipe = true;
+                //                if (this.distanceFromTop)
+                //                    this.distanceFromTop = this.getTop();
             }
 
             if (this.verticalSwipe) {
                 event.preventDefault();
                 event.stopPropagation();
-                positionOffset = this.curY > this.startY ? 1 : -1;
 
-                this.swipeTop = this.swipeLength * positionOffset;
+                this.swipeTop = this.distanceFromTop + this.swipeLength;
+
+                if (this.swipeTop > 0) {
+                    this.swipeTop = 0;
+                }
+                console.log("this.options.height", this.options.height)
+                if (this.swipeTop < this.options.height - this.getScrollerHeight()){
+                    this.swipeTop = this.options.height - this.getScrollerHeight();
+                }
 
                 this.setTranslatePosition(this.swipeTop);
             }
-
-
-
         };
 
         MyScroller.prototype.setTranslatePosition = function (position) {
@@ -138,18 +168,19 @@
                 'top': position + 'px'
             });
         };
-        
+
         MyScroller.prototype.getTop = function (position) {
-            return Number((this.$scroller.css("top") || 0).replace(/\D/g,""));
+            return Number((this.$scroller.css("top") || 0).replace(/[^0-9-]/g, ""));
         }
 
         MyScroller.prototype.swipeEnd = function (event) {
+            console.log("swipeENDvertical")
             this.verticalSwipe = false;
             if (this.curY === undefined) {
                 return false;
             }
 
-            if (this.swipeLength >= this.minSwipe) {
+            if (Math.abs(this.swipeLength) >= this.minSwipe) {
                 $(event.target).on('click', function (event) {
                     event.stopImmediatePropagation();
                     event.stopPropagation();
@@ -158,7 +189,7 @@
                 });
             } else {
                 if (this.startY !== this.curY) {
-                   // this.slideHandler(this.currentSlide);
+                    // this.slideHandler(this.currentSlide);
                     this.startX = null;
                     this.startY = null;
                 }
@@ -172,9 +203,9 @@
             this.setTranslatePosition(this.swipeTop);
         };
 
-        $.fn.scroller = function () {
+        $.fn.scroller = function (settings) {
             return this.each(function (index, element) {
-                element.scroller = new MyScroller(element);
+                element.scroller = new MyScroller(element, settings);
 
             });
         };
