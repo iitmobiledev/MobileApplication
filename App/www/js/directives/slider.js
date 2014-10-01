@@ -31,9 +31,14 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
         link: function (scope, element, attrs) {
             var dataCallback = scope.$eval(attrs.getData);
             var keyFunc = scope.$eval(attrs.keyExpression);
+<<<<<<< HEAD
             var updateDate = scope.$eval(attrs.updateDate) || function () {
                     return;
                 };
+=======
+            var updateDate = scope.$eval(attrs.updateDate) || function(){return;};
+            
+>>>>>>> origin/master
 
             var contentID = attrs.contentId;
             var content = $templateCache.get(contentID);
@@ -60,7 +65,7 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
                 if ($(".content").width() < $(".content").height()) {
                     initSlider();
                 } else {
-                    setTimeout(checkWidth, 10);
+                    setTimeout(checkWidth, 50);
                 }
             }
 
@@ -73,23 +78,45 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
              * @description Функция объявляет что div - элемент с классом `my-slider`
              * является слайдером, библиотеки slick
              */
+            var loadslider = $("<div/>");
+            loadslider.append($("<h1/>").text("WAIT..."));
+                              
             function toSlick() {
                 var width = $(".content").width()
                 if (width !== 0) {
-                    console.log(width)
+                    //console.log(width)
                     $('.my-slider').initSlider({
                         width: width,
                         maxSlideCount: maxCount,
                         onAfterChange: function () {
                             if (ready) {
-                                var key = getCurrentKey();
+                               
                                 var curScope = angular.element($('.my-slider').getCurrentSlide()).scope();
+<<<<<<< HEAD
                                 //                                console.log(curScope)
+=======
+                                //console.log(curScope)
+>>>>>>> origin/master
                                 updateDate(curScope);
-                                if ($('.my-slider').whichFromLeft($('.my-slider').getCurrentSlide()) == 0 && scope.past) {
-                                    dataCallback(key, count, false, addPastData);
-                                } else if ($('.my-slider').whichFromRight($('.my-slider').getCurrentSlide()) == 0 && scope.future) {
-                                    dataCallback(key, count, true, addFutureData);
+                                if ($('.my-slider').whichFromLeft(
+                                    $('.my-slider').getCurrentSlide()) <= 1 && scope.past) {
+                                    var key = getCurrentKey($('.my-slider').getFirstSlide());
+                                    ready = false;
+                                    $('.my-slider').addLoadBarLeft(loadslider);
+                                    dataCallback(key, count, false, function(content) {
+                                        $('.my-slider').removeLoadBarLeft();
+                                        ready = true;
+                                        addPastData(content);
+                                    });
+                                } else if ($('.my-slider').whichFromRight($('.my-slider').getCurrentSlide()) <= 1 && scope.future) {
+                                     var key = getCurrentKey($('.my-slider').getLastSlide());
+                                    $('.my-slider').addLoadBarRight(loadslider);
+                                    dataCallback(key, count, true, function(content){
+                                        $('.my-slider').removeLoadBarRight();
+                                        ready = true;
+                                        addFutureData(content);
+                                        
+                                    });
                                 }
                                 scope.$apply();
                             }
@@ -123,8 +150,6 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
              * @param {Array} contentData Список объектов, чьи данные будут отображаться на слайдах
              */
             function addPastData(contentData) {
-                ready = false;
-                //                $('.my-slider').slickRemove(true);
                 if (contentData) {
                     for (var i = contentData.length - 1; i >= 0; i--) {
                         newscope = scope.$new();
@@ -137,7 +162,6 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
                     }
                 }
                 //scope.$apply();
-                ready = true;
             }
 
             /**
@@ -149,8 +173,6 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
              * @param {Array} contentData Список объектов, чьи данные будут отображаться на слайдах
              */
             function addFutureData(contentData) {
-                ready = false;
-                //                $('.my-slider').slickRemove(false);
                 if (contentData) {
                     for (var i = 0; i < contentData.length; i++) {
                         newscope = scope.$new();
@@ -166,7 +188,6 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
                     }
                 }
                 //                scope.$apply();
-                ready = true;
             }
 
             /**
@@ -182,16 +203,25 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
                 if (!startPageKey) {
                     startPageKey = null;
                 }
+<<<<<<< HEAD
                 //                console.log("contentData", contentData)
                 ready = false;
+=======
+                console.log("contentData", contentData)
+>>>>>>> origin/master
                 var curIndex = null;
                 if (contentData) {
                     for (var i = 0; i < contentData.length; i++) {
                         newscope = scope.$new();
                         newscope.page = contentData[i];
                         var k = keyFunc(contentData[i])
+<<<<<<< HEAD
 
                         //                        console.log("startPageKey", startPageKey, k)
+=======
+                        
+                        //console.log("startPageKey", startPageKey, k)
+>>>>>>> origin/master
                         compiled(newscope, function (clonedElement, scope) {
                             clonedElement.attr("contentkey", k)
                             if (k == startPageKey || (startPageKey == null && i == contentData.length)) {
@@ -221,13 +251,13 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
                 $('.my-slider').shiftRight();
             });
 
-
-            scope.$watch('step', function (newValue, oldValue) {
+            scope.$watch(attrs.reinit, function (newValue, oldValue) {
                 if (oldValue != newValue) {
-                    scope.loading = true;
+//                    scope.loading = true;
                     initSlider();
                 }
             })
+<<<<<<< HEAD
 
             scope.$watch('reinit', function (newValue, oldValue) {
                 console.log('watch reinit');
@@ -237,13 +267,23 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
                     initSlider();
                 }
             })
+=======
+            
+//            scope.$watch('reinit', function(newValue, oldValue){
+//                if (newValue == true){
+//                    scope.loading = true;
+//                    //scope.reinit = false;
+//                    initSlider();
+//                }
+//            })
+>>>>>>> origin/master
 
             //            function updateDate() {
             //                var key = getCurrentKey();
             //                
-            //                console.log("key", key)
+            //                //console.log("key", key)
             //                var splitPk = key.split(':');
-            //                console.log("splitPk", splitPk)
+            //                //console.log("splitPk", splitPk)
             //                var step = splitPk[splitPk.length - 1];
             //                if (step == DateHelper.steps.DAY || step == DateHelper.steps.WEEK || step == DateHelper.steps.MONTH){
             //                    var period = DateHelper.getPeriod(new Date(splitPk[0]), step);
@@ -252,7 +292,7 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
             //                    var period = DateHelper.getPeriod(new Date(key), DateHelper.steps.DAY);
             //                }
             //                
-            //                console.log("period.begin", period.begin)
+            //                //console.log("period.begin", period.begin)
             //                scope.date = period.begin;
             //                //scope.$apply();
             //            }
@@ -265,8 +305,11 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
              * чьи данные отображаеются на текущем слайде
              * @returns {Number} ключ объекта
              */
-            function getCurrentKey() {
-                return $($('.my-slider').getCurrentSlide()).attr('contentkey');
+            function getCurrentKey(slide) {
+                if (!slide){
+                    slide = $('.my-slider').getCurrentSlide();
+                }
+                return $(slide).attr('contentkey');
             }
 
             function updateSlider() {

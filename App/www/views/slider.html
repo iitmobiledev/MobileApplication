@@ -1,4 +1,4 @@
-<div style="position: relative">
+<div style="position: relative; overflow: hidden; height: 450px;">
     <a class='slider-back-button' direction='backward' steps='1' style="z-index:999;font-size:20px; font-weight:bold; position: absolute; width: 10%; top: 25px; text-align: center" data-ver="1">
         <img src="images/prev.png" style="max-height:20px" ng-show="past"></img>
         <img src="images/prevFalse.png" style="max-height:20px" ng-hide="past"></img>
@@ -9,7 +9,7 @@
         <img src="images/nextFalse.png" style="max-height:20px" ng-hide="future"></img>
     </a>
     <!-- абсолютно спозиционированная стрелка вправо-->
-    <div class='my-slider' style="z-index:2">
+    <div class='my-slider' style="z-index:2; height: 100%">
     </div>
 
     <div id="slContent">
