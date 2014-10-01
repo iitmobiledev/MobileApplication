@@ -134,27 +134,33 @@ myApp.factory('Visit', function (Model, Client, Service, Author, DateHelper) {
     //                callback(null);
     //        }
     //    }
-    visitConstructor.searchInLocalStorage = function (params, callback) {
-        var keys = [];
-        var startDate = new Date(params.dateFrom);
-        var endDate = new Date(params.dateTill);
-        for (var i = startDate; i < endDate || i.toDateString() == endDate.toDateString(); i = DateHelper.getNextPeriod(new Date(i), params.step).begin) {
-            var item = [];
-            item.push("Visit");
-            item.push(i);
-            keys.push(item);
-        }
-        return keys;
-    }
 
     visitConstructor.keysByDates = {};
     visitConstructor.onUpdate = function (obj) {
         var key = visitConstructor.keysByDates[obj.date.toDateString()] || [];
-        key.push(obj.getKey());
+        key.push("Visit:" + obj.getKey());
         visitConstructor.keysByDates[obj.date.toDateString()] = key;
-        console.log(visitConstructor.keysByDates);
     }
-    
+
+
+    visitConstructor.searchInLocalStorage = function (params, callback) {
+        console.log("saved_keys:", visitConstructor.keysByDates);
+        var keys = [];
+        var startDate = new Date(params.dateFrom);
+        var endDate = new Date(params.dateTill);
+        for (var i = startDate; i < endDate || i.toDateString() == endDate.toDateString(); i = DateHelper.getNextPeriod(new Date(i), params.step).begin) {
+            if (visitConstructor.keysByDates[i.toDateString()]) {
+                console.log("keys:", visitConstructor.keysByDates[i.toDateString()])
+                for (key in visitConstructor.keysByDates[i.toDateString()]) {
+                    keys.push(key);
+                }
+            }
+        }
+        return keys;
+    }
+
+
+
 
     visitConstructor.statuses = {
         titlesArray: ["Новая запись", "Клиент не пришел", "Клиент пришел", "Подтверждена"],
