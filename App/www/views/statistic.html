@@ -37,13 +37,8 @@
         </div>
         <!--         style="position: absolute; height: 100%"-->
 
-        <slider content-id="statistic-content" get-data='getData' key-expression='getKey' update-date='updateDate' reinit='reinit' need-updating='needUpdating'></slider>
-        <load-bar param-name="loading" ></load-bar>
-        <error-show correct='correct' error='errorText' style="position:fixed;top:50%;"></error-show>
-
         <slider content-id="statistic-content" get-data='getData' key-expression='getKey' update-date='updateDate' reinit='reinitStamp()'></slider>
 <!--        <load-bar param-name="loading" ></load-bar>-->
-
         <script type="text/ng-template" id="statistic-content">
             <div>
                 <date-changer date='page.date' step='$parent.step' has-future-data='hasFutureData(page.date)' has-prev-data='hasPrevData(page.date)'></date-changer>
@@ -78,7 +73,7 @@
                         <td class="financeCell">
                             
                             <div style="text-align:left;display:inline-block;">
-                            <h1>{{page.financialStat.tillMoney| money:0}} <span class="price">ю</span></h1>
+                            <h1>{{page.financeStat.tillMoney| money:0}} <span class="price">ю</span></h1>
                             <span style="font-size:14px; font-weight: lighter">В кассе</span>
                             </div>
                         </td>
@@ -86,16 +81,16 @@
                             <table align="center">
                                 <tr>
                                     <td style="text-align:left">Утром:</td>
-                                    <td style="font-weight: bold;text-align:right">{{page.financialStat.morningMoney| money:0}} <span class="price">ю</span></td>
+                                    <td style="font-weight: bold;text-align:right">{{page.financeStat.morningMoney| money:0}} <span class="price">ю</span></td>
                                 </tr>
                                 <tr>
                                     <td style="text-align:left">Приход:</td>
-                                    <td style="font-weight: bold;text-align:right">{{page.financialStat.credit| money:0}} <span class="price">ю</span></td>
+                                    <td style="font-weight: bold;text-align:right">{{page.financeStat.credit| money:0}} <span class="price">ю</span></td>
                                 </tr>
 
                                 <tr>
                                     <td style="text-align:left">Расход:</td>
-                                    <td style="font-weight: bold;text-align:right">{{page.financialStat.debit| money:0}} <span class="price">ю</span></td>
+                                    <td style="font-weight: bold;text-align:right">{{page.financeStat.debit| money:0}} <span class="price">ю</span></td>
                                 </tr>
 
                             </table>
