@@ -152,7 +152,7 @@ myApp.factory('Visit', function (Model, Client, Service, Author, DateHelper) {
         var key = visitConstructor.keysByDates[obj.date.toDateString()] || [];
         key.push(obj.getKey());
         visitConstructor.keysByDates[obj.date.toDateString()] = key;
-//        console.log(keysByDates);
+        console.log(visitConstructor.keysByDates);
     }
     
 
