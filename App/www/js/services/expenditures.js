@@ -53,7 +53,7 @@ myApp.factory('Expenditure', function (Model, DateHelper) {
     Expenditure.keysByDates = {};
     Expenditure.onUpdate = function (obj) {
         var key = Expenditure.keysByDates[obj.date.toDateString()] || [];
-        key.push(obj.getKey());
+        key.push("Expenditure" + obj.getKey());
         Expenditure.keysByDates[obj.date.toDateString()] = key;
         console.log(Expenditure.keysByDates);
     }
