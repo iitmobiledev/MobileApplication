@@ -149,10 +149,10 @@ myApp.factory('Visit', function (Model, Client, Service, Author, DateHelper) {
 
     visitConstructor.keysByDates = {};
     visitConstructor.onUpdate = function (obj) {
-        var key = visitConstructor.keyByDates[obj.date.toDateString()] || [];
+        var key = visitConstructor.keysByDates[obj.date.toDateString()] || [];
         key.push(obj.getKey());
-        visitConstructor.keyByDates[obj.date.toDateString()] = key;
-        console.log(keyByDates);
+        visitConstructor.keysByDates[obj.date.toDateString()] = key;
+//        console.log(keysByDates);
     }
     
 
@@ -162,13 +162,13 @@ myApp.factory('Visit', function (Model, Client, Service, Author, DateHelper) {
             "new": "Новая запись",
             "not-come": "Клиент не пришел",
             "come": "Клиент пришел",
-            "confirmed": "Подтверждена"
+            "confirm": "Подтверждена"
         },
         classesNames: {
-            NEW: "new",
-            NOTCOME: "not-come",
-            COME: "come",
-            CONFIRMED: "confirm"
+            "new": "new",
+            "not-come": "not-come",
+            "come": "come",
+            "confirm": "confirm"
         }
 
     }

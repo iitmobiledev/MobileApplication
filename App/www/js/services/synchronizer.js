@@ -65,7 +65,7 @@ myApp.service("Synchronizer", ["Storage", "RealServer", "ModelConverter", "Loade
                 Server.lastModified(["OperationalStatistics", "Visit", "Expenditure"], function (lastServerModified) {
                     lastLocalModified = ModelConverter.getObject("LastModified", lastLocalModified);
 //                    console.log(lastLocalModified, lastServerModified);
-                    if (lastLocalModified != null && new Date(lastLocalModified[className]) < new Date(lastServerModified[className])) {
+                    if ( !(className in lastLocalModified) && new Date(lastLocalModified[className]) < new Date(lastServerModified[className])) {
                         console.log('synch need');
                         updateData(className, 20, 0, callback, lastLocalModified, lastServerModified);
                     } else {
