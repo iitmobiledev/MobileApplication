@@ -63,10 +63,14 @@ myApp.factory('Expenditure', function (Model, DateHelper) {
         var startDate = new Date(params.dateFrom);
         var endDate = new Date(params.dateTill);
         for (var i = startDate; i < endDate || i.toDateString() == endDate.toDateString(); i = DateHelper.getNextPeriod(new Date(i), params.step).begin) {
-            var item = [];
-            item.push("Expenditure");
-            item.push(i);
-            keys.push(item);
+            console.log("date.toDateString()", i.toDateString());
+
+            if (Expenditure.keysByDates[i.toDateString()]) {
+                console.log("keys:", Expenditure.keysByDates[i.toDateString()])
+                for (key in Expenditure.keysByDates[i.toDateString()]) {
+                    keys.push(key);
+                }
+            }
         }
         return keys;
     }
