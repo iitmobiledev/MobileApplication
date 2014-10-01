@@ -37,14 +37,13 @@
         </div>
         <!--         style="position: absolute; height: 100%"-->
 
-<<<<<<< HEAD
         <slider content-id="statistic-content" get-data='getData' key-expression='getKey' update-date='updateDate' reinit='reinit' need-updating='needUpdating'></slider>
         <load-bar param-name="loading" ></load-bar>
         <error-show correct='correct' error='errorText' style="position:fixed;top:50%;"></error-show>
-=======
+
         <slider content-id="statistic-content" get-data='getData' key-expression='getKey' update-date='updateDate' reinit='reinitStamp()'></slider>
 <!--        <load-bar param-name="loading" ></load-bar>-->
->>>>>>> origin/master
+
         <script type="text/ng-template" id="statistic-content">
             <div>
                 <date-changer date='page.date' step='$parent.step' has-future-data='hasFutureData(page.date)' has-prev-data='hasPrevData(page.date)'></date-changer>

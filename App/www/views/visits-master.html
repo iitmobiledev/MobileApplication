@@ -5,14 +5,13 @@
         <a ng-click="onTime()" class="button widget uib_w_25 d-margins" data-uib="app_framework/button" data-ver="1">По времени</a>
         <a id="mastersButton" class="button widget uib_w_26 d-margins active" data-uib="app_framework/button" data-ver="1">По мастерам</a>
     </div>
-<<<<<<< HEAD
+
     <slider content-id="visits-master" get-data='getData' key-expression='getKey' update-date='updateDate'  min='min' max='max' loaded-slide-count='loadedSlideCount' max-slide-count='maxSlideCount' need-updating='needUpdating'></slider>
     <load-bar param-name="loading" ></load-bar>
     <error-show correct='correct' error='errorText'></error-show>
-=======
     <slider content-id="visits-master" get-data='getData' key-expression='getKey' update-date='updateDate'  min='min' max='max' loaded-slide-count='loadedSlideCount' max-slide-count='maxSlideCount'></slider>
 <!--    <load-bar param-name="loading" ></load-bar>-->
->>>>>>> origin/master
+
     <script type="text/ng-template" id="visits-master">
         <div id="visitsContent">
             <date-changer date='page.date' step='$parent.step' has-future-data='hasFutureData(page.date)' has-prev-data='hasPrevData(page.date)'></date-changer>

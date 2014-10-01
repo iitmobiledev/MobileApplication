@@ -31,14 +31,11 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
         link: function (scope, element, attrs) {
             var dataCallback = scope.$eval(attrs.getData);
             var keyFunc = scope.$eval(attrs.keyExpression);
-<<<<<<< HEAD
             var updateDate = scope.$eval(attrs.updateDate) || function () {
                     return;
                 };
-=======
             var updateDate = scope.$eval(attrs.updateDate) || function(){return;};
             
->>>>>>> origin/master
 
             var contentID = attrs.contentId;
             var content = $templateCache.get(contentID);
@@ -92,11 +89,10 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
                             if (ready) {
                                
                                 var curScope = angular.element($('.my-slider').getCurrentSlide()).scope();
-<<<<<<< HEAD
+
                                 //                                console.log(curScope)
-=======
                                 //console.log(curScope)
->>>>>>> origin/master
+
                                 updateDate(curScope);
                                 if ($('.my-slider').whichFromLeft(
                                     $('.my-slider').getCurrentSlide()) <= 1 && scope.past) {
@@ -203,25 +199,25 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
                 if (!startPageKey) {
                     startPageKey = null;
                 }
-<<<<<<< HEAD
+
                 //                console.log("contentData", contentData)
                 ready = false;
-=======
+
                 console.log("contentData", contentData)
->>>>>>> origin/master
+
                 var curIndex = null;
                 if (contentData) {
                     for (var i = 0; i < contentData.length; i++) {
                         newscope = scope.$new();
                         newscope.page = contentData[i];
                         var k = keyFunc(contentData[i])
-<<<<<<< HEAD
+
 
                         //                        console.log("startPageKey", startPageKey, k)
-=======
+
                         
                         //console.log("startPageKey", startPageKey, k)
->>>>>>> origin/master
+
                         compiled(newscope, function (clonedElement, scope) {
                             clonedElement.attr("contentkey", k)
                             if (k == startPageKey || (startPageKey == null && i == contentData.length)) {
@@ -257,7 +253,7 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
                     initSlider();
                 }
             })
-<<<<<<< HEAD
+
 
             scope.$watch('reinit', function (newValue, oldValue) {
                 console.log('watch reinit');
@@ -267,7 +263,7 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
                     initSlider();
                 }
             })
-=======
+
             
 //            scope.$watch('reinit', function(newValue, oldValue){
 //                if (newValue == true){
@@ -276,7 +272,7 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
 //                    initSlider();
 //                }
 //            })
->>>>>>> origin/master
+
 
             //            function updateDate() {
             //                var key = getCurrentKey();
