@@ -7,5 +7,7 @@ myApp.factory('FieldStat', function (Model) {
         primary: ['primary'],
         indexes: ['primary']
     });
+
+    fieldStat.onUpdate = function (obj) {}
     return fieldStat;
 });

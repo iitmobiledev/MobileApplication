@@ -7,5 +7,7 @@ myApp.factory('LastModified', function (Model) {
         primary: ['primary'],
         indexes: ['primary']
     });
+
+    lastModified.onUpdate = function (obj) {}
     return lastModified;
 });
