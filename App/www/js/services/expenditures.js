@@ -18,7 +18,7 @@ myApp.factory('Expenditure', function (Model, DateHelper) {
             self.id = data.id;
             self.description = data.description || "Расход№" + data.id;
         },
-        primary: ['id'],
+        primary: ['date','id'],
         indexes: ['date']
     });
 
@@ -53,7 +53,8 @@ myApp.factory('Expenditure', function (Model, DateHelper) {
     Expenditure.keysByDates = {};
     Expenditure.onUpdate = function (obj) {
         var key = Expenditure.keysByDates[obj.date.toDateString()] || [];
-        key.push("Expenditure" + obj.getKey());
+//        key.push("Expenditure" + obj.getKey());
+        key.push("Expenditure:" + obj.getKey().join(":"));
         Expenditure.keysByDates[obj.date.toDateString()] = key;
         console.log(Expenditure.keysByDates);
     }
@@ -66,9 +67,10 @@ myApp.factory('Expenditure', function (Model, DateHelper) {
             console.log("date.toDateString()", i.toDateString());
 
             if (Expenditure.keysByDates[i.toDateString()]) {
+//                keys.push(Expenditure.keysByDates[i.toDateString()][0]);
                 console.log("keys:", Expenditure.keysByDates[i.toDateString()])
-                for (key in Expenditure.keysByDates[i.toDateString()]) {
-                    keys.push(key);
+                for (var key in Expenditure.keysByDates[i.toDateString()]) {
+                    keys.push(Expenditure.keysByDates[i.toDateString()][key]);
                 }
             }
         }

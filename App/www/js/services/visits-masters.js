@@ -151,8 +151,8 @@ myApp.factory('Visit', function (Model, Client, Service, Author, DateHelper) {
         for (var i = startDate; i < endDate || i.toDateString() == endDate.toDateString(); i = DateHelper.getNextPeriod(new Date(i), params.step).begin) {
             if (visitConstructor.keysByDates[i.toDateString()]) {
                 console.log("keys:", visitConstructor.keysByDates[i.toDateString()])
-                for (key in visitConstructor.keysByDates[i.toDateString()]) {
-                    keys.push(key);
+                for (var key in visitConstructor.keysByDates[i.toDateString()]) {
+                    keys.push(visitConstructor.keysByDates[i.toDateString()][key]);
                 }
             }
         }
