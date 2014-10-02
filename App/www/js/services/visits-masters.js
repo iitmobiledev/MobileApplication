@@ -92,16 +92,27 @@ myApp.factory('Visit', function (Model, Client, Service, Author, DateHelper) {
 
             self.date = new Date(data.date);
             self.paid = parseInt(data.paid);
-            var parseTime = data.startTime.split(':');
-            if (parseTime.length > 2) {
-                self.startTime = new Date(self.date.getFullYear(), self.date.getMonth(), self.date.getDate(), parseTime[0], parseTime[1]);
-            } else
-                self.startTime = "";
-            parseTime = data.endTime.split(':');
-            if (parseTime.length > 2) {
-                self.endTime = new Date(self.date.getFullYear(), self.date.getMonth(), self.date.getDate(), parseTime[0], parseTime[1]);
-            } else
-                self.endTime = "";
+            if (isNaN(new Date(data.startTime).getTime())) {
+                var parseTime = data.startTime.split(':');
+                if (parseTime.length > 2) {
+                    self.startTime = new Date(self.date.getFullYear(), self.date.getMonth(), self.date.getDate(), parseTime[0], parseTime[1]);
+                } else
+                    self.startTime = "";
+                parseTime = data.endTime.split(':');
+                if (parseTime.length > 2) {
+                    self.endTime = new Date(self.date.getFullYear(), self.date.getMonth(), self.date.getDate(), parseTime[0], parseTime[1]);
+                } else
+                    self.endTime = "";
+            } else {
+                if (data.startTime != "")
+                    self.startTime = new Date(data.startTime);
+                else
+                    self.startTime = "";
+                if (data.endTime != "")
+                    self.endTime = new Date(data.endTime);
+                else
+                    self.endTime = "";
+            }
         },
         primary: ['id'],
         indexes: ['date']

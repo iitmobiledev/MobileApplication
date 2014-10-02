@@ -9,9 +9,12 @@
     }
     (function ($) {
         var MySlider = window.MySlider || {};
+        
+        
 
         MySlider = (function () {
                 function MySlider(element, settings) {
+//                    console.log('height', $('#mainsub').height(), $('#periodChanger').height());
                     this.defaults = {
                         width: 300,
                         maxSlideCount: 50,
