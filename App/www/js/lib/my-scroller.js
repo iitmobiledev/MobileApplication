@@ -150,12 +150,12 @@
 
                 this.swipeTop = this.distanceFromTop + this.swipeLength;
 
-                if (this.swipeTop > 0) {
-                    this.swipeTop = 0;
-                }
-                console.log("this.options.height", this.options.height)
+                
                 if (this.swipeTop < this.options.height - this.getScrollerHeight()){
                     this.swipeTop = this.options.height - this.getScrollerHeight();
+                }
+                if (this.swipeTop > 0) {
+                    this.swipeTop = 0;
                 }
 
                 this.setTranslatePosition(this.swipeTop);
