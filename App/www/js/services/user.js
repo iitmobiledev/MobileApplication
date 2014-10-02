@@ -1,5 +1,5 @@
-myApp.service("authService", ["$http", "APPID", "SECRET_PHRASE", "VERSION",
-    function ($http, APPID, SECRET_PHRASE, VERSION) {
+myApp.service("authService", ["$http", "APPID", "SECRET_PHRASE", "VERSION", "AUTH_URL",
+    function ($http, APPID, SECRET_PHRASE, VERSION, AUTH_URL) {
         var randomString = function (len, chars) {
             chars = chars || "abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
             len = len || 20;
@@ -51,7 +51,7 @@ myApp.service("authService", ["$http", "APPID", "SECRET_PHRASE", "VERSION",
                 sign("login", params);
                 $http({
                     method: 'POST',
-                    url: 'http://auth.test.arnica.pro/rest/login',
+                    url: AUTH_URL + 'login',
                     data: params,
                     responseType: 'json'
                 }).
@@ -69,7 +69,7 @@ myApp.service("authService", ["$http", "APPID", "SECRET_PHRASE", "VERSION",
                 sign("logout", params);
                 $http({
                     method: 'POST',
-                    url: 'http://auth.test.arnica.pro/rest/logout',
+                    url: AUTH_URL + 'logout',
                     data: params,
                     responseType: 'json'
                 }).
@@ -84,7 +84,7 @@ myApp.service("authService", ["$http", "APPID", "SECRET_PHRASE", "VERSION",
                 sign("getUserInfo", params);
                 $http({
                     method: 'POST',
-                    url: 'http://auth.test.arnica.pro/rest/getUserInfo',
+                    url: AUTH_URL + 'getUserInfo',
                     data: params,
                     responseType: 'json'
                 }).

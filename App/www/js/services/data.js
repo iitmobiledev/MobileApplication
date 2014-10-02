@@ -1,11 +1,11 @@
- myApp.service("RealServer", ["$http",
-     function ($http) {
+ myApp.service("RealServer", ["$http","DATA_URL",
+     function ($http, DATA_URL) {
          var DataSvc = function (t) {
              this.token = t;
          }
 
          DataSvc.prototype = {
-             baseUrl: "http://test.arnica.pro/api/data/",
+             baseUrl: DATA_URL,
              get: function (className, primaryKey, callback) {
                  this.restPost("get", className, primaryKey, callback);
              },
