@@ -95,7 +95,7 @@ myApp.directive('headerContent', function () {
                 }, false);
             }
         },
-        template: '<div style="height:100%">' +
+        template: '<div style="height:100%" id="header">' +
             '<h1></h1>' +
             '<div class="widget-container wrapping-col single-centered">' +
             '</div>' +
