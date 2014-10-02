@@ -80,7 +80,7 @@
 
         MyScroller.prototype.swipeHandler = function (event) {
             if (!this.scrollerEnable) {
-                console.log("DISABLED!");
+                //console.log("DISABLED!");
                 return;
             }
             this.minSwipe = 20 //this.options.width / 20; //touchThreshold;
@@ -174,7 +174,7 @@
         }
 
         MyScroller.prototype.swipeEnd = function (event) {
-            console.log("swipeENDvertical")
+            //console.log("swipeENDvertical")
             this.verticalSwipe = false;
             if (this.curY === undefined) {
                 return false;
@@ -212,7 +212,7 @@
 
         $.fn.scrollerEnable = function () {
             return this.each(function (index, element) {
-                console.log("ENABLED")
+                //console.log("ENABLED")
                 element.scroller.scrollerEnable = true;
             });
         };

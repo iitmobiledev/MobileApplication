@@ -110,7 +110,7 @@
                 case 'left':
                     this.slideHandler(this.currentSlide + 1, function () {
                         current.scrollerRewind();
-                                                console.log("current after slideHandler", current);
+                                                //console.log("current after slideHandler", current);
                     });
                     this.startX = null;
                     this.startY = null;
@@ -119,7 +119,7 @@
                 case 'right':
                     this.slideHandler(this.currentSlide - 1, function () {
                         current.scrollerRewind();
-                                                console.log("current after slideHandler", current);
+                                                //console.log("current after slideHandler", current);
                     });
                     this.startX = null;
                     this.startY = null;
@@ -239,7 +239,7 @@
             var curLeft,
                 positionOffset,
                 touches;
-            console.log("swipeSlider")
+            //console.log("swipeSlider")
             touches = event.originalEvent !== undefined ? event.originalEvent.touches : null;
 
             curLeft = this.getLeft(this.currentSlide);
@@ -331,7 +331,7 @@
 
         //���������� ������ (element - ������� ������; toRight - ���� true - � ����� ��������, false - � ������ ��������)
         MySlider.prototype.addSlide = function (element, toRight, isCurrent) {
-            console.log("addSlide", this.slideCount)
+            //console.log("addSlide", this.slideCount)
             if (toRight) {
                 this.appendSlide(element);
                 if (this.slideCount > this.options.maxSlideCount) {
