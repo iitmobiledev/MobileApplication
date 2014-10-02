@@ -2,13 +2,13 @@ myApp.
 value('APPID', "test").
 value('SECRET_PHRASE', "WatchThatStupidLeech").
 value('VERSION', "1.0").
-value("DATA_URL","http://test.arnica.pro/api/data/").
-value("AUTH_URL","http://auth.test.arnica.pro/rest/").
+value("DATA_URL", "http://test.arnica.pro/api/data/").
+value("AUTH_URL", "http://auth.test.arnica.pro/rest/").
 value('ClassesLastModified', function () {
     this.primary = "primary";
-    this.OperationalStatistics = new Date();
-    this.Visit = new Date();
-    this.Expenditure = new Date();
+    this.OperationalStatistics = null;
+    this.Visit = null;
+    this.Expenditure = null;
 }).
 value('ClassesFieldStat', function () {
     this.primary = "primary";
@@ -44,9 +44,5 @@ value('fieldStatQuery', [{
 value('Status', function () {
     this.count = 0;
     this.amount = 0;
-<<<<<<< HEAD
-});
-=======
 }).
 value('storageSupport', true);
->>>>>>> origin/LocalStorage
