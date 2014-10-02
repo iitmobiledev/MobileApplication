@@ -35,7 +35,7 @@ myApp.controller('OperationalStatisticController', function ($scope, $location, 
 
     $scope.getData = function (key, quantity, forward, callback) {
         $scope.needUpdating = false; //???
-        $scope.loading = true;
+//        $scope.loading = true;
         var resultArr = [];
         var date;
         if (key) {
@@ -254,6 +254,7 @@ myApp.controller('OperationalStatisticController', function ($scope, $location, 
     }
 */
     $scope.goForDay = function () {
+        $scope.loading = true;
         $(".periodButtons a").removeClass('active');
         $(".day").addClass("active");
         $scope.step = DateHelper.steps.DAY;
@@ -261,6 +262,7 @@ myApp.controller('OperationalStatisticController', function ($scope, $location, 
     };
 
     $scope.goForWeek = function () {
+        $scope.loading = true;
         $(".periodButtons a").removeClass('active');
         $(".week").addClass("active");
         $scope.step = DateHelper.steps.WEEK;
@@ -268,6 +270,7 @@ myApp.controller('OperationalStatisticController', function ($scope, $location, 
     };
 
     $scope.goForMonth = function () {
+        $scope.loading = true;
         $(".periodButtons a").removeClass('active');
         $(".month").addClass("active");
         $scope.step = DateHelper.steps.MONTH;
