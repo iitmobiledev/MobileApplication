@@ -54,6 +54,7 @@ myApp.controller('VisitsController', function ($scope, $filter, $location, Loade
     });
 
     $scope.onMasters = function () {
+//        $scope.loading = true;
         $location.path('visits-master/' + $scope.date);
     };
     /**
@@ -76,7 +77,7 @@ myApp.controller('VisitsController', function ($scope, $filter, $location, Loade
 
     $scope.getData = function (key, quantity, forward, callback) {
         $scope.needUpdating = false;
-        $scope.loading = true;
+//        $scope.loading = true;
         //        console.log("scope.visit",$scope.visit);
         var resultArr = [];
         var date;

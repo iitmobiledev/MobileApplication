@@ -56,6 +56,7 @@ myApp.controller('VisitsMasterController', function ($scope, $filter, $location,
      * сортировкой по времени.
      */
     $scope.onTime = function () {
+//        $scope.loading = true;
         //        var pk = angular.element('.slick-active').attr('contentkey');
         $location.path('visits/' + $scope.date);
     }
@@ -128,7 +129,7 @@ myApp.controller('VisitsMasterController', function ($scope, $filter, $location,
 
     $scope.getData = function (key, quantity, forward, callback) {
         $scope.needUpdating = false;
-        $scope.loading = true;
+//        $scope.loading = true;
         var resultArr = [];
         var date;
         if (key) {
