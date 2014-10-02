@@ -10,46 +10,34 @@ myApp.directive('statusStatistics', function (Visit, Status) {
                 salary = 0;
 
                 var statuses = {
-                    newRecord: new Status(),
-                    notCome: new Status(),
-                    come: new Status(),
-                    confirmed: new Status()
+                    "new": new Status(),
+                    "not-come": new Status(),
+                    "come": new Status(),
+                    "confirm": new Status()
                 };
 
                 for (var i = 0; i < visits.length; i++) {
                     salary += getEmployeeSalary(visits[i].serviceList);
 
-                    switch (Visit.statuses.titles[visits[i].status]) {
-                    case Visit.statuses.titles['new']:
-                        statuses.newRecord.count++;
-                        statuses.newRecord.amount += getServicesCost(visits[i].serviceList);
-                        break;
-                    case Visit.statuses.titles['not-come']:
-                        statuses.notCome.count++;
-                        statuses.notCome.amount += getServicesCost(visits[i].serviceList);
-                        break;
-                    case Visit.statuses.titles['come']:
-                        statuses.come.count++;
-                        statuses.come.amount += getServicesCost(visits[i].serviceList);
-                        break;
-                    case Visit.statuses.titles['confirmed']:
-                        statuses.confirmed.count++;
-                        statuses.confirmed.amount += getServicesCost(visits[i].serviceList);
-                        break;
-                    }
+                    angular.forEach(Visit.statuses.titles, function (value, key) {
+                        if (visits[i].status == key) {
+                            statuses[key].count++;
+                            statuses[key].amount += getServicesCost(visits[i].serviceList);
+                        }
+
+                    });
                 }
 
-                element.find('#newRecordCount').html(statuses.newRecord.count);
-                element.find('#newRecordAmount').html(Math.round(statuses.newRecord.amount));
-                element.find('#notComeCount').html(statuses.notCome.count);
-                element.find('#notComeAmount').html(Math.round(statuses.notCome.amount));
-                element.find('#comeCount').html(statuses.come.count);
-                element.find('#comeAmount').html(Math.round(statuses.come.amount));
-                element.find('#confirmedCount').html(statuses.confirmed.count);
-                element.find('#confirmedAmount').html(Math.round(statuses.confirmed.amount));
+                element.find('#newRecordCount').html(statuses["new"].count);
+                element.find('#newRecordAmount').html(Math.round(statuses["new"].amount));
+                element.find('#notComeCount').html(statuses['not-come'].count);
+                element.find('#notComeAmount').html(Math.round(statuses['not-come'].amount));
+                element.find('#comeCount').html(statuses['come'].count);
+                element.find('#comeAmount').html(Math.round(statuses['come'].amount));
+                element.find('#confirmedCount').html(statuses['confirm'].count);
+                element.find('#confirmedAmount').html(Math.round(statuses['confirm'].amount));
                 element.find('#salary').html(Math.round(salary));
             }
-            //            scope.$watch(attrs.visits, updateStatus);
 
                 function getServicesCost(services) {
                     var amount = 0;
@@ -66,6 +54,8 @@ myApp.directive('statusStatistics', function (Visit, Status) {
                     }
                     return salary;
                 }
+
+//            scope.$watch(attrs.visits, updateStatus);
             updateStatus();
         },
         templateUrl: 'views/statuses-statistics.html'

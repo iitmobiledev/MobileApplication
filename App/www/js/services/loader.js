@@ -6,41 +6,73 @@
  * этих данных.
  * @name myApp.service:Loader
  */
-myApp.service("Loader", ["ModelConverter", "RealServer", "$rootScope", "fieldStatQuery",
-    function (ModelConverter, RealServer, $rootScope, fieldStatQuery) {
+myApp.service("Loader", ["ModelConverter", "RealServer", "$rootScope", "fieldStatQuery", "Storage", "ClassesLastModified", "storageSupport",
+    function (ModelConverter, RealServer, $rootScope, fieldStatQuery, Storage, ClassesLastModified, storageSupport) {
 
-        //    var localStat = null;
-        var serverStat = null;
+        var fieldStat = null;
         var Server = new RealServer(sessvars.token);
 
-        function getFieldStat() {
-            //        var storageSupport;
-            //        Storage.isSupported(function (isSupport) {
-            //            storageSupport = isSupport;
-            //            console.log("Support:", storageSupport);
-            //            if (storageSupport) {
-            //                Storage.getFieldStat(query, function (stat) {
-            //                    localStat = stat;
-            //                    console.log('localStat ', stat);
-            //                });
-            //            }
-            //        });
+        function getServerFieldStat() {
+            Server = new RealServer(sessvars.token);
             Server.fieldStat(fieldStatQuery, function (stat) {
-                console.log('server stat ', stat);
-                serverStat = stat;
+                console.log(stat);
+                if (stat.error)
+                    $rootScope.$emit('serverError', '');
+                fieldStat = stat;
+                Storage.update(ModelConverter.getObject("FieldStat", stat));
                 $rootScope.$emit('minMaxGet', '');
             });
+        }
+
+        function getFieldStat() {
+            if (storageSupport) {
+                Storage.get("FieldStat", 'primary', function (stat) {
+                    if (stat) {
+                        stat = ModelConverter.getObject("FieldStat", stat);
+                        fieldStat = [];
+                        angular.forEach(stat, function (value, key) {
+                            fieldStat.push(value);
+                        });
+//                        console.log(fieldStat);
+                    } else
+                        getServerFieldStat();
+                });
+            } else
+                getServerFieldStat();
         };
-        //
-        getFieldStat();
-        //
-        //    $rootScope.$on('synchEnd', function () {
-        //        console.log('sunchEnd on');
-        //            getFieldStat();
-        //    });
+//        getFieldStat();
+
+        $rootScope.$on('synchEndOperationalStatistics', function () {
+            getFieldStat();
+        });
+        $rootScope.$on('synchEndVisit', function () {
+            getFieldStat();
+        });
+        $rootScope.$on('synchEndExpenditure', function () {
+            getFieldStat();
+        });
+
+        function serverSearch(className, params, callback) {
+            Server.search(className, params, function (result) {
+                var lastMod = ModelConverter.getObject("LastModified", new ClassesLastModified());
+                Storage.update(lastMod);
+
+                if (result instanceof Array) {
+                    var objs = ModelConverter.getObjects(className, result);
+                    console.log('server.search ', objs);
+                    for (var i in objs)
+                        Storage.update(objs[i]);
+
+                    callback(objs);
+                } else
+                    callback([]);
+            });
+        }
 
         return {
+            getFieldStat: getFieldStat,
             getMaxDate: function (className) {
+//                $rootScope.$emit('serverError', '');
                 //        if (serverStat && localStat) {
                 //            var typeStat = localStat.filter(function (stat) {
                 //                return stat.type == className;
@@ -54,13 +86,17 @@ myApp.service("Loader", ["ModelConverter", "RealServer", "$rootScope", "fieldSta
                 //                return new Date(date) < new Date(typeStat.max);
                 //            }
                 //        } else 
-                if (serverStat) {
-                    var typeStat = serverStat.filter(function (stat) {
-                        return stat.type == className;
-                    })[0];
-                    return new Date(typeStat.max);
-                    //                    return new Date(date) < new Date(typeStat.max);
-                } else {
+                try {
+                    if (fieldStat) {
+                        var typeStat = fieldStat.filter(function (stat) {
+                            return stat.type == className;
+                        })[0];
+                        return new Date(typeStat.max);
+                    } else {
+                        return null;
+                    }
+                } catch (e) {
+                    console.log(e.message);
                     return null;
                 }
             },
@@ -79,14 +115,17 @@ myApp.service("Loader", ["ModelConverter", "RealServer", "$rootScope", "fieldSta
                 //                return new Date(date) > new Date(typeStat.min);
                 //            }
                 //        } else 
-                if (serverStat) {
-                    var typeStat = serverStat.filter(function (stat) {
-                        return stat.type == className;
-                    })[0];
-                    return new Date(typeStat.min);
-                    //                    return new Date(date) > new Date(typeStat.min);
-
-                } else {
+                try {
+                    if (fieldStat) {
+                        var typeStat = fieldStat.filter(function (stat) {
+                            return stat.type == className;
+                        })[0];
+                        return new Date(typeStat.min);
+                    } else {
+                        return null;
+                    }
+                } catch (e) {
+                    console.log(e.message);
                     return null;
                 }
             },
@@ -105,14 +144,38 @@ myApp.service("Loader", ["ModelConverter", "RealServer", "$rootScope", "fieldSta
              * объекта по первичному ключу.
              */
             get: function (className, primaryKey, callback) {
-                getFieldStat();
-                Server.get(className, primaryKey, function (data) {
-                    console.log('server.get ', data);
-                    callback(ModelConverter.getObject(className, data));
+                if (storageSupport) {
+                    Storage.get(className, primaryKey, function (result) {
+                        if (result) {
+                            console.log(result);
+                            var model = ModelConverter.getObject(className, result);
+                            console.log("model", model);
+                            callback(model);
+                        } else {
+                            Server.get(className, primaryKey, function (data) {
+                                var obj = ModelConverter.getObject(className, data);
+                                Storage.update(obj);
+                                callback(obj);
+                            });
+                        }
+                    });
+                } else {
+                    Server.get(className, primaryKey, function (data) {
+                        var obj = ModelConverter.getObject(className, data);
+                        Storage.update(obj);
+                        callback(obj);
+                    });
+                }
 
-                });
+                //                getFieldStat();
+                //                Server.get(className, primaryKey, function (data) {
+                //                    console.log('server.get ', data);
+                //                    callback(ModelConverter.getObject(className, data));
+                //
+                //                });
 
-                //        if (localStat && serverStat) {
+
+                //                        if (localStat && serverStat) {
                 //            var typeStatLocal = localStat.filter(function (stat) {
                 //                return stat.type == className;
                 //            })[0];
@@ -146,15 +209,29 @@ myApp.service("Loader", ["ModelConverter", "RealServer", "$rootScope", "fieldSta
 
             //получение объектов за период
             search: function (className, params, callback) {
-                getFieldStat();
-                Server.search(className, params, function (result) {
-                    console.log('server.search ', result);
-                    if (result instanceof Array) {
-                        var objs = ModelConverter.getObjects(className, result);
-                        callback(objs);
-                    } else
-                        callback([]);
-                });
+                if (storageSupport) {
+                    Storage.search(className, params, function (data) {
+                        if (data) {
+                            var objs = ModelConverter.getObjects(className, data).reverse();
+                            console.log('storage.search ', objs);
+                            callback(objs);
+                        } else {
+                            serverSearch(className, params, callback);
+                        }
+                    });
+                } else {
+                    serverSearch(className, params, callback);
+                }
+
+                //                getFieldStat();
+                //                Server.search(className, params, function (result) {
+                //                    console.log('server.search ', result);
+                //                    if (result instanceof Array) {
+                //                        var objs = ModelConverter.getObjects(className, result);
+                //                        callback(objs);
+                //                    } else
+                //                        callback([]);
+                //                });
 
 
                 //        if (localStat && serverStat) {

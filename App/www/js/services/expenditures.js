@@ -10,7 +10,7 @@
 //    this.cost = cost; //стоимость
 //}
 
-myApp.factory('Expenditure', function (Model) {
+myApp.factory('Expenditure', function (Model, DateHelper) {
     var Expenditure = Model("Expenditure", {
         deserialize: function (self, data) {
             self.date = new Date(data.date);
@@ -18,42 +18,65 @@ myApp.factory('Expenditure', function (Model) {
             self.id = data.id;
             self.description = data.description || "Расход№" + data.id;
         },
-        primary: ['id'],
-        indexes: {
-            date: {
-                keyPath: ['date'],
-                unique: false
-            },
-        }
+        primary: ['date','id'],
+        indexes: ['date']
     });
 
-    Expenditure.searchIndexedDb = function (trans, params, callback) {
-        var result = [];
-        var dates = [];
-        var store = trans.objectStore("Expenditure"); //найдем хранилище для объектов данного класса
-        var keyRange = IDBKeyRange.bound(new Date(params.dateFrom), new Date(params.dateTill));
-        console.log(keyRange);
-        var request = store.index("date").openCursor(keyRange);
+    //    Expenditure.searchIndexedDb = function (trans, params, callback) {
+    //        var result = [];
+    //        var dates = [];
+    //        var store = trans.objectStore("Expenditure"); //найдем хранилище для объектов данного класса
+    //        var keyRange = IDBKeyRange.bound(new Date(params.dateFrom), new Date(params.dateTill));
+    //        console.log(keyRange);
+    //        var request = store.index("date").openCursor(keyRange);
+    //
+    //        request.onerror = function (event) {
+    //            callback(null);
+    //        };
+    //        request.onsuccess = function (event) {
+    //            var cursor = event.target.result;
+    //            if (cursor) {
+    //                result.push(cursor.value);
+    //                cursor.continue();
+    //            }
+    //        };
+    //
+    //        trans.oncomplete = function (e) {
+    //            if (result.length != 0) {
+    //                callback(result);
+    //            } else {
+    //                callback(null);
+    //            }
+    //        }
+    //    }
 
-        request.onerror = function (event) {
-            callback(null);
-        };
-        request.onsuccess = function (event) {
-            var cursor = event.target.result;
-            if (cursor) {
-                result.push(cursor.value);
-                cursor.continue();
-            }
-        };
+    Expenditure.keysByDates = {};
+    Expenditure.onUpdate = function (obj) {
+        var key = Expenditure.keysByDates[obj.date.toDateString()] || [];
+//        key.push("Expenditure" + obj.getKey());
+        key.push("Expenditure:" + obj.getKey().join(":"));
+        Expenditure.keysByDates[obj.date.toDateString()] = key;
+        console.log(Expenditure.keysByDates);
+    }
 
-        trans.oncomplete = function (e) {
-            if (result.length != 0) {
-                callback(result);
-            } else {
-                callback(null);
+    Expenditure.searchInLocalStorage = function (params, callback) {
+        var keys = [];
+        var startDate = new Date(params.dateFrom);
+        var endDate = new Date(params.dateTill);
+        for (var i = startDate; i < endDate || i.toDateString() == endDate.toDateString(); i = DateHelper.getNextPeriod(new Date(i), params.step).begin) {
+            console.log("date.toDateString()", i.toDateString());
+
+            if (Expenditure.keysByDates[i.toDateString()]) {
+//                keys.push(Expenditure.keysByDates[i.toDateString()][0]);
+                console.log("keys:", Expenditure.keysByDates[i.toDateString()])
+                for (var key in Expenditure.keysByDates[i.toDateString()]) {
+                    keys.push(Expenditure.keysByDates[i.toDateString()][key]);
+                }
             }
         }
+        return keys;
     }
+
     return Expenditure;
 });
 

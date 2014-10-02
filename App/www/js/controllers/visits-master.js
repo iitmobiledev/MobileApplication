@@ -28,6 +28,8 @@ myApp.controller('VisitsMasterController', function ($scope, $filter, $location,
 
     $scope.future = true;
     $scope.past = true;
+    
+    $scope.needUpdating = false;
 
     function setMinMax() {
         $scope.min = Loader.getMinDate("Visit");
@@ -37,6 +39,12 @@ myApp.controller('VisitsMasterController', function ($scope, $filter, $location,
     $rootScope.$on('minMaxGet', setMinMax);
 
     setMinMax();
+    
+    $rootScope.$on('synchEndVisit', function () {
+        console.log('synchEndVisit');
+        setMinMax();
+        $scope.needUpdating = true;
+    });
 
 
     /**
@@ -119,6 +127,7 @@ myApp.controller('VisitsMasterController', function ($scope, $filter, $location,
     };
 
     $scope.getData = function (key, quantity, forward, callback) {
+        $scope.needUpdating = false;
         $scope.loading = true;
         var resultArr = [];
         var date;
@@ -314,6 +323,8 @@ myApp.controller('VisitsMasterController', function ($scope, $filter, $location,
         $scope.masterVisitInfo.cost = coast;
     };
 
-
-
+    $rootScope.$on('serverError', function () {
+        $scope.correct = false;
+        $scope.errorText = "Не удается подключиться к серверу. Пожалуйста, попробуйте зайти еще раз.";
+    });
 });

@@ -7,11 +7,6 @@
  */
 myApp.factory('Author', function (Model) {
     return Model("Author", {
-        serialize: function (self) {
-            self.constructor.prototype.call(self)
-            var data = angular.extend({}, self);
-            return data;
-        },
         primary: ['id']
     });
 });
@@ -25,11 +20,6 @@ myApp.factory('Author', function (Model) {
  */
 myApp.factory('Client', function (Model) {
     return Model("Client", {
-        serialize: function (self) {
-            self.constructor.prototype.call(self)
-            var data = angular.extend({}, self);
-            return data;
-        },
         primary: ['id']
     });
 });
@@ -43,11 +33,6 @@ myApp.factory('Client', function (Model) {
  */
 myApp.factory('Master', function (Model) {
     return Model("Master", {
-        serialize: function (self) {
-            self.constructor.prototype.call(self)
-            var data = angular.extend({}, self);
-            return data;
-        },
         primary: ['id']
     });
 });
@@ -77,11 +62,6 @@ myApp.factory('Service', function (Model, Master) {
             } else
                 self.endTime = "";
         },
-        serialize: function (self) {
-            self.constructor.prototype.call(self)
-            var data = angular.extend({}, self);
-            return data;
-        },
         primary: ['id']
     });
 });
@@ -94,7 +74,7 @@ myApp.factory('Service', function (Model, Master) {
  * @requires myApp.service:Model
  * @param {Object} data Данные в формате ключ: значение.
  */
-myApp.factory('Visit', function (Model, Client, Service, Author) {
+myApp.factory('Visit', function (Model, Client, Service, Author, DateHelper) {
     var visitConstructor = Model("Visit", {
         deserialize: function (self, data) {
             self.id = data.id;
@@ -123,47 +103,64 @@ myApp.factory('Visit', function (Model, Client, Service, Author) {
             } else
                 self.endTime = "";
         },
-        serialize: function (self) {
-            self.constructor.prototype.call(self)
-            var data = angular.extend({}, self);
-            return data;
-        },
         primary: ['id'],
-        indexes: {
-            date: {
-                keyPath: ['date'],
-                unique: false
-            },
-        }
+        indexes: ['date']
     });
 
-    visitConstructor.searchIndexedDb = function (trans, params, callback) {
-        var result = [];
-        var dates = [];
-        var store = trans.objectStore("Visit"); //найдем хранилище для объектов данного класса
-        var keyRange = IDBKeyRange.bound(new Date(params.dateFrom), new Date(params.dateTill));
-        //        console.log(keyRange);
-        var request = store.index(params.index).openCursor(keyRange);
+    //    visitConstructor.searchIndexedDb = function (trans, params, callback) {
+    //        var result = [];
+    //        var dates = [];
+    //        var store = trans.objectStore("Visit"); //найдем хранилище для объектов данного класса
+    //        var keyRange = IDBKeyRange.bound(new Date(params.dateFrom), new Date(params.dateTill));
+    //        //        console.log(keyRange);
+    //        var request = store.index(params.index).openCursor(keyRange);
+    //
+    //        request.onerror = function (event) {
+    //            callback(null);
+    //        };
+    //        request.onsuccess = function (event) {
+    //            var cursor = event.target.result;
+    //            if (cursor) {
+    //                result.push(cursor.value);
+    //                cursor.
+    //                continue ();
+    //            }
+    //        };
+    //
+    //        trans.oncomplete = function (e) {
+    //            if (result.length != 0) {
+    //                callback(result);
+    //            } else
+    //                callback(null);
+    //        }
+    //    }
 
-        request.onerror = function (event) {
-            callback(null);
-        };
-        request.onsuccess = function (event) {
-            var cursor = event.target.result;
-            if (cursor) {
-                result.push(cursor.value);
-                cursor.
-                continue ();
-            }
-        };
-
-        trans.oncomplete = function (e) {
-            if (result.length != 0) {
-                callback(result);
-            } else
-                callback(null);
-        }
+    visitConstructor.keysByDates = {};
+    visitConstructor.onUpdate = function (obj) {
+        var key = visitConstructor.keysByDates[obj.date.toDateString()] || [];
+        key.push("Visit:" + obj.getKey());
+        visitConstructor.keysByDates[obj.date.toDateString()] = key;
     }
+
+
+    visitConstructor.searchInLocalStorage = function (params, callback) {
+        console.log("saved_keys:", visitConstructor.keysByDates);
+        var keys = [];
+        var startDate = new Date(params.dateFrom);
+        var endDate = new Date(params.dateTill);
+        for (var i = startDate; i < endDate || i.toDateString() == endDate.toDateString(); i = DateHelper.getNextPeriod(new Date(i), params.step).begin) {
+            if (visitConstructor.keysByDates[i.toDateString()]) {
+                console.log("keys:", visitConstructor.keysByDates[i.toDateString()])
+                for (var key in visitConstructor.keysByDates[i.toDateString()]) {
+                    keys.push(visitConstructor.keysByDates[i.toDateString()][key]);
+                }
+            }
+        }
+        return keys;
+    }
+
+
+
 
     visitConstructor.statuses = {
         titlesArray: ["Новая запись", "Клиент не пришел", "Клиент пришел", "Подтверждена"],
@@ -171,13 +168,13 @@ myApp.factory('Visit', function (Model, Client, Service, Author) {
             "new": "Новая запись",
             "not-come": "Клиент не пришел",
             "come": "Клиент пришел",
-            "confirmed": "Подтверждена"
+            "confirm": "Подтверждена"
         },
         classesNames: {
-            NEW: "new",
-            NOTCOME: "not-come",
-            COME: "come",
-            CONFIRMED: "confirm"
+            "new": "new",
+            "not-come": "not-come",
+            "come": "come",
+            "confirm": "confirm"
         }
 
     }

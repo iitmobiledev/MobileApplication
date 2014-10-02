@@ -257,11 +257,11 @@ myApp.factory("Model", function () {
             options.serialize = function (self) {
                 var data = {};
                 angular.forEach(self, function (key, value) {
-                    if (value.json instanceof Function) {
-                        data[key] = value.json();
-                    } else {
-                        data[key] = value;
-                    }
+                    //                    if (value.json && value.json instanceof Function) {
+                    //                        data[key] = value.json();
+                    //                    } else {
+                    data[value] = key;
+                    //                    }
                 });
                 data.__class__ = className;
                 return data;
@@ -274,6 +274,14 @@ myApp.factory("Model", function () {
         clz.prototype = {
             __class__: className,
             __primary__: options.primary,
+            __indexes__: options.indexes,
+
+            getIndexes: function () {
+                var indexes = [];
+                for (var i in this.__proto__.__indexes__)
+                    indexes.push(this[this.__proto__.__indexes__[i]]);
+                return indexes.join(":");
+            },
             /**
              *  @ngdoc method
              *  @name getKey
@@ -302,22 +310,23 @@ myApp.factory("Model", function () {
         });
         clz.__primary__ = options.primary;
         clz.__class__ = className;
+        clz.__indexes__ = options.indexes;
 
-        clz.getIndexes = function () {
-            return options.indexes;
-        };
-
-
-        clz.initializeIndexedDb = function (db) {
-            var objectStore = db.createObjectStore(clz.__class__, {
-                keyPath: "__primary__"
-            });
-            angular.forEach(clz.getIndexes(), function (value, name) {
-                objectStore.createIndex(name, value.keyPath, {
-                    unique: value.unique
-                });
-            });
-        }
+        //        clz.getIndexes = function () {
+        //            return options.indexes;
+        //        };
+        //
+        //
+        //        clz.initializeIndexedDb = function (db) {
+        //            var objectStore = db.createObjectStore(clz.__class__, {
+        //                keyPath: "__primary__"
+        //            });
+        //            angular.forEach(clz.getIndexes(), function (value, name) {
+        //                objectStore.createIndex(name, value.keyPath, {
+        //                    unique: value.unique
+        //                });
+        //            });
+        //        }
 
         /**
          *  @ngdoc method

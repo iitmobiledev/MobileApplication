@@ -6,9 +6,9 @@ value("DATA_URL","http://test.arnica.pro/api/data/").
 value("AUTH_URL","http://auth.test.arnica.pro/rest/").
 value('ClassesLastModified', function () {
     this.primary = "primary";
-    this.OperationalStatistics = null;
-    this.Visit = null;
-    this.Expenditure = null;
+    this.OperationalStatistics = new Date();
+    this.Visit = new Date();
+    this.Expenditure = new Date();
 }).
 value('ClassesFieldStat', function () {
     this.primary = "primary";
@@ -44,4 +44,9 @@ value('fieldStatQuery', [{
 value('Status', function () {
     this.count = 0;
     this.amount = 0;
+<<<<<<< HEAD
 });
+=======
+}).
+value('storageSupport', true);
+>>>>>>> origin/LocalStorage

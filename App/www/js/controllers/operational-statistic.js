@@ -15,7 +15,7 @@
  * @requires myApp.service:DateHelper
  */
 myApp.controller('OperationalStatisticController', function ($scope, $location, DateHelper, Loader, $rootScope, $routeParams) {
-    setMinMax();
+//    setMinMax();
     var today;
     if (typeof ($routeParams.date) != 'undefined')
         today = new Date($routeParams.date);
@@ -29,9 +29,12 @@ myApp.controller('OperationalStatisticController', function ($scope, $location, 
     $scope.future = true;
     $scope.past = true;
 
+    $scope.needUpdating = false;
+
     $scope.reinit = false;
 
     $scope.getData = function (key, quantity, forward, callback) {
+        $scope.needUpdating = false; //???
         $scope.loading = true;
         var resultArr = [];
         var date;
@@ -155,6 +158,13 @@ myApp.controller('OperationalStatisticController', function ($scope, $location, 
 
     $rootScope.$on('minMaxGet', setMinMax);
 
+    setMinMax();
+
+    $rootScope.$on('synchEndOperationalStatistics', function () {
+        console.log('synchEndOperationalStatistics');
+        setMinMax();
+        $scope.needUpdating = true;
+    });
 
 
     $scope.$watch('step', function (newValue, oldValue) {
@@ -230,8 +240,8 @@ myApp.controller('OperationalStatisticController', function ($scope, $location, 
     };
 
     $scope.hasFinance = function (statistics) {
-        if (statistics.financeStat) {
-            return typeof (statistics.financeStat.credit) !== 'undefined';
+        if (statistics.financialStat) {
+            return typeof (statistics.financialStat.credit) !== 'undefined';
         }
         return false;
     };
@@ -264,4 +274,8 @@ myApp.controller('OperationalStatisticController', function ($scope, $location, 
         //$scope.date = new Date(getCurrentPeriod().begin);
     };
 
+    $rootScope.$on('serverError', function () {
+        $scope.correct = false;
+        $scope.errorText = "Не удается подключиться к серверу. Пожалуйста, попробуйте зайти еще раз.";
+    });
 });

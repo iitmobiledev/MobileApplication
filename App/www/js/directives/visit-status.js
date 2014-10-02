@@ -8,36 +8,17 @@ myApp.directive('visitStatus', function (Visit) {
                 var status = statuses.titles[scope.$eval(attrs.status)];
                 var classes = scope.$eval(attrs.classes);
 
-                switch (status) {
-                case statuses.titles['new']:
-                    element.append(
+                angular.forEach(statuses.titles, function (value, key) {
+                    if (status == value)
+                    {
+                        element.append(
                         $("<div>", {
-                            "class": statuses.classesNames.NEW,
+                            "class": key,
                             text: status
                         }));
-                    break;
-                case statuses.titles['not-come']:
-                    element.append(
-                        $("<div>", {
-                            "class": statuses.classesNames.NOTCOME,
-                            text: status
-                        }));
-                    break;
-                case statuses.titles['come']:
-                    element.append(
-                        $("<div>", {
-                            "class": statuses.classesNames.COME,
-                            text: status
-                        }));
-                    break;
-                case statuses.titles['confirmed']:
-                    element.append(
-                        $("<div>", {
-                            "class": statuses.classesNames.CONFIRMED,
-                            text: status
-                        }));
-                    break;
-                }
+                    }
+                        
+                });
             }
             scope.$watch(attrs.status, updateStatus);
         },

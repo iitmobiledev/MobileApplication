@@ -15,7 +15,7 @@
  */
 myApp.controller('VisitsController', function ($scope, $filter, $location, Loader, DateHelper, Visit, $rootScope, $routeParams) {
     var today;
-    console.log($routeParams.date);
+//    console.log($routeParams.date);
     if (typeof ($routeParams.date) != 'undefined')
         today = new Date($routeParams.date);
     else
@@ -23,6 +23,7 @@ myApp.controller('VisitsController', function ($scope, $filter, $location, Loade
     $scope.date = new Date(today.getFullYear(), today.getMonth(), today.getDate());
     $scope.step = DateHelper.steps.DAY;
     $scope.loading = true;
+    $scope.needUpdating = false;
     
     $scope.loadedSlideCount = 2;
     $scope.maxSlideCount = 6;
@@ -45,6 +46,12 @@ myApp.controller('VisitsController', function ($scope, $filter, $location, Loade
     $rootScope.$on('minMaxGet', setMinMax);
 
     setMinMax();
+    
+    $rootScope.$on('synchEndVisit', function () {
+        console.log('synchEndVisit');
+        setMinMax();
+        $scope.needUpdating = true;
+    });
 
     $scope.onMasters = function () {
         $location.path('visits-master/' + $scope.date);
@@ -68,6 +75,7 @@ myApp.controller('VisitsController', function ($scope, $filter, $location, Loade
     };
 
     $scope.getData = function (key, quantity, forward, callback) {
+        $scope.needUpdating = false;
         $scope.loading = true;
         //        console.log("scope.visit",$scope.visit);
         var resultArr = [];
@@ -97,8 +105,7 @@ myApp.controller('VisitsController', function ($scope, $filter, $location, Loade
             Loader.search("Visit", {
                 dateFrom: beginDate,
                 dateTill: endDate,
-                step: DateHelper.steps.DAY,
-                index: "date"
+                step: DateHelper.steps.DAY
             }, function (data) {
                 var visitsByDate = {};
                 angular.forEach(data, function (visit) {
@@ -247,4 +254,12 @@ myApp.controller('VisitsController', function ($scope, $filter, $location, Loade
         $scope.visitInfo.services = services.join(", ");
         $scope.visitInfo.cost = coast;
     };
+    
+    $rootScope.$on('serverError', function () {
+        console.log('serverError');
+        $scope.correct = false;
+        $scope.errorText = "Не удается подключиться к серверу. Пожалуйста, попробуйте зайти еще раз.";
+    });
+    
+    
 });

@@ -10,15 +10,32 @@ myApp.controller('SettingsController', function ($scope, authService, $location)
         if (userInfo)
             $scope.user = userInfo;
     });
-    
-     /**
+
+    $scope.console = "";
+    var counter = 0;
+
+    $scope.showConsole = function () {
+        counter++;
+        if (counter > 14) {
+            counter = 0;
+            console.log = function (msg) {
+                $scope.console += msg;
+            };
+            console.error = function (msg) {
+                $scope.console += msg;
+            };
+        }
+    }
+
+    /**
      *
      * @ngdoc method
      * @name myApp.controller:SettingsController#exit
      * @methodOf myApp.controller:SettingsController
-     * @description Метод для выхода пользователя из системы. При
-     * успешном логауте система забывает аутентифицированного
-     * пользователя и выполняет переход на страницу авторизации.
+     * @description Метод для выхода пользователя из системы.
+     * При успешном логауте система забывает
+     * аутентифицированного пользователя и выполняет
+     * переход на страницу авторизации.
      */
     $scope.exit = function () {
         authService.logout(sessvars.token, function () {

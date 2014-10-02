@@ -8,7 +8,8 @@
  * логином и паролем.</p>
  * @requires myApp.service:UserAuthentification
  */
-myApp.controller('AuthentificationController', function ($scope, $location, authService) {
+myApp.controller('AuthentificationController', function ($scope, $location, authService, Synchronizer, Loader) {
+    sessvars.$.clearMem();
     $scope.loading = false;
     $scope.correct = true;
 //    if (sessvars.token) {
@@ -29,6 +30,7 @@ myApp.controller('AuthentificationController', function ($scope, $location, auth
         var login = document.getElementById('login').value;
         var password = document.getElementById('password').value;
         authService.login(login, password, function (token) {
+            console.log("token ", token);
             $scope.loading = false;
             if (token == 'error') {
                 $scope.errorText = "Не удается подключиться к интернету.";
@@ -36,6 +38,8 @@ myApp.controller('AuthentificationController', function ($scope, $location, auth
             } else {
                 if (token) {
                     sessvars.token = token;
+                    Loader.getFieldStat();
+                    Synchronizer.beginSynch();
                     $location.path('index');
                 } else {
                     $scope.errorText = "Вы указали неправильный пароль, попробуйте повторить попытку.";
