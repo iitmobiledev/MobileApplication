@@ -63,8 +63,8 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
              * @description Функция объявляет что div - элемент с классом `my-slider`
              * является слайдером, библиотеки slick
              */
-            var loadslider = $("<div/>");
-            loadslider.append($("<h1/>").text("WAIT..."));
+            var loadslider = $("<div style='height:100%;width:100%;'/>");
+            loadslider.append($("<div id='loading' class='square spin' style='position:relative;'/>"));
                               
             function toSlick() {
                 var width = $(".content").width()
