@@ -56,7 +56,6 @@ myApp.factory('Expenditure', function (Model, DateHelper) {
 //        key.push("Expenditure" + obj.getKey());
         key.push("Expenditure:" + obj.getKey().join(":"));
         Expenditure.keysByDates[obj.date.toDateString()] = key;
-        console.log(Expenditure.keysByDates);
     }
 
     Expenditure.searchInLocalStorage = function (params, callback) {
@@ -68,7 +67,6 @@ myApp.factory('Expenditure', function (Model, DateHelper) {
 
             if (Expenditure.keysByDates[i.toDateString()]) {
 //                keys.push(Expenditure.keysByDates[i.toDateString()][0]);
-                console.log("keys:", Expenditure.keysByDates[i.toDateString()])
                 for (var key in Expenditure.keysByDates[i.toDateString()]) {
                     keys.push(Expenditure.keysByDates[i.toDateString()][key]);
                 }

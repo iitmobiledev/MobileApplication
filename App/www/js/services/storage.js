@@ -99,7 +99,6 @@ myApp.service("Storage", ["$injector",
             var keys = serv.searchInLocalStorage(params, callback);
             var results = [];
             for (var i = 0; i < keys.length; i++) {
-                console.log('keys[i] ', keys[i]);
                 var item;
                 if (keys[i] instanceof Array)
                     item = localStorage.getItem(keys[i].join(":"));
