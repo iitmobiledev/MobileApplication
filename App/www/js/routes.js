@@ -2,13 +2,10 @@ var myApp = angular.module('myApp', ['ngRoute', 'ngAnimate', 'angulartics', 'ang
 
 myApp.run(function ($templateCache, Storage, storageSupport) {
     Storage.clearStorage();
-    if(Storage.isSupported())
-    {
+    if (Storage.isSupported()) {
         console.log("localStorage is supported!");
         storageSupport = true;
-    }
-    else
-    {
+    } else {
         console.log("localStorage not supported!");
         storageSupport = false;
     }
@@ -68,6 +65,22 @@ myApp.config(['$routeProvider', '$analyticsProvider',
             redirectTo: 'authorization'
         });
     }]);
+
+$("#afui").bind('click', function () {
+    console.log("bind click");
+});
+
+//(function () {
+$("#afui").click(function (ev) {
+    console.log('click');
+    //        if ($.verticalScrolling || $.horizontalScrolling) {
+    //            ev.preventDefault();
+    //            ev.stopPropagation();
+    //            ev.stopImmediatePropagation();
+    //            return false;
+    //        }
+});
+//})();
 
 
 //(function () {

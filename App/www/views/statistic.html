@@ -13,19 +13,19 @@
                         <a class="active day button widget uib_w_6 d-margins" 
                            data-uib="app_framework/button" 
                            data-ver="1"
-                           ng-click="goForDay()">
+                           ar-click="goForDay()">
                             За день
                         </a>
                         <a class="button week  widget uib_w_6 d-margins" 
                            data-uib="app_framework/button" 
                            data-ver="1"
-                           ng-click="goForWeek()">
+                           ar-click="goForWeek()">
                             За неделю
                         </a>
                         <a class="button month widget uib_w_6 d-margins" 
                            data-uib="app_framework/button" 
                            data-ver="1"
-                           ng-click="goForMonth()">
+                           ar-click="goForMonth()">
                             За месяц
                         </a>
                     </div>
@@ -44,31 +44,31 @@
                 <date-changer date='page.date' step='$parent.step' has-future-data='hasFutureData(page.date)' has-prev-data='hasPrevData(page.date)'></date-changer>
                 <table id="statisticTable">
                     <tr>
-                        <td class="sCell" ng-click="$parent.toChart('proceeds')" style="border-right: none;border-bottom: none;" analytics-on="click" analytics-event="ToProceedsChart" analytics-category="Statistics" >
+                        <td class="sCell" ar-click="$parent.toChart('proceeds')" style="border-right: none;border-bottom: none;" analytics-on="click" analytics-event="ToProceedsChart" analytics-category="Statistics" >
                             <img src="images/proceeds.PNG" style="margin:5px;">
                             <p style="font-size:23pt; font-weight: bold">{{page.proceeds| money:0}} <span class="price">ю</span></p>
                             <p style="font-weight: lighter">Выручка</p>
                         </td>
-                        <td class="sCell" ng-click="$parent.toChart('profit')" style="border-bottom: none;" analytics-on="click" analytics-event="ToProfitChart" analytics-category="Statistics">
+                        <td class="sCell" ar-click="$parent.toChart('profit')" style="border-bottom: none;" analytics-on="click" analytics-event="ToProfitChart" analytics-category="Statistics">
                             <img src="images/profit.PNG" style="margin:5px">
                             <p style="font-size:23pt; font-weight: bold">{{page.profit| money:0}} <span class="price">ю</span></p>
                             <p style="font-weight: lighter">Прибыль</p>
                         </td>
                     </tr>
                     <tr>
-                        <td class="sCell" ng-click="$parent.toChart('clients')" style="border-right: none;" analytics-on="click" analytics-event="ToClientsChart" analytics-category="Statistics">
+                        <td class="sCell" ar-click="$parent.toChart('clients')" style="border-right: none;" analytics-on="click" analytics-event="ToClientsChart" analytics-category="Statistics">
                             <img src="images/clients.PNG" style="margin:5px">
                             <p style="font-size:23pt; font-weight: bold">{{page.clients}}</p>
                             <p style="font-weight: lighter">Оформлено визитов</p>
                         </td>
-                        <td class="sCell" ng-click="$parent.toChart('workload')" analytics-on="click" analytics-event="ToWorkloadChart" analytics-category="Statistics">
+                        <td class="sCell" ar-click="$parent.toChart('workload')" analytics-on="click" analytics-event="ToWorkloadChart" analytics-category="Statistics">
                             <img src="images/workload.PNG" style="margin:5px">
                             <p style="font-size:23pt; font-weight: bold">{{page.workload| money:0}}%</p>
                             <p style="font-weight: lighter">Загруженность</p>
                         </td>
                     </tr>
                 </table>
-                <table ng-click="toExpenditures()" id="financeTable" ng-show='hasFinance(page)'>
+                <table ar-click="toExpenditures()" id="financeTable" ng-show='hasFinance(page)'>
                     <tr>
                         <td class="financeCell">
                             

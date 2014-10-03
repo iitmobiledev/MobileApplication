@@ -94,6 +94,18 @@ myApp.directive('headerContent', function () {
                     navigator.app.exitApp();
                 }, false);
             }
+            
+            
+
+//            $("#backButton").click(function (ev) {
+//                console.log('backButton clicked');
+//                if ($.verticalScrolling || $.horizontalScrolling) {
+//                    ev.preventDefault();
+//                    ev.stopPropagation();
+//                    ev.stopImmediatePropagation();
+//                    return false;
+//                }
+//            });
         },
         template: '<div style="height:100%" id="header">' +
             '<h1></h1>' +

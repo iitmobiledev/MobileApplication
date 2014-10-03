@@ -30,7 +30,7 @@ myApp.controller('AuthentificationController', function ($scope, $location, auth
         var login = document.getElementById('login').value;
         var password = document.getElementById('password').value;
         authService.login(login, password, function (token) {
-            console.log("token ", token);
+//            console.log("token ", token);
             $scope.loading = false;
             if (token == 'error') {
                 $scope.errorText = "Не удается подключиться к интернету.";

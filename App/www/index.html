@@ -37,7 +37,7 @@
     <script src="intelxdk.js"></script>
     <script type="text/javascript">
         /* Intel native bridge is available */
-        var onDeviceReady = function () {
+        var onDeviceReady = function() {
             //hide splash screen
             intel.xdk.device.hideSplashScreen();
             //     intel.xdk.device.hideStatusBar();            
@@ -95,15 +95,16 @@
     <script src="js/directives/password.js"></script>
     <script src="js/directives/status-statistics.js"></script>
     <script src="js/directives/slider.js"></script>
+    <script src="js/directives/ar-click.js"></script>
     <!--<script src="slick/slick.js"></script>-->
 
     <script src="js/money-filter.js"></script>
 
     <!-- Google Analytics -->
     <script>
-        (function (i, s, o, g, r, a, m) {
+        (function(i, s, o, g, r, a, m) {
             i['GoogleAnalyticsObject'] = r;
-            i[r] = i[r] || function () {
+            i[r] = i[r] || function() {
                 (i[r].q = i[r].q || []).push(arguments)
             }, i[r].l = 1 * new Date();
             a = s.createElement(o),
@@ -130,6 +131,17 @@
             }
         }
         show();
+
+        $("#afui").click(function(ev) {
+            if (typeof($(ev.target).attr('href')) != 'undefined') {
+//                if ($.verticalScrolling || $.horizontalScrolling) {
+//                    ev.preventDefault();
+//                    ev.stopPropagation();
+//                    ev.stopImmediatePropagation();
+//                    return false;
+//                }
+            }
+        })
     </script>
 
     <!-- Google Analytics -->
