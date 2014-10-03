@@ -19,7 +19,7 @@ myApp.controller('VisitsMasterController', function ($scope, $filter, $location,
     //    console.log($routeParams.date);
     $scope.step = DateHelper.steps.DAY;
     $scope.loading = true;
-    
+
     $scope.loadedSlideCount = 3;
     $scope.maxSlideCount = 10;
 
@@ -28,7 +28,7 @@ myApp.controller('VisitsMasterController', function ($scope, $filter, $location,
 
     $scope.future = true;
     $scope.past = true;
-    
+
     $scope.needUpdating = false;
 
     function setMinMax() {
@@ -39,7 +39,7 @@ myApp.controller('VisitsMasterController', function ($scope, $filter, $location,
     $rootScope.$on('minMaxGet', setMinMax);
 
     setMinMax();
-    
+
     $rootScope.$on('synchEndVisit', function () {
         console.log('synchEndVisit');
         setMinMax();
@@ -56,7 +56,7 @@ myApp.controller('VisitsMasterController', function ($scope, $filter, $location,
      * сортировкой по времени.
      */
     $scope.onTime = function () {
-//        $scope.loading = true;
+        //        $scope.loading = true;
         //        var pk = angular.element('.slick-active').attr('contentkey');
         $location.path('visits/' + $scope.date);
     }
@@ -129,7 +129,7 @@ myApp.controller('VisitsMasterController', function ($scope, $filter, $location,
 
     $scope.getData = function (key, quantity, forward, callback) {
         $scope.needUpdating = false;
-//        $scope.loading = true;
+        //        $scope.loading = true;
         var resultArr = [];
         var date;
         if (key) {
@@ -174,6 +174,9 @@ myApp.controller('VisitsMasterController', function ($scope, $filter, $location,
                     list.push(page);
                     i++;
                 }
+                list = list.filter(function (page) {
+                    return page.list.length != 0;
+                });
                 $scope.loading = false;
                 callback(list);
             });

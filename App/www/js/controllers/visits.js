@@ -15,7 +15,7 @@
  */
 myApp.controller('VisitsController', function ($scope, $filter, $location, Loader, DateHelper, Visit, $rootScope, $routeParams) {
     var today;
-//    console.log($routeParams.date);
+    //    console.log($routeParams.date);
     if (typeof ($routeParams.date) != 'undefined')
         today = new Date($routeParams.date);
     else
@@ -24,7 +24,7 @@ myApp.controller('VisitsController', function ($scope, $filter, $location, Loade
     $scope.step = DateHelper.steps.DAY;
     $scope.loading = true;
     $scope.needUpdating = false;
-    
+
     $scope.loadedSlideCount = 2;
     $scope.maxSlideCount = 6;
 
@@ -34,6 +34,7 @@ myApp.controller('VisitsController', function ($scope, $filter, $location, Loade
     //    $scope.max = null;
     $scope.min = Loader.getMinDate("Visit");
     $scope.max = Loader.getMaxDate("Visit");
+
 
     $scope.future = true;
     $scope.past = true;
@@ -46,7 +47,7 @@ myApp.controller('VisitsController', function ($scope, $filter, $location, Loade
     $rootScope.$on('minMaxGet', setMinMax);
 
     setMinMax();
-    
+
     $rootScope.$on('synchEndVisit', function () {
         console.log('synchEndVisit');
         setMinMax();
@@ -54,7 +55,7 @@ myApp.controller('VisitsController', function ($scope, $filter, $location, Loade
     });
 
     $scope.onMasters = function () {
-//        $scope.loading = true;
+        //        $scope.loading = true;
         $location.path('visits-master/' + $scope.date);
     };
     /**
@@ -77,7 +78,7 @@ myApp.controller('VisitsController', function ($scope, $filter, $location, Loade
 
     $scope.getData = function (key, quantity, forward, callback) {
         $scope.needUpdating = false;
-//        $scope.loading = true;
+        //        $scope.loading = true;
         //        console.log("scope.visit",$scope.visit);
         var resultArr = [];
         var date;
@@ -117,6 +118,7 @@ myApp.controller('VisitsController', function ($scope, $filter, $location, Loade
                     }
                     visitsByDate[key].push(visit);
                 });
+
                 var list = [];
                 for (var tmpdate = new Date(beginDate); tmpdate < endDate || tmpdate.toDateString() == endDate.toDateString(); tmpdate.setDate(tmpdate.getDate() + 1)) {
                     var page;
@@ -126,6 +128,11 @@ myApp.controller('VisitsController', function ($scope, $filter, $location, Loade
                         page = new VisitsPage(new Date(tmpdate), []);
                     list.push(page);
                 }
+
+                list = list.filter(function (page) {
+                    return page.list.length!=0;
+                });
+
                 $scope.loading = false;
                 callback(list);
             });
@@ -172,7 +179,9 @@ myApp.controller('VisitsController', function ($scope, $filter, $location, Loade
                             var page = new VisitsPage(new Date(tmpdate), $filter('orderBy')(visitsByDate[tmpdate.toDateString()], 'startTime'));
                             list.push(page);
                         } else
+                        {
                             list.push(new VisitsPage(new Date(tmpdate), []));
+                        }
                     }
 
                     var todayPeriod = DateHelper.getPeriod($scope.date, $scope.step);
@@ -255,12 +264,12 @@ myApp.controller('VisitsController', function ($scope, $filter, $location, Loade
         $scope.visitInfo.services = services.join(", ");
         $scope.visitInfo.cost = coast;
     };
-    
+
     $rootScope.$on('serverError', function () {
         console.log('serverError');
         $scope.correct = false;
         $scope.errorText = "Не удается подключиться к серверу. Пожалуйста, попробуйте зайти еще раз.";
     });
-    
-    
+
+
 });
