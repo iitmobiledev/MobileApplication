@@ -55,9 +55,16 @@ myApp.controller('VisitsController', function ($scope, $filter, $location, Loade
     });
 
     $scope.onMasters = function () {
-        //        $scope.loading = true;
+        $scope.loading = true;
         $location.path('visits-master/' + $scope.date);
     };
+    
+    $scope.toVisit = function(id){
+        $scope.loading = true;
+        console.log('id ', id);
+        $location.path('visit/'+id+'/visits');
+    };
+    
     /**
      *
      * @ngdoc method
@@ -130,7 +137,7 @@ myApp.controller('VisitsController', function ($scope, $filter, $location, Loade
                 }
 
                 list = list.filter(function (page) {
-                    return page.list.length!=0;
+                    return page.list.length != 0;
                 });
 
                 $scope.loading = false;
@@ -178,8 +185,7 @@ myApp.controller('VisitsController', function ($scope, $filter, $location, Loade
                         if (visitsByDate[tmpdate.toDateString()]) {
                             var page = new VisitsPage(new Date(tmpdate), $filter('orderBy')(visitsByDate[tmpdate.toDateString()], 'startTime'));
                             list.push(page);
-                        } else
-                        {
+                        } else {
                             list.push(new VisitsPage(new Date(tmpdate), []));
                         }
                     }

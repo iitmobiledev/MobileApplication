@@ -214,10 +214,12 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
             }
 
             $('.slider-back-button').on('click', function () {
+				$.scrolling = true;
                 $('.my-slider').shiftLeft();
             });
 
             $('.slider-next-button').on('click', function () {
+				$.scrolling = true;
                 $('.my-slider').shiftRight();
             });
 

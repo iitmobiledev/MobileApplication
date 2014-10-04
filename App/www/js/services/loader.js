@@ -9,6 +9,7 @@
 myApp.service("Loader", ["ModelConverter", "RealServer", "$rootScope", "fieldStatQuery", "Storage", "ClassesLastModified", "storageSupport",
     function (ModelConverter, RealServer, $rootScope, fieldStatQuery, Storage, ClassesLastModified, storageSupport) {
 
+        var serverError = false;
         var fieldStat = null;
         var Server = new RealServer(sessvars.token);
 
@@ -16,11 +17,16 @@ myApp.service("Loader", ["ModelConverter", "RealServer", "$rootScope", "fieldSta
             Server = new RealServer(sessvars.token);
             Server.fieldStat(fieldStatQuery, function (stat) {
                 console.log(stat);
-                if (stat.error)
-                    $rootScope.$emit('serverError', '');
-                fieldStat = stat;
-                Storage.update(ModelConverter.getObject("FieldStat", stat));
-                $rootScope.$emit('minMaxGet', '');
+                //                console.log();
+                if (stat.error) {
+                    serverError = true;
+//                    $rootScope.$emit('serverError', '');
+                } else {
+                    serverError = false;
+                    fieldStat = stat;
+                    Storage.update(ModelConverter.getObject("FieldStat", stat));
+                    $rootScope.$emit('minMaxGet', '');
+                }
             });
         }
 
@@ -28,19 +34,24 @@ myApp.service("Loader", ["ModelConverter", "RealServer", "$rootScope", "fieldSta
             if (storageSupport) {
                 Storage.get("FieldStat", 'primary', function (stat) {
                     if (stat) {
+                        //                        console.log('storage.get', stat);
+                        //                        if (stat.error)
+                        //                            getServerFieldStat();
+                        //                        else {
                         stat = ModelConverter.getObject("FieldStat", stat);
                         fieldStat = [];
                         angular.forEach(stat, function (value, key) {
                             fieldStat.push(value);
                         });
-//                        console.log(fieldStat);
+                        //                        }
+                        //                        console.log(fieldStat);
                     } else
                         getServerFieldStat();
                 });
             } else
                 getServerFieldStat();
         };
-//        getFieldStat();
+        //        getFieldStat();
 
         $rootScope.$on('synchEndOperationalStatistics', function () {
             getFieldStat();
@@ -72,7 +83,7 @@ myApp.service("Loader", ["ModelConverter", "RealServer", "$rootScope", "fieldSta
         return {
             getFieldStat: getFieldStat,
             getMaxDate: function (className) {
-//                $rootScope.$emit('serverError', '');
+                //                $rootScope.$emit('serverError', '');
                 //        if (serverStat && localStat) {
                 //            var typeStat = localStat.filter(function (stat) {
                 //                return stat.type == className;
@@ -97,6 +108,8 @@ myApp.service("Loader", ["ModelConverter", "RealServer", "$rootScope", "fieldSta
                     }
                 } catch (e) {
                     console.log(e.message);
+                    if (serverError)
+                        $rootScope.$emit('serverError', '');
                     return null;
                 }
             },
@@ -147,13 +160,14 @@ myApp.service("Loader", ["ModelConverter", "RealServer", "$rootScope", "fieldSta
                 if (storageSupport) {
                     Storage.get(className, primaryKey, function (result) {
                         if (result) {
-                            console.log(result);
+                            console.log("storage.get ", result);
                             var model = ModelConverter.getObject(className, result);
-                            console.log("model", model);
+                            //                            console.log("model", model);
                             callback(model);
                         } else {
                             Server.get(className, primaryKey, function (data) {
                                 var obj = ModelConverter.getObject(className, data);
+                                console.log("server.get ", obj);
                                 Storage.update(obj);
                                 callback(obj);
                             });

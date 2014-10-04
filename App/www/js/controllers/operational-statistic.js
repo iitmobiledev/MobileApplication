@@ -15,7 +15,7 @@
  * @requires myApp.service:DateHelper
  */
 myApp.controller('OperationalStatisticController', function ($scope, $location, DateHelper, Loader, $rootScope, $routeParams) {
-//    setMinMax();
+    //    setMinMax();
     var today;
     if (typeof ($routeParams.date) != 'undefined')
         today = new Date($routeParams.date);
@@ -35,7 +35,7 @@ myApp.controller('OperationalStatisticController', function ($scope, $location, 
 
     $scope.getData = function (key, quantity, forward, callback) {
         $scope.needUpdating = false; //???
-//        $scope.loading = true;
+        //        $scope.loading = true;
         var resultArr = [];
         var date;
         if (key) {
@@ -150,10 +150,10 @@ myApp.controller('OperationalStatisticController', function ($scope, $location, 
         $scope.reinit = true;
         //console.log("setMinMax", $scope.min, $scope.max);
     }
-    $scope.reinitStamp = function(){
+    $scope.reinitStamp = function () {
         return [
             $scope.min, $scope.max, $scope.step
-        ].join("##");
+            ].join("##");
     }
 
     $rootScope.$on('minMaxGet', setMinMax);
@@ -254,30 +254,37 @@ myApp.controller('OperationalStatisticController', function ($scope, $location, 
     }
 */
     $scope.goForDay = function () {
-        $scope.loading = true;
-        $(".periodButtons a").removeClass('active');
-        $(".day").addClass("active");
-        $scope.step = DateHelper.steps.DAY;
+        if ($scope.step != DateHelper.steps.DAY) {
+            $scope.loading = true;
+            $(".periodButtons a").removeClass('active');
+            $(".day").addClass("active");
+            $scope.step = DateHelper.steps.DAY;
+        }
         //$scope.date = new Date(getCurrentPeriod().begin);
     };
 
     $scope.goForWeek = function () {
-        $scope.loading = true;
-        $(".periodButtons a").removeClass('active');
-        $(".week").addClass("active");
-        $scope.step = DateHelper.steps.WEEK;
+        if ($scope.step != DateHelper.steps.WEEK) {
+            $scope.loading = true;
+            $(".periodButtons a").removeClass('active');
+            $(".week").addClass("active");
+            $scope.step = DateHelper.steps.WEEK;
+        }
         //$scope.date = new Date(getCurrentPeriod().begin);
     };
 
     $scope.goForMonth = function () {
-        $scope.loading = true;
-        $(".periodButtons a").removeClass('active');
-        $(".month").addClass("active");
-        $scope.step = DateHelper.steps.MONTH;
+        if ($scope.step != DateHelper.steps.MONTH) {
+            $scope.loading = true;
+            $(".periodButtons a").removeClass('active');
+            $(".month").addClass("active");
+            $scope.step = DateHelper.steps.MONTH;
+        }
         //$scope.date = new Date(getCurrentPeriod().begin);
     };
 
     $rootScope.$on('serverError', function () {
+        console.log('serverError');
         $scope.correct = false;
         $scope.errorText = "Не удается подключиться к серверу. Пожалуйста, попробуйте зайти еще раз.";
     });

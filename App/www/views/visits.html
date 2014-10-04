@@ -3,11 +3,12 @@
 <div class="upage-content">
     <div class="button-grouped flex widget uib_w_24" data-uib="app_framework/button_group" data-ver="1">
         <a id="timeButton" class="button widget uib_w_25 d-margins active" data-uib="app_framework/button" data-ver="1" analytics-on="click" analytics-event="ToVisitsPerTime" analytics-category="Визиты">По времени</a>
-        <a ng-click="onMasters()" class="button widget uib_w_26 d-margins" data-uib="app_framework/button" data-ver="1" analytics-on="click" analytics-event="ToVisitsPerMasters" analytics-category="Визиты">По мастерам</a>
+        <a ar-click="onMasters()" class="button widget uib_w_26 d-margins" data-uib="app_framework/button" data-ver="1" analytics-on="click" analytics-event="ToVisitsPerMasters" analytics-category="Визиты">По мастерам</a>
     </div>
     
     <slider content-id="visits" get-data='getData' key-expression='getKey' update-date='updateDate' min='min' max='max' loaded-slide-count='loadedSlideCount' max-slide-count='maxSlideCount'></slider>
     <load-bar param-name="loading" ></load-bar>
+    <error-show correct='correct' error='errorText'></error-show>
     <script type="text/ng-template" id="visits">
     <div id="visitsContent">
         <date-changer date='page.date' step='$parent.step' has-future-data='$parent.hasFutureData(page.date)' has-prev-data='$parent.hasPrevData(page.date)'></date-changer>
@@ -15,18 +16,18 @@
         <ul class="list inset">
             <li ng-repeat="visit in page.list" id="visitsPerTime" style="border-radius:0;">
                 {{$parent.getVisitInfo(visit)}}
-                <a href="#/visit/{{visitInfo.id}}/visits">
-                    <div style="width:100%">
+                <a href="#/visit/{{visit.id}}/visits">
+                    <div style="width:100%" ng-click="toVisit(visit.id)">
                         <visit-status status='visitInfo.status' style=""></visit-status>
                         
-                        <span style="float:right;top:-25px;position:relative"><img style="top:-23px;left: -95px;max-height: 13px;" src="images/time.png" ng-show="hasTime"> {{visitInfo.time}}</span>
-                        <div>
-                            <span style="width:65%;white-space:nowrap;text-overflow:ellipsis;overflow: hidden; font-size:18px; font-weight:500; margin-bottom:5px;">
+                        <span ng-click="toVisit(visit.id)" style="float:right;top:-25px;position:relative"><img style="top:-23px;left: -95px;max-height: 13px;" src="images/time.png" ng-show="hasTime"> {{visitInfo.time}}</span>
+                        <div ng-click="toVisit(visit.id)">
+                            <span style="width:65%;white-space:nowrap;text-overflow:ellipsis;overflow: hidden; font-size:18px; font-weight:500; margin-bottom:5px;" ng-click="toVisit(visit.id)">
                                         {{visitInfo.client}}
                                     </span>
                         </div>
-                            <span style="display: inline-block;max-width:75%;white-space:nowrap;text-overflow:ellipsis;overflow: hidden;">{{visitInfo.services}} —</span>
-                            <span style="display: inline-block;text-align:right;max-width:18%;white-space:nowrap;text-overflow:ellipsis;overflow: hidden;">{{visitInfo.cost| money:0}} <span class="price">ю</span>
+                            <span ng-click="toVisit(visit.id)" style="display: inline-block;max-width:75%;white-space:nowrap;text-overflow:ellipsis;overflow: hidden;">{{visitInfo.services}} —</span>
+                            <span ng-click="toVisit(visit.id)" style="display: inline-block;text-align:right;max-width:18%;white-space:nowrap;text-overflow:ellipsis;overflow: hidden;">{{visitInfo.cost| money:0}} <span class="price">ю</span>
                             </span>
                     </div>
                 </a>

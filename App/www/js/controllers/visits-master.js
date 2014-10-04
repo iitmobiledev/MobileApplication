@@ -56,10 +56,14 @@ myApp.controller('VisitsMasterController', function ($scope, $filter, $location,
      * сортировкой по времени.
      */
     $scope.onTime = function () {
-        //        $scope.loading = true;
-        //        var pk = angular.element('.slick-active').attr('contentkey');
+        $scope.loading = true;
         $location.path('visits/' + $scope.date);
     }
+    
+    $scope.toVisit = function(id){
+        $scope.loading = true;
+        $location.path('visit/'+id+'/visits-master');
+    };
 
     //    $scope.visits = [];
     $scope.getVisits = function (visitsByMaster) {

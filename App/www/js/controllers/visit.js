@@ -30,10 +30,8 @@ myApp.controller('VisitController', function ($scope, $filter, $routeParams, Loa
                 hasData = true;
                 $scope.date = new Date(obj.date.getFullYear(), obj.date.getMonth(), obj.date.getDate(), 0, 0, 0);
                 $scope.backLink = "#/" + $routeParams.backLink + "/" + $scope.date;
-                //                console.log('$scope.backLink', $scope.backLink);
                 var beginDate = new Date(obj.date.getFullYear(), obj.date.getMonth(), obj.date.getDate(), 0, 0, 0),
                     endDate = new Date(obj.date.getFullYear(), obj.date.getMonth(), obj.date.getDate(), 23, 59, 59);
-                //                console.log(beginDate, endDate);
                 Loader.search("Visit", {
                     dateFrom: beginDate,
                     dateTill: endDate,
@@ -42,7 +40,7 @@ myApp.controller('VisitController', function ($scope, $filter, $routeParams, Loa
                     $scope.maxSlideCount = data.length + 1;
 
                     obj.client.phone = formatLocal("RU", obj.client.phone);
-                    console.log(obj.client.phone);
+//                    console.log(obj.client.phone);
                     if (data.length == 0)
                         data.push(obj);
 

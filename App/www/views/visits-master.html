@@ -2,17 +2,18 @@
 <orient orientation="'portrait'"></orient>
 <div class="upage-content">
     <div class="button-grouped flex widget uib_w_24" data-uib="app_framework/button_group" data-ver="1">
-        <a ng-click="onTime()" class="button widget uib_w_25 d-margins" data-uib="app_framework/button" data-ver="1">По времени</a>
+        <a ar-click="onTime()" class="button widget uib_w_25 d-margins" data-uib="app_framework/button" data-ver="1">По времени</a>
         <a id="mastersButton" class="button widget uib_w_26 d-margins active" data-uib="app_framework/button" data-ver="1">По мастерам</a>
     </div>
     <slider content-id="visits-master" get-data='getData' key-expression='getKey' update-date='updateDate'  min='min' max='max' loaded-slide-count='loadedSlideCount' max-slide-count='maxSlideCount'></slider>
     <load-bar param-name="loading" ></load-bar>
+    <error-show correct='correct' error='errorText'></error-show>
     <script type="text/ng-template" id="visits-master">
         <div id="visitsContent">
             <date-changer date='page.date' step='$parent.step' has-future-data='hasFutureData(page.date)' has-prev-data='hasPrevData(page.date)'></date-changer>
             <status-statistics visits='page.visits'></status-statistics>
             <ul class="list inset" ng-repeat="masterVis in page.list" id="visitsPerMasters">
-                <li class="divider" ng-click="toMaster(masterVis.master.id)">
+                <li class="divider">
                 {{$parent.getMasterInfo(masterVis.master)}}
                     <img style="border-radius: 50%;margin-right: 10px;border: 1px solid rgb(149,24,185);height: 40px; width: 40px;" ng-src="http://test.arnica.pro{{masterVis.master.photo}}" ng-show="hasMaster">
                     {{master}}
@@ -21,18 +22,18 @@
                     <li style="border-top: none;">
                         {{$parent.getVisitByMasterInfo(visit)}}
                         <a href="#/visit/{{visit.id}}/visits-master" style="text-decoration: none;color: black;">
-                            <div style="width:100%">
+                            <div style="width:100%" ng-click="toVisit(visit.id)">
                                 <visit-status status='masterVisitInfo.status'></visit-status>
-                                <span style="float:right;top:-25px;position:relative"><img style="top:-25px;left: -95px;" src="images/time.png" ng-show="hasTime"> {{masterVisitInfo.time}}</span>
-                                <div>
-                                    <span style="width:65%;white-space:nowrap;text-overflow:ellipsis;overflow: hidden; font-size:18px; font-weight:500; margin-bottom:5px;">
+                                <span ng-click="toVisit(visit.id)" style="float:right;top:-25px;position:relative"><img style="top:-25px;left: -95px;" src="images/time.png" ng-show="hasTime"> {{masterVisitInfo.time}}</span>
+                                <div ng-click="toVisit(visit.id)">
+                                    <span ng-click="toVisit(visit.id)" style="width:65%;white-space:nowrap;text-overflow:ellipsis;overflow: hidden; font-size:18px; font-weight:500; margin-bottom:5px;">
                                                     {{masterVisitInfo.client}}
                                                 </span>
                                 </div>
-                                <div>
+                                <div ng-click="toVisit(visit.id)">
 
-                                    <span style="display: inline-block;max-width:75%;white-space:nowrap;text-overflow:ellipsis;overflow: hidden;">{{masterVisitInfo.service}} —</span>
-                                    <span style="display: inline-block;text-align:right;max-width:18%;white-space:nowrap;text-overflow:ellipsis;overflow: hidden;">{{masterVisitInfo.cost| money:0}}  <span class="price">ю</span>
+                                    <span ng-click="toVisit(visit.id)" style="display: inline-block;max-width:75%;white-space:nowrap;text-overflow:ellipsis;overflow: hidden;">{{masterVisitInfo.service}} —</span>
+                                    <span ng-click="toVisit(visit.id)" style="display: inline-block;text-align:right;max-width:18%;white-space:nowrap;text-overflow:ellipsis;overflow: hidden;">{{masterVisitInfo.cost| money:0}}  <span class="price">ю</span>
                                 </div>
                             </div>
                         </a>
@@ -49,3 +50,4 @@
     </script>
 </div>
 <footer-content show="true"></footer-content>
+<!--<a href="#/visit/{{visit.id}}/visits-master" style="text-decoration: none;color: black;">-->

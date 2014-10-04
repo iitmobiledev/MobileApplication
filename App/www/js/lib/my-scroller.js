@@ -139,6 +139,8 @@
 
 
             if (Math.abs(this.swipeLength) > 20) {
+                $.scrolling = true;
+//                console.log($.scrolling);
                 this.verticalSwipe = true;
                 //                if (this.distanceFromTop)
                 //                    this.distanceFromTop = this.getTop();
@@ -174,13 +176,14 @@
         }
 
         MyScroller.prototype.swipeEnd = function (event) {
-            //console.log("swipeENDvertical")
             this.verticalSwipe = false;
             if (this.curY === undefined) {
                 return false;
             }
 
             if (Math.abs(this.swipeLength) >= this.minSwipe) {
+                $.scrolling = false;
+//                console.log($.scrolling);
                 $(event.target).on('click', function (event) {
                     event.stopImmediatePropagation();
                     event.stopPropagation();
