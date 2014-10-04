@@ -283,6 +283,9 @@ myApp.controller('VisitsMasterController', function ($scope, $filter, $location,
             $scope.master = master.lastName + " " + master.firstName;
         } else
             $scope.hasMaster = false;
+        
+        if (master.photo == null)
+            $scope.hasMaster = false;
     };
 
     $scope.hasMaster = true;
