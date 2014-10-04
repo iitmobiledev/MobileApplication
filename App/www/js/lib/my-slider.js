@@ -9,7 +9,7 @@
     }
     (function ($) {
         var MySlider = window.MySlider || {};
-
+		$.scrolling = false;
         MySlider = (function () {
                 function MySlider(element, settings) {
                     this.defaults = {
@@ -186,6 +186,7 @@
                     if (callback) {
                         callback.call();
                     }
+					$.scrolling = false;
                 }
             });
         };
@@ -265,6 +266,7 @@
             }
 
             if (this.swipeLength > 20) {
+				$.scrolling = true;
                 this.$slideTrack.find('.slide').scrollerDisable();
             }
 

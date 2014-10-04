@@ -1,12 +1,12 @@
 <header-content title="'Настройки'" show-back-button="false" show="true"></header-content>
 <footer-content show="true"></footer-content>
 
-<div style="margin: 2% 5%;padding: 5px;" class="ng-scope">
-    <div id="console">{{console}}</div>
-    <p style="font-size: 16pt;">{{user.salon}}</p>
-    <h1 style="margin: 15px 0;font-weight: lighter;" ng-click="showConsole()">{{user.firstname}} {{user.lastname}}</h1>
+<div style="margin: 2% 5%;padding: 5px;" class="ng-scope" ng-click="showConsole()">
+<!--    <div id="console">{{console}}</div>-->
+    <p style="font-size: 16pt;">{{user.organizationName}}</p>
+    <h1 style="margin: 15px 0;font-weight: lighter;">{{user.firstname}} {{user.lastname}}</h1>
     <p></p>
-    <p>{{user.email}}</p>
+    <p >{{user.email}}</p>
 </div>
 <ul class="inset list" style="border-radius: 0;" data-appbuilder-object="list" data-position="static">
     <li>

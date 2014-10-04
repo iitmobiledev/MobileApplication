@@ -7,22 +7,27 @@
  */
 myApp.controller('SettingsController', function ($scope, authService, $location) {
     authService.getUserInfo(sessvars.token, function (userInfo) {
-        if (userInfo)
+        if (userInfo){
+            console.log(userInfo);
             $scope.user = userInfo;
+        }
     });
 
-    $scope.console = "";
+//    $scope.console = "";
     var counter = 0;
 
     $scope.showConsole = function () {
         counter++;
         if (counter > 14) {
+            $('#console').html("");
             counter = 0;
             console.log = function (msg) {
-                $scope.console += msg;
+                $('#console').append(msg+' ');
+//                $scope.console += msg;
             };
             console.error = function (msg) {
-                $scope.console += msg;
+                $('#console').append(msg+' ');
+//                $scope.console += msg;
             };
         }
     }
