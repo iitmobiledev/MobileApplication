@@ -95,22 +95,22 @@
             if (this.curX === undefined) {
                 return false;
             }
-//            this.curX = null;
+            //            this.curX = null;
 
             if (this.swipeLength >= this.minSwipe) {
-//                $(event.target).on('click', function (event) {
-//                    event.stopImmediatePropagation();
-//                    event.stopPropagation();
-//                    event.preventDefault();
-//                    $(event.target).off('click');
-//                });
+                //                $(event.target).on('click', function (event) {
+                //                    event.stopImmediatePropagation();
+                //                    event.stopPropagation();
+                //                    event.preventDefault();
+                //                    $(event.target).off('click');
+                //                });
                 var current = this.getCurrent();
                 //current.scrollerRewind()
                 switch (this.swipeDirection()) {
                 case 'left':
                     this.slideHandler(this.currentSlide + 1, function () {
                         current.scrollerRewind();
-                                                //console.log("current after slideHandler", current);
+                        //console.log("current after slideHandler", current);
                     });
                     this.startX = null;
                     this.startY = null;
@@ -119,7 +119,7 @@
                 case 'right':
                     this.slideHandler(this.currentSlide - 1, function () {
                         current.scrollerRewind();
-                                                //console.log("current after slideHandler", current);
+                        //console.log("current after slideHandler", current);
                     });
                     this.startX = null;
                     this.startY = null;
@@ -132,7 +132,7 @@
                     this.startY = null;
                 }
             }
-            
+
             this.swipeLength = null;
 
 
@@ -358,17 +358,23 @@
 
         MySlider.prototype.addLoadBar = function (element, toRight) {
             if (toRight) {
+                element.addClass("LoadSlideRight");
                 this.appendSlide(element);
             } else {
+                element.addClass("LoadSlideLeft");
                 this.prependSlide(element);
             }
         }
 
         MySlider.prototype.removeLoadBar = function (fromRight) {
             if (fromRight) {
-                this.removeSlideRight();
+                //                this.removeSlideRight();
+                $('.LoadSlideRight').remove();
+                this.slideCount--;
             } else {
-                this.removeSlideLeft();
+                //                this.removeSlideLeft();
+                $('.LoadSlideLeft').remove();
+                this.slideCount--;
             }
         }
 
@@ -421,7 +427,7 @@
 
         MySlider.prototype.shiftSlide = function (toRight) {
             var current = this.getCurrent();
-            
+
             //если текущий слайд - крайний, то ничего не делать
             if (toRight) {
                 if (this.currentSlide !== null) {

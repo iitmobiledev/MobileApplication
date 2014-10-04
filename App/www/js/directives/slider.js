@@ -85,18 +85,17 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
                                     ready = false;
                                     $('.my-slider').addLoadBarLeft(loadslider);
                                     dataCallback(key, count, false, function(content) {
-                                        $('.my-slider').removeLoadBarLeft();
                                         ready = true;
                                         addPastData(content);
+                                        $('.my-slider').removeLoadBarLeft();
                                     });
                                 } else if ($('.my-slider').whichFromRight($('.my-slider').getCurrentSlide()) <= 1 && scope.future) {
                                      var key = getCurrentKey($('.my-slider').getLastSlide());
                                     $('.my-slider').addLoadBarRight(loadslider);
                                     dataCallback(key, count, true, function(content){
-                                        $('.my-slider').removeLoadBarRight();
                                         ready = true;
                                         addFutureData(content);
-                                        
+                                        $('.my-slider').removeLoadBarRight();
                                     });
                                 }
                                 scope.$apply();
