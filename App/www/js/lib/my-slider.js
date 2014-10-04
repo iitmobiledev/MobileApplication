@@ -368,12 +368,12 @@
 
         MySlider.prototype.removeLoadBar = function (fromRight) {
             if (fromRight) {
-                //                this.removeSlideRight();
                 $('.LoadSlideRight').remove();
                 this.slideCount--;
             } else {
-                //                this.removeSlideLeft();
                 $('.LoadSlideLeft').remove();
+                this.currentSlide -= 1;
+                this.setTranslatePosition(this.getLeft(this.currentSlide));
                 this.slideCount--;
             }
         }
@@ -386,6 +386,7 @@
                 height: this.$slideTrack.height()
             });
             this.$slideTrack.append(element);
+
             this.$slideTrack.css("width", this.options.width * this.slideCount + 'px');
             if (this.currentSlide === null) {
                 this.currentSlide = 0;
@@ -400,12 +401,22 @@
             $(element).addClass("slide").scroller({
                 height: this.$slideTrack.height()
             });
-            this.$slideTrack.prepend(element);
+            //            this.$slideTrack.prepend(element);
+            var lb = $(element).find('.LoadSlideLeft');
+            if (!lb.length) {
+                this.$slideTrack.prepend(element);
+            } else {
+                element.insertAfter(lb)
+            }
             this.$slideTrack.css("width", this.options.width * this.slideCount + 'px');
             if (this.currentSlide === null) {
                 this.currentSlide = 0;
             } else {
-                this.currentSlide += 1;
+                if (lb.length && this.currentSlide == 0) {
+                    this.currentSlide = 0;
+                } else {
+                    this.currentSlide += 1
+                }
                 this.setTranslatePosition(this.getLeft(this.currentSlide));
             }
         }
