@@ -383,11 +383,18 @@
             if (fromRight) {
                 $('.LoadSlideRight').remove();
                 this.slideCount--;
+                if (this.getCurrent().html() == undefined){
+                    this.shiftSlide(false);
+                }
             } else {
-                $('.LoadSlideLeft').remove();
-                this.currentSlide -= 1;
+                $('.LoadSlideLeft').remove();  
+                if (this.currentSlide != 0)
+                {
+                    this.currentSlide -= 1;
+                }
                 this.setTranslatePosition(this.getLeft(this.currentSlide));
                 this.slideCount--;
+                
             }
         }
 

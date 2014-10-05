@@ -211,8 +211,8 @@ myApp.controller('OperationalStatisticController', function ($scope, $location, 
     });
 
     $scope.updateDate = function (curScope) {
-        //console.log('updateDate')
-        $scope.date = new Date(curScope.page.date);
+        if (curScope.page && curScope.page.date)
+            $scope.date = new Date(curScope.page.date);
     }
 
     /**
