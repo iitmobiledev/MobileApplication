@@ -19,19 +19,17 @@ myApp.service("Loader", ["ModelConverter", "RealServer", "$rootScope", "fieldSta
         };
 
         function getServerFieldStat() {
-            Storage.get("UserToken", 'primary', function (result) {
-                Server = new RealServer(result.token);
-                Server.fieldStat(fieldStatQuery, function (stat) {
-                    console.log(stat);
-                    if (stat.error) {
-                        serverError = true;
-                    } else {
-                        serverError = false;
-                        fieldStat = stat;
-                        Storage.update(ModelConverter.getObject("FieldStat", stat));
-                        $rootScope.$emit('minMaxGet', '');
-                    }
-                });
+            Server = new RealServer(localStorage.getItem("UserToken"));
+            Server.fieldStat(fieldStatQuery, function (stat) {
+                console.log(stat);
+                if (stat.error) {
+                    serverError = true;
+                } else {
+                    serverError = false;
+                    fieldStat = stat;
+                    Storage.update(ModelConverter.getObject("FieldStat", stat));
+                    $rootScope.$emit('minMaxGet', '');
+                }
             });
         }
 

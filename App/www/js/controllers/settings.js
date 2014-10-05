@@ -7,17 +7,12 @@
  */
 myApp.controller('SettingsController', function ($scope, AuthService, $location, Storage) {
 
-    var tokenObj;
-    
-    Storage.get('UserToken', 'primary', function (result) {
-        tokenObj = result;
-        AuthService.getUserInfo(tokenObj.token, function (userInfo) {
+        AuthService.getUserInfo(localStorage.getItem("UserToken"), function (userInfo) {
             if (userInfo) {
                 console.log(userInfo);
                 $scope.user = userInfo;
             }
         });
-    });
 
     var counter = 0;
 
@@ -46,10 +41,11 @@ myApp.controller('SettingsController', function ($scope, AuthService, $location,
      * переход на страницу авторизации.
      */
     $scope.exit = function () {
-        AuthService.logout(tokenObj.token, function () {
-            Storage.del(tokenObj, function(){
-                $location.path('authorization');
-            })            
+        AuthService.logout(localStorage.getItem("UserToken"), function () {
+            localStorage.setItem("UserToken", null);
+            //            Storage.del(tokenObj, function(){
+            $location.path('authorization');
+            //            })            
         });
     };
 });

@@ -10,17 +10,17 @@
  */
 myApp.controller('AuthentificationController', function ($scope, $location, AuthService, Synchronizer, Loader, Storage, ModelConverter) {
     $scope.loading = true;
-    Storage.get("UserToken", "primary", function (result) {
+    
+    var result = localStorage.getItem("UserToken");
+    console.log('result', result);
+    if (result && result != 'null') {
+        Loader.getFieldStat();
+        Synchronizer.beginSynch();
+        $location.path('index');
+    } else
         $scope.loading = false;
-        if (result)
-            $location.path('index');
-    });
-
-    //    sessvars.$.clearMem();
+    
     $scope.correct = true;
-    //    if (sessvars.token) {
-    //        $location.path('index');
-    //    }
 
     /**
      *
@@ -43,10 +43,7 @@ myApp.controller('AuthentificationController', function ($scope, $location, Auth
                 $scope.correct = false;
             } else {
                 if (token) {
-                    //                    sessvars.token = token;
-                    Storage.update(ModelConverter.getObject("UserToken", {
-                        token: token
-                    }));
+                    localStorage.setItem("UserToken", token)
                     Loader.getFieldStat();
                     Synchronizer.beginSynch();
                     $location.path('index');

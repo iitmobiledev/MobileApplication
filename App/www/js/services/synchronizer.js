@@ -70,11 +70,11 @@ myApp.service("Synchronizer", ["Storage", "RealServer", "ModelConverter", "Loade
                     if (!(className in lastLocalModified))
                         callback();
                     else {
-//                        console.log(className, new Date(lastLocalModified[className]), new Date(lastServerModified[className]));
+                        //                        console.log(className, new Date(lastLocalModified[className]), new Date(lastServerModified[className]));
                         if (new Date(lastLocalModified[className]) < new Date(lastServerModified[className])) {
                             console.log('synch need');
                             lastLocalModified[className] = new Date(lastServerModified[className]);
-//                            console.log(lastLocalModified);
+                            //                            console.log(lastLocalModified);
                             Storage.update(lastLocalModified, function () {
                                 $rootScope.$emit('synchEnd' + className, '');
                                 callback();
@@ -92,18 +92,16 @@ myApp.service("Synchronizer", ["Storage", "RealServer", "ModelConverter", "Loade
         return {
             beginSynch: function () {
                 var synch = this;
-                Storage.get("UserToken", 'primary', function (result) {
-                    Server = new RealServer(result.token);
-                    if (storageSupport) {
-                        synchCheck("OperationalStatistics", function () {
-                            synchCheck("Visit", function () {
-                                synchCheck("Expenditure", function () {
-                                    setInterval(synch.beginSynch, 15000);
-                                });
+                Server = new RealServer(localStorage.getItem("UserToken"));
+                if (storageSupport) {
+                    synchCheck("OperationalStatistics", function () {
+                        synchCheck("Visit", function () {
+                            synchCheck("Expenditure", function () {
+                                setInterval(synch.beginSynch, 15000);
                             });
                         });
-                    }
-                });
+                    });
+                }
             }
         };
             }]);
