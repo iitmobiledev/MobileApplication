@@ -234,6 +234,8 @@
             return 'vertical';
 
         };
+        
+        var current, progression;
 
         //�������� ��� �������� ������� �� ������
         MySlider.prototype.swipeMove = function (event) {
@@ -248,10 +250,17 @@
             if (!this.swipe || touches && touches.length !== 1) {
                 return false;
             }
+            
+            current = this.curX;
 
             this.curX = touches !== undefined ? touches[0].pageX : event.clientX;
             this.curY = touches !== undefined ? touches[0].pageY : event.clientY;
 
+//            console.log("start", this.startX);
+//            console.log("current", this.curX, current);
+//            if (this.curX != current)
+//                progression = this.curX > current ? 1 : -1;
+//            console.log("progression", progression);
             this.swipeLength = Math.round(Math.sqrt(
                 Math.pow(this.curX - this.startX, 2)));
 
@@ -278,6 +287,8 @@
                 event.preventDefault();
             }
 
+//            if (this.curX != current)
+//                positionOffset = this.curX > current ? 1 : -1;
             positionOffset = this.curX > this.startX ? 1 : -1;
 
             this.swipeLeft = curLeft + this.swipeLength * positionOffset;

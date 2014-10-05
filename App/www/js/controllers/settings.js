@@ -5,15 +5,20 @@
  * @requires myApp.service:UserLoader
  * @requires myApp.service:UserLogout
  */
-myApp.controller('SettingsController', function ($scope, authService, $location) {
-    authService.getUserInfo(sessvars.token, function (userInfo) {
-        if (userInfo){
-            console.log(userInfo);
-            $scope.user = userInfo;
-        }
+myApp.controller('SettingsController', function ($scope, AuthService, $location, Storage) {
+
+    var tokenObj;
+    
+    Storage.get('UserToken', 'primary', function (result) {
+        tokenObj = result;
+        AuthService.getUserInfo(tokenObj.token, function (userInfo) {
+            if (userInfo) {
+                console.log(userInfo);
+                $scope.user = userInfo;
+            }
+        });
     });
 
-//    $scope.console = "";
     var counter = 0;
 
     $scope.showConsole = function () {
@@ -22,12 +27,10 @@ myApp.controller('SettingsController', function ($scope, authService, $location)
             $('#console').html("");
             counter = 0;
             console.log = function (msg) {
-                $('#console').append(msg+' ');
-//                $scope.console += msg;
+                $('#console').append(msg + ' ');
             };
             console.error = function (msg) {
-                $('#console').append(msg+' ');
-//                $scope.console += msg;
+                $('#console').append(msg + ' ');
             };
         }
     }
@@ -43,9 +46,10 @@ myApp.controller('SettingsController', function ($scope, authService, $location)
      * переход на страницу авторизации.
      */
     $scope.exit = function () {
-        authService.logout(sessvars.token, function () {
-            sessvars.$.clearMem();
-            $location.path('authorization');
+        AuthService.logout(tokenObj.token, function () {
+            Storage.del(tokenObj, function(){
+                $location.path('authorization');
+            })            
         });
     };
 });

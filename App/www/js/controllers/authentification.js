@@ -8,13 +8,19 @@
  * логином и паролем.</p>
  * @requires myApp.service:UserAuthentification
  */
-myApp.controller('AuthentificationController', function ($scope, $location, authService, Synchronizer, Loader) {
-    sessvars.$.clearMem();
-    $scope.loading = false;
+myApp.controller('AuthentificationController', function ($scope, $location, AuthService, Synchronizer, Loader, Storage, ModelConverter) {
+    $scope.loading = true;
+    Storage.get("UserToken", "primary", function (result) {
+        $scope.loading = false;
+        if (result)
+            $location.path('index');
+    });
+
+    //    sessvars.$.clearMem();
     $scope.correct = true;
-//    if (sessvars.token) {
-//        $location.path('index');
-//    }
+    //    if (sessvars.token) {
+    //        $location.path('index');
+    //    }
 
     /**
      *
@@ -29,15 +35,18 @@ myApp.controller('AuthentificationController', function ($scope, $location, auth
         $scope.loading = true;
         var login = document.getElementById('login').value;
         var password = document.getElementById('password').value;
-        authService.login(login, password, function (token) {
-            console.log("token ", token);
+        AuthService.login(login, password, function (token) {
+            //            console.log("token ", token);
             $scope.loading = false;
             if (token == 'error') {
                 $scope.errorText = "Не удается подключиться к интернету.";
                 $scope.correct = false;
             } else {
                 if (token) {
-                    sessvars.token = token;
+                    //                    sessvars.token = token;
+                    Storage.update(ModelConverter.getObject("UserToken", {
+                        token: token
+                    }));
                     Loader.getFieldStat();
                     Synchronizer.beginSynch();
                     $location.path('index');
