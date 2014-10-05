@@ -62,7 +62,7 @@ myApp.service("Synchronizer", ["Storage", "RealServer", "ModelConverter", "Loade
         }
 
         function synchCheck(className, callback) {
-//            console.log('synch check');
+            //            console.log('synch check');
             Storage.get("LastModified", 'primary', function (lastLocalModified) {
                 Server.lastModified(["OperationalStatistics", "Visit", "Expenditure"], function (lastServerModified) {
                     //                    console.log(lastLocalModified);
@@ -73,8 +73,14 @@ myApp.service("Synchronizer", ["Storage", "RealServer", "ModelConverter", "Loade
 //                        console.log(className, new Date(lastLocalModified[className]), new Date(lastServerModified[className]));
                         if (new Date(lastLocalModified[className]) < new Date(lastServerModified[className])) {
                             console.log('synch need');
-                            if (synchEnd)
-                                updateData(className, 20, 0, callback, lastLocalModified, lastServerModified);
+                            lastLocalModified[className] = new Date(lastServerModified[className]);
+//                            console.log(lastLocalModified);
+                            Storage.update(lastLocalModified, function () {
+                                $rootScope.$emit('synchEnd' + className, '');
+                                callback();
+                            });
+                            //                            if (synchEnd)
+                            //                                updateData(className, 20, 0, callback, lastLocalModified, lastServerModified);
                         } else {
                             callback();
                         }
@@ -92,7 +98,7 @@ myApp.service("Synchronizer", ["Storage", "RealServer", "ModelConverter", "Loade
                         synchCheck("OperationalStatistics", function () {
                             synchCheck("Visit", function () {
                                 synchCheck("Expenditure", function () {
-                                    setInterval(synch.beginSynch, 10000);
+                                    setInterval(synch.beginSynch, 15000);
                                 });
                             });
                         });
@@ -100,7 +106,7 @@ myApp.service("Synchronizer", ["Storage", "RealServer", "ModelConverter", "Loade
                 });
             }
         };
-    }]);
+            }]);
 
 //var $inj = angular.injector(['myApp']);
 //var synchronizer = $inj.get('Synchronizer');

@@ -32,8 +32,8 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
             var dataCallback = scope.$eval(attrs.getData);
             var keyFunc = scope.$eval(attrs.keyExpression);
             var updateDate = scope.$eval(attrs.updateDate) || function () {
-                return;
-            };
+                    return;
+                };
 
 
             var contentID = attrs.contentId;
@@ -45,6 +45,14 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
             var count = scope.$eval(attrs.loadedSlideCount) || 5;
             var maxCount = scope.$eval(attrs.maxSlideCount) || 15;
 
+            var needUpdating;
+            var updateNeedUpdating = function () {
+                needUpdating = scope.$eval(attrs.needUpdating);
+                if (needUpdating)
+                    updateSlider();
+            };
+            scope.$watch(attrs.needUpdating, updateNeedUpdating);
+            updateNeedUpdating();
 
             var ready = false;
 
@@ -216,12 +224,12 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
             }
 
             $('.slider-back-button').on('click', function () {
-				$.scrolling = true;
+                $.scrolling = true;
                 $('.my-slider').shiftLeft();
             });
 
             $('.slider-next-button').on('click', function () {
-				$.scrolling = true;
+                $.scrolling = true;
                 $('.my-slider').shiftRight();
             });
 
@@ -274,7 +282,10 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
                 return $(slide).attr('contentkey');
             }
 
-
+            function updateSlider() {
+                console.log(getCurrentKey());
+                dataCallback(null, count, true, addCurrentDayData);
+            }
         },
         templateUrl: 'views/slider.html'
 

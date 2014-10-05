@@ -46,11 +46,13 @@ myApp.service("Storage", ["$injector",
          * @param {Object} obj объект модель
          * @description Добавляет объект в контейнер, если объект с таким же первичным ключом уже присутствует в контейнере, данные должны быть обновлены Вложенные объекты также должны быть добавлены
          */
-        var update = function (obj) {
+        var update = function (obj, callback) {
             try {
                 var serv = $injector.get(obj.getClass());
                 serv.onUpdate(obj);
                 storage.setItem(obj.getClass() + ":" + obj.getKey().join(':'), obj);
+                if (callback)
+                    callback();
             } catch (e) {
                 console.log(e.message);
             }
