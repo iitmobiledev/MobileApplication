@@ -1,7 +1,7 @@
 myApp.service("Synchronizer", ["Storage", "RealServer", "ModelConverter", "Loader", "$rootScope", "storageSupport",
     function (Storage, RealServer, ModelConverter, Loader, $rootScope, storageSupport) {
-
         var Server;
+        var synchEnd = true;
 
         function save(data, className, offset, callback) {
             if (offset >= data.length) {
@@ -20,20 +20,21 @@ myApp.service("Synchronizer", ["Storage", "RealServer", "ModelConverter", "Loade
         };
 
         function updateData(className, count, offset, callback, lastLocalModified, lastServerModified) {
-            var classModified;
-            if (lastLocalModified)
-                classModified = lastLocalModified[className];
-            else
-                classModified = null;
+            synchEnd = false;
+            //            var localMod = new Date(lastLocalModified[className]);
+            //            var dateString = localMod.getFullYear()+"-"+localMod.getMonth()+"-"+localMod.getDate()+" "+localMod.getHours()+":"+localMod.getMinutes()+":"+localMod.getSeconds();
+            //            console.log(dateString);
             Server.search(className, {
-                "modifiedSince": classModified,
+                "modifiedSince": new Date(lastLocalModified[className]),
                 "count": count,
                 "offset": offset
             }, function (data) {
+                //                console.log('data ', className, data);
                 if (data == null || data.length < count) {
                     Server.lastModified(["OperationalStatistics", "Visit", "Expenditure"], function (date) {
                         lastLocalModified = lastServerModified;
                         var lastMod = ModelConverter.getObject("LastModified", lastLocalModified);
+                        console.log("lastMod ", lastMod);
                         Storage.update(lastMod);
                         if (date[className] == lastServerModified[className]) {
                             Server.fieldStat([{
@@ -43,7 +44,8 @@ myApp.service("Synchronizer", ["Storage", "RealServer", "ModelConverter", "Loade
                                 var fieldStat = ModelConverter.getObject("FieldStat", stat);
                                 Storage.update(fieldStat);
                                 save(data, className, 0, callback);
-                                $rootScope.$emit('synchEnd'+className, '');
+                                synchEnd = true;
+                                $rootScope.$emit('synchEnd' + className, '');
                             });
                         } else {
                             updateData(className, count, 0, callback, lastLocalModified, date);
@@ -60,16 +62,28 @@ myApp.service("Synchronizer", ["Storage", "RealServer", "ModelConverter", "Loade
         }
 
         function synchCheck(className, callback) {
-            //console.log('synch check');
             Storage.get("LastModified", 'primary', function (lastLocalModified) {
                 Server.lastModified(["OperationalStatistics", "Visit", "Expenditure"], function (lastServerModified) {
+                    //                    console.log(lastLocalModified);
                     lastLocalModified = ModelConverter.getObject("LastModified", lastLocalModified);
-//                    console.log(lastLocalModified, lastServerModified);
-                    if ( !(className in lastLocalModified) && new Date(lastLocalModified[className]) < new Date(lastServerModified[className])) {
-                        console.log('synch need');
-                        updateData(className, 20, 0, callback, lastLocalModified, lastServerModified);
-                    } else {
+                    if (!(className in lastLocalModified))
                         callback();
+                    else {
+//                        alert(className + new Date(lastLocalModified[className]) + new Date(lastServerModified[className]));
+//                        console.log("className", className, new Date(lastLocalModified[className]), new Date(lastServerModified[className]));
+                        if (new Date(lastLocalModified[className]) < new Date(lastServerModified[className])) {
+                            console.log('synch need');
+                            lastLocalModified[className] = new Date(lastServerModified[className]);
+                            //                            console.log(lastLocalModified);
+                            Storage.update(lastLocalModified, function () {
+                                $rootScope.$emit('synchEnd' + className, '');
+                                callback();
+                            });
+                            //                            if (synchEnd)
+                            //                                updateData(className, 20, 0, callback, lastLocalModified, lastServerModified);
+                        } else {
+                            callback();
+                        }
                     }
                 });
             });
@@ -77,23 +91,20 @@ myApp.service("Synchronizer", ["Storage", "RealServer", "ModelConverter", "Loade
 
         return {
             beginSynch: function () {
-                Server = new RealServer(sessvars.token);
                 var synch = this;
+                Server = new RealServer(localStorage.getItem("UserToken"));
                 if (storageSupport) {
                     synchCheck("OperationalStatistics", function () {
                         synchCheck("Visit", function () {
                             synchCheck("Expenditure", function () {
-//                                $rootScope.$emit('synchEndOperationalStatistics', '');
-//                                $rootScope.$emit('synchEndVisit', '');
-//                                $rootScope.$emit('synchEndExpenditure', '');
-                                setInterval(synch.beginSynch, 5000);
+                                setInterval(synch.beginSynch, 15000);
                             });
                         });
                     });
                 }
             }
         };
-}]);
+            }]);
 
 //var $inj = angular.injector(['myApp']);
 //var synchronizer = $inj.get('Synchronizer');

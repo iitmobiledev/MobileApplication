@@ -1,4 +1,3 @@
-//indexedDB.deleteDatabase("storage")
 /**
  * @ngdoc service
  * @description Сервис для кэширования данных
@@ -23,6 +22,7 @@ myApp.service("Storage", ["$injector",
             }
         }
 
+
         /**  
          *
          *  @ngdoc method
@@ -46,15 +46,16 @@ myApp.service("Storage", ["$injector",
          * @param {Object} obj объект модель
          * @description Добавляет объект в контейнер, если объект с таким же первичным ключом уже присутствует в контейнере, данные должны быть обновлены Вложенные объекты также должны быть добавлены
          */
-        var update = function (obj) {
-//            try {
+        var update = function (obj, callback) {
+            try {
                 var serv = $injector.get(obj.getClass());
                 serv.onUpdate(obj);
-                localStorage.setItem(obj.getClass() + ":" + obj.getKey().join(':'), JSON.stringify(obj.json()));
-//            } catch (e) {
-//                console.log(e.message);
-//            }
-
+                storage.setItem(obj.getClass() + ":" + obj.getKey().join(':'), obj);
+                if (callback)
+                    callback();
+            } catch (e) {
+                console.log(e.message);
+            }
         };
 
         /**  
@@ -70,10 +71,10 @@ myApp.service("Storage", ["$injector",
         var get = function (className, primary, callback) {
             try {
                 //                console.log(primary);
-                var item = localStorage.getItem(className + ":" + primary);
+                var item = storage.getItem(className + ":" + primary);
                 //                console.log("storage.get():", item);
                 if (item) {
-                    callback(JSON.parse(item));
+                    callback(item);
                 } else {
                     callback(null);
                 }
@@ -101,12 +102,12 @@ myApp.service("Storage", ["$injector",
             for (var i = 0; i < keys.length; i++) {
                 var item;
                 if (keys[i] instanceof Array)
-                    item = localStorage.getItem(keys[i].join(":"));
+                    item = storage.getItem(keys[i].join(":"));
                 else
-                    item = localStorage.getItem(keys[i]);
+                    item = storage.getItem(keys[i]);
                 //                console.log("storage.search():", item);
                 if (item) {
-                    results.push(JSON.parse(item));
+                    results.push(item);
                 }
             }
             if (results.length != keys.length || results.length == 0) {
@@ -126,7 +127,7 @@ myApp.service("Storage", ["$injector",
          */
         var del = function (obj, callback) {
             try {
-                localStorage.removeItem(obj.getKey());
+                storage.removeItem(obj.getKey());
             } catch (e) {
                 console.log(e.message);
             }
@@ -140,111 +141,5 @@ myApp.service("Storage", ["$injector",
             isSupported: isSupported,
             clearStorage: clearStorage,
             search: search
-            //            lastModified: lastModified,
-            //            getFieldStat: getFieldStat,
-            //            classesLastModified: classesLastModified,
-            //            saveLastModify: saveLastModify,
-            //            saveFieldStat: saveFieldStat
         };
 }]);
-
-
-//
-//
-//
-//  var classesLastModified = new ClassesLastModified();
-//
-//        var classesFieldStat = new ClassesFieldStat();
-//
-//        var lastModified = function (query, callback) {
-//            get("classesLastModified", "primary", function (data) {
-//                if (data == null || typeof (callback) == 'undefined') {
-//                    setTimeout(lastModified(query), 500);
-//                } else {
-//                    var result = new ClassesLastModified();
-//                    for (var i in query)
-//                        result[query[i]] = data[query[i]];
-//                    console.log(result);
-//                    callback(result);
-//                }
-//            });
-//        };
-//
-//        /**
-//         *
-//         * @ngdoc method
-//         * @name myApp.service:Storage#getFieldStat
-//         * @methodOf myApp.service:Storage
-//         * @description Метод для получения статистики
-//         * определенного поля у указанного класса. В данный
-//         * момент указывает максимальную и минимальную даты,
-//         * за которые еще есть данные.
-//         * @param {Array} query a
-//         * @param {Function} callback a
-//         * @return {Object} экземпляр класса className
-//         */
-//        var getFieldStat = function (query, callback) {
-//            get("fieldStat", "primary", function (data) {
-//                if (data == null) {
-//                    setTimeout(getFieldStat(query, callback), 500);
-//                } else {
-//                    var result = [];
-//                    for (var i in query) {
-//                        var resType = data[query[i].type];
-//                        var resField = resType[query[i].field];
-//                        result.push({
-//                            type: query[i].type,
-//                            field: query[i].field,
-//                            min: resField.min,
-//                            max: resField.max
-//                        });
-//                    }
-//                    callback(result);
-//                }
-//            });
-//        };
-//
-//
-//        var saveLastModify = waitDatabase(function (obj, callback) {
-//            var db = database;
-//            var trans = db.transaction(["classesLastModified"], "readwrite");
-//            var store = trans.objectStore("classesLastModified"); //найдем хранилище для объектов данного класса
-//
-//            var request = store.put(obj); //положим в хранилище
-//
-//            request.onsuccess = function (e) { //если транзакт прошел успешно
-//            };
-//            trans.onerror = function (e) { //если что-то пошло не так
-//                //                        console.log("update() transaction: Error", event);
-//            };
-//            request.onerror = function (e) { //если что-то пошло не так
-//                //                        console.log("update(): Error", event);
-//            };
-//            callback();
-//
-//        });
-//
-//        var saveFieldStat = waitDatabase(function (obj, callback) {
-//            if (obj instanceof Array) {
-//                get("fieldStat", "primary", function (classesStat) {
-//
-//                    for (var i = 0; i < obj.length; i++) {
-//                        classesStat[obj[i].type][obj[i].field].min = obj[i].min;
-//                        classesStat[obj[i].type][obj[i].field].max = obj[i].max;
-//                    }
-//                    var db = database;
-//                    var trans = db.transaction(["fieldStat"], "readwrite");
-//                    var store = trans.objectStore("fieldStat");
-//                    var request = store.put(classesStat);
-//                    request.onsuccess = function (e) {};
-//                    callback();
-//                });
-//            } else {
-//                var db = database;
-//                var trans = db.transaction(["fieldStat"], "readwrite");
-//                var store = trans.objectStore("fieldStat");
-//                var request = store.put(obj);
-//                request.onsuccess = function (e) {};
-//                callback();
-//            }
-//        });

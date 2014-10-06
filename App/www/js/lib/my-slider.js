@@ -9,7 +9,7 @@
     }
     (function ($) {
         var MySlider = window.MySlider || {};
-		$.scrolling = false;
+        $.scrolling = false;
         MySlider = (function () {
                 function MySlider(element, settings) {
                     this.defaults = {
@@ -186,7 +186,7 @@
                     if (callback) {
                         callback.call();
                     }
-					$.scrolling = false;
+                    $.scrolling = false;
                 }
             });
         };
@@ -234,6 +234,8 @@
             return 'vertical';
 
         };
+        
+        var current, progression;
 
         //�������� ��� �������� ������� �� ������
         MySlider.prototype.swipeMove = function (event) {
@@ -248,10 +250,17 @@
             if (!this.swipe || touches && touches.length !== 1) {
                 return false;
             }
+            
+            current = this.curX;
 
             this.curX = touches !== undefined ? touches[0].pageX : event.clientX;
             this.curY = touches !== undefined ? touches[0].pageY : event.clientY;
 
+//            console.log("start", this.startX);
+//            console.log("current", this.curX, current);
+//            if (this.curX != current)
+//                progression = this.curX > current ? 1 : -1;
+//            console.log("progression", progression);
             this.swipeLength = Math.round(Math.sqrt(
                 Math.pow(this.curX - this.startX, 2)));
 
@@ -266,7 +275,7 @@
             }
 
             if (this.swipeLength > 20) {
-				$.scrolling = true;
+                $.scrolling = true;
                 this.$slideTrack.find('.slide').scrollerDisable();
             }
 
@@ -278,6 +287,8 @@
                 event.preventDefault();
             }
 
+//            if (this.curX != current)
+//                positionOffset = this.curX > current ? 1 : -1;
             positionOffset = this.curX > this.startX ? 1 : -1;
 
             this.swipeLeft = curLeft + this.swipeLength * positionOffset;
@@ -370,13 +381,20 @@
 
         MySlider.prototype.removeLoadBar = function (fromRight) {
             if (fromRight) {
-                //                this.removeSlideRight();
                 $('.LoadSlideRight').remove();
                 this.slideCount--;
+                if (this.getCurrent().html() == undefined){
+                    this.shiftSlide(false);
+                }
             } else {
-                //                this.removeSlideLeft();
-                $('.LoadSlideLeft').remove();
+                $('.LoadSlideLeft').remove();  
+                if (this.currentSlide != 0)
+                {
+                    this.currentSlide -= 1;
+                }
+                this.setTranslatePosition(this.getLeft(this.currentSlide));
                 this.slideCount--;
+                
             }
         }
 
@@ -387,7 +405,13 @@
             $(element).addClass("slide").scroller({
                 height: this.$slideTrack.height()
             });
-            this.$slideTrack.append(element);
+            
+            var lb = $(element).find('.LoadSlideRight');
+            if (!lb.length) {
+                this.$slideTrack.append(element);
+            } else {
+                element.insertAfter(lb)
+            }
             this.$slideTrack.css("width", this.options.width * this.slideCount + 'px');
             if (this.currentSlide === null) {
                 this.currentSlide = 0;
@@ -402,12 +426,21 @@
             $(element).addClass("slide").scroller({
                 height: this.$slideTrack.height()
             });
-            this.$slideTrack.prepend(element);
+            var lb = $(element).find('.LoadSlideLeft');
+            if (!lb.length) {
+                this.$slideTrack.prepend(element);
+            } else {
+                element.insertAfter(lb)
+            }
             this.$slideTrack.css("width", this.options.width * this.slideCount + 'px');
             if (this.currentSlide === null) {
                 this.currentSlide = 0;
             } else {
-                this.currentSlide += 1;
+                if (lb.length && this.currentSlide == 0) {
+                    this.currentSlide = 0;
+                } else {
+                    this.currentSlide += 1
+                }
                 this.setTranslatePosition(this.getLeft(this.currentSlide));
             }
         }

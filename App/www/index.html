@@ -37,7 +37,7 @@
     <script src="intelxdk.js"></script>
     <script type="text/javascript">
         /* Intel native bridge is available */
-        var onDeviceReady = function() {
+        var onDeviceReady = function () {
             //hide splash screen
             intel.xdk.device.hideSplashScreen();
             //     intel.xdk.device.hideStatusBar();            
@@ -72,6 +72,7 @@
     <script src="js/services/model-converter.js"></script>
     <script src="js/services/synchronizer.js"></script>
     <script src="js/services/masters.js"></script>
+    <script src="js/services/auth.js"></script>
     <script src="js/controllers/operational-statistic.js"></script>
     <script src="js/controllers/settings.js"></script>
     <script src="js/controllers/visits.js"></script>
@@ -96,6 +97,7 @@
     <script src="js/directives/status-statistics.js"></script>
     <script src="js/directives/slider.js"></script>
     <script src="js/directives/ar-click.js"></script>
+    <script src="js/lib/my-scroller-bar.js"></script>
     <script src="js/directives/error-show.js"></script>
     <!--<script src="slick/slick.js"></script>-->
 
@@ -103,9 +105,9 @@
 
     <!-- Google Analytics -->
     <script>
-        (function(i, s, o, g, r, a, m) {
+        (function (i, s, o, g, r, a, m) {
             i['GoogleAnalyticsObject'] = r;
-            i[r] = i[r] || function() {
+            i[r] = i[r] || function () {
                 (i[r].q = i[r].q || []).push(arguments)
             }, i[r].l = 1 * new Date();
             a = s.createElement(o),
@@ -123,6 +125,19 @@
 
 <body id="afui" ng-app="myApp">
     <script type="text/javascript">
+        function storage() {};
+
+        storage.prototype.setItem = function (key, obj) {
+            storage[key] = obj;
+        };
+        storage.prototype.getItem = function (key) {
+            return storage[key];
+        };
+        storage.prototype.removeItem = function (key) {
+            delete storage[key];
+        };
+        var storage = new storage();
+
         /* Intel native bridge is available */
         function show() {
             if (intel.xdk && intel.xdk.device) {
@@ -133,9 +148,9 @@
         }
         show();
 
-        $("#afui").click(function(ev) {
-            if (typeof($(ev.target).attr('href')) != 'undefined') {
-//                console.log('href');
+        $("#afui").click(function (ev) {
+            if (typeof ($(ev.target).attr('href')) != 'undefined') {
+                //                console.log('href');
                 if ($.scrolling) {
                     console.log('scrolling');
                     ev.preventDefault();
