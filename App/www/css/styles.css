@@ -193,7 +193,6 @@ a.settings {
     z-index: 90;
     top: 0%;
 }
-
 .square {
     width: 64px;
     height: 64px;
@@ -220,4 +219,8 @@ a.settings {
     to {
         -webkit-transform: rotate(360deg);
     }
+}
+.scrollBar {
+    background: gray;
+    opacity: 0.5;
 }

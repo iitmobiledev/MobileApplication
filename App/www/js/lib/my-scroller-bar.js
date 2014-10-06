@@ -8,12 +8,12 @@
 
     }
     (function ($) {
-        var MyScrollerBar = window.MyScrollerBar || {};
+        var MyScrollBar = window.MyScrollBar || {};
 
-        MyScrollerBar = (function () {
-                function MyScrollerBar(element, settings) {
+        MyScrollBar = (function () {
+                function MyScrollBar(element, settings) {
                     this.defaults = {
-
+                        width: 5,
                     };
 
                     this.initials = {
@@ -23,22 +23,23 @@
                         screenHeight: null,
                         percentOfScroll: null,
                         height: null,
+                        width: null,
                     };
 
                     $.extend(this, this.initials);
 
-                    this.$scrollerBar = $(element);
-
+                    this.$scrollBar = $(element);
+                    this.$sBar = $('<div class="scrollBar"/>').appendTo(this.$scrollBar);
                     this.options = $.extend({}, this.defaults, settings);
 
                     this.initEvents();
                 }
-                return MyScrollerBar;
+                return MyScrollBar;
             }
             ());
 
 
-        MyScrollerBar.prototype.initEvents = function () {
+        MyScrollBar.prototype.initEvents = function () {
             this.$scroller.on('scroll down', {
                 action: 'scrollDown'
             }, this.scrollHandler);
@@ -48,19 +49,22 @@
         };
 
 
-        MyScrollerBar.prototype.scrollHandler = function (event) {
+        MyScrollBar.prototype.scrollHandler = function (event) {
             switch (event.data.action) {
             case 'scrollDown':
+                //вычислять top=(высота экрана- this.height)*this.percentOfScroll
+                this.setPosition(( /*высота экрана*/ -this.height) * this.percentOfScroll);
                 break;
 
             case 'scrollUp':
+                this.setPosition(( /*высота экрана*/ -this.height) * this.percentOfScroll);
                 break;
 
             }
         };
 
-        MyScrollerBar.prototype.setTranslatePosition = function (position) {
-            this.$scroller.css({
+        MyScrollBar.prototype.setPosition = function (position) {
+            this.$sBar.css({
                 'top': position + 'px'
             });
         };
