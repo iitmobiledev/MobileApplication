@@ -18,7 +18,9 @@ myApp.directive('footerContent', function () {
             showFooter();
 
             /**
-             * @description Отображает футер на странице в зависимости от значения атрибута `show`. Пытается выполнится до тех пор, пока не будет подгружена библиотека `intel.xdk`.
+             * @description Отображает футер на странице в зависимости от 
+             * значения атрибута `show`. Пытается выполнится до тех пор, пока
+             * не будет подгружена библиотека `intel.xdk`.
              * @ngdoc method
              * @name myApp.directive:footerContent#showFooter
              * @methodOf myApp.directive:footerContent
@@ -43,6 +45,7 @@ myApp.directive('footerContent', function () {
             }
 
             scope.$watch(attrs.show, function () {
+                var show = scope.$eval(attrs.show);
                 if (show) {
                     $(element).hide().html();
                     $("#navbar").show();
@@ -51,8 +54,6 @@ myApp.directive('footerContent', function () {
                     $("#navbar").hide();
                 }
             })
-
-
         }
     }
 
