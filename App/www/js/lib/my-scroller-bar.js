@@ -40,24 +40,23 @@
 
 
         MyScrollBar.prototype.initEvents = function () {
-            this.$scroller.on('scroll down', {
-                action: 'scrollDown'
+            this.$scroller.on('scroll start', {
+                action: 'scrollStart'
             }, this.scrollHandler);
-            this.$scroller.on('scroll up', {
-                action: 'scrollUp'
+            this.$scroller.on('scroll end', {
+                action: 'scrollEnd'
             }, this.scrollHandler);
         };
 
 
         MyScrollBar.prototype.scrollHandler = function (event) {
             switch (event.data.action) {
-            case 'scrollDown':
-                //вычислять top=(высота экрана- this.height)*this.percentOfScroll
-                this.setPosition(( /*высота экрана*/ -this.height) * this.percentOfScroll);
+            case 'scrollStart':
+                this.showScrollBar();
                 break;
 
-            case 'scrollUp':
-                this.setPosition(( /*высота экрана*/ -this.height) * this.percentOfScroll);
+            case 'scrollEnd':
+                this.hideScrollBar();
                 break;
 
             }
@@ -68,5 +67,28 @@
                 'top': position + 'px'
             });
         };
+
+        MyScrollBar.prototype.showScrollBar = function () {
+            this.show();
+            this.setPosition(( /*высота экрана*/ -this.height) * this.percentOfScroll);
+        };
+
+        MyScrollBar.prototype.hideScrollBar = function () {
+            this.hide();
+        };
+
+
+        $.fn.setPercentOfScroll = function (percent) {
+            this.percentOfScroll = percent;
+        }
+
+        $.fn.setScreenHeight = function (height) {
+            this.screenHeight = height;
+        }
+        
+        $.fn.setScrollBarHeight = function (height) {
+            this.height = height;
+        }
+
 
     }));
