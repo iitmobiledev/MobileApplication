@@ -9,7 +9,6 @@
 myApp.service("Loader", ["ModelConverter", "RealServer", "$rootScope", "fieldStatQuery", "Storage", "ClassesLastModified", "storageSupport",
     function (ModelConverter, RealServer, $rootScope, fieldStatQuery, Storage, ClassesLastModified, storageSupport) {
 
-        var serverError = false;
         var fieldStat = null;
         var Server;
         var synchNeed = {
@@ -22,11 +21,10 @@ myApp.service("Loader", ["ModelConverter", "RealServer", "$rootScope", "fieldSta
             Server = new RealServer(localStorage.getItem("UserToken"));
             Server.fieldStat(fieldStatQuery, function (stat) {
                 console.log(stat);
+                fieldStat = stat;
                 if (stat.error) {
-                    serverError = true;
+                    $rootScope.$emit('serverError', '');
                 } else {
-                    serverError = false;
-                    fieldStat = stat;
                     Storage.update(ModelConverter.getObject("FieldStat", stat));
                     $rootScope.$emit('minMaxGet', '');
                 }
@@ -63,24 +61,24 @@ myApp.service("Loader", ["ModelConverter", "RealServer", "$rootScope", "fieldSta
         });
 
         function serverSearch(className, params, callback) {
-            Server.search(className, params, function (result) {
-
-                Storage.get("LastModified", 'primary', function (lastMod) {
-                    lastMod = ModelConverter.getObject("LastModified", lastMod);
-                    if (!(className in lastMod) || lastMod[className] < new Date()) {
-                        lastMod[className] = new Date();
+            Server.lastModified([className], function (lastServerModified) {
+                Server.search(className, params, function (result) {
+                    Storage.get("LastModified", 'primary', function (lastMod) {
+                        
+                        lastMod = ModelConverter.getObject("LastModified", lastMod);
+                        lastMod[className] = lastServerModified[className];
                         Storage.update(lastMod);
-                    }
 
-                    if (result instanceof Array) {
-                        var objs = ModelConverter.getObjects(className, result);
-                        console.log('server.search ', objs);
-                        for (var i in objs)
-                            Storage.update(objs[i]);
-                        synchNeed[className] = false;
-                        callback(objs);
-                    } else
-                        callback([]);
+                        if (result instanceof Array) {
+                            var objs = ModelConverter.getObjects(className, result);
+                            console.log('server.search ', objs);
+                            for (var i in objs)
+                                Storage.update(objs[i]);
+                            synchNeed[className] = false;
+                            callback(objs);
+                        } else
+                            callback([]);
+                    });
                 });
             });
         }
@@ -89,6 +87,7 @@ myApp.service("Loader", ["ModelConverter", "RealServer", "$rootScope", "fieldSta
             getFieldStat: getFieldStat,
             getMaxDate: function (className) {
                 try {
+                    console.log(fieldStat);
                     if (fieldStat) {
                         var typeStat = fieldStat.filter(function (stat) {
                             return stat.type == className;
@@ -99,9 +98,8 @@ myApp.service("Loader", ["ModelConverter", "RealServer", "$rootScope", "fieldSta
                     }
                 } catch (e) {
                     console.log(e.message);
-                    if (serverError)
-                        $rootScope.$emit('serverError', '');
-                    return null;
+//                    $rootScope.$emit('serverError', '');
+                    return 'error';
                 }
             },
 
@@ -117,7 +115,8 @@ myApp.service("Loader", ["ModelConverter", "RealServer", "$rootScope", "fieldSta
                     }
                 } catch (e) {
                     console.log(e.message);
-                    return null;
+//                    $rootScope.$emit('serverError', '');
+                    return 'error';
                 }
             },
 

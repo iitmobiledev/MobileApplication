@@ -30,18 +30,30 @@ myApp.controller('VisitsController', function ($scope, $filter, $location, Loade
 
     $scope.statuses = Visit.statuses;
 
-    //    $scope.min = null;
-    //    $scope.max = null;
-    $scope.min = Loader.getMinDate("Visit");
-    $scope.max = Loader.getMaxDate("Visit");
-
-
     $scope.future = true;
     $scope.past = true;
 
+    var errorHandling = function () {
+        console.log('serverError');
+        $scope.correct = false;
+        $scope.errorText = "Не удается подключиться к серверу. Пожалуйста, попробуйте зайти еще раз.";
+    }
+
+    $rootScope.$on('serverError', errorHandling);
+    
     function setMinMax() {
-        $scope.min = Loader.getMinDate("Visit");
-        $scope.max = Loader.getMaxDate("Visit");
+        var min = Loader.getMinDate("Visit");
+        var max = Loader.getMaxDate("Visit");
+        if (min == 'error' || max == 'error') {
+            $scope.min = null;
+            $scope.max = null;
+            errorHandling();
+        } else {
+            $scope.min = min;
+            $scope.max = max;
+            $scope.loading = true;
+            $scope.reinit = true;
+        }
     }
 
     $rootScope.$on('minMaxGet', setMinMax);
@@ -205,6 +217,7 @@ myApp.controller('VisitsController', function ($scope, $filter, $location, Loade
                     callback(list, curIndex);
                 });
             }
+            $scope.loading = false;
         }
     };
 
@@ -270,12 +283,4 @@ myApp.controller('VisitsController', function ($scope, $filter, $location, Loade
         $scope.visitInfo.services = services.join(", ");
         $scope.visitInfo.cost = coast;
     };
-
-    $rootScope.$on('serverError', function () {
-        console.log('serverError');
-        $scope.correct = false;
-        $scope.errorText = "Не удается подключиться к серверу. Пожалуйста, попробуйте зайти еще раз.";
-    });
-
-
 });

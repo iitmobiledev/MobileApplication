@@ -62,7 +62,6 @@ myApp.service("Synchronizer", ["Storage", "RealServer", "ModelConverter", "Loade
         }
 
         function synchCheck(className, callback) {
-            //            console.log('synch check');
             Storage.get("LastModified", 'primary', function (lastLocalModified) {
                 Server.lastModified(["OperationalStatistics", "Visit", "Expenditure"], function (lastServerModified) {
                     //                    console.log(lastLocalModified);
@@ -70,7 +69,8 @@ myApp.service("Synchronizer", ["Storage", "RealServer", "ModelConverter", "Loade
                     if (!(className in lastLocalModified))
                         callback();
                     else {
-                        //                        console.log(className, new Date(lastLocalModified[className]), new Date(lastServerModified[className]));
+//                        alert(className + new Date(lastLocalModified[className]) + new Date(lastServerModified[className]));
+//                        console.log("className", className, new Date(lastLocalModified[className]), new Date(lastServerModified[className]));
                         if (new Date(lastLocalModified[className]) < new Date(lastServerModified[className])) {
                             console.log('synch need');
                             lastLocalModified[className] = new Date(lastServerModified[className]);

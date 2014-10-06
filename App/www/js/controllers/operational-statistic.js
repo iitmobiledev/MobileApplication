@@ -128,26 +128,27 @@ myApp.controller('OperationalStatisticController', function ($scope, $location, 
         return obj && obj.__primary__;
     };
 
-    //    $scope.pageIndex = 1;
+    var errorHandling = function () {
+        console.log('serverError');
+        $scope.correct = false;
+        $scope.errorText = "Не удается подключиться к серверу. Пожалуйста, попробуйте зайти еще раз.";
+    }
 
-    /**
-     *
-     * @ngdoc method
-     * @name myApp.controller:OperationalStatisticController#hasPrevData
-     * @methodOf myApp.controller:OperationalStatisticController
-     * @returns {Boleean} Возвращает `true`, если есть данные за прошлое.
-     * @description Метод для проверки наличия данных за прошлый
-     * период.
-     */
-    //    $scope.hasPrevData = function (currentDate) {
-    //        Loader.hasPastData("OperationalStatistics", currentDate);
-    //    };
+    $rootScope.$on('serverError', errorHandling);
 
     function setMinMax() {
-        $scope.min = Loader.getMinDate("OperationalStatistics");
-        $scope.max = Loader.getMaxDate("OperationalStatistics");
-        $scope.loading = true;
-        $scope.reinit = true;
+        var min = Loader.getMinDate("OperationalStatistics");
+        var max = Loader.getMaxDate("OperationalStatistics");
+        if (min == 'error' || max == 'error') {
+            $scope.min = null;
+            $scope.max = null;
+            errorHandling();
+        } else {
+            $scope.min = min;
+            $scope.max = max;
+            $scope.loading = true;
+            $scope.reinit = true;
+        }
         //console.log("setMinMax", $scope.min, $scope.max);
     }
     $scope.reinitStamp = function () {
@@ -282,10 +283,4 @@ myApp.controller('OperationalStatisticController', function ($scope, $location, 
         }
         //$scope.date = new Date(getCurrentPeriod().begin);
     };
-
-    $rootScope.$on('serverError', function () {
-        console.log('serverError');
-        $scope.correct = false;
-        $scope.errorText = "Не удается подключиться к серверу. Пожалуйста, попробуйте зайти еще раз.";
-    });
 });
