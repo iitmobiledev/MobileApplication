@@ -151,7 +151,10 @@
 
             this.currentLeft = this.swipeLeft === null ? slideLeft : this.swipeLeft;
 
+            $.scrolling = false;
+
             if (index < 0 || index > (this.slideCount - 1)) {
+
                 targetSlide = this.currentSlide;
                 this.animateSlide(slideLeft, function () {
                     _.postSlide(targetSlide);
@@ -169,6 +172,7 @@
 
         //������������ ��������
         MySlider.prototype.animateSlide = function (targetLeft, callback) {
+
             var animProps = {};
             $({
                 animStart: this.currentLeft
@@ -186,7 +190,6 @@
                     if (callback) {
                         callback.call();
                     }
-                    $.scrolling = false;
                 }
             });
         };
@@ -212,7 +215,7 @@
                 r,
                 swipeAngle;
 
-//            console.log("swipeDirection", this.startX, this.curX);
+            //            console.log("swipeDirection", this.startX, this.curX);
             xDist = this.startX - this.curX;
             yDist = this.startY - this.curY;
             r = Math.atan2(yDist, xDist);
@@ -235,7 +238,7 @@
             return 'vertical';
 
         };
-        
+
         var current, progression;
 
         //�������� ��� �������� ������� �� ������
@@ -251,17 +254,17 @@
             if (!this.swipe || touches && touches.length !== 1) {
                 return false;
             }
-            
+
             current = this.curX;
 
             this.curX = touches !== undefined ? touches[0].pageX : event.clientX;
             this.curY = touches !== undefined ? touches[0].pageY : event.clientY;
 
-//            console.log("start", this.startX);
-//            console.log("current", this.curX, current);
-//            if (this.curX != current)
-//                progression = this.curX > current ? 1 : -1;
-//            console.log("progression", progression);
+            //            console.log("start", this.startX);
+            //            console.log("current", this.curX, current);
+            //            if (this.curX != current)
+            //                progression = this.curX > current ? 1 : -1;
+            //            console.log("progression", progression);
             this.swipeLength = Math.round(Math.sqrt(
                 Math.pow(this.curX - this.startX, 2)));
 
@@ -288,8 +291,8 @@
                 event.preventDefault();
             }
 
-//            if (this.curX != current)
-//                positionOffset = this.curX > current ? 1 : -1;
+            //            if (this.curX != current)
+            //                positionOffset = this.curX > current ? 1 : -1;
             positionOffset = this.curX > this.startX ? 1 : -1;
 
             this.swipeLeft = curLeft + this.swipeLength * positionOffset;
@@ -384,18 +387,17 @@
             if (fromRight) {
                 $('.LoadSlideRight').remove();
                 this.slideCount--;
-                if (this.getCurrent().html() == undefined){
+                if (this.getCurrent().html() == undefined) {
                     this.shiftSlide(false);
                 }
             } else {
-                $('.LoadSlideLeft').remove();  
-                if (this.currentSlide != 0)
-                {
+                $('.LoadSlideLeft').remove();
+                if (this.currentSlide != 0) {
                     this.currentSlide -= 1;
                 }
                 this.setTranslatePosition(this.getLeft(this.currentSlide));
                 this.slideCount--;
-                
+
             }
         }
 
@@ -406,7 +408,7 @@
             $(element).addClass("slide").scroller({
                 height: this.$slideTrack.height()
             });
-            
+
             var lb = $(element).find('.LoadSlideRight');
             if (!lb.length) {
                 this.$slideTrack.append(element);
@@ -472,7 +474,9 @@
                             current.scrollerRewind();
                         });
                         return $('.slide').get(this.currentSlide + 1);
-                    }
+                    } else
+                        $.scrolling = false;
+
                 }
                 return null;
             } else {
@@ -482,7 +486,8 @@
                             current.scrollerRewind();
                         });
                         return $('.slide').get(this.currentSlide - 1);
-                    }
+                    } else
+                        $.scrolling = false;
                 }
             }
             return null;

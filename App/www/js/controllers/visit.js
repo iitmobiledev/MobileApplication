@@ -5,9 +5,9 @@
  * @name myApp.controller:VisitController
  * @requires myApp.service:VisitLoader
  */
-myApp.controller('VisitController', function ($scope, $filter, $routeParams, Loader, DateHelper) {
-    var today = new Date();
-    $scope.date = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+myApp.controller('VisitController', function ($scope, $filter, $routeParams, Loader, DateHelper, $rootScope) {
+//    var today = new Date();
+//    $scope.date = new Date(today.getFullYear(), today.getMonth(), today.getDate());
 
     $scope.step = DateHelper.steps.DAY;
 
@@ -17,6 +17,12 @@ myApp.controller('VisitController', function ($scope, $filter, $routeParams, Loa
 
     $scope.future = true;
     $scope.past = true;
+
+    $rootScope.$on('synchEndVisit', function () {
+        console.log('synchEndVisit');
+        $scope.needUpdating = true;
+    });
+    
     $scope.maxSlideCount = 100;
 
     $scope.getData = function (key, quantity, forward, callback) {
@@ -25,12 +31,13 @@ myApp.controller('VisitController', function ($scope, $filter, $routeParams, Loa
             $scope.loading = false;
             return callback(null);
         }
+        var date;
         Loader.get("Visit", $routeParams.id, function (obj) {
             if (obj) {
                 hasData = true;
-                $scope.date = new Date(obj.date.getFullYear(), obj.date.getMonth(), obj.date.getDate(), 0, 0, 0);
-                $scope.backLink = "#/" + $routeParams.backLink + "/" + $scope.date;
-                var beginDate = new Date(obj.date.getFullYear(), obj.date.getMonth(), obj.date.getDate(), 0, 0, 0),
+                date = new Date(obj.date.getFullYear(), obj.date.getMonth(), obj.date.getDate(), 0, 0, 0);
+                $scope.backLink = "#/" + $routeParams.backLink + "/" + date;
+                var beginDate = date,
                     endDate = new Date(obj.date.getFullYear(), obj.date.getMonth(), obj.date.getDate(), 23, 59, 59);
                 Loader.search("Visit", {
                     dateFrom: beginDate,
@@ -39,17 +46,12 @@ myApp.controller('VisitController', function ($scope, $filter, $routeParams, Loa
                 }, function (data) {
                     $scope.maxSlideCount = data.length + 1;
 
-                    obj.client.phone = formatLocal("RU", obj.client.phone);
-//                    console.log(obj.client.phone);
-                    if (data.length == 0)
-                        data.push(obj);
-
-                    data = $filter('orderBy')(data, 'date', false);
-                    //                    console.log('visits ', data);
-
+                    data = $filter('orderBy')(data, 'startTime', false);
+                    
                     for (var i = 0; i < data.length; i++) {
                         data[i].servList = [];
                         data[i].sum = 0;
+                        data[i].client.phone = formatLocal("RU", data[i].client.phone);
                         for (var j = 0; j < data[i].serviceList.length; j++) {
                             var service = data[i].serviceList[j];
                             data[i].sum += data[i].serviceList[j].cost;
@@ -58,16 +60,13 @@ myApp.controller('VisitController', function ($scope, $filter, $routeParams, Loa
                             serviceItem.hasTime = false;
                             var time = [];
                             if (service.startTime != "") {
-                                console.log(service.startTime);
                                 time.push($filter('date')(service.startTime, "H:mm"));
                                 serviceItem.hasTime = true;
                             }
                             if (service.endTime != "") {
-                                console.log(service.endTime);
                                 time.push($filter('date')(service.endTime, "H:mm"));
                                 serviceItem.hasTime = true;
                             }
-
                             serviceItem.time = time.join("-");
                             serviceItem.cost = service.cost;
                             if (service.master.lastName && service.master.firstName) {
@@ -80,25 +79,17 @@ myApp.controller('VisitController', function ($scope, $filter, $routeParams, Loa
                             data[i].balColor = "green";
                         }
                     }
-                    data.reverse();
                     $scope.loading = false;
                     callback(data, $routeParams.id);
                 });
             }
         });
     };
-    
-
 
     $scope.getKey = function (obj) {
         return obj && obj.__primary__;
     };
 
-    $scope.min = null;
-    $scope.max = null;
-
-    //    $scope.handlePages = [];
-    //
     //    $scope.getServList = function (visit) {
     //        console.log(visit);
     //        //

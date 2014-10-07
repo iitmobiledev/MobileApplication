@@ -205,17 +205,16 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
                         compiled(newscope, function (clonedElement, scope) {
                             clonedElement.attr("contentkey", k);
                             if (k == startPageKey || (startPageKey == null && i == contentData.length)) {
-                                console.log("startPageKey", k);
                                 $('.my-slider').addSlideRight(clonedElement, true);
                             } else {
                                 $('.my-slider').addSlideRight(clonedElement);
                             }
-                            //                            newscope.$apply();
+//                                                        newscope.$apply();
                         });
-                        //newscope.$apply();
+//                        newscope.$apply();
                     }
 
-                    //                    scope.$apply();
+//                                        scope.$apply();
                     $(window).scrollTop(0);
                     ready = true;
                 }
