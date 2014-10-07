@@ -43,6 +43,7 @@ myApp.controller('SettingsController', function ($scope, AuthService, $location,
     $scope.exit = function () {
         AuthService.logout(localStorage.getItem("UserToken"), function () {
             localStorage.setItem("UserToken", null);
+            localStorage.setItem("User", null);
             //            Storage.del(tokenObj, function(){
             $location.path('authorization');
             //            })            

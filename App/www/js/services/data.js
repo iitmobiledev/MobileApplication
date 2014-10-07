@@ -58,7 +58,7 @@
 
  function ClassesLastModified() {
      this.primary = "primary";
-     this.OperationalStatistics = "2011-08-25 21:00:00";
+     this.OperationalStatistics = "2011-10-06 21:00:00";
      this.Visit = "2011-08-25 21:00:00";
      this.Expenditure = "2011-08-25 21:00:00";
  }
@@ -78,7 +78,7 @@
              "OperationalStatistics": {
                  "date": {
                      min: "2014-05-19 00:00:00",
-                     max: "2014-09-22 00:00:00"
+                     max: "2014-10-06 00:00:00"
                  }
              },
              "Visit": {
@@ -99,7 +99,7 @@
              "OperationalStatistics": function () {
                  var dayCount = 380;
                  var allObjects = [];
-                 var day = new Date(2014, 9, 26);
+                 var day = new Date(2014, 9, 7);
                  var currentDay = new Date(day.getFullYear(), day.getMonth(), day.getDate() - dayCount);
                  for (var i = 0; i <= dayCount; i++) {
                      var data = {};

@@ -212,6 +212,7 @@
                 r,
                 swipeAngle;
 
+//            console.log("swipeDirection", this.startX, this.curX);
             xDist = this.startX - this.curX;
             yDist = this.startY - this.curY;
             r = Math.atan2(yDist, xDist);

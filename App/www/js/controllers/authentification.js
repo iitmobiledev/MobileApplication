@@ -10,17 +10,41 @@
  */
 myApp.controller('AuthentificationController', function ($scope, $location, AuthService, Synchronizer, Loader, Storage, ModelConverter) {
     $scope.loading = true;
+
+    $scope.correct = true;
+
+    var getToken = function (login, password) {
+        AuthService.login(login, password, function (token) {
+            if (token == 'error') {
+                $scope.errorText = "Не удается подключиться к интернету.";
+                $scope.correct = false;
+                $scope.loading = false;
+            } else {
+                if (token) {
+                    localStorage.setItem("User", login + ":" + password);
+                    localStorage.setItem("UserToken", token);
+                    Loader.getFieldStat();
+                    Synchronizer.beginSynch();
+                    $location.path('index');
+                } else {
+                    $scope.errorText = "Вы указали неправильный пароль, попробуйте повторить попытку.";
+                    $scope.correct = false;
+                    $scope.loading = false;
+                }
+            }
+        });
+    };
     
-    var result = localStorage.getItem("UserToken");
+    var result = localStorage.getItem("User");
     console.log('result', result);
     if (result && result != 'null') {
-        Loader.getFieldStat();
-        Synchronizer.beginSynch();
-        $location.path('index');
+        result = result.split(":");
+        var login = result[0];
+        var password = result[1];
+        getToken(login, password);
     } else
         $scope.loading = false;
     
-    $scope.correct = true;
 
     /**
      *
@@ -35,23 +59,6 @@ myApp.controller('AuthentificationController', function ($scope, $location, Auth
         $scope.loading = true;
         var login = document.getElementById('login').value;
         var password = document.getElementById('password').value;
-        AuthService.login(login, password, function (token) {
-            //            console.log("token ", token);
-            $scope.loading = false;
-            if (token == 'error') {
-                $scope.errorText = "Не удается подключиться к интернету.";
-                $scope.correct = false;
-            } else {
-                if (token) {
-                    localStorage.setItem("UserToken", token)
-                    Loader.getFieldStat();
-                    Synchronizer.beginSynch();
-                    $location.path('index');
-                } else {
-                    $scope.errorText = "Вы указали неправильный пароль, попробуйте повторить попытку.";
-                    $scope.correct = false;
-                }
-            }
-        });
+        getToken(login, password);
     };
 });
