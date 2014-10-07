@@ -35,6 +35,8 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
                     return;
                 };
 
+            var loadslider = $("<div style='height:100%;width:100%;'/>");
+            loadslider.append($("<div id='loading' class='square spin' style='position:relative;'/>"));
 
             var contentID = attrs.contentId;
             var content = $templateCache.get(contentID);
@@ -58,6 +60,11 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
 
             var checkWidth = function () {
                 if ($(".content").width() < $(".content").height()) {
+                    var sliderTop = element.find('.my-slider').offset().top;
+                    var pageTop = element.closest(".upage-content").offset().top;
+                    console.log("HEIGHT", $('body').height(), sliderTop, pageTop, $("#navbar").outerHeight())
+                    element.outerHeight(
+                        $('body').height() - sliderTop + pageTop - $("#navbar:visible").outerHeight() - $("#header:visible").outerHeight())
                     initSlider();
                 } else {
                     setTimeout(checkWidth, 50);
@@ -73,8 +80,7 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
              * @description Функция объявляет что div - элемент с классом `my-slider`
              * является слайдером, библиотеки slick
              */
-            var loadslider = $("<div style='height:100%;width:100%;'/>");
-            loadslider.append($("<div id='loading' class='square spin' style='position:relative;'/>"));
+
 
             function toSlick() {
                 var width = $(".content").width()
@@ -90,23 +96,32 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
                                 //console.log(curScope)
                                 updateDate(curScope);
                                 if ($('.my-slider').whichFromLeft(
-                                    $('.my-slider').getCurrentSlide()) <= 1 && scope.past) {
+                                    $('.my-slider').getCurrentSlide()) <= 1) {
                                     var key = getCurrentKey($('.my-slider').getFirstSlide());
-                                    ready = false;
-                                    $('.my-slider').addLoadBarLeft(loadslider);
-                                    dataCallback(key, count, false, function (content) {
-                                        ready = true;
-                                        addPastData(content);
-                                        $('.my-slider').removeLoadBarLeft();
-                                    });
-                                } else if ($('.my-slider').whichFromRight($('.my-slider').getCurrentSlide()) <= 1 && scope.future) {
+                                    var first = $('.my-slider').getFirstSlide();
+                                    var obj = angular.element(first).scope().page;
+                                    if (scope.$eval(attrs.hasPastData)(obj)) {
+                                        ready = false;
+                                        $('.my-slider').addLoadBarLeft(loadslider);
+                                        dataCallback(key, count, false, function (content) {
+                                            ready = true;
+                                            addPastData(content);
+                                            $('.my-slider').removeLoadBarLeft();
+                                        });
+                                    }
+                                } else if ($('.my-slider').whichFromRight($('.my-slider').getCurrentSlide()) <= 1) {
                                     var key = getCurrentKey($('.my-slider').getLastSlide());
-                                    $('.my-slider').addLoadBarRight(loadslider);
-                                    dataCallback(key, count, true, function (content) {
-                                        ready = true;
-                                        addFutureData(content);
-                                        $('.my-slider').removeLoadBarRight();
-                                    });
+                                    var first = $('.my-slider').getFirstSlide();
+                                    var obj = angular.element(first).scope().page;
+                                    if (scope.$eval(attrs.hasPastData)(obj)) {
+                                        ready = false;
+                                        $('.my-slider').addLoadBarRight(loadslider);
+                                        dataCallback(key, count, true, function (content) {
+                                            ready = true;
+                                            addFutureData(content);
+                                            $('.my-slider').removeLoadBarRight();
+                                        });
+                                    }
                                 }
                                 scope.$apply();
                             }
@@ -128,7 +143,13 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
                 $(window).scrollTop(0);
                 $('.my-slider').html("")
                 toSlick();
-                dataCallback(null, count, true, addCurrentDayData);
+                ready = false;
+                //                $('.my-slider').addLoadBarRight(loadslider);
+                dataCallback(null, count, true, function (content, pageKey) {
+                    ready = true;
+                    addCurrentDayData(content, pageKey);
+                    //                    $('.my-slider').removeLoadBarRight();
+                });
             }
 
             /**
@@ -140,19 +161,24 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
              * @param {Array} contentData Список объектов, чьи данные будут отображаться на слайдах
              */
             function addPastData(contentData) {
+                var setupElement = function (newscope, obj) {
+                    compiled(newscope, function (clonedElement, scope) {
+                        setTimeout(function () {
+                            clonedElement.attr("contentkey", keyFunc(obj))
+                            $('.my-slider').addSlideLeft(clonedElement);
+                        }, 0);
+                    });
+                }
                 if (contentData) {
                     for (var i = contentData.length - 1; i >= 0; i--) {
                         newscope = scope.$new();
                         newscope.page = contentData[i];
-                        compiled(newscope, function (clonedElement, scope) {
-                            clonedElement.attr("contentkey", keyFunc(contentData[i]))
-                            $('.my-slider').addSlideLeft(clonedElement);
-                        });
-                        //newscope.$apply();
+                        setupElement(newscope, contentData[i]);
                     }
                 }
-                //scope.$apply();
             }
+
+
 
             /**
              *
@@ -163,18 +189,19 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
              * @param {Array} contentData Список объектов, чьи данные будут отображаться на слайдах
              */
             function addFutureData(contentData) {
+                var setupElement = function (newscope, obj) {
+                    compiled(newscope, function (clonedElement, scope) {
+                        setTimeout(function () {
+                            clonedElement.attr("contentkey", keyFunc(obj))
+                            $('.my-slider').addSlideRight(clonedElement);
+                        });
+                    }, 0);
+                }
                 if (contentData) {
                     for (var i = 0; i < contentData.length; i++) {
                         newscope = scope.$new();
                         newscope.page = contentData[i];
-
-                        compiled(newscope, function (clonedElement, scope) {
-
-                            clonedElement.attr("contentkey", keyFunc(contentData[i]))
-                            $('.my-slider').addSlideRight(clonedElement);
-                            //                            newscope.$apply();
-                        });
-                        //newscope.$apply();
+                        setupElement(newscope, contentData[i]);
                     }
                 }
                 //                scope.$apply();
@@ -195,24 +222,26 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
                 }
                 console.log("contentData", contentData)
                 var curIndex = null;
+                var setUpSlide = function (newscope, k) {
+                    compiled(newscope, function (clonedElement, scope) {
+                        setTimeout(function () {
+                            clonedElement.attr("contentkey", k);
+                            if (k == startPageKey || (startPageKey == null && i == contentData.length)) {
+                                console.log("startPageKey", k);
+                                element.find('.my-slider').addSlideRight(clonedElement, true);
+                            } else {
+                                element.find('.my-slider').addSlideRight(clonedElement);
+                            }
+                            //                            newscope.$apply();
+                        }, 0)
+                    });
+                }
                 if (contentData) {
                     for (var i = 0; i < contentData.length; i++) {
                         newscope = scope.$new();
                         newscope.page = contentData[i];
                         var k = keyFunc(contentData[i]);
-                        
-//                        console.log("startPageKey", startPageKey, k);
-                        compiled(newscope, function (clonedElement, scope) {
-                            clonedElement.attr("contentkey", k);
-                            if (k == startPageKey || (startPageKey == null && i == contentData.length)) {
-                                console.log("startPageKey", k);
-                                $('.my-slider').addSlideRight(clonedElement, true);
-                            } else {
-                                $('.my-slider').addSlideRight(clonedElement);
-                            }
-                            //                            newscope.$apply();
-                        });
-                        //newscope.$apply();
+                        setUpSlide(newscope, k)
                     }
 
                     //                    scope.$apply();
@@ -282,8 +311,12 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
                 }
                 return $(slide).attr('contentkey');
             }
-            
-            $("#slides").height($(".upage-content").height() - $("#header").height());
+
+            //            $("#slides").height($(".upage-content").height() - $("#header").height());
+
+            //            console.log("HEIGHT", intel.xdk.display.window.landheight, $('.my-slider').offset().top)
+            //            
+            //            $("#slides").height(intel.xdk.display.window.landheight - $('.my-slider').offset().top)
 
             function updateSlider() {
                 console.log(getCurrentKey());

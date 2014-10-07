@@ -152,7 +152,10 @@
 
                 this.swipeTop = this.distanceFromTop + this.swipeLength;
 
-                
+                var botTop = 0;
+                if (this.options.height - this.getScrollerHeight() > 0){
+                    botTop = this.options.height - this.getScrollerHeight();
+                }
                 if (this.swipeTop < this.options.height - this.getScrollerHeight()){
                     this.swipeTop = this.options.height - this.getScrollerHeight();
                 }

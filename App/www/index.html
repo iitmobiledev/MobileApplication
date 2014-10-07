@@ -49,7 +49,8 @@
 
     <script type="application/javascript" src="app_framework/2.1/appframework.ui.js" data-ver="1"></script>
 
-    <script src="js/lib/my-scroller.js"></script>
+<!--    <script src="js/lib/my-scroller.js"></script>-->
+    <script src="js/lib/af.scroller.js"></script>
     <script src="js/lib/my-slider.js"></script>
     <script src="js/lib/sessvars.js"></script>
     <script src="js/lib/phoneFormat.js"></script>
@@ -97,7 +98,7 @@
     <script src="js/directives/status-statistics.js"></script>
     <script src="js/directives/slider.js"></script>
     <script src="js/directives/ar-click.js"></script>
-    <script src="js/lib/my-scroller-bar.js"></script>
+<!--    <script src="js/lib/my-scroller-bar.js"></script>-->
     <script src="js/directives/error-show.js"></script>
     <!--<script src="slick/slick.js"></script>-->
 
@@ -148,18 +149,18 @@
         }
         show();
 
-        $("#afui").click(function (ev) {
-            if (typeof ($(ev.target).attr('href')) != 'undefined') {
-                //                console.log('href');
-                if ($.scrolling) {
-                    console.log('scrolling');
-                    ev.preventDefault();
-                    ev.stopPropagation();
-                    ev.stopImmediatePropagation();
-                    return false;
-                }
-            }
-        })
+//        $("#afui").click(function (ev) {
+//            if (typeof ($(ev.target).attr('href')) != 'undefined') {
+//                //                console.log('href');
+//                if ($.scrolling) {
+//                    console.log('scrolling');
+//                    ev.preventDefault();
+//                    ev.stopPropagation();
+//                    ev.stopImmediatePropagation();
+//                    return false;
+//                }
+//            }
+//        })
     </script>
 
     <!-- Google Analytics -->

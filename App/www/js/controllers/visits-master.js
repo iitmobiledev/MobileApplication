@@ -248,6 +248,15 @@ myApp.controller('VisitsMasterController', function ($scope, $filter, $location,
             }
         }
     };
+    
+    $scope.hasFutureData = function(obj){
+        return obj.date < $scope.max;
+    }
+    
+    $scope.hasPastData = function(obj){
+        return obj.date > $scope.min;
+    }
+
 
     $scope.getKey = function (obj) {
         return obj && obj.date.toDateString();

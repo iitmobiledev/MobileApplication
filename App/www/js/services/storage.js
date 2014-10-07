@@ -69,7 +69,7 @@ myApp.service("Storage", ["$injector",
          *  @description возвращает объект по первичному ключу. Объект должен быть предварительно добавлены с помощью
          */
         var get = function (className, primary, callback) {
-            try {
+//            try {
                 //                console.log(primary);
                 var item = storage.getItem(className + ":" + primary);
                 //                console.log("storage.get():", item);
@@ -79,9 +79,9 @@ myApp.service("Storage", ["$injector",
                     callback(null);
                 }
 
-            } catch (e) {
-                console.log(e.message);
-            }
+//            } catch (e) {
+//                console.log(e.message);
+//            }
         };
 
         /**

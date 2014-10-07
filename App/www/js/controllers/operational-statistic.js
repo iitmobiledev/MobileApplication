@@ -63,7 +63,7 @@ myApp.controller('OperationalStatisticController', function ($scope, $location, 
                 beginDate = period.begin;
                 endDate = period.end;
             }
-            //console.log("begend", beginDate, endDate);
+            console.log("begend", beginDate, endDate);
             Loader.search("OperationalStatistics", {
                 dateFrom: beginDate.toDateString(),
                 dateTill: endDate.toDateString(),
@@ -98,7 +98,7 @@ myApp.controller('OperationalStatisticController', function ($scope, $location, 
                     endDate = period.end;
 
                 }
-                //console.log("begend", beginDate, endDate)
+                console.log("begend", beginDate, endDate)
                 Loader.search("OperationalStatistics", {
                     dateFrom: beginDate.toDateString(),
                     dateTill: endDate.toDateString(),
@@ -186,6 +186,14 @@ myApp.controller('OperationalStatisticController', function ($scope, $location, 
         //        $scope.page = getStatistic($scope.date, $scope.step);
     });
 
+    $scope.hasFutureData = function(obj){
+        return obj.date < $scope.max;
+    }
+    
+    $scope.hasPastData = function(obj){
+        return obj.date > $scope.min;
+    }
+    
     $scope.$watch('date', function (newValue, oldValue) {
         //console.log('watchDate')
         var period = DateHelper.getPeriod(new Date($scope.date), $scope.step);
@@ -212,7 +220,7 @@ myApp.controller('OperationalStatisticController', function ($scope, $location, 
     });
 
     $scope.updateDate = function (curScope) {
-        if (curScope.page && curScope.page.date)
+        if (curScope && curScope.page && curScope.page.date)
             $scope.date = new Date(curScope.page.date);
     }
 
@@ -265,6 +273,7 @@ myApp.controller('OperationalStatisticController', function ($scope, $location, 
     };
 
     $scope.goForWeek = function () {
+        console.log("goForWeek")
         if ($scope.step != DateHelper.steps.WEEK) {
             $scope.loading = true;
             $(".periodButtons a").removeClass('active');

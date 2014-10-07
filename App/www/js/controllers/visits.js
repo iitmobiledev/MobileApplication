@@ -26,7 +26,7 @@ myApp.controller('VisitsController', function ($scope, $filter, $location, Loade
     $scope.needUpdating = false;
 
     $scope.loadedSlideCount = 2;
-    $scope.maxSlideCount = 6;
+    $scope.maxSlideCount = 8;
 
     $scope.statuses = Visit.statuses;
 
@@ -101,6 +101,7 @@ myApp.controller('VisitsController', function ($scope, $filter, $location, Loade
         //        console.log("scope.visit",$scope.visit);
         var resultArr = [];
         var date;
+        console.log("KEY", key)
         if (key) {
             date = new Date(key);
             console.log("date ", date);
@@ -177,6 +178,7 @@ myApp.controller('VisitsController', function ($scope, $filter, $location, Loade
                     endDate = period.end;
 
                 }
+                console.log("begend", beginDate, endDate, $scope.max);
                 Loader.search("Visit", {
                     dateFrom: beginDate,
                     dateTill: endDate,
@@ -220,6 +222,14 @@ myApp.controller('VisitsController', function ($scope, $filter, $location, Loade
             $scope.loading = false;
         }
     };
+    
+    $scope.hasFutureData = function(obj){
+        return obj.date < $scope.max;
+    }
+    
+    $scope.hasPastData = function(obj){
+        return obj.date > $scope.min;
+    }
 
     $scope.updateDate = function (curScope) {
         $scope.date = new Date(curScope.page.date);
