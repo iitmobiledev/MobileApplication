@@ -69,11 +69,6 @@ myApp.controller('VisitController', function ($scope, $filter, $routeParams, Loa
                             }
 
                             serviceItem.time = time.join("-");
-
-                            //                            if (service.startTime != "" && service.endTime != "") {
-                            //                                serviceItem.time = $filter('date')(service.startTime, "H:mm") + " - " + $filter('date')(service.endTime, "H:mm");
-                            //                                serviceItem.hasTime = true;
-                            //                            }
                             serviceItem.cost = service.cost;
                             if (service.master.lastName && service.master.firstName) {
                                 serviceItem.master = 'Мастер: ' + service.master.lastName + " " + service.master.firstName;

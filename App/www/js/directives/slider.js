@@ -199,12 +199,13 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
                     for (var i = 0; i < contentData.length; i++) {
                         newscope = scope.$new();
                         newscope.page = contentData[i];
-                        var k = keyFunc(contentData[i])
-
-                        //console.log("startPageKey", startPageKey, k)
+                        var k = keyFunc(contentData[i]);
+                        
+//                        console.log("startPageKey", startPageKey, k);
                         compiled(newscope, function (clonedElement, scope) {
-                            clonedElement.attr("contentkey", k)
+                            clonedElement.attr("contentkey", k);
                             if (k == startPageKey || (startPageKey == null && i == contentData.length)) {
+                                console.log("startPageKey", k);
                                 $('.my-slider').addSlideRight(clonedElement, true);
                             } else {
                                 $('.my-slider').addSlideRight(clonedElement);
@@ -281,6 +282,8 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
                 }
                 return $(slide).attr('contentkey');
             }
+            
+            $("#slides").height($(".upage-content").height() - $("#header").height());
 
             function updateSlider() {
                 console.log(getCurrentKey());
