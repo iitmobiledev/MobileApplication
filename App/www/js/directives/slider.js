@@ -64,10 +64,8 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
                     //                    var pageTop = element.closest(".upage-content").offset().top;
                     //                    console.log("HEIGHT", $('body').height(), sliderTop, pageTop, $("#navbar").outerHeight())
                     var subtractionHeight = 0;
-                    console.log("HEIGHT element", $(attrs.heightElements))
                     $(attrs.heightElements).each(function () {
                         subtractionHeight += $(this).outerHeight();
-                        console.log("HEIGHT", subtractionHeight)
                     })
                     element.outerHeight(
                         $('body').height() - subtractionHeight)
@@ -88,9 +86,9 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
              */
 
 
-            function toSlick() {
-                var width = $(".content").width()
-                if (width !== 0) {
+            function toSlick(callback) {
+                var width = $("body").width();
+//                if (width !== 0) {
                     //console.log(width)
                     $('.my-slider').initSlider({
                         width: width,
@@ -137,9 +135,10 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
                             }
                         }
                     });
-                } else {
-                    setTimeout(toSlick, 10);
-                }
+//                    cal
+//                } else {
+//                    setTimeout(toSlick, 10);
+//                }
             }
 
             /**
@@ -158,7 +157,10 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
                 dataCallback(null, count, true, function (content, pageKey) {
                     ready = true;
                     addCurrentDayData(content, pageKey);
-                    $('.my-slider').removeLoadBarRight();
+                    setTimeout(function () {
+                            $('.my-slider').removeLoadBarRight();
+                        },
+                        0);
                 });
             }
 
@@ -237,7 +239,6 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
                         setTimeout(function () {
                             clonedElement.attr("contentkey", k);
                             if (k == startPageKey || (startPageKey == null && i == contentData.length)) {
-                                console.log("startPageKey", k);
                                 element.find('.my-slider').addSlideRight(clonedElement, true);
                             } else {
                                 element.find('.my-slider').addSlideRight(clonedElement);

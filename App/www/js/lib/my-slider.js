@@ -402,10 +402,10 @@
                 }
             } else {
                 $('.LoadSlideLeft').remove();
-                console.log("REMOVE LOADBAR left", this.currentSlide)
+//                console.log("REMOVE LOADBAR left", this.currentSlide)
                 if (this.currentSlide != 0) {
                     this.currentSlide -= 1;
-                    console.log("CURSLIDE--")
+//                    console.log("CURSLIDE--")
                 }
                 this.setTranslatePosition(this.getLeft(this.currentSlide));
                 this.slideCount--;
@@ -439,13 +439,13 @@
 
             var slideObj = this;
 
-            $.bind($(element).scroller(), 'scrollstart', function () {
-                console.log("EVENT SCROLL START");
-//                slideObj.scrolling = true;
-            });
+//            $.bind($(element).scroller(), 'scrollstart', function () {
+//                console.log("EVENT SCROLL START");
+////                slideObj.scrolling = true;
+//            });
 
             $.bind($(element).scroller(), 'scrollend', function () {
-                console.log("EVENT SCROLL END");
+//                console.log("EVENT SCROLL END");
                 slideObj.scrolling = false;
             });
 
@@ -481,13 +481,13 @@
 
             var slideObj = this;
 
-            $.bind($(element).scroller(), 'scrollstart', function () {
-                console.log("EVENT SCROLL START");
-//                slideObj.scrolling = true;
-            });
+//            $.bind($(element).scroller(), 'scrollstart', function () {
+//                console.log("EVENT SCROLL START");
+////                slideObj.scrolling = true;
+//            });
 
             $.bind($(element).scroller(), 'scrollend', function () {
-                console.log("EVENT SCROLL END");
+//                console.log("EVENT SCROLL END");
                 slideObj.scrolling = false;
             });
 
@@ -641,7 +641,9 @@
             });
         };
         $.fn.scrollerRewind = function () {
-            this.scroller().scrollToTop(0);
+            if (this.scroller && this.scroller() && this.scroller().scrollToTop){
+                this.scroller().scrollToTop(0);
+            }
         }
 
         $.fn.destroySlider = function () {
