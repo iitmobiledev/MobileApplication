@@ -371,14 +371,14 @@
         }
 
         MySlider.prototype.addLoadBar = function (element, toRight) {
-            element.css("height", "100%");
-            var slide = $('<div class="lbSlide" style="heigth: 100%"/>').append(element);
+            $(element).css("height", "100%");
+            var slide = $('<div style="heigth: 100%"/>').append(element);
             if (toRight) {
-                element.addClass("LoadSlideRight");
-                this.appendSlide(element);
+                slide.addClass("LoadSlideRight");
+                this.appendSlide(slide);
             } else {
-                element.addClass("LoadSlideLeft");
-                this.prependSlide(element);
+                slide.addClass("LoadSlideLeft");
+                this.prependSlide(slide);
             }
         }
 
@@ -442,6 +442,7 @@
             if (!lb.length) {
                 this.$slideTrack.prepend(element);
             } else {
+                console.log("prepend", element, lb)
                 element.insertAfter(lb)
             }
             

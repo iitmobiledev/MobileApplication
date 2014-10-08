@@ -6,7 +6,7 @@ myApp.directive('arClick', function ($parse) {
             var fn = $parse(attrs.arClick);
             element.on('click', function (event) {
 //                console.log('click');
-                if (!$.scrolling) {
+//                if (!$.scrolling) {
 //                    console.log('not scrolling');
                     var callback = function () {
                         fn(scope, {
@@ -14,7 +14,7 @@ myApp.directive('arClick', function ($parse) {
                         });
                     };
                     scope.$apply(callback);
-                }
+//                }
             });
         }
     }

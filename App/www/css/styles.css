@@ -224,3 +224,11 @@ a.settings {
     background: gray;
     opacity: 0.5;
 }
+
+.LoadSlideLeft > div {
+    height: 100%;
+}
+
+.LoadSlideRight > div {
+    height: 100%;
+}
