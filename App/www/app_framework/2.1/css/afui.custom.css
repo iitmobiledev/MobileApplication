@@ -1761,6 +1761,7 @@ only screen and (min-width: 768px) {
 }
 /** This can be your default scrollbar class.  You must use !important to override the default inline styles */
 
+/*
 .scrollBar {
     position: absolute !important;
     width: 5px !important;
@@ -1770,6 +1771,7 @@ only screen and (min-width: 768px) {
     background: black !important;
     opacity: 0 !important;
 }
+*/
 #afModalMask {
     position: absolute;
     top: 0px;
