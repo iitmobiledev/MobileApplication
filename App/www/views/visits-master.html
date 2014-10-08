@@ -1,11 +1,11 @@
 <header-content title="'Визиты'" show-back-button="false" show="false"></header-content>
 <orient orientation="'portrait'"></orient>
 <div class="upage-content">
-    <div class="button-grouped flex widget uib_w_24" data-uib="app_framework/button_group" data-ver="1">
+    <div class="dataTypeChanger button-grouped flex widget uib_w_24" data-uib="app_framework/button_group" data-ver="1">
         <a ar-click="onTime()" class="button widget uib_w_25 d-margins" data-uib="app_framework/button" data-ver="1">По времени</a>
         <a id="mastersButton" class="button widget uib_w_26 d-margins active" data-uib="app_framework/button" data-ver="1">По мастерам</a>
     </div>
-    <slider content-id="visits-master" get-data='getData' key-expression='getKey' update-date='updateDate'  min='min' max='max' loaded-slide-count='loadedSlideCount' max-slide-count='maxSlideCount' need-updating='needUpdating'></slider>
+    <slider content-id="visits-master" get-data='getData' key-expression='getKey' update-date='updateDate' loaded-slide-count='loadedSlideCount' max-slide-count='maxSlideCount' need-updating='needUpdating' has-future-data="hasFutureData"  has-past-data="hasPastData" height-elements="#navbar, .dataTypeChanger"></slider>
     <load-bar param-name="loading" ></load-bar>
     <error-show correct='correct' error='errorText'></error-show>
     <script type="text/ng-template" id="visits-master">

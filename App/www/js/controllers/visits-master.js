@@ -272,7 +272,8 @@ myApp.controller('VisitsMasterController', function ($scope, $filter, $location,
     });
 
     $scope.updateDate = function (curScope) {
-        $scope.date = new Date(curScope.page.date);
+        if (curScope && curScope.page && curScope.page.date)
+            $scope.date = new Date(curScope.page.date);
     }
 
     /**

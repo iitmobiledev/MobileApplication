@@ -60,11 +60,17 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
 
             var checkWidth = function () {
                 if ($(".content").width() < $(".content").height()) {
-                    var sliderTop = element.find('.my-slider').offset().top;
-                    var pageTop = element.closest(".upage-content").offset().top;
-                    console.log("HEIGHT", $('body').height(), sliderTop, pageTop, $("#navbar").outerHeight())
+//                    var sliderTop = element.find('.my-slider').offset().top;
+//                    var pageTop = element.closest(".upage-content").offset().top;
+//                    console.log("HEIGHT", $('body').height(), sliderTop, pageTop, $("#navbar").outerHeight())
+                    var subtractionHeight = 0;
+                    console.log("HEIGHT element", $(attrs.heightElements))
+                    $(attrs.heightElements).each(function(){
+                        subtractionHeight += $(this).outerHeight();
+                        console.log("HEIGHT", subtractionHeight)
+                    })
                     element.outerHeight(
-                        $('body').height() - sliderTop + pageTop - $("#navbar:visible").outerHeight() - $("#header:visible").outerHeight())
+                        $('body').height() - subtractionHeight)
                     initSlider();
                 } else {
                     setTimeout(checkWidth, 50);

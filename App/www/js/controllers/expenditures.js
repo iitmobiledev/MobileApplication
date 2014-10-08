@@ -150,6 +150,13 @@ myApp.controller('ExpendituresController', function ($scope, $filter, Loader, Da
         }
     };
 
+     $scope.hasFutureData = function(obj){
+        return obj.date < $scope.max;
+    }
+    
+    $scope.hasPastData = function(obj){
+        return obj.date > $scope.min;
+    }
 
     $scope.getKey = function (obj) {
         //        console.log(obj, obj.list[0].__primary__);
@@ -169,7 +176,8 @@ myApp.controller('ExpendituresController', function ($scope, $filter, Loader, Da
     });
 
     $scope.updateDate = function (curScope) {
-        $scope.date = new Date(curScope.page.date);
+        if (curScope && curScope.page && curScope.page.date)
+            $scope.date = new Date(curScope.page.date);
     }
 
 

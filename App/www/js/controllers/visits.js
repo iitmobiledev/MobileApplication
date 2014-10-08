@@ -232,8 +232,8 @@ myApp.controller('VisitsController', function ($scope, $filter, $location, Loade
     }
 
     $scope.updateDate = function (curScope) {
-        $scope.date = new Date(curScope.page.date);
-        console.log("updateDate", $scope.date)
+        if (curScope && curScope.page && curScope.page.date)
+            $scope.date = new Date(curScope.page.date);
     }
 
 

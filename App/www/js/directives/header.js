@@ -107,7 +107,7 @@ myApp.directive('headerContent', function () {
 //                }
 //            });
         },
-        template: '<div style="height:100%" id="header">' +
+        template: '<div style="height:100%" id="header-content" class="header-content">' +
             '<h1></h1>' +
             '<div class="widget-container wrapping-col single-centered">' +
             '</div>' +

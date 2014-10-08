@@ -371,6 +371,8 @@
         }
 
         MySlider.prototype.addLoadBar = function (element, toRight) {
+            element.css("height", "100%");
+            var slide = $('<div class="lbSlide" style="heigth: 100%"/>').append(element);
             if (toRight) {
                 element.addClass("LoadSlideRight");
                 this.appendSlide(element);
@@ -402,6 +404,7 @@
         //Добавление слайда в конец слайдера
         MySlider.prototype.appendSlide = function (element) {
             this.slideCount++;
+            $(element).css("height", "100%");
             $(element).css("width", this.options.width + 'px');
             $(element).addClass("slide")
            
@@ -431,6 +434,7 @@
         //Добавление слайда в начало слайдера
         MySlider.prototype.prependSlide = function (element) {
             this.slideCount++;
+            $(element).css("height", "100%");
             $(element).css("width", this.options.width + 'px');
             
             $(element).addClass("slide")
