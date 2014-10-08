@@ -117,9 +117,9 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
                                     }
                                 } else if ($('.my-slider').whichFromRight($('.my-slider').getCurrentSlide()) <= 1) {
                                     var key = getCurrentKey($('.my-slider').getLastSlide());
-                                    var first = $('.my-slider').getFirstSlide();
-                                    var obj = angular.element(first).scope().page;
-                                    if (scope.$eval(attrs.hasPastData)(obj)) {
+                                    var last = $('.my-slider').getLastSlide();
+                                    var obj = angular.element(last).scope().page;
+                                    if (scope.$eval(attrs.hasFutureData)(obj)) {
                                         ready = false;
                                         $('.my-slider').addLoadBarRight(loadslider);
                                         dataCallback(key, count, true, function (content) {
