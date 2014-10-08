@@ -60,12 +60,12 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
 
             var checkWidth = function () {
                 if ($(".content").width() < $(".content").height()) {
-//                    var sliderTop = element.find('.my-slider').offset().top;
-//                    var pageTop = element.closest(".upage-content").offset().top;
-//                    console.log("HEIGHT", $('body').height(), sliderTop, pageTop, $("#navbar").outerHeight())
+                    //                    var sliderTop = element.find('.my-slider').offset().top;
+                    //                    var pageTop = element.closest(".upage-content").offset().top;
+                    //                    console.log("HEIGHT", $('body').height(), sliderTop, pageTop, $("#navbar").outerHeight())
                     var subtractionHeight = 0;
                     console.log("HEIGHT element", $(attrs.heightElements))
-                    $(attrs.heightElements).each(function(){
+                    $(attrs.heightElements).each(function () {
                         subtractionHeight += $(this).outerHeight();
                         console.log("HEIGHT", subtractionHeight)
                     })
@@ -112,7 +112,9 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
                                         dataCallback(key, count, false, function (content) {
                                             ready = true;
                                             addPastData(content);
-                                            $('.my-slider').removeLoadBarLeft();
+                                            setTimeout(function () {
+                                                $('.my-slider').removeLoadBarLeft()
+                                            }, 0);
                                         });
                                     }
                                 } else if ($('.my-slider').whichFromRight($('.my-slider').getCurrentSlide()) <= 1) {
@@ -125,7 +127,9 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
                                         dataCallback(key, count, true, function (content) {
                                             ready = true;
                                             addFutureData(content);
-                                            $('.my-slider').removeLoadBarRight();
+                                            setTimeout(function () {
+                                                $('.my-slider').removeLoadBarRight()
+                                            }, 0);
                                         });
                                     }
                                 }
@@ -150,11 +154,11 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
                 $('.my-slider').html("")
                 toSlick();
                 ready = false;
-                //                $('.my-slider').addLoadBarRight(loadslider);
+                $('.my-slider').addLoadBarRight(loadslider);
                 dataCallback(null, count, true, function (content, pageKey) {
                     ready = true;
                     addCurrentDayData(content, pageKey);
-                    //                    $('.my-slider').removeLoadBarRight();
+                    $('.my-slider').removeLoadBarRight();
                 });
             }
 

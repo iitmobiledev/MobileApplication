@@ -9,7 +9,7 @@
     }
     (function ($) {
         var MySlider = window.MySlider || {};
-//        $.scrolling = false;
+        //        $.scrolling = false;
         MySlider = (function () {
                 function MySlider(element, settings) {
                     this.defaults = {
@@ -30,7 +30,8 @@
                         currentSlide: null,
                         slideCount: 0,
                         swipeLeft: null,
-                        currentLeft: 0
+                        currentLeft: 0,
+                        scrolling: false
                     };
 
                     $.extend(this, this.initials);
@@ -73,25 +74,29 @@
                 }
                 break;
             case 'move':
-                if (this.swipe) {
-                    this.swipeMove(event);
+
+                if (!this.scrolling) {
+                    if (this.swipe) {
+                        $('.scrollBar').css("opacity", "0");
+                        this.swipeMove(event);
+                    }
+                    break;
                 }
-                break;
 
             case 'end':
                 if (this.swipe) {
                     this.swipe = false;
+                    this.scrolling = false;
                     this.swipeEnd(event);
                 }
                 break;
-
             }
 
         };
 
         //���������� ����� �������� ����� (������ ���� ��� �����)
         MySlider.prototype.swipeEnd = function (event) {
-//            this.$slideTrack.find('.slide').scrollerEnable();
+            //            this.$slideTrack.find('.slide').scrollerEnable();
             if (this.curX === undefined) {
                 return false;
             }
@@ -110,6 +115,7 @@
                 case 'left':
                     this.slideHandler(this.currentSlide + 1, function () {
                         current.scrollerRewind();
+                        $('.scrollBar').css("opacity", "0.5");
                         //console.log("current after slideHandler", current);
                     });
                     this.startX = null;
@@ -119,6 +125,7 @@
                 case 'right':
                     this.slideHandler(this.currentSlide - 1, function () {
                         current.scrollerRewind();
+                        $('.scrollBar').css("opacity", "0.5");
                         //console.log("current after slideHandler", current);
                     });
                     this.startX = null;
@@ -186,7 +193,7 @@
                     if (callback) {
                         callback.call();
                     }
-//                    $.scrolling = false;
+                    //                    $.scrolling = false;
                 }
             });
         };
@@ -212,7 +219,7 @@
                 r,
                 swipeAngle;
 
-//            console.log("swipeDirection", this.startX, this.curX);
+            //            console.log("swipeDirection", this.startX, this.curX);
             xDist = this.startX - this.curX;
             yDist = this.startY - this.curY;
             r = Math.atan2(yDist, xDist);
@@ -235,7 +242,7 @@
             return 'vertical';
 
         };
-        
+
         var current, progression;
 
         //�������� ��� �������� ������� �� ������
@@ -251,21 +258,25 @@
             if (!this.swipe || touches && touches.length !== 1) {
                 return false;
             }
-            
+
             current = this.curX;
 
             this.curX = touches !== undefined ? touches[0].pageX : event.clientX;
             this.curY = touches !== undefined ? touches[0].pageY : event.clientY;
 
-//            console.log("start", this.startX);
-//            console.log("current", this.curX, current);
-//            if (this.curX != current)
-//                progression = this.curX > current ? 1 : -1;
-//            console.log("progression", progression);
+            //            console.log("start", this.startX);
+            //            console.log("current", this.curX, current);
+            //            if (this.curX != current)
+            //                progression = this.curX > current ? 1 : -1;
+            //            console.log("progression", progression);
             this.swipeLength = Math.round(Math.sqrt(
                 Math.pow(this.curX - this.startX, 2)));
 
             if (this.swipeDirection() === 'vertical') {
+                $('.scrollBar').css("opacity", "0.5");
+                if (this.swipeLength > 20){
+                    this.scrolling = true;
+                }
 
                 //                positionOffsetY = this.curY > this.startY ? 1 : -1;
                 //
@@ -276,8 +287,8 @@
             }
 
             if (this.swipeLength > 20) {
-//                $.scrolling = true;
-//                this.$slideTrack.find('.slide').scrollerDisable();
+                //                $.scrolling = true;
+                //                this.$slideTrack.find('.slide').scrollerDisable();
             }
 
             //            if (this.swipeLength > 20) {
@@ -288,8 +299,8 @@
                 event.preventDefault();
             }
 
-//            if (this.curX != current)
-//                positionOffset = this.curX > current ? 1 : -1;
+            //            if (this.curX != current)
+            //                positionOffset = this.curX > current ? 1 : -1;
             positionOffset = this.curX > this.startX ? 1 : -1;
 
             this.swipeLeft = curLeft + this.swipeLength * positionOffset;
@@ -386,18 +397,19 @@
             if (fromRight) {
                 $('.LoadSlideRight').remove();
                 this.slideCount--;
-                if (this.getCurrent().html() == undefined){
+                if (this.getCurrent().html() == undefined) {
                     this.shiftSlide(false);
                 }
             } else {
-                $('.LoadSlideLeft').remove();  
-                if (this.currentSlide != 0)
-                {
+                $('.LoadSlideLeft').remove();
+                console.log("REMOVE LOADBAR left", this.currentSlide)
+                if (this.currentSlide != 0) {
                     this.currentSlide -= 1;
+                    console.log("CURSLIDE--")
                 }
                 this.setTranslatePosition(this.getLeft(this.currentSlide));
                 this.slideCount--;
-                
+
             }
         }
 
@@ -407,23 +419,36 @@
             $(element).css("height", "100%");
             $(element).css("width", this.options.width + 'px');
             $(element).addClass("slide")
-           
-            
+
+
             var lb = $(element).find('.LoadSlideRight');
             if (!lb.length) {
                 this.$slideTrack.append(element);
             } else {
                 element.insertAfter(lb)
             }
-            
+
             $(element).scroller({
                 verticalScroll: true,
                 horizontalScroll: false,
                 lockBounce: true,
-//                autoEnable: true,
+                //                autoEnable: true,
                 scrollbars: true
-//                height: 500
+                //                height: 500
             });
+
+            var slideObj = this;
+
+            $.bind($(element).scroller(), 'scrollstart', function () {
+                console.log("EVENT SCROLL START");
+//                slideObj.scrolling = true;
+            });
+
+            $.bind($(element).scroller(), 'scrollend', function () {
+                console.log("EVENT SCROLL END");
+                slideObj.scrolling = false;
+            });
+
             this.$slideTrack.css("width", this.options.width * this.slideCount + 'px');
             if (this.currentSlide === null) {
                 this.currentSlide = 0;
@@ -436,7 +461,7 @@
             this.slideCount++;
             $(element).css("height", "100%");
             $(element).css("width", this.options.width + 'px');
-            
+
             $(element).addClass("slide")
             var lb = $(element).find('.LoadSlideLeft');
             if (!lb.length) {
@@ -445,14 +470,27 @@
                 console.log("prepend", element, lb)
                 element.insertAfter(lb)
             }
-            
+
             $(element).scroller({
                 verticalScroll: true,
                 horizontalScroll: false,
                 scrollbars: true,
                 lockBounce: true
-//                height: 500
+                //                height: 500
             });
+
+            var slideObj = this;
+
+            $.bind($(element).scroller(), 'scrollstart', function () {
+                console.log("EVENT SCROLL START");
+//                slideObj.scrolling = true;
+            });
+
+            $.bind($(element).scroller(), 'scrollend', function () {
+                console.log("EVENT SCROLL END");
+                slideObj.scrolling = false;
+            });
+
             this.$slideTrack.css("width", this.options.width * this.slideCount + 'px');
             if (this.currentSlide === null) {
                 this.currentSlide = 0;
@@ -490,6 +528,7 @@
                     if (this.currentSlide + 1 < this.slideCount) {
                         this.slideHandler(this.currentSlide + 1, function () {
                             current.scrollerRewind();
+                            $('.scrollBar').css("opacity", "0.5");
                         });
                         return $('.slide').get(this.currentSlide + 1);
                     }
@@ -500,6 +539,7 @@
                     if (this.currentSlide - 1 >= 0) {
                         this.slideHandler(this.currentSlide - 1, function () {
                             current.scrollerRewind();
+                            $('.scrollBar').css("opacity", "0.5");
                         });
                         return $('.slide').get(this.currentSlide - 1);
                     }
@@ -600,7 +640,7 @@
                 element.slider = new MySlider(element, options);
             });
         };
-        $.fn.scrollerRewind = function(){
+        $.fn.scrollerRewind = function () {
             this.scroller().scrollToTop(0);
         }
 
