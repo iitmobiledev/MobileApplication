@@ -356,7 +356,6 @@
 
         //���������� ������ (element - ������� ������; toRight - ���� true - � ����� ��������, false - � ������ ��������)
         MySlider.prototype.addSlide = function (element, toRight, isCurrent) {
-            //console.log("addSlide", this.slideCount)
             if (toRight) {
                 this.appendSlide(element);
                 if (this.slideCount > this.options.maxSlideCount) {

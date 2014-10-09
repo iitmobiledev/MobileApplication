@@ -88,57 +88,57 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
 
             function toSlick(callback) {
                 var width = $("body").width();
-//                if (width !== 0) {
-                    //console.log(width)
-                    $('.my-slider').initSlider({
-                        width: width,
-                        maxSlideCount: maxCount,
-                        onAfterChange: function () {
-                            if (ready) {
+                //                if (width !== 0) {
+                //console.log(width)
+                $('.my-slider').initSlider({
+                    width: width,
+                    maxSlideCount: maxCount,
+                    onAfterChange: function () {
+                        if (ready) {
 
-                                var curScope = angular.element($('.my-slider').getCurrentSlide()).scope();
-                                //console.log(curScope)
-                                updateDate(curScope);
-                                if ($('.my-slider').whichFromLeft(
-                                    $('.my-slider').getCurrentSlide()) <= 1) {
-                                    var key = getCurrentKey($('.my-slider').getFirstSlide());
-                                    var first = $('.my-slider').getFirstSlide();
-                                    var obj = angular.element(first).scope().page;
-                                    if (scope.$eval(attrs.hasPastData)(obj)) {
-                                        ready = false;
-                                        $('.my-slider').addLoadBarLeft(loadslider);
-                                        dataCallback(key, count, false, function (content) {
-                                            ready = true;
-                                            addPastData(content);
-                                            setTimeout(function () {
-                                                $('.my-slider').removeLoadBarLeft()
-                                            }, 0);
-                                        });
-                                    }
-                                } else if ($('.my-slider').whichFromRight($('.my-slider').getCurrentSlide()) <= 1) {
-                                    var key = getCurrentKey($('.my-slider').getLastSlide());
-                                    var last = $('.my-slider').getLastSlide();
-                                    var obj = angular.element(last).scope().page;
-                                    if (scope.$eval(attrs.hasFutureData)(obj)) {
-                                        ready = false;
-                                        $('.my-slider').addLoadBarRight(loadslider);
-                                        dataCallback(key, count, true, function (content) {
-                                            ready = true;
-                                            addFutureData(content);
-                                            setTimeout(function () {
-                                                $('.my-slider').removeLoadBarRight()
-                                            }, 0);
-                                        });
-                                    }
+                            var curScope = angular.element($('.my-slider').getCurrentSlide()).scope();
+                            //console.log(curScope)
+                            updateDate(curScope);
+                            if ($('.my-slider').whichFromLeft(
+                                $('.my-slider').getCurrentSlide()) <= 1) {
+                                var key = getCurrentKey($('.my-slider').getFirstSlide());
+                                var first = $('.my-slider').getFirstSlide();
+                                var obj = angular.element(first).scope().page;
+                                if (scope.$eval(attrs.hasPastData)(obj)) {
+                                    ready = false;
+                                    $('.my-slider').addLoadBarLeft(loadslider);
+                                    dataCallback(key, count, false, function (content) {
+                                        ready = true;
+                                        addPastData(content);
+                                        setTimeout(function () {
+                                            $('.my-slider').removeLoadBarLeft()
+                                        }, 0);
+                                    });
                                 }
-                                scope.$apply();
+                            } else if ($('.my-slider').whichFromRight($('.my-slider').getCurrentSlide()) <= 1) {
+                                var key = getCurrentKey($('.my-slider').getLastSlide());
+                                var last = $('.my-slider').getLastSlide();
+                                var obj = angular.element(last).scope().page;
+                                if (scope.$eval(attrs.hasFutureData)(obj)) {
+                                    ready = false;
+                                    $('.my-slider').addLoadBarRight(loadslider);
+                                    dataCallback(key, count, true, function (content) {
+                                        ready = true;
+                                        addFutureData(content);
+                                        setTimeout(function () {
+                                            $('.my-slider').removeLoadBarRight()
+                                        }, 0);
+                                    });
+                                }
                             }
+                            scope.$apply();
                         }
-                    });
-//                    cal
-//                } else {
-//                    setTimeout(toSlick, 10);
-//                }
+                    }
+                });
+                //                    cal
+                //                } else {
+                //                    setTimeout(toSlick, 10);
+                //                }
             }
 
             /**
@@ -153,12 +153,12 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
                 $('.my-slider').html("")
                 toSlick();
                 ready = false;
-                $('.my-slider').addLoadBarRight(loadslider);
+                $('.my-slider').addLoadBarLeft(loadslider);
                 dataCallback(null, count, true, function (content, pageKey) {
                     ready = true;
                     addCurrentDayData(content, pageKey);
                     setTimeout(function () {
-                            $('.my-slider').removeLoadBarRight();
+                            $('.my-slider').removeLoadBarLeft();
                         },
                         0);
                 });
@@ -232,13 +232,13 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
                 if (!startPageKey) {
                     startPageKey = null;
                 }
-                console.log("contentData", contentData)
                 var curIndex = null;
                 var setUpSlide = function (newscope, k) {
                     compiled(newscope, function (clonedElement, scope) {
                         setTimeout(function () {
                             clonedElement.attr("contentkey", k);
-                            if (k == startPageKey || (startPageKey == null && i == contentData.length)) {
+                            if (k == startPageKey 
+                                || (startPageKey == null && i == contentData.length)) {
                                 element.find('.my-slider').addSlideRight(clonedElement, true);
                             } else {
                                 element.find('.my-slider').addSlideRight(clonedElement);
