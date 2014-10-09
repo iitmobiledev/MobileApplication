@@ -32,7 +32,7 @@ myApp.service("Storage", ["$injector",
          */
         var clearStorage = function () {
             try {
-                localStorage.clear();
+                storage = new storage();
             } catch (e) {
                 console.log(e.message);
             }
@@ -69,19 +69,19 @@ myApp.service("Storage", ["$injector",
          *  @description возвращает объект по первичному ключу. Объект должен быть предварительно добавлены с помощью
          */
         var get = function (className, primary, callback) {
-//            try {
-                //                console.log(primary);
-                var item = storage.getItem(className + ":" + primary);
-                //                console.log("storage.get():", item);
-                if (item) {
-                    callback(item);
-                } else {
-                    callback(null);
-                }
+            //            try {
+            //                console.log(primary);
+            var item = storage.getItem(className + ":" + primary);
+            //                console.log("storage.get():", item);
+            if (item) {
+                callback(item);
+            } else {
+                callback(null);
+            }
 
-//            } catch (e) {
-//                console.log(e.message);
-//            }
+            //            } catch (e) {
+            //                console.log(e.message);
+            //            }
         };
 
         /**
