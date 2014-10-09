@@ -18,6 +18,18 @@ myApp.directive('errorShow', function () {
             };
             scope.$watch(attrs.correct, updateCorrect);
             updateCorrect();
+            $("body").on("click", function(){
+                scope.correct = true;
+                scope.$apply();
+            });
+            $("body").on("touchstart mousedown", function(){
+                scope.correct = true;
+                scope.$apply();
+            });
+            $("body").on("touchend mouseup", function(){
+                scope.correct = true;
+                scope.$apply();
+            });
         },
         template: '<div style="background-color: rgb(255,66,91); color: white; margin: 4% 10%;padding:15px 10px;position:relative" ng-hide="correct">'+
                 '<img src="images/auth_error.png" style="max-height: 15px;position: absolute;left: 15px;">'+

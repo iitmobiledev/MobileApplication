@@ -7,9 +7,6 @@
     </div>
     
     <slider content-id="visits" get-data='getData' key-expression='getKey' update-date='updateDate' loaded-slide-count='loadedSlideCount' max-slide-count='maxSlideCount' need-updating='needUpdating' has-future-data="hasFutureData"  has-past-data="hasPastData" height-elements="#navbar, .dataTypeChanger"></slider>
-<!--    <load-bar param-name="loading" ></load-bar>-->
-
-    <load-bar param-name="loading" ></load-bar>
     <error-show correct='correct' error='errorText'></error-show>
     <script type="text/ng-template" id="visits">
     <div id="visitsContent">
@@ -28,7 +25,7 @@
                                         {{visitInfo.client}}
                                     </span>
                         </div>
-                            <span ng-click="toVisit(visit.id)" style="display: inline-block;max-width:75%;white-space:nowrap;text-overflow:ellipsis;overflow: hidden;">{{visitInfo.services}} —</span>
+                            <span ng-click="toVisit(visit.id)" style="display: inline-block;max-width:75%;white-space:nowrap;text-overflow:ellipsis;overflow: hidden;">{{visitInfo.services}}</span>
                             <span ng-click="toVisit(visit.id)" style="display: inline-block;text-align:right;max-width:18%;white-space:nowrap;text-overflow:ellipsis;overflow: hidden;">{{visitInfo.cost| money:0}} <span class="price">ю</span>
                             </span>
                     </div>

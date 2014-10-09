@@ -34,6 +34,8 @@ myApp.controller('VisitController', function ($scope, $filter, $routeParams, Loa
         var date;
         Loader.get("Visit", $routeParams.id, function (obj) {
             if (obj) {
+//                console.log(obj);
+//                $scope.id = obj.id;
                 hasData = true;
                 date = new Date(obj.date.getFullYear(), obj.date.getMonth(), obj.date.getDate(), 0, 0, 0);
                 $scope.backLink = "#/" + $routeParams.backLink + "/" + date;
@@ -44,14 +46,22 @@ myApp.controller('VisitController', function ($scope, $filter, $routeParams, Loa
                     dateTill: endDate,
                     step: $scope.step
                 }, function (data) {
+                    console.log(data);
                     $scope.maxSlideCount = data.length + 1;
 
-                    data = $filter('orderBy')(data, 'startTime', false);
+                    data = $filter('orderBy')(data, 'id', false);
+                    
+                    $scope.minId = data[0].id;
+                    $scope.maxId = data[data.length-1].id;
                     
                     for (var i = 0; i < data.length; i++) {
                         data[i].servList = [];
                         data[i].sum = 0;
                         data[i].client.phone = formatLocal("RU", data[i].client.phone);
+                        data[i].client.hasPhone = true;
+                        if (data[i].client.phone == ""){
+                            data[i].client.hasPhone = false;
+                        }
                         for (var j = 0; j < data[i].serviceList.length; j++) {
                             var service = data[i].serviceList[j];
                             data[i].sum += data[i].serviceList[j].cost;
@@ -89,7 +99,23 @@ myApp.controller('VisitController', function ($scope, $filter, $routeParams, Loa
     $scope.getKey = function (obj) {
         return obj && obj.__primary__;
     };
-
+    
+//    $scope.updateDate = function (curScope) {
+//        if (curScope.page && curScope.page.id)
+//            $scope.id = curScope.page.id;
+//    }
+//    
+//    $scope.$watch("id", function(){
+//        $scope.future = false;
+//        $scope.past = false;
+//        if ($scope.id > $scope.minId)
+//            $scope.past = true;
+//        if ($scope.id < $scope.maxId)
+//            $scope.future = true;
+//        console.log('change id');
+//    });
+    
+    
     //    $scope.getServList = function (visit) {
     //        console.log(visit);
     //        //

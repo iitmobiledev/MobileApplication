@@ -59,10 +59,10 @@ myApp.controller('VisitsMasterController', function ($scope, $filter, $location,
         $scope.loading = true;
         $location.path('visits/' + $scope.date);
     }
-    
-    $scope.toVisit = function(id){
+
+    $scope.toVisit = function (id) {
         $scope.loading = true;
-        $location.path('visit/'+id+'/visits-master');
+        $location.path('visit/' + id + '/visits-master');
     };
 
     //    $scope.visits = [];
@@ -248,12 +248,12 @@ myApp.controller('VisitsMasterController', function ($scope, $filter, $location,
             }
         }
     };
-    
-    $scope.hasFutureData = function(obj){
+
+    $scope.hasFutureData = function (obj) {
         return obj.date < $scope.max;
     }
-    
-    $scope.hasPastData = function(obj){
+
+    $scope.hasPastData = function (obj) {
         return obj.date > $scope.min;
     }
 
@@ -293,7 +293,7 @@ myApp.controller('VisitsMasterController', function ($scope, $filter, $location,
             $scope.master = master.lastName + " " + master.firstName;
         } else
             $scope.hasMaster = false;
-        
+
         if (master.photo == null)
             $scope.hasMaster = false;
     };
@@ -317,7 +317,9 @@ myApp.controller('VisitsMasterController', function ($scope, $filter, $location,
         for (var j = 0; j < visit.serviceList.length; j++) {
             var service = visit.serviceList[j];
             if (service.master.id == $scope.masterId) {
-                services.push(service.description);
+                if (service.description != "") {
+                    services.push(service.description);
+                }
                 coast += service.cost;
             }
         }
@@ -340,7 +342,10 @@ myApp.controller('VisitsMasterController', function ($scope, $filter, $location,
             time.pop();
         time = time.join("-");
         $scope.masterVisitInfo.time = time;
-        $scope.masterVisitInfo.service = services.join(", ");
+        if (services.length > 0)
+            $scope.masterVisitInfo.service = services.join(", ") + " —";
+        else
+            $scope.masterVisitInfo.service = "";
         $scope.masterVisitInfo.cost = coast;
     };
 

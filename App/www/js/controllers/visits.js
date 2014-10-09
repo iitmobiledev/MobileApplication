@@ -15,7 +15,7 @@
  */
 myApp.controller('VisitsController', function ($scope, $filter, $location, Loader, DateHelper, Visit, $rootScope, $routeParams) {
     var today;
-    //    console.log($routeParams.date);
+        console.log($routeParams.date);
     if (typeof ($routeParams.date) != 'undefined')
         today = new Date($routeParams.date);
     else
@@ -265,7 +265,8 @@ myApp.controller('VisitsController', function ($scope, $filter, $location, Loade
             coast = 0;
         for (var j = 0; j < visit.serviceList.length; j++) {
             var service = visit.serviceList[j];
-            services.push(service.description);
+            if (service.description != "")
+                services.push(service.description);
             masters.push(service.master.lastName);
             coast += service.cost;
             $scope.noVisit = false;
@@ -290,7 +291,10 @@ myApp.controller('VisitsController', function ($scope, $filter, $location, Loade
         time = time.join("-");
         $scope.visitInfo.time = time;
         $scope.visitInfo.masters = masters.join(",");
-        $scope.visitInfo.services = services.join(", ");
+        if (services.length > 0)
+            $scope.visitInfo.services = services.join(", ") + " —";
+        else
+            $scope.visitInfo.services = "";
         $scope.visitInfo.cost = coast;
     };
 });

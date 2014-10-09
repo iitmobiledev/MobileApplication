@@ -32,7 +32,7 @@ myApp.service("Storage", ["$injector",
          */
         var clearStorage = function () {
             try {
-                storage = new storage();
+                storage = new StorageCreator();
             } catch (e) {
                 console.log(e.message);
             }
@@ -46,13 +46,11 @@ myApp.service("Storage", ["$injector",
          * @param {Object} obj объект модель
          * @description Добавляет объект в контейнер, если объект с таким же первичным ключом уже присутствует в контейнере, данные должны быть обновлены Вложенные объекты также должны быть добавлены
          */
-        var update = function (obj, callback) {
+        var update = function (obj) {
             try {
                 var serv = $injector.get(obj.getClass());
                 serv.onUpdate(obj);
-                storage.setItem(obj.getClass() + ":" + obj.getKey().join(':'), obj);
-                if (callback)
-                    callback();
+                storage.setItem(obj.getClass() + ":" + obj.getKey().join(":"), obj);
             } catch (e) {
                 console.log(e.message);
             }
@@ -101,11 +99,11 @@ myApp.service("Storage", ["$injector",
             var results = [];
             for (var i = 0; i < keys.length; i++) {
                 var item;
-                if (keys[i] instanceof Array)
+                if (keys[i] instanceof Array){
                     item = storage.getItem(keys[i].join(":"));
+                }
                 else
                     item = storage.getItem(keys[i]);
-                //                console.log("storage.search():", item);
                 if (item) {
                     results.push(item);
                 }

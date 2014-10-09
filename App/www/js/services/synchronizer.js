@@ -21,9 +21,6 @@ myApp.service("Synchronizer", ["Storage", "RealServer", "ModelConverter", "Loade
 
         function updateData(className, count, offset, callback, lastLocalModified, lastServerModified) {
             synchEnd = false;
-            //            var localMod = new Date(lastLocalModified[className]);
-            //            var dateString = localMod.getFullYear()+"-"+localMod.getMonth()+"-"+localMod.getDate()+" "+localMod.getHours()+":"+localMod.getMinutes()+":"+localMod.getSeconds();
-            //            console.log(dateString);
             Server.search(className, {
                 "modifiedSince": new Date(lastLocalModified[className]),
                 "count": count,
@@ -64,17 +61,14 @@ myApp.service("Synchronizer", ["Storage", "RealServer", "ModelConverter", "Loade
         function synchCheck(className, callback) {
             Storage.get("LastModified", 'primary', function (lastLocalModified) {
                 Server.lastModified(["OperationalStatistics", "Visit", "Expenditure"], function (lastServerModified) {
-                    //                    console.log(lastLocalModified);
                     lastLocalModified = ModelConverter.getObject("LastModified", lastLocalModified);
                     if (!(className in lastLocalModified))
                         callback();
                     else {
-//                        alert(className + new Date(lastLocalModified[className]) + new Date(lastServerModified[className]));
 //                        console.log("className", className, new Date(lastLocalModified[className]), new Date(lastServerModified[className]));
                         if (new Date(lastLocalModified[className]) < new Date(lastServerModified[className])) {
                             console.log('synch need');
                             lastLocalModified[className] = new Date(lastServerModified[className]);
-                            //                            console.log(lastLocalModified);
                             Storage.update(lastLocalModified, function () {
                                 $rootScope.$emit('synchEnd' + className, '');
                                 callback();
@@ -104,45 +98,4 @@ myApp.service("Synchronizer", ["Storage", "RealServer", "ModelConverter", "Loade
                 }
             }
         };
-            }]);
-
-//var $inj = angular.injector(['myApp']);
-//var synchronizer = $inj.get('Synchronizer');
-//var loader = $inj.get('Loader');
-//var Storage = $inj.get('Storage');
-//console.log("synch begin");
-
-
-//var RealServer = $inj.get('RealServer');
-//var Server = new RealServer(sessvars.token);
-//console.log('synch');
-//Server.search("OperationalStatistics", {
-//    "modifiedSince": "2014-09-15 00:00:00",
-//    "count": 10,
-//    "offset": 0
-//}, function (data) {
-//    console.log('Server.search', data);
-//});
-
-
-//(function beginSynch() {
-//    console.log("synch begin");
-//    Storage.isSupported(function (isSupport) {
-//        if (isSupport) {
-//            console.log("synch begin");
-//            synchronizer.synchCheck.call(synchronizer, "OperationalStatistics", function () {
-//                //                console.log("synch end OperationalStatistics0");
-//                synchronizer.synchCheck.call(synchronizer, "Visit", function () {
-//                    //                    console.log("synch end Visit0");
-//                    synchronizer.synchCheck.call(synchronizer, "Expenditure", function () {
-//                        console.log("synch end");
-//                        $rootScope.$emit('synchEnd', '');
-//                        //                        loader.scope.$emit('synchEnd', '');
-//                        setTimeout(beginSynch, 70000);
-//                    });
-//                });
-//            });
-//        }
-//    });
-//
-//})();
+    }]);
