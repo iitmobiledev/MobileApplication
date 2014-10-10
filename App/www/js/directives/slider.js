@@ -68,8 +68,8 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
                         subtractionHeight += $(this).outerHeight();
                     })
                     element.outerHeight(
-                        $('body').height() - subtractionHeight)
-                    initSlider();
+                        $('body').height() - subtractionHeight);
+                    init();
                 } else {
                     setTimeout(checkWidth, 50);
                 }
@@ -86,7 +86,7 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
              */
 
 
-            function toSlick(callback) {
+            function toSlick() {
                 var width = $("body").width();
                 //                if (width !== 0) {
                 //console.log(width)
@@ -135,20 +135,17 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
                         }
                     }
                 });
-                //                    cal
-                //                } else {
-                //                    setTimeout(toSlick, 10);
-                //                }
             }
 
             /**
              * @ngdoc method
-             * @name myApp.directive:slider#initSlider
+             * @name myApp.directive:slider#init
              * @methodOf myApp.directive:slider
              * @description Первоначальная инициализация слайдера, добавляются первые данные
              */
-            function initSlider() {
+            function init() {
                 //$('.my-slider').destroySlider();
+                console.log("INIT")
                 $(window).scrollTop(0);
                 $('.my-slider').html("")
                 toSlick();
@@ -159,6 +156,9 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
                     addCurrentDayData(content, pageKey);
                     setTimeout(function () {
                             $('.my-slider').removeLoadBarLeft();
+                            var curScope = angular.element($('.my-slider').getCurrentSlide()).scope();
+                            if (curScope)
+                                updateDate(curScope);
                         },
                         0);
                 });
@@ -177,7 +177,7 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
                     compiled(newscope, function (clonedElement, scope) {
                         setTimeout(function () {
                             clonedElement.attr("contentkey", keyFunc(obj))
-                            $('.my-slider').addSlideLeft(clonedElement);
+                            $('.my-slider').addSlideLeft(clonedElement, destroyScope);
                         }, 0);
                     });
                 }
@@ -205,7 +205,7 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
                     compiled(newscope, function (clonedElement, scope) {
                         setTimeout(function () {
                             clonedElement.attr("contentkey", keyFunc(obj))
-                            $('.my-slider').addSlideRight(clonedElement);
+                            $('.my-slider').addSlideRight(clonedElement, destroyScope);
                         });
                     }, 0);
                 }
@@ -229,6 +229,7 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
              * @param {Array} contentData Список объектов, чьи данные будут отображаться на слайдах
              */
             function addCurrentDayData(contentData, startPageKey) {
+                console.log("STARTPAGEKEY", contentData, startPageKey)
                 if (!startPageKey) {
                     startPageKey = null;
                 }
@@ -237,13 +238,13 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
                     compiled(newscope, function (clonedElement, scope) {
                         setTimeout(function () {
                             clonedElement.attr("contentkey", k);
-                            if (k == startPageKey 
-                                || (startPageKey == null && i == contentData.length)) {
-                                element.find('.my-slider').addSlideRight(clonedElement, true);
+                            if (k == startPageKey || (startPageKey == null && i == contentData.length)) {
+                                element.find('.my-slider')
+                                    .addSlideRight(clonedElement, destroyScope, true);
                             } else {
-                                element.find('.my-slider').addSlideRight(clonedElement);
+                                element.find('.my-slider')
+                                    .addSlideRight(clonedElement, destroyScope);
                             }
-                            //                            newscope.$apply();
                         }, 0)
                     });
                 }
@@ -259,10 +260,13 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
                     $(window).scrollTop(0);
                     ready = true;
                 }
-                var curScope = angular.element($('.my-slider').getCurrentSlide()).scope();
-                if (curScope)
-                    updateDate(curScope);
+
             }
+
+            function destroyScope(obj) {
+                var objScope = angular.element(obj).scope().$destroy();
+            }
+
 
             $('.slider-back-button').on('click', function () {
                 $.scrolling = true;
@@ -277,36 +281,10 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
             scope.$watch(attrs.reinit, function (newValue, oldValue) {
                 if (oldValue != newValue) {
                     //                    scope.loading = true;
-                    initSlider();
+                    init();
                 }
             })
 
-            //            scope.$watch('reinit', function(newValue, oldValue){
-            //                if (newValue == true){
-            //                    scope.loading = true;
-            //                    //scope.reinit = false;
-            //                    initSlider();
-            //                }
-            //            })
-
-            //            function updateDate() {
-            //                var key = getCurrentKey();
-            //                
-            //                //console.log("key", key)
-            //                var splitPk = key.split(':');
-            //                //console.log("splitPk", splitPk)
-            //                var step = splitPk[splitPk.length - 1];
-            //                if (step == DateHelper.steps.DAY || step == DateHelper.steps.WEEK || step == DateHelper.steps.MONTH){
-            //                    var period = DateHelper.getPeriod(new Date(splitPk[0]), step);
-            //                }
-            //                else {
-            //                    var period = DateHelper.getPeriod(new Date(key), DateHelper.steps.DAY);
-            //                }
-            //                
-            //                //console.log("period.begin", period.begin)
-            //                scope.date = period.begin;
-            //                //scope.$apply();
-            //            }
 
             /**
              * @ngdoc method

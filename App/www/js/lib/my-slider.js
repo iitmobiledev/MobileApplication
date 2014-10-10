@@ -355,11 +355,11 @@
         };
 
         //���������� ������ (element - ������� ������; toRight - ���� true - � ����� ��������, false - � ������ ��������)
-        MySlider.prototype.addSlide = function (element, toRight, isCurrent) {
+        MySlider.prototype.addSlide = function (element, toRight, isCurrent, callback) {
             if (toRight) {
                 this.appendSlide(element);
                 if (this.slideCount > this.options.maxSlideCount) {
-                    this.removeSlideLeft();
+                    this.removeSlideLeft(callback);
                 }
                 if (isCurrent) {
                     if (this.currentSlide !== this.slideCount - 1) {
@@ -370,7 +370,7 @@
             } else {
                 this.prependSlide(element);
                 if (this.slideCount > this.options.maxSlideCount) {
-                    this.removeSlideRight();
+                    this.removeSlideRight(callback);
                 }
                 if (isCurrent) {
                     this.currentSlide = 0;
@@ -504,14 +504,15 @@
         }
 
         //удаляем слайд справа
-        MySlider.prototype.removeSlideRight = function () {
+        MySlider.prototype.removeSlideRight = function (callback) {
+            callback($('.slide:last'));
             $('.slide:last').remove();
             this.slideCount--;
         }
 
         //удаляем слайд слева
-        MySlider.prototype.removeSlideLeft = function () {
-            //            return;
+        MySlider.prototype.removeSlideLeft = function (callback) {
+            callback($('.slide:first'));
             $('.slide:first').remove();
             this.slideCount--;
             this.currentSlide--;
@@ -567,15 +568,15 @@
             return $('.slide:last');
         }
 
-        $.fn.addSlideLeft = function (content, isCurrent) {
+        $.fn.addSlideLeft = function (content, callback, isCurrent) {
             return this.each(function (index, element) {
-                element.slider.addSlide(content, false, isCurrent);
+                element.slider.addSlide(content, false, isCurrent, callback);
             });
         }
 
-        $.fn.addSlideRight = function (content, isCurrent) {
+        $.fn.addSlideRight = function (content, callback, isCurrent) {
             return this.each(function (index, element) {
-                element.slider.addSlide(content, true, isCurrent);
+                element.slider.addSlide(content, true, isCurrent, callback);
             });
         }
 
