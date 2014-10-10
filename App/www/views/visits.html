@@ -5,9 +5,8 @@
         <a id="timeButton" class="button widget uib_w_25 d-margins active" data-uib="app_framework/button" data-ver="1" analytics-on="click" analytics-event="ToVisitsPerTime" analytics-category="Визиты">По времени</a>
         <a ar-click="onMasters()" class="button widget uib_w_26 d-margins" data-uib="app_framework/button" data-ver="1" analytics-on="click" analytics-event="ToVisitsPerMasters" analytics-category="Визиты">По мастерам</a>
     </div>
-    
-    <slider content-id="visits" get-data='getData' key-expression='getKey' update-date='updateDate' loaded-slide-count='loadedSlideCount' max-slide-count='maxSlideCount' need-updating='needUpdating' has-future-data="hasFutureData"  has-past-data="hasPastData" height-elements="#navbar, .dataTypeChanger"></slider>
     <error-show correct='correct' error='errorText'></error-show>
+    <slider content-id="visits" get-data='getData' key-expression='getKey' update-date='updateDate' loaded-slide-count='loadedSlideCount' max-slide-count='maxSlideCount' need-updating='needUpdating' has-future-data="hasFutureData"  has-past-data="hasPastData" height-elements="#navbar, .dataTypeChanger"></slider>
     <script type="text/ng-template" id="visits">
     <div id="visitsContent">
         <date-changer date='page.date' step='$parent.step' has-future-data='$parent.hasFutureData(page.date)' has-prev-data='$parent.hasPrevData(page.date)'></date-changer>

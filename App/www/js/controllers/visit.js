@@ -49,12 +49,12 @@ myApp.controller('VisitController', function ($scope, $filter, $routeParams, Loa
                     console.log(data);
                     $scope.maxSlideCount = data.length + 1;
 
-                    data = $filter('orderBy')(data, 'id', false);
-                    
-                    $scope.minId = data[0].id;
-                    $scope.maxId = data[data.length-1].id;
+                    data = $filter('orderBy')(data, 'startTime', false);
+                    $scope.minTime = data[0].startTime;
+                    $scope.maxTime = data[data.length-1].startTime;
                     
                     for (var i = 0; i < data.length; i++) {
+                        data[i].visitTime = $filter('date')(data[i].startTime, "H:mm");
                         data[i].servList = [];
                         data[i].sum = 0;
                         data[i].client.phone = formatLocal("RU", data[i].client.phone);
@@ -99,6 +99,14 @@ myApp.controller('VisitController', function ($scope, $filter, $routeParams, Loa
     $scope.getKey = function (obj) {
         return obj && obj.__primary__;
     };
+    
+    $scope.hasFutureData = function(obj){
+        return obj.startTime < $scope.maxTime;
+    }
+    
+    $scope.hasPastData = function(obj){
+        return obj.startTime > $scope.minTime;
+    }
     
 //    $scope.updateDate = function (curScope) {
 //        if (curScope.page && curScope.page.id)

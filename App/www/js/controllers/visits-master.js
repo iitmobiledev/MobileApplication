@@ -31,9 +31,27 @@ myApp.controller('VisitsMasterController', function ($scope, $filter, $location,
 
     $scope.needUpdating = false;
 
+    var errorHandling = function () {
+//        console.log('serverError');
+        $scope.correct = false;
+        $scope.errorText = "Не удается подключиться к серверу. Пожалуйста, попробуйте зайти еще раз.";
+    };
+
+    $rootScope.$on('serverError', errorHandling);
+    
     function setMinMax() {
-        $scope.min = Loader.getMinDate("Visit");
-        $scope.max = Loader.getMaxDate("Visit");
+        var min = Loader.getMinDate("Visit");
+        var max = Loader.getMaxDate("Visit");
+        if (min == 'error' || max == 'error') {
+            $scope.min = null;
+            $scope.max = null;
+            errorHandling();
+        } else {
+            $scope.min = min;
+            $scope.max = max;
+            $scope.loading = true;
+            $scope.reinit = true;
+        }
     }
 
     $rootScope.$on('minMaxGet', setMinMax);

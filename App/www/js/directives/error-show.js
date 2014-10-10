@@ -15,6 +15,7 @@ myApp.directive('errorShow', function () {
             
             var updateCorrect = function () {
                 scope.correct = scope.$eval(attrs.correct);
+//                console.log(scope.correct);
             };
             scope.$watch(attrs.correct, updateCorrect);
             updateCorrect();
@@ -31,7 +32,7 @@ myApp.directive('errorShow', function () {
                 scope.$apply();
             });
         },
-        template: '<div style="background-color: rgb(255,66,91); color: white; margin: 4% 10%;padding:15px 10px;position:relative" ng-hide="correct">'+
+        template: '<div class="sample-show-hide" style="background-color: rgb(255,66,91); color: white; margin: 4% 10%;padding:15px 10px;position:relative" ng-hide="correct">'+
                 '<img src="images/auth_error.png" style="max-height: 15px;position: absolute;left: 15px;">'+
                 '<div id="errorText" style="text-align: left;padding: 0 30px;">'+
                 '</div>'+

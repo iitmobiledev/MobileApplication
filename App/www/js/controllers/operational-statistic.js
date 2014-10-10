@@ -129,7 +129,7 @@ myApp.controller('OperationalStatisticController', function ($scope, $location, 
     };
 
     var errorHandling = function () {
-        console.log('serverError');
+//        console.log('serverError');
         $scope.correct = false;
         $scope.errorText = "Не удается подключиться к серверу. Пожалуйста, попробуйте зайти еще раз.";
     }

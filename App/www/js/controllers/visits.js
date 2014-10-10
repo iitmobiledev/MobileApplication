@@ -61,7 +61,7 @@ myApp.controller('VisitsController', function ($scope, $filter, $location, Loade
     setMinMax();
 
     $rootScope.$on('synchEndVisit', function () {
-        console.log('synchEndVisit');
+//        console.log('synchEndVisit');
         setMinMax();
         $scope.needUpdating = true;
     });
