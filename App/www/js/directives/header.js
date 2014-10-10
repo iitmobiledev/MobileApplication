@@ -83,8 +83,7 @@ myApp.directive('headerContent', function () {
              */
             function setBackButton() {
                 if (backButtonLink) {
-                    $(element).find("a").replaceWith('<a class="button" id="backButton" href="' + backButtonLink + '">Назад</a>');
-                    $(element).find("img").replaceWith('<img id="backArrow" src="images/backArrow.png" style="max-height: 20px;">');
+                    $(element).find("a").replaceWith('<a class="button" href="' + backButtonLink + '">Назад</a>');
                 }
             }
 
@@ -94,25 +93,24 @@ myApp.directive('headerContent', function () {
                     navigator.app.exitApp();
                 }, false);
             }
-            
-            
 
-//            $("#backButton").click(function (ev) {
-//                console.log('backButton clicked');
-//                if ($.verticalScrolling || $.horizontalScrolling) {
-//                    ev.preventDefault();
-//                    ev.stopPropagation();
-//                    ev.stopImmediatePropagation();
-//                    return false;
-//                }
-//            });
+
+
+            //            $("#backButton").click(function (ev) {
+            //                console.log('backButton clicked');
+            //                if ($.verticalScrolling || $.horizontalScrolling) {
+            //                    ev.preventDefault();
+            //                    ev.stopPropagation();
+            //                    ev.stopImmediatePropagation();
+            //                    return false;
+            //                }
+            //            });
         },
         template: '<div style="height:100%" id="header-content" class="header-content">' +
             '<h1></h1>' +
             '<div class="widget-container wrapping-col single-centered">' +
             '</div>' +
-            '<div id="divForBackButton" class="widget-container content-area horiz-area wrapping-col left">' +
-            '<img style="display: none !important">' +
+            '<div id="divForBackButton" class="widget-container content-area horiz-area wrapping-col left" style="width: 100%; height: 40px;">' +
             '<a style="display: none !important"></a>' +
             '</div>' +
             '<div class="widget-container content-area horiz-area wrapping-col right" >' +

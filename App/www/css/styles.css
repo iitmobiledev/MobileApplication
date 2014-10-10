@@ -175,11 +175,7 @@ a.settings {
 .price {
     font-family: 'PT Sans';
 }
-#backArrow {
-    top: 9px;
-    left: 5px;
-    position: relative;
-}
+
 .loading-image {
     height: 100%;
     width: 100%;
@@ -198,7 +194,6 @@ a.settings {
     margin-top: -32px;
     position: fixed;
     z-index: 100;
-    background: white;
 }
 .spin {
     border-radius: 50%;
