@@ -1874,6 +1874,8 @@ select:disabled~.afFakeSelect {
 
 /* border rgba(158,158,158,255) */
 
+
+/*
 #afui.ios7 {
     font-family: 'HelveticaNeue', 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
@@ -2234,3 +2236,4 @@ select:disabled~.afFakeSelect {
     background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #ccc), color-stop(100%, #ccc));
     background-image: gradient(linear, left top, left bottom, color-stop(0%, #ccc), color-stop(100%, #ccc));
 }
+*/
