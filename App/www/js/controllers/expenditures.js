@@ -15,7 +15,7 @@
 myApp.controller('ExpendituresController', function ($scope, $filter, Loader, DateHelper, $routeParams, $rootScope) {
     var today = new Date($routeParams.date) || new Date();
     $scope.date = new Date(today.getFullYear(), today.getMonth(), today.getDate());
-    console.log("$scope.date", $scope.date);
+//    console.log("$scope.date", $scope.date);
 
     $scope.backLink = '#/index/' + $scope.date;
 
@@ -39,7 +39,7 @@ myApp.controller('ExpendituresController', function ($scope, $filter, Loader, Da
     setMinMax();
 
     $rootScope.$on('synchEndExpenditure', function () {
-        console.log('synchEndExpenditure');
+//        console.log('synchEndExpenditure');
         setMinMax();
         $scope.needUpdating = true;
     });
@@ -54,7 +54,6 @@ myApp.controller('ExpendituresController', function ($scope, $filter, Loader, Da
         $scope.loading = true;
         var resultArr = [];
         var date;
-        console.log("get")
         if (key) {
             //            Loader.get("Expenditure", key, function (obj) {
             //                if (obj) {

@@ -145,7 +145,7 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
              */
             function init() {
                 //$('.my-slider').destroySlider();
-                console.log("INIT")
+//                console.log("INIT")
                 $(window).scrollTop(0);
                 element.find('.my-slider').html("")
                 toSlick();
@@ -229,7 +229,7 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
              * @param {Array} contentData Список объектов, чьи данные будут отображаться на слайдах
              */
             function addCurrentDayData(contentData, startPageKey) {
-                console.log("STARTPAGEKEY", contentData, startPageKey)
+//                console.log("STARTPAGEKEY", contentData, startPageKey)
                 if (!startPageKey) {
                     startPageKey = null;
                 }

@@ -39,12 +39,9 @@ myApp.controller('OperationalStatisticController', function ($scope, $location, 
         var resultArr = [];
         var date;
         if (key) {
-            //            Loader.get("OperationalStatistics", key, function (obj) {
-            //                if (obj) {
-            //                    //console.log("obj", obj)
-            //date = new Date(getCurrentPeriod().begin);
-            date = new Date(key.split(':')[0]);
-            //console.log("date", date)
+            console.log(key);
+            date = new Date(key.replace(/:[^:]*$/,""));
+            console.log("date", date);
             if (forward) {
                 date = DateHelper.getNextPeriod(date, $scope.step).end;
             } else {
@@ -129,7 +126,7 @@ myApp.controller('OperationalStatisticController', function ($scope, $location, 
     };
 
     var errorHandling = function () {
-//        console.log('serverError');
+        //        console.log('serverError');
         $scope.correct = false;
         $scope.errorText = "Не удается подключиться к серверу. Пожалуйста, попробуйте зайти еще раз.";
     }
@@ -186,18 +183,22 @@ myApp.controller('OperationalStatisticController', function ($scope, $location, 
         //        $scope.page = getStatistic($scope.date, $scope.step);
     });
 
-    $scope.hasFutureData = function(obj){
+    $scope.hasFutureData = function (obj) {
         if (!obj)
             return false;
-        return DateHelper.getPeriod(obj.date, $scope.step).end < $scope.max;
+        var pend = DateHelper.getPeriod(obj.date, obj.step).end;
+
+        var result = pend.toDateString() != $scope.max.toDateString() && pend < $scope.max;
+        console.log("HAS FUTURE:", result, pend.toDateString(), $scope.max.toDateString());
+        return result;
     }
-    
-    $scope.hasPastData = function(obj){
+
+    $scope.hasPastData = function (obj) {
         if (!obj)
             return false;
         return obj.date > $scope.min;
     }
-    
+
     $scope.$watch('date', function (newValue, oldValue) {
         //console.log('watchDate')
         var period = DateHelper.getPeriod(new Date($scope.date), $scope.step);

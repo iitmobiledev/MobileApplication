@@ -34,7 +34,7 @@ myApp.controller('VisitsController', function ($scope, $filter, $location, Loade
     $scope.past = true;
 
     var errorHandling = function () {
-        console.log('serverError');
+//        console.log('serverError');
         $scope.correct = false;
         $scope.errorText = "Не удается подключиться к серверу. Пожалуйста, попробуйте зайти еще раз.";
     }
@@ -101,10 +101,10 @@ myApp.controller('VisitsController', function ($scope, $filter, $location, Loade
         //        console.log("scope.visit",$scope.visit);
         var resultArr = [];
         var date;
-        console.log("KEY", key)
+//        console.log("KEY", key)
         if (key) {
             date = new Date(key);
-            console.log("date ", date);
+//            console.log("date ", date);
             if (forward) {
                 date = DateHelper.getNextPeriod(date, $scope.step).end;
             } else {

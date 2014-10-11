@@ -20,7 +20,7 @@ myApp.service("Loader", ["ModelConverter", "RealServer", "$rootScope", "fieldSta
         function getServerFieldStat() {
             Server = new RealServer(localStorage.getItem("UserToken"));
             Server.fieldStat(fieldStatQuery, function (stat) {
-                console.log(stat);
+//                console.log(stat);
                 fieldStat = stat;
                 if (stat.error) {
                     $rootScope.$emit('serverError', '');
@@ -92,7 +92,7 @@ myApp.service("Loader", ["ModelConverter", "RealServer", "$rootScope", "fieldSta
                         var typeStat = fieldStat.filter(function (stat) {
                             return stat.type == className;
                         })[0];
-                        return new Date(typeStat.max);
+                        return new Date(typeStat.max.replace(' ', 'T'));
                     } else {
                         return null;
                     }
@@ -109,7 +109,7 @@ myApp.service("Loader", ["ModelConverter", "RealServer", "$rootScope", "fieldSta
                         var typeStat = fieldStat.filter(function (stat) {
                             return stat.type == className;
                         })[0];
-                        return new Date(typeStat.min);
+                        return new Date(typeStat.min.replace(' ', 'T'));
                     } else {
                         return null;
                     }

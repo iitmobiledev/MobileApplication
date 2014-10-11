@@ -9,15 +9,13 @@ myApp.controller('SettingsController', function ($scope, AuthService, $location,
 
     AuthService.getUserInfo(localStorage.getItem("UserToken"), function (userInfo) {
         if (userInfo) {
-            console.log(userInfo);
+//            console.log(userInfo);
             $scope.user = userInfo;
         }
     });
 
     var counter = 0;
-    $("#console").click(function () {
-        $(this).html("");
-    });
+    
     $scope.showConsole = function () {
         counter++;
         if (counter > 4) {
