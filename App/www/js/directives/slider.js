@@ -90,43 +90,43 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
                 var width = $("body").width();
                 //                if (width !== 0) {
                 //console.log(width)
-                $('.my-slider').initSlider({
+                element.find('.my-slider').initSlider({
                     width: width,
                     maxSlideCount: maxCount,
                     onAfterChange: function () {
                         if (ready) {
 
-                            var curScope = angular.element($('.my-slider').getCurrentSlide()).scope();
+                            var curScope = angular.element(element.find('.my-slider').getCurrentSlide()).scope();
                             //console.log(curScope)
                             updateDate(curScope);
-                            if ($('.my-slider').whichFromLeft(
-                                $('.my-slider').getCurrentSlide()) <= 1) {
-                                var key = getCurrentKey($('.my-slider').getFirstSlide());
-                                var first = $('.my-slider').getFirstSlide();
+                            if (element.find('.my-slider').whichFromLeft(
+                                element.find('.my-slider').getCurrentSlide()) <= 1) {
+                                var key = getCurrentKey(element.find('.my-slider').getFirstSlide());
+                                var first = element.find('.my-slider').getFirstSlide();
                                 var obj = angular.element(first).scope().page;
                                 if (scope.$eval(attrs.hasPastData)(obj)) {
                                     ready = false;
-                                    $('.my-slider').addLoadBarLeft(loadslider);
+                                    element.find('.my-slider').addLoadBarLeft(loadslider);
                                     dataCallback(key, count, false, function (content) {
                                         ready = true;
                                         addPastData(content);
                                         setTimeout(function () {
-                                            $('.my-slider').removeLoadBarLeft()
+                                            element.find('.my-slider').removeLoadBarLeft()
                                         }, 0);
                                     });
                                 }
-                            } else if ($('.my-slider').whichFromRight($('.my-slider').getCurrentSlide()) <= 1) {
-                                var key = getCurrentKey($('.my-slider').getLastSlide());
-                                var last = $('.my-slider').getLastSlide();
+                            } else if (element.find('.my-slider').whichFromRight(element.find('.my-slider').getCurrentSlide()) <= 1) {
+                                var key = getCurrentKey(element.find('.my-slider').getLastSlide());
+                                var last = element.find('.my-slider').getLastSlide();
                                 var obj = angular.element(last).scope().page;
                                 if (scope.$eval(attrs.hasFutureData)(obj)) {
                                     ready = false;
-                                    $('.my-slider').addLoadBarRight(loadslider);
+                                    element.find('.my-slider').addLoadBarRight(loadslider);
                                     dataCallback(key, count, true, function (content) {
                                         ready = true;
                                         addFutureData(content);
                                         setTimeout(function () {
-                                            $('.my-slider').removeLoadBarRight()
+                                            element.find('.my-slider').removeLoadBarRight()
                                         }, 0);
                                     });
                                 }
@@ -147,16 +147,16 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
                 //$('.my-slider').destroySlider();
                 console.log("INIT")
                 $(window).scrollTop(0);
-                $('.my-slider').html("")
+                element.find('.my-slider').html("")
                 toSlick();
                 ready = false;
-                $('.my-slider').addLoadBarLeft(loadslider);
+                element.find('.my-slider').addLoadBarLeft(loadslider);
                 dataCallback(null, count, true, function (content, pageKey) {
                     ready = true;
                     addCurrentDayData(content, pageKey);
                     setTimeout(function () {
-                            $('.my-slider').removeLoadBarLeft();
-                            var curScope = angular.element($('.my-slider').getCurrentSlide()).scope();
+                            element.find('.my-slider').removeLoadBarLeft();
+                            var curScope = angular.element(element.find('.my-slider').getCurrentSlide()).scope();
                             if (curScope)
                                 updateDate(curScope);
                         },
@@ -177,7 +177,7 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
                     compiled(newscope, function (clonedElement, scope) {
                         setTimeout(function () {
                             clonedElement.attr("contentkey", keyFunc(obj))
-                            $('.my-slider').addSlideLeft(clonedElement, destroyScope);
+                            element.find('.my-slider').addSlideLeft(clonedElement, destroyScope);
                         }, 0);
                     });
                 }
@@ -205,7 +205,7 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
                     compiled(newscope, function (clonedElement, scope) {
                         setTimeout(function () {
                             clonedElement.attr("contentkey", keyFunc(obj))
-                            $('.my-slider').addSlideRight(clonedElement, destroyScope);
+                            element.find('.my-slider').addSlideRight(clonedElement, destroyScope);
                         });
                     }, 0);
                 }
@@ -270,12 +270,12 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
 
             $('.slider-back-button').on('click', function () {
                 $.scrolling = true;
-                $('.my-slider').shiftLeft();
+                element.find('.my-slider').shiftLeft();
             });
 
             $('.slider-next-button').on('click', function () {
                 $.scrolling = true;
-                $('.my-slider').shiftRight();
+                element.find('.my-slider').shiftRight();
             });
 
             scope.$watch(attrs.reinit, function (newValue, oldValue) {
@@ -296,7 +296,7 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
              */
             function getCurrentKey(slide) {
                 if (!slide) {
-                    slide = $('.my-slider').getCurrentSlide();
+                    slide = element.find('.my-slider').getCurrentSlide();
                 }
                 return $(slide).attr('contentkey');
             }

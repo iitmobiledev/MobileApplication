@@ -394,13 +394,13 @@
 
         MySlider.prototype.removeLoadBar = function (fromRight) {
             if (fromRight) {
-                $('.LoadSlideRight').remove();
+                this.$slideTrack.find('.LoadSlideRight').remove();
                 this.slideCount--;
                 if (this.getCurrent().html() == undefined) {
                     this.shiftSlide(false);
                 }
             } else {
-                $('.LoadSlideLeft').remove();
+                this.$slideTrack.find('.LoadSlideLeft').remove();
 //                console.log("REMOVE LOADBAR left", this.currentSlide)
                 if (this.currentSlide != 0) {
                     this.currentSlide -= 1;
@@ -505,15 +505,15 @@
 
         //удаляем слайд справа
         MySlider.prototype.removeSlideRight = function (callback) {
-            callback($('.slide:last'));
-            $('.slide:last').remove();
+            callback(this.$slideTrack.find('.slide:last'));
+            this.$slideTrack.find('.slide:last').remove();
             this.slideCount--;
         }
 
         //удаляем слайд слева
         MySlider.prototype.removeSlideLeft = function (callback) {
-            callback($('.slide:first'));
-            $('.slide:first').remove();
+            callback(this.$slideTrack.find('.slide:first'));
+            this.$slideTrack.find('.slide:first').remove();
             this.slideCount--;
             this.currentSlide--;
             this.setTranslatePosition(this.getLeft(this.currentSlide));
@@ -530,7 +530,7 @@
                             current.scrollerRewind();
                             $('.scrollBar').css("opacity", "0.5");
                         });
-                        return $('.slide').get(this.currentSlide + 1);
+                        return this.$slideTrack.find('.slide').get(this.currentSlide + 1);
                     }
                 }
                 return null;
@@ -541,7 +541,7 @@
                             current.scrollerRewind();
                             $('.scrollBar').css("opacity", "0.5");
                         });
-                        return $('.slide').get(this.currentSlide - 1);
+                        return this.$slideTrack.find('.slide').get(this.currentSlide - 1);
                     }
                 }
             }
@@ -550,22 +550,22 @@
 
         MySlider.prototype.whichFrom = function (current, right) {
             if (right) {
-                return this.slideCount - $('.slide').index(current) - 1;
+                return this.slideCount - this.$slideTrack.find('.slide').index(current) - 1;
             } else {
-                return $('.slide').index(current);
+                return this.$slideTrack.find('.slide').index(current);
             }
         }
 
         MySlider.prototype.getCurrent = function () {
-            return $('.slide').eq(this.currentSlide);
+            return this.$slideTrack.find('.slide').eq(this.currentSlide);
         }
 
         MySlider.prototype.firstSlide = function () {
-            return $('.slide').eq(0);
+            return this.$slideTrack.find('.slide').eq(0);
         }
 
         MySlider.prototype.lastSlide = function () {
-            return $('.slide:last');
+            return this.$slideTrack.find('.slide:last');
         }
 
         $.fn.addSlideLeft = function (content, callback, isCurrent) {
