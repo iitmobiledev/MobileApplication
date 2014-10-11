@@ -7,22 +7,28 @@
  */
 myApp.controller('SettingsController', function ($scope, AuthService, $location, Storage) {
 
-        AuthService.getUserInfo(localStorage.getItem("UserToken"), function (userInfo) {
-            if (userInfo) {
-                console.log(userInfo);
-                $scope.user = userInfo;
-            }
-        });
+    AuthService.getUserInfo(localStorage.getItem("UserToken"), function (userInfo) {
+        if (userInfo) {
+            console.log(userInfo);
+            $scope.user = userInfo;
+        }
+    });
 
     var counter = 0;
-
+    $("#console").click(function () {
+        $(this).html("");
+    });
     $scope.showConsole = function () {
         counter++;
-        if (counter > 14) {
+        if (counter > 4) {
             $('#console').html("");
             counter = 0;
-            console.log = function (msg) {
-                $('#console').append(msg + ' ');
+            console.log = function () {
+                for (var i = 0; i < arguments.length; i++) {
+                    var msg = arguments[i];
+
+                    $('#console').append(JSON.stringify(msg) + '<br/> ');
+                }
             };
             console.error = function (msg) {
                 $('#console').append(msg + ' ');
