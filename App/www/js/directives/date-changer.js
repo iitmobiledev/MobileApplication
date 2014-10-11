@@ -41,86 +41,11 @@ myApp.directive('dateChanger', function (DateHelper, $filter) {
             };
             scope.$watch(attrs.step, updateStep);
             updateStep();
-
-            /**
-             *
-             * @ngdoc method
-             * @name myApp.directive:dateChanger#updateSteps
-             * @methodOf myApp.directive:dateChanger
-             * @description Метод покажет кнопки для изменения периода,
-             * если параметр директивы `steps` содержит больше 1
-             * елемента или скроет в противном случае.
-             */
-//            var updateSteps = function () {
-//                steps = scope.$eval(attrs.steps);
-//                if (steps.length > 1)
-//                    element.find('#periodChanger').css('display', 'block');
-//                else
-//                    element.find('#periodChanger').css('display', 'none');
-//            };
-//            scope.$watch(attrs.steps, updateSteps);
-//            updateSteps();
-//
-//            var updateTitleSteps = function () {
-//                titleSteps = scope.$eval(attrs.titles) || "";
-//            };
-//            scope.$watch(attrs.titleSteps, updateTitleSteps);
-//            updateTitleSteps();
-
-            /**
-             *
-             * @ngdoc method
-             * @name myApp.directive:dateChanger#updateHasFutureData
-             * @methodOf myApp.directive:dateChanger
-             * @description Метод покажет кнопку для перехода на
-             * следующую дату, если параметр директивы `hasFutureData`
-             * равен `true` или скроет кнопку в противном случае.
-             */
-            var updateHasFutureData = function () {
-                hasFutureData = scope.$eval(attrs.hasFutureData);
-                if (hasFutureData) {
-                    element.find("#NextDay").css('display', 'block');
-                } else {
-                    element.find("#NextDay").css('display', 'none');
-                }
-            };
-            scope.$watch(attrs.hasFutureData, updateHasFutureData);
-            updateHasFutureData();
-
-            /**
-             *
-             * @ngdoc method
-             * @name myApp.directive:dateChanger#updateHasPrevData
-             * @methodOf myApp.directive:dateChanger
-             * @description Метод покажет кнопку для перехода на
-             * предыдущую дату, если параметр директивы `hasPrevData`
-             * равен `true` или скроет кнопку в противном случае.
-             */
-            var updateHasPrevData = function () {
-                hasPrevData = scope.$eval(attrs.hasPrevData);
-                if (hasPrevData)
-                    element.find("#PrevDay").css('display', 'block');
-                else
-                    element.find("#PrevDay").css('display', 'none');
-            };
-            scope.$watch(attrs.hasPrevData, updateHasPrevData);
-            updateHasPrevData();
-
-
-
+            
             scope.$watch('date', function () {
                 element.find('#Date').html(getDateString());
             });
 
-            element.find("#PrevDay").bind('click', function () {
-                scope[attrs.index] = 0;
-                scope.$apply();
-            });
-
-            element.find("#NextDay").bind('click', function () {
-                scope[attrs.index] = 2;
-                scope.$apply();
-            });
 
             /**
              *
@@ -180,7 +105,7 @@ myApp.directive('dateChanger', function (DateHelper, $filter) {
                 return "";
             }
 
-            element.find('#Date').html(getDateString());
+//            element.find('#Date').html(getDateString());
 
 
             /**
