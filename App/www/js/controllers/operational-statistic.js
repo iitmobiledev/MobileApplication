@@ -187,10 +187,14 @@ myApp.controller('OperationalStatisticController', function ($scope, $location, 
     });
 
     $scope.hasFutureData = function(obj){
-        return obj.date < $scope.max;
+        if (!obj)
+            return false;
+        return DateHelper.getPeriod(obj.date, $scope.step).end < $scope.max;
     }
     
     $scope.hasPastData = function(obj){
+        if (!obj)
+            return false;
         return obj.date > $scope.min;
     }
     
