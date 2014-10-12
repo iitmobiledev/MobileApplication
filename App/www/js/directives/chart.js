@@ -59,6 +59,11 @@ myApp.directive('chart', function () {
                     },
 
                     plotOptions: {
+                        area: {
+                            marker: {
+                                radius: 0
+                            },
+                        },
                         series: {
                             tooltip: {
                                 dateTimeLabelFormats: {
@@ -81,6 +86,7 @@ myApp.directive('chart', function () {
                             lineWidth: 0.5,
                             lineColor: '#F38B7D',
                             marker: {
+                                radius: 0,
                                 fillColor: '#F38B7D',
                             }
                         }
@@ -94,7 +100,7 @@ myApp.directive('chart', function () {
             }
 
             window.addEventListener("resize", drawChart);
-
+            console.error("CHAAART!");
             /*
              *watch, смотрящий за изменением данных для графика
              */

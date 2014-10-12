@@ -40,8 +40,9 @@
         <slider content-id="statistic-content" get-data='getData' key-expression='getKey' update-date='updateDate' reinit='reinitStamp()' need-updating='needUpdating' has-future-data="hasFutureData"  has-past-data="hasPastData" height-elements="#navbar, .periodButtons"></slider>
 <!--        <load-bar param-name="loading" ></load-bar>-->
         <script type="text/ng-template" id="statistic-content">
-            <div>
+            <div id="statSlide">
                 <date-changer date='page.date' step='$parent.step' has-future-data='hasFutureData(page)' has-prev-data='hasPastData(page)'></date-changer>
+                <div style="min-height:100%">
                 <table id="statisticTable">
                     <tr>
                         <td class="sCell" ar-click="$parent.toChart('proceeds')" style="border-right: none;border-bottom: none;" analytics-on="click" analytics-event="ToProceedsChart" analytics-category="Statistics" >
@@ -99,9 +100,10 @@
 
                     </tr>
                 </table>
-
+                </div>
 
             </div>
             </script>
+        <a href="/chart/proceeds" class="button"></a>
     </div>
 </div>

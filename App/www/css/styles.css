@@ -3,6 +3,7 @@
 #statisticTable {
     border-spacing: 0px;
     width: 100%;
+    min-height: 100%;
     padding: 0 10px 0 10px;
 }
 #statisticTable .sCell {
@@ -175,7 +176,6 @@ a.settings {
 .price {
     font-family: 'PT Sans';
 }
-
 .loading-image {
     height: 100%;
     width: 100%;
@@ -220,4 +220,7 @@ a.settings {
 }
 .LoadSlideRight > div {
     height: 100%;
+}
+#statSlide {
+    height: inherit;
 }
