@@ -30,7 +30,6 @@
         <script type="text/ng-template" id="statistic-content">
             <div id="statSlide">
                 <date-changer date='page.date' step='$parent.step' has-future-data='hasFutureData(page)' has-prev-data='hasPastData(page)'></date-changer>
-                <div style="height:100%;min-height:100%">
                 <table id="statisticTable">
                     <tr>
                         <td class="sCell" ar-click="$parent.toChart('proceeds')" style="border-right: none;border-bottom: none;" analytics-on="click" analytics-event="ToProceedsChart" analytics-category="Statistics" >
@@ -56,9 +55,7 @@
                             <p style="font-weight: lighter">Загруженность</p>
                         </td>
                     </tr>
-                </table>
-                <table ar-click="toExpenditures()" id="financeTable" ng-show='hasFinance(page)'>
-                    <tr>
+                    <tr ar-click="toExpenditures()" id="financeTable" ng-show='hasFinance(page)'>
                         <td class="financeCell">
                             
                             <div style="text-align:left;display:inline-block;">
@@ -88,7 +85,6 @@
 
                     </tr>
                 </table>
-                </div>
             </div>
             </script>
         <a href="/chart/proceeds" class="button"></a>
