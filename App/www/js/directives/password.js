@@ -23,6 +23,11 @@ myApp.directive('password', function () {
                     element.find("#password").css("outline-color", "rgb(255,66,91)");
                 }
             });
+            
+            scope.$watch(element.find("#password").value, function(value){
+                console.log("value", value);
+                element.find("#passwordShow").value = value;
+            });
 
         },
         template: '<div>' +
