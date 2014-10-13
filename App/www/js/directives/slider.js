@@ -35,6 +35,12 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
                     return;
                 };
 
+            element.find('.prevButtonBlack').show();
+            element.find('.prevButtonGrey').hide();
+
+            element.find('.nextButtonBlack').show();
+            element.find('.nextButtonGrey').hide();
+
             var loadslider = $("<div style='height:100%;width:100%;'/>");
             loadslider.append($("<div id='loading' class='square spin' style='position:relative;'/>"));
 
@@ -57,6 +63,8 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
             updateNeedUpdating();
 
             var ready = false;
+            var canLoadLeft = true;
+            var canLoadRight = true;
 
             var checkWidth = function () {
                 if ($(".content").width() < $(".content").height()) {
@@ -95,46 +103,78 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
                     maxSlideCount: maxCount,
                     onAfterChange: function () {
                         if (ready) {
-
                             var curScope = angular.element(element.find('.my-slider').getCurrentSlide()).scope();
-                            //console.log(curScope)
                             updateDate(curScope);
-                            if (element.find('.my-slider').whichFromLeft(
-                                element.find('.my-slider').getCurrentSlide()) <= 1) {
+                            if (canLoadLeft) {
                                 var key = getCurrentKey(element.find('.my-slider').getFirstSlide());
-                                var first = element.find('.my-slider').getFirstSlide();
-                                var obj = angular.element(first).scope().page;
-                                if (scope.$eval(attrs.hasPastData)(obj)) {
-                                    ready = false;
-                                    element.find('.my-slider').addLoadBarLeft(loadslider);
-                                    dataCallback(key, count, false, function (content) {
-                                        ready = true;
-                                        addPastData(content);
-                                        setTimeout(function () {
-                                            element.find('.my-slider').removeLoadBarLeft()
-                                        }, 0);
-                                    });
-                                }
-                            } else if (element.find('.my-slider').whichFromRight(element.find('.my-slider').getCurrentSlide()) <= 1) {
+                                ready = false;
+                                element.find('.my-slider').addLoadBarLeft(loadslider);
+                                dataCallback(key, count, false, function (content) {
+                                    ready = true;
+                                    addPastData(content);
+                                    setTimeout(function () {
+                                        element.find('.my-slider').removeLoadBarLeft();
+                                        setButtonState(element.find('.my-slider').getCurrentSlide());
+                                    }, 0);
+                                });
+                            } else if (canLoadRight) {
                                 var key = getCurrentKey(element.find('.my-slider').getLastSlide());
-                                var last = element.find('.my-slider').getLastSlide();
-                                var obj = angular.element(last).scope().page;
-                                if (scope.$eval(attrs.hasFutureData)(obj)) {
-                                    ready = false;
-                                    element.find('.my-slider').addLoadBarRight(loadslider);
-                                    dataCallback(key, count, true, function (content) {
-                                        ready = true;
-                                        addFutureData(content);
-                                        setTimeout(function () {
-                                            element.find('.my-slider').removeLoadBarRight()
-                                        }, 0);
-                                    });
-                                }
+                                ready = false;
+                                element.find('.my-slider').addLoadBarRight(loadslider);
+                                dataCallback(key, count, true, function (content) {
+                                    ready = true;
+                                    addFutureData(content);
+                                    setTimeout(function () {
+                                        element.find('.my-slider').removeLoadBarRight();
+                                        setButtonState(element.find('.my-slider').getCurrentSlide());
+                                    }, 0);
+                                });
                             }
                             scope.$apply();
                         }
+                    },
+                    onBeforeChange: function (nextSlide) {
+                        checkCanLoad(nextSlide);
+                        setButtonState(nextSlide);
                     }
                 });
+            }
+
+            function setButtonState(nextSlide) {
+                if (!scope.$eval(attrs.hasPastData)(angular.element(nextSlide).scope().page)) {
+                    element.find('.prevButtonBlack').hide();
+                    element.find('.prevButtonGrey').show();
+                } else {
+                    element.find('.prevButtonBlack').show();
+                    element.find('.prevButtonGrey').hide();
+                }
+                if (!scope.$eval(attrs.hasFutureData)(angular.element(nextSlide).scope().page)) {
+                    element.find('.nextButtonBlack').hide();
+                    element.find('.nextButtonGrey').show();
+                } else {
+                    element.find('.nextButtonBlack').show();
+                    element.find('.nextButtonGrey').hide();
+                }
+            }
+
+            function checkCanLoad(currentSlide) {
+                if (ready) {
+                    canLoadLeft = false;
+                    canLoadRight = false;
+                    if (element.find('.my-slider').whichFromLeft(currentSlide) <= 1) {
+                        var first = element.find('.my-slider').getFirstSlide();
+                        var obj = angular.element(first).scope().page;
+                        if (scope.$eval(attrs.hasPastData)(obj)) {
+                            canLoadLeft = true;
+                        }
+                    } else if (element.find('.my-slider').whichFromRight(currentSlide) <= 1) {
+                        var last = element.find('.my-slider').getLastSlide();
+                        var obj = angular.element(last).scope().page;
+                        if (scope.$eval(attrs.hasFutureData)(obj)) {
+                            canLoadRight = true;
+                        }
+                    }
+                }
             }
 
             /**
@@ -145,7 +185,7 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
              */
             function init() {
                 //$('.my-slider').destroySlider();
-//                console.log("INIT")
+                //                console.log("INIT")
                 $(window).scrollTop(0);
                 element.find('.my-slider').html("")
                 toSlick();
@@ -157,8 +197,24 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
                     setTimeout(function () {
                             element.find('.my-slider').removeLoadBarLeft();
                             var curScope = angular.element(element.find('.my-slider').getCurrentSlide()).scope();
-                            if (curScope)
+                            if (curScope) {
                                 updateDate(curScope);
+
+                                if (!scope.$eval(attrs.hasPastData)(curScope.page)) {
+                                    element.find('.prevButtonBlack').hide();
+                                    element.find('.prevButtonGrey').show();
+                                } else {
+                                    element.find('.prevButtonBlack').show();
+                                    element.find('.prevButtonGrey').hide();
+                                }
+                                if (!scope.$eval(attrs.hasFutureData)(curScope.page)) {
+                                    element.find('.nextButtonBlack').hide();
+                                    element.find('.nextButtonGrey').show();
+                                } else {
+                                    element.find('.nextButtonBlack').show();
+                                    element.find('.nextButtonGrey').hide();
+                                }
+                            }
                         },
                         0);
                 });
@@ -229,7 +285,7 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
              * @param {Array} contentData Список объектов, чьи данные будут отображаться на слайдах
              */
             function addCurrentDayData(contentData, startPageKey) {
-//                console.log("STARTPAGEKEY", contentData, startPageKey)
+                //                console.log("STARTPAGEKEY", contentData, startPageKey)
                 if (!startPageKey) {
                     startPageKey = null;
                 }

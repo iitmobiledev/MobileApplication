@@ -16,6 +16,7 @@
                         width: 300,
                         maxSlideCount: 50,
                         onAfterChange: null,
+                        onBeforeChange: null,
                         onInit: null
                     };
 
@@ -157,6 +158,7 @@
             slideLeft = this.getLeft(this.currentSlide);
 
             this.currentLeft = this.swipeLeft === null ? slideLeft : this.swipeLeft;
+            
 
             if (index < 0 || index > (this.slideCount - 1)) {
                 targetSlide = this.currentSlide;
@@ -164,6 +166,11 @@
                     _.postSlide(targetSlide);
                 });
                 return false;
+            }
+            
+            
+            if (this.options.onBeforeChange !== null) {
+                this.options.onBeforeChange(this.$slideTrack.find('.slide').eq(targetSlide));
             }
             this.animateSlide(targetLeft, function () {
                 _.postSlide(targetSlide);

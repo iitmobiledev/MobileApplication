@@ -150,10 +150,14 @@ myApp.controller('ExpendituresController', function ($scope, $filter, Loader, Da
     };
 
      $scope.hasFutureData = function(obj){
+         if (!obj)
+            return false;
         return obj.date < $scope.max;
     }
     
     $scope.hasPastData = function(obj){
+        if (!obj)
+            return false;
         return obj.date > $scope.min;
     }
 

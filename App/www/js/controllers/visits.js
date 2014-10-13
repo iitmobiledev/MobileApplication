@@ -224,11 +224,15 @@ myApp.controller('VisitsController', function ($scope, $filter, $location, Loade
     };
     
     $scope.hasFutureData = function(obj){
+        if (!obj)
+            return false;
         var result = obj.date.toDateString() != $scope.max.toDateString() && obj.date < $scope.max;
         return result;
     }
     
     $scope.hasPastData = function(obj){
+        if (!obj)
+            return false;
         return obj.date > $scope.min;
     }
 
