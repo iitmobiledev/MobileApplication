@@ -56,8 +56,10 @@
             <visit-status status='page.status'></visit-status>
         </div>
         <div class="phone">
+        <div style="width:10%;position:absolute;">
             <img src="images/phone.png" style="position: relative;" ng-show="page.client.hasPhone">
-            <a style="text-decoration: none;color: black;" href="tel:{{page.client.phone}}">{{page.client.phone}}</a>
+        </div>
+            <a style="text-decoration: none;color: black;left: 7%;position: relative;" href="tel:{{page.client.phone}}">{{page.client.phone}}</a>
         </div>
     </div>
 
