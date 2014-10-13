@@ -224,7 +224,8 @@ myApp.controller('VisitsController', function ($scope, $filter, $location, Loade
     };
     
     $scope.hasFutureData = function(obj){
-        return obj.date < $scope.max;
+        var result = obj.date.toDateString() != $scope.max.toDateString() && obj.date < $scope.max;
+        return result;
     }
     
     $scope.hasPastData = function(obj){
@@ -246,7 +247,7 @@ myApp.controller('VisitsController', function ($scope, $filter, $location, Loade
         $scope.past = false, $scope.future = false;
         if (period.begin > $scope.min || $scope.min == null)
             $scope.past = true;
-        if (period.end < $scope.max || $scope.max == null)
+        if (period.end < $scope.max && period.end.toDateString() != $scope.max.toDateString() || $scope.max == null)
             $scope.future = true;
     });
 

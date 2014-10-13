@@ -205,7 +205,7 @@ myApp.controller('OperationalStatisticController', function ($scope, $location, 
         $scope.past = false, $scope.future = false;
         if (period.begin > $scope.min || $scope.min == null)
             $scope.past = true;
-        if (period.end < $scope.max || $scope.max == null)
+        if (period.end < $scope.max && period.end.toDateString() != $scope.max.toDateString() || $scope.max == null)
             $scope.future = true;
 
     });
