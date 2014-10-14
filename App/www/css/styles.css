@@ -223,6 +223,8 @@ a.settings {
     height: 100%;
 }
 
+/*
 .slide >div {
-    height: 100%;
-}
+    min-height: 100%;
+}*/
+

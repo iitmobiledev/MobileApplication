@@ -102,9 +102,9 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
                     width: width,
                     maxSlideCount: maxCount,
                     onAfterChange: function () {
+                        var curScope = angular.element(element.find('.my-slider').getCurrentSlide()).scope();
+                        updateDate(curScope);
                         if (ready) {
-                            var curScope = angular.element(element.find('.my-slider').getCurrentSlide()).scope();
-                            updateDate(curScope);
                             if (canLoadLeft) {
                                 var key = getCurrentKey(element.find('.my-slider').getFirstSlide());
                                 ready = false;
@@ -114,6 +114,8 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
                                     addPastData(content);
                                     setTimeout(function () {
                                         element.find('.my-slider').removeLoadBarLeft();
+                                        var curScope = angular.element(element.find('.my-slider').getCurrentSlide()).scope();
+                                        updateDate(curScope);
                                         setButtonState(element.find('.my-slider').getCurrentSlide());
                                     }, 0);
                                 });
@@ -126,6 +128,8 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
                                     addFutureData(content);
                                     setTimeout(function () {
                                         element.find('.my-slider').removeLoadBarRight();
+                                        var curScope = angular.element(element.find('.my-slider').getCurrentSlide()).scope();
+                                        updateDate(curScope);
                                         setButtonState(element.find('.my-slider').getCurrentSlide());
                                     }, 0);
                                 });
