@@ -100,7 +100,7 @@ myApp.directive('chart', function () {
             }
 
             window.addEventListener("resize", drawChart);
-            console.error("CHAAART!");
+//            console.error("CHAAART!");
             /*
              *watch, смотрящий за изменением данных для графика
              */

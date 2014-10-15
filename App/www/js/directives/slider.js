@@ -145,14 +145,15 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
             }
 
             function setButtonState(nextSlide) {
-                if (!scope.$eval(attrs.hasPastData)(angular.element(nextSlide).scope().page)) {
+                var nextScope = angular.element(nextSlide).scope();
+                if (!scope.$eval(attrs.hasPastData)(nextScope ? nextScope.page : null)) {
                     element.find('.prevButtonBlack').hide();
                     element.find('.prevButtonGrey').show();
                 } else {
                     element.find('.prevButtonBlack').show();
                     element.find('.prevButtonGrey').hide();
                 }
-                if (!scope.$eval(attrs.hasFutureData)(angular.element(nextSlide).scope().page)) {
+                if (!scope.$eval(attrs.hasFutureData)(nextScope ? nextScope.page : null)) {
                     element.find('.nextButtonBlack').hide();
                     element.find('.nextButtonGrey').show();
                 } else {

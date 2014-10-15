@@ -86,6 +86,7 @@
 
             case 'end':
                 if (this.swipe) {
+                    //console.log("swipeEnd")
                     this.swipe = false;
                     this.scrolling = false;
                     this.swipeEnd(event);
@@ -117,7 +118,7 @@
                     this.slideHandler(this.currentSlide + 1, function () {
                         current.scrollerRewind();
                         $('.scrollBar').css("opacity", "0.5");
-                        //console.log("current after slideHandler", current);
+                        ////console.log("current after slideHandler", current);
                     });
                     this.startX = null;
                     this.startY = null;
@@ -127,7 +128,7 @@
                     this.slideHandler(this.currentSlide - 1, function () {
                         current.scrollerRewind();
                         $('.scrollBar').css("opacity", "0.5");
-                        //console.log("current after slideHandler", current);
+                        ////console.log("current after slideHandler", current);
                     });
                     this.startX = null;
                     this.startY = null;
@@ -148,6 +149,7 @@
 
         //�� ���� �������������� �� ��������� �����
         MySlider.prototype.slideHandler = function (index, callback) {
+            //console.log("slideHandler")
             var _ = this;
             var targetSlide,
                 animSlide,
@@ -183,6 +185,7 @@
 
         //������������ ��������
         MySlider.prototype.animateSlide = function (targetLeft, callback) {
+            var self = this;
             var animProps = {};
             $({
                 animStart: this.currentLeft
@@ -194,7 +197,7 @@
                 step: function (now) {
                     animProps['transform'] = 'translate(' +
                         now + 'px, 0px)';
-                    $('.slide-track').css(animProps);
+                    self.$slideTrack.css(animProps);
                 },
                 complete: function () {
                     if (callback) {
@@ -226,7 +229,7 @@
                 r,
                 swipeAngle;
 
-            //            console.log("swipeDirection", this.startX, this.curX);
+            //            //console.log("swipeDirection", this.startX, this.curX);
             xDist = this.startX - this.curX;
             yDist = this.startY - this.curY;
             r = Math.atan2(yDist, xDist);
@@ -257,7 +260,7 @@
             var curLeft,
                 positionOffset,
                 touches;
-            //console.log("swipeSlider")
+            ////console.log("swipeSlider")
             touches = event.originalEvent !== undefined ? event.originalEvent.touches : null;
 
             curLeft = this.getLeft(this.currentSlide);
@@ -271,11 +274,11 @@
             this.curX = touches !== undefined ? touches[0].pageX : event.clientX;
             this.curY = touches !== undefined ? touches[0].pageY : event.clientY;
 
-            //            console.log("start", this.startX);
-            //            console.log("current", this.curX, current);
+            //            //console.log("start", this.startX);
+            //            //console.log("current", this.curX, current);
             //            if (this.curX != current)
             //                progression = this.curX > current ? 1 : -1;
-            //            console.log("progression", progression);
+            //            //console.log("progression", progression);
             this.swipeLength = Math.round(Math.sqrt(
                 Math.pow(this.curX - this.startX, 2)));
 
@@ -329,17 +332,19 @@
 
         // ������ ������� ��� ����� ��������
         MySlider.prototype.setTranslatePosition = function (position) {
+            var e = new Error()
+            //console.log("setTranslatePosition", this.currentSlide, position)
             this.$slideTrack.css({
                 'transform': 'translate(' + position + 'px,0)'
             });
         };
 
-        // ������ ������� ��� ����� ��������
-        MySlider.prototype.setTranslatePositiony = function (position) {
-            this.$slideTrack.css({
-                'transform': 'translate(0,' + position + 'px)'
-            });
-        };
+//        // ������ ������� ��� ����� ��������
+//        MySlider.prototype.setTranslatePositiony = function (position) {
+//            this.$slideTrack.css({
+//                'transform': 'translate(0,' + position + 'px)'
+//            });
+//        };
 
         //�������������� ������� �� ��������
         MySlider.prototype.initEvents = function () {
@@ -363,6 +368,17 @@
 
         //���������� ������ (element - ������� ������; toRight - ���� true - � ����� ��������, false - � ������ ��������)
         MySlider.prototype.addSlide = function (element, toRight, isCurrent, callback) {
+            var r, c;
+            if (toRight)
+                r = "right"
+            else
+                r = "left"
+            if (isCurrent)
+                c = "CURRENT!"
+            else
+                c = ""
+            //console.log("ADD SLIDE", r, c, element)
+            //console.log("before", this.currentSlide);
             if (toRight) {
                 this.appendSlide(element);
                 if (this.slideCount > this.options.maxSlideCount) {
@@ -384,6 +400,7 @@
                     this.setTranslatePosition(this.getLeft(this.currentSlide))
                 }
             }
+            //console.log("after", this.currentSlide);
             //setActive();
         }
 
@@ -400,6 +417,8 @@
         }
 
         MySlider.prototype.removeLoadBar = function (fromRight) {
+            //console.log("removeLoadBar")
+            //console.log("remove before", this.currentSlide)
             if (fromRight) {
                 this.$slideTrack.find('.LoadSlideRight').remove();
                 this.slideCount--;
@@ -408,15 +427,16 @@
                 }
             } else {
                 this.$slideTrack.find('.LoadSlideLeft').remove();
-//                console.log("REMOVE LOADBAR left", this.currentSlide)
+//                //console.log("REMOVE LOADBAR left", this.currentSlide)
                 if (this.currentSlide != 0) {
                     this.currentSlide -= 1;
-//                    console.log("CURSLIDE--")
+//                    //console.log("CURSLIDE--")
                 }
                 this.setTranslatePosition(this.getLeft(this.currentSlide));
                 this.slideCount--;
 
             }
+            //console.log("remove after", this.currentSlide)
         }
 
         //Добавление слайда в конец слайдера
@@ -446,12 +466,12 @@
             var slideObj = this;
 
 //            $.bind($(element).scroller(), 'scrollstart', function () {
-//                console.log("EVENT SCROLL START");
+//                //console.log("EVENT SCROLL START");
 ////                slideObj.scrolling = true;
 //            });
 
             $.bind($(element).scroller(), 'scrollend', function () {
-//                console.log("EVENT SCROLL END");
+//                //console.log("EVENT SCROLL END");
                 slideObj.scrolling = false;
             });
 
@@ -473,7 +493,7 @@
             if (!lb.length) {
                 this.$slideTrack.prepend(element);
             } else {
-                console.log("prepend", element, lb)
+                //console.log("prepend", element, lb)
                 element.insertAfter(lb)
             }
 
@@ -488,12 +508,12 @@
             var slideObj = this;
 
 //            $.bind($(element).scroller(), 'scrollstart', function () {
-//                console.log("EVENT SCROLL START");
+//                //console.log("EVENT SCROLL START");
 ////                slideObj.scrolling = true;
 //            });
 
             $.bind($(element).scroller(), 'scrollend', function () {
-//                console.log("EVENT SCROLL END");
+//                //console.log("EVENT SCROLL END");
                 slideObj.scrolling = false;
             });
 

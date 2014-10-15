@@ -101,10 +101,14 @@ myApp.controller('VisitController', function ($scope, $filter, $routeParams, Loa
     };
     
     $scope.hasFutureData = function(obj){
+        if (!obj)
+            return false;
         return obj.startTime < $scope.maxTime;
     }
     
     $scope.hasPastData = function(obj){
+        if (!obj)
+            return false;
         return obj.startTime > $scope.minTime;
     }
     
