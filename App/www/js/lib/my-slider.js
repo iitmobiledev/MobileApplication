@@ -86,7 +86,7 @@
 
             case 'end':
                 if (this.swipe) {
-                    //console.log("swipeEnd")
+                    console.log("swipeEnd")
                     this.swipe = false;
                     this.scrolling = false;
                     this.swipeEnd(event);
@@ -118,7 +118,7 @@
                     this.slideHandler(this.currentSlide + 1, function () {
                         current.scrollerRewind();
                         $('.scrollBar').css("opacity", "0.5");
-                        ////console.log("current after slideHandler", current);
+                        //console.log("current after slideHandler", current);
                     });
                     this.startX = null;
                     this.startY = null;
@@ -128,7 +128,7 @@
                     this.slideHandler(this.currentSlide - 1, function () {
                         current.scrollerRewind();
                         $('.scrollBar').css("opacity", "0.5");
-                        ////console.log("current after slideHandler", current);
+                        //console.log("current after slideHandler", current);
                     });
                     this.startX = null;
                     this.startY = null;
@@ -149,7 +149,7 @@
 
         //�� ���� �������������� �� ��������� �����
         MySlider.prototype.slideHandler = function (index, callback) {
-            //console.log("slideHandler")
+            console.log("slideHandler")
             var _ = this;
             var targetSlide,
                 animSlide,
@@ -229,7 +229,7 @@
                 r,
                 swipeAngle;
 
-            //            //console.log("swipeDirection", this.startX, this.curX);
+            //            console.log("swipeDirection", this.startX, this.curX);
             xDist = this.startX - this.curX;
             yDist = this.startY - this.curY;
             r = Math.atan2(yDist, xDist);
@@ -260,7 +260,7 @@
             var curLeft,
                 positionOffset,
                 touches;
-            ////console.log("swipeSlider")
+            //console.log("swipeSlider")
             touches = event.originalEvent !== undefined ? event.originalEvent.touches : null;
 
             curLeft = this.getLeft(this.currentSlide);
@@ -274,11 +274,11 @@
             this.curX = touches !== undefined ? touches[0].pageX : event.clientX;
             this.curY = touches !== undefined ? touches[0].pageY : event.clientY;
 
-            //            //console.log("start", this.startX);
-            //            //console.log("current", this.curX, current);
+            //            console.log("start", this.startX);
+            //            console.log("current", this.curX, current);
             //            if (this.curX != current)
             //                progression = this.curX > current ? 1 : -1;
-            //            //console.log("progression", progression);
+            //            console.log("progression", progression);
             this.swipeLength = Math.round(Math.sqrt(
                 Math.pow(this.curX - this.startX, 2)));
 
@@ -333,7 +333,7 @@
         // ������ ������� ��� ����� ��������
         MySlider.prototype.setTranslatePosition = function (position) {
             var e = new Error()
-            //console.log("setTranslatePosition", this.currentSlide, position)
+            console.log("setTranslatePosition", this.currentSlide, this.slideCount, position)
             this.$slideTrack.css({
                 'transform': 'translate(' + position + 'px,0)'
             });
@@ -368,20 +368,9 @@
 
         //���������� ������ (element - ������� ������; toRight - ���� true - � ����� ��������, false - � ������ ��������)
         MySlider.prototype.addSlide = function (element, toRight, isCurrent, callback) {
-            var r, c;
-            if (toRight)
-                r = "right"
-            else
-                r = "left"
-            if (isCurrent)
-                c = "CURRENT!"
-            else
-                c = ""
-            //console.log("ADD SLIDE", r, c, element)
-            //console.log("before", this.currentSlide);
             if (toRight) {
                 this.appendSlide(element);
-                if (this.slideCount > this.options.maxSlideCount) {
+                if (this.slideCount >= this.options.maxSlideCount) {
                     this.removeSlideLeft(callback);
                 }
                 if (isCurrent) {
@@ -392,7 +381,7 @@
                 }
             } else {
                 this.prependSlide(element);
-                if (this.slideCount > this.options.maxSlideCount) {
+                if (this.slideCount >= this.options.maxSlideCount) {
                     this.removeSlideRight(callback);
                 }
                 if (isCurrent) {
@@ -400,7 +389,7 @@
                     this.setTranslatePosition(this.getLeft(this.currentSlide))
                 }
             }
-            //console.log("after", this.currentSlide);
+//            console.log("after", this.currentSlide);
             //setActive();
         }
 
@@ -408,35 +397,44 @@
             $(element).css("height", "100%");
             var slide = $('<div style="heigth: 100%"/>').append(element);
             if (toRight) {
+                if (this.$slideTrack.find('.LoadSlideRight').lenght){
+                    return;
+                }
                 slide.addClass("LoadSlideRight");
                 this.appendSlide(slide);
             } else {
+                if (this.$slideTrack.find('.LoadSlideLeft').lenght){
+                    return;
+                }
                 slide.addClass("LoadSlideLeft");
                 this.prependSlide(slide);
             }
         }
 
         MySlider.prototype.removeLoadBar = function (fromRight) {
-            //console.log("removeLoadBar")
-            //console.log("remove before", this.currentSlide)
             if (fromRight) {
-                this.$slideTrack.find('.LoadSlideRight').remove();
+                var loadBarSlideRight = this.$slideTrack.find('.LoadSlideRight');
+                if (!loadBarSlideRight.length) {
+                    return;
+                }
+                loadBarSlideRight.remove();
                 this.slideCount--;
                 if (this.getCurrent().html() == undefined) {
                     this.shiftSlide(false);
                 }
             } else {
-                this.$slideTrack.find('.LoadSlideLeft').remove();
-//                //console.log("REMOVE LOADBAR left", this.currentSlide)
+                var loadBarSlideLeft = this.$slideTrack.find('.LoadSlideLeft');
+                if (!loadBarSlideLeft.length){
+                    return;
+                }
+                loadBarSlideLeft.remove();
                 if (this.currentSlide != 0) {
                     this.currentSlide -= 1;
-//                    //console.log("CURSLIDE--")
                 }
                 this.setTranslatePosition(this.getLeft(this.currentSlide));
                 this.slideCount--;
 
             }
-            //console.log("remove after", this.currentSlide)
         }
 
         //Добавление слайда в конец слайдера
@@ -466,12 +464,12 @@
             var slideObj = this;
 
 //            $.bind($(element).scroller(), 'scrollstart', function () {
-//                //console.log("EVENT SCROLL START");
+//                console.log("EVENT SCROLL START");
 ////                slideObj.scrolling = true;
 //            });
 
             $.bind($(element).scroller(), 'scrollend', function () {
-//                //console.log("EVENT SCROLL END");
+//                console.log("EVENT SCROLL END");
                 slideObj.scrolling = false;
             });
 
@@ -484,6 +482,7 @@
 
         //Добавление слайда в начало слайдера
         MySlider.prototype.prependSlide = function (element) {
+            console.log("prependSlide", this.currentSlide, this.slideCount)
             this.slideCount++;
             $(element).css("height", "100%");
             $(element).css("width", this.options.width + 'px');
@@ -493,7 +492,7 @@
             if (!lb.length) {
                 this.$slideTrack.prepend(element);
             } else {
-                //console.log("prepend", element, lb)
+                console.log("prepend", element, lb)
                 element.insertAfter(lb)
             }
 
@@ -508,12 +507,12 @@
             var slideObj = this;
 
 //            $.bind($(element).scroller(), 'scrollstart', function () {
-//                //console.log("EVENT SCROLL START");
+//                console.log("EVENT SCROLL START");
 ////                slideObj.scrolling = true;
 //            });
 
             $.bind($(element).scroller(), 'scrollend', function () {
-//                //console.log("EVENT SCROLL END");
+//                console.log("EVENT SCROLL END");
                 slideObj.scrolling = false;
             });
 
@@ -532,21 +531,28 @@
 
         //удаляем слайд справа
         MySlider.prototype.removeSlideRight = function (callback) {
+            console.log("removeSlideRight", this.currentSlide, this.slideCount)
             callback(this.$slideTrack.find('.slide:last'));
             this.$slideTrack.find('.slide:last').remove();
+            if (this.currentSlide == this.slideCount - 1){
+                this.currentSlide--;
+            }
             this.slideCount--;
         }
 
         //удаляем слайд слева
         MySlider.prototype.removeSlideLeft = function (callback) {
+            console.log("removeSlideLeft", this.currentSlide, this.slideCount)
             callback(this.$slideTrack.find('.slide:first'));
             this.$slideTrack.find('.slide:first').remove();
             this.slideCount--;
-            this.currentSlide--;
+            if (this.currentSlide > 0)
+                this.currentSlide--;
             this.setTranslatePosition(this.getLeft(this.currentSlide));
         }
 
         MySlider.prototype.shiftSlide = function (toRight) {
+            console.log("shiftSlide", this.currentSlide, this.slideCount, toRight)
             var current = this.getCurrent();
 
             //если текущий слайд - крайний, то ничего не делать
@@ -559,6 +565,7 @@
                         });
                         return this.$slideTrack.find('.slide').get(this.currentSlide + 1);
                     }
+                    
                 }
                 return null;
             } else {
