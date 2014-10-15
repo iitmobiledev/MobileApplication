@@ -63,8 +63,6 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
             updateNeedUpdating();
 
             var ready = false;
-            var canLoadLeft = true;
-            var canLoadRight = true;
 
             var checkWidth = function () {
                 if ($(".content").width() < $(".content").height()) {
@@ -104,10 +102,10 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
                     onAfterChange: function () {
                         var curScope = angular.element(element.find('.my-slider').getCurrentSlide()).scope();
                         updateDate(curScope);
-                        if (ready) {
-                            if (canLoadLeft) {
+                        if (ready && curScope) {
+                            ready = false;
+                            if (curScope.canLoadLeft) {
                                 var key = getCurrentKey(element.find('.my-slider').getFirstSlide());
-                                ready = false;
                                 element.find('.my-slider').addLoadBarLeft(loadslider);
                                 dataCallback(key, count, false, function (content) {
                                     ready = true;
@@ -119,9 +117,8 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
                                         setButtonState(element.find('.my-slider').getCurrentSlide());
                                     }, 0);
                                 });
-                            } else if (canLoadRight) {
+                            } else if (curScope.canLoadRight) {
                                 var key = getCurrentKey(element.find('.my-slider').getLastSlide());
-                                ready = false;
                                 element.find('.my-slider').addLoadBarRight(loadslider);
                                 dataCallback(key, count, true, function (content) {
                                     ready = true;
@@ -133,8 +130,10 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
                                         setButtonState(element.find('.my-slider').getCurrentSlide());
                                     }, 0);
                                 });
+                            } else {
+                                ready = true;
                             }
-                            scope.$apply();
+                            
                         }
                     },
                     onBeforeChange: function (nextSlide) {
@@ -164,19 +163,21 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
 
             function checkCanLoad(currentSlide) {
                 if (ready) {
-                    canLoadLeft = false;
-                    canLoadRight = false;
                     if (element.find('.my-slider').whichFromLeft(currentSlide) <= 1) {
                         var first = element.find('.my-slider').getFirstSlide();
-                        var obj = angular.element(first).scope().page;
-                        if (scope.$eval(attrs.hasPastData)(obj)) {
-                            canLoadLeft = true;
+                        var curScope = angular.element(first).scope()
+                        if (curScope) {
+                            if (scope.$eval(attrs.hasPastData)(curScope.page)) {        
+                                curScope.canLoadLeft = true;
+                            }
                         }
                     } else if (element.find('.my-slider').whichFromRight(currentSlide) <= 1) {
                         var last = element.find('.my-slider').getLastSlide();
-                        var obj = angular.element(last).scope().page;
-                        if (scope.$eval(attrs.hasFutureData)(obj)) {
-                            canLoadRight = true;
+                        var curScope = angular.element(last).scope()
+                        if (curScope) {
+                            if (scope.$eval(attrs.hasFutureData)(curScope.page)) {
+                                curScope.canLoadRight = true;
+                            }
                         }
                     }
                 }
