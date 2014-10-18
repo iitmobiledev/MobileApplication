@@ -98,18 +98,17 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
                         updateDate(curScope);
                         if (ready && curScope) {
                             ready = false;
-                            console.log("READY = FALSE");
                             if (curScope.canLoadLeft) {
+                                console.log("READY = FALSE");
                                 addNewSlides(element.find('.my-slider').getFirstSlide(), "Left", addPastData);
                             } else if (curScope.canLoadRight) {
+                                console.log("READY = FALSE");
                                 addNewSlides(element.find('.my-slider').getLastSlide(), "Right", addFutureData);
                             } else {
                                 ready = true;
-                                 console.log("READY = TRUE");
                             }
 
-                        }
-                        else{
+                        } else {
                             console.log("IGNORE AFTER CHANGE")
                         }
                     },
@@ -121,7 +120,7 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
             }
 
             function addNewSlides(keySlide, side, addCallback) {
-                console.log("addNewSlides")
+                console.log("addNewSlides" + side)
                 var key = getCurrentKey(keySlide);
                 element.find('.my-slider')['addLoadBar' + side](loadslider);
                 dataCallback(key, count, side == "Right", function (content) {
@@ -131,7 +130,7 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
                         var curScope = angular.element(element.find('.my-slider').getCurrentSlide()).scope();
                         updateDate(curScope);
                         setButtonState(element.find('.my-slider').getCurrentSlide());
-                         console.log("READY = TRUE (SLIDES ADDED)");
+                        console.log("READY = TRUE (SLIDES ADDED)");
                         ready = true;
                     }, 0);
                 });
@@ -156,24 +155,24 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
             }
 
             function checkCanLoad(currentSlide) {
-               // if (ready) {
-                    if (element.find('.my-slider').whichFromLeft(currentSlide) <= 1) {
-                        var first = element.find('.my-slider').getFirstSlide();
-                        var curScope = angular.element(first).scope()
-                        if (curScope) {
-                            if (scope.$eval(attrs.hasPastData)(curScope.page)) {
-                                curScope.canLoadLeft = true;
-                            }
-                        }
-                    } else if (element.find('.my-slider').whichFromRight(currentSlide) <= 1) {
-                        var last = element.find('.my-slider').getLastSlide();
-                        var curScope = angular.element(last).scope()
-                        if (curScope) {
-                            if (scope.$eval(attrs.hasFutureData)(curScope.page)) {
-                                curScope.canLoadRight = true;
-                            }
+                // if (ready) {
+                if (element.find('.my-slider').whichFromLeft(currentSlide) <= 1) {
+                    var first = element.find('.my-slider').getFirstSlide();
+                    var curScope = angular.element(first).scope()
+                    if (curScope) {
+                        if (scope.$eval(attrs.hasPastData)(curScope.page)) {
+                            curScope.canLoadLeft = true;
                         }
                     }
+                } else if (element.find('.my-slider').whichFromRight(currentSlide) <= 1) {
+                    var last = element.find('.my-slider').getLastSlide();
+                    var curScope = angular.element(last).scope()
+                    if (curScope) {
+                        if (scope.$eval(attrs.hasFutureData)(curScope.page)) {
+                            curScope.canLoadRight = true;
+                        }
+                    }
+                }
                 //}
             }
 
@@ -216,7 +215,9 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
              * @param {Array} contentData Список объектов, чьи данные будут отображаться на слайдах
              */
             function addPastData(contentData) {
-                var setupElement = function (newscope, obj) {
+                var setupElement = function (obj) {
+                    var newscope = scope.$new();
+                    newscope.page = $.extend(true, {}, obj);
                     compiled(newscope, function (clonedElement, scope) {
                         setTimeout(function () {
                             //                            clonedElement.attr("contentkey", keyFunc(obj))
@@ -226,9 +227,7 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
                 }
                 if (contentData) {
                     for (var i = contentData.length - 1; i >= 0; i--) {
-                        newscope = scope.$new();
-                        newscope.page = contentData[i];
-                        setupElement(newscope, contentData[i]);
+                        setupElement(contentData[i]);
                     }
                 }
             }
@@ -244,7 +243,9 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
              * @param {Array} contentData Список объектов, чьи данные будут отображаться на слайдах
              */
             function addFutureData(contentData) {
-                var setupElement = function (newscope, obj) {
+                var setupElement = function (obj) {
+                    var newscope = scope.$new();
+                    newscope.page = $.extend(true, {}, obj);
                     compiled(newscope, function (clonedElement, scope) {
                         setTimeout(function () {
                             //                            clonedElement.attr("contentkey", keyFunc(obj))
@@ -254,12 +255,9 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
                 }
                 if (contentData) {
                     for (var i = 0; i < contentData.length; i++) {
-                        newscope = scope.$new();
-                        newscope.page = contentData[i];
-                        setupElement(newscope, contentData[i]);
+                        setupElement(contentData[i]);
                     }
                 }
-                //                scope.$apply();
             }
 
             /**
@@ -294,12 +292,14 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
                 if (contentData) {
                     for (var i = 0; i < contentData.length; i++) {
                         newscope = scope.$new();
-                        newscope.page = contentData[i];
+                        newscope.$on("pingpong", function () {
+                            console.log("SCOPEEEE!");
+                        });
+                        newscope.page = $.extend(true, {}, contentData[i]);
                         var k = keyFunc(contentData[i]);
                         setUpSlide(newscope, k)
                     }
 
-                    //                    scope.$apply();
                     $(window).scrollTop(0);
                     ready = true;
                 }
@@ -307,7 +307,12 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
             }
 
             function destroyScope(obj) {
-                var objScope = angular.element(obj).scope().$destroy();
+                var objScope = angular.element(obj).scope()
+                if (objScope) {
+                    //                    console.log("DESTROY PARENT", scope.$parent)
+//                    scope.$broadcast("pingpong");
+//                    objScope.$destroy();
+                }
             }
 
 

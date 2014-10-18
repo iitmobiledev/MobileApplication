@@ -20,7 +20,7 @@ myApp.service("Loader", ["ModelConverter", "RealServer", "$rootScope", "fieldSta
         function getServerFieldStat() {
             Server = new RealServer(localStorage.getItem("UserToken"));
             Server.fieldStat(fieldStatQuery, function (stat) {
-                console.log(stat);
+//                console.log(stat);
                 fieldStat = stat;
                 if (stat.error) {
                     $rootScope.$emit('serverError', '');
@@ -71,7 +71,7 @@ myApp.service("Loader", ["ModelConverter", "RealServer", "$rootScope", "fieldSta
 
                         if (result instanceof Array) {
                             var objs = ModelConverter.getObjects(className, result);
-                            console.log('server.search ', objs);
+//                            console.log('server.search ', objs);
                             for (var i in objs)
                                 Storage.update(objs[i]);
                             synchNeed[className] = false;
@@ -87,7 +87,7 @@ myApp.service("Loader", ["ModelConverter", "RealServer", "$rootScope", "fieldSta
             getFieldStat: getFieldStat,
             getMaxDate: function (className) {
                 try {
-                    console.log(fieldStat);
+//                    console.log(fieldStat);
                     if (fieldStat) {
                         var typeStat = fieldStat.filter(function (stat) {
                             return stat.type == className;

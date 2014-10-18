@@ -160,7 +160,7 @@
             slideLeft = this.getLeft(this.currentSlide);
 
             this.currentLeft = this.swipeLeft === null ? slideLeft : this.swipeLeft;
-            
+
 
             if (index < 0 || index > (this.slideCount - 1)) {
                 targetSlide = this.currentSlide;
@@ -169,8 +169,8 @@
                 });
                 return false;
             }
-            
-            
+
+
             if (this.options.onBeforeChange !== null) {
                 this.options.onBeforeChange(this.$slideTrack.find('.slide').eq(targetSlide));
             }
@@ -284,7 +284,7 @@
 
             if (this.swipeDirection() === 'vertical') {
                 $('.scrollBar').css("opacity", "0.5");
-                if (this.swipeLength > 20){
+                if (this.swipeLength > 20) {
                     this.scrolling = true;
                 }
 
@@ -333,18 +333,18 @@
         // ������ ������� ��� ����� ��������
         MySlider.prototype.setTranslatePosition = function (position) {
             var e = new Error()
-            console.log("setTranslatePosition", this.currentSlide, this.slideCount, position)
+//            console.log("setTranslatePosition", this.currentSlide, this.slideCount, position)
             this.$slideTrack.css({
                 'transform': 'translate(' + position + 'px,0)'
             });
         };
 
-//        // ������ ������� ��� ����� ��������
-//        MySlider.prototype.setTranslatePositiony = function (position) {
-//            this.$slideTrack.css({
-//                'transform': 'translate(0,' + position + 'px)'
-//            });
-//        };
+        //        // ������ ������� ��� ����� ��������
+        //        MySlider.prototype.setTranslatePositiony = function (position) {
+        //            this.$slideTrack.css({
+        //                'transform': 'translate(0,' + position + 'px)'
+        //            });
+        //        };
 
         //�������������� ������� �� ��������
         MySlider.prototype.initEvents = function () {
@@ -371,7 +371,7 @@
             if (toRight) {
                 this.appendSlide(element);
                 if (this.slideCount >= this.options.maxSlideCount) {
-                    this.removeSlideLeft(callback);
+                    this.removeSlide(callback);
                 }
                 if (isCurrent) {
                     if (this.currentSlide !== this.slideCount - 1) {
@@ -382,28 +382,45 @@
             } else {
                 this.prependSlide(element);
                 if (this.slideCount >= this.options.maxSlideCount) {
-                    this.removeSlideRight(callback);
+                    this.removeSlide(callback);
                 }
                 if (isCurrent) {
                     this.currentSlide = 0;
                     this.setTranslatePosition(this.getLeft(this.currentSlide))
                 }
             }
-//            console.log("after", this.currentSlide);
+            //            console.log("after", this.currentSlide);
             //setActive();
+        }
+
+        var removeTimeout;
+
+        MySlider.prototype.removeSlide = function (callback) {
+            if (this.slideCount >= this.options.maxSlideCount) {
+                clearTimeout(removeTimeout);
+                var self = this;
+                removeTimeout = setTimeout(function () {
+                    if (self.currentSlide > self.slideCount / 2) {
+                        self.removeSlideLeft(callback);
+                    } else {
+                        self.removeSlideRight(callback);
+                    }
+                    self.removeSlide(callback);
+                }, 500);
+            }
         }
 
         MySlider.prototype.addLoadBar = function (element, toRight) {
             $(element).css("height", "100%");
             var slide = $('<div style="heigth: 100%"/>').append(element);
             if (toRight) {
-                if (this.$slideTrack.find('.LoadSlideRight').lenght){
+                if (this.$slideTrack.find('.LoadSlideRight').lenght) {
                     return;
                 }
                 slide.addClass("LoadSlideRight");
                 this.appendSlide(slide);
             } else {
-                if (this.$slideTrack.find('.LoadSlideLeft').lenght){
+                if (this.$slideTrack.find('.LoadSlideLeft').lenght) {
                     return;
                 }
                 slide.addClass("LoadSlideLeft");
@@ -424,7 +441,7 @@
                 }
             } else {
                 var loadBarSlideLeft = this.$slideTrack.find('.LoadSlideLeft');
-                if (!loadBarSlideLeft.length){
+                if (!loadBarSlideLeft.length) {
                     return;
                 }
                 loadBarSlideLeft.remove();
@@ -444,7 +461,6 @@
             $(element).css("width", this.options.width + 'px');
             $(element).addClass("slide")
 
-
             var lb = $(element).find('.LoadSlideRight');
             if (!lb.length) {
                 this.$slideTrack.append(element);
@@ -456,20 +472,12 @@
                 verticalScroll: true,
                 horizontalScroll: false,
                 lockBounce: true,
-                //                autoEnable: true,
                 scrollbars: true
-                //                height: 500
             });
 
             var slideObj = this;
 
-//            $.bind($(element).scroller(), 'scrollstart', function () {
-//                console.log("EVENT SCROLL START");
-////                slideObj.scrolling = true;
-//            });
-
             $.bind($(element).scroller(), 'scrollend', function () {
-//                console.log("EVENT SCROLL END");
                 slideObj.scrolling = false;
             });
 
@@ -482,7 +490,6 @@
 
         //Добавление слайда в начало слайдера
         MySlider.prototype.prependSlide = function (element) {
-            console.log("prependSlide", this.currentSlide, this.slideCount)
             this.slideCount++;
             $(element).css("height", "100%");
             $(element).css("width", this.options.width + 'px');
@@ -501,18 +508,11 @@
                 horizontalScroll: false,
                 scrollbars: true,
                 lockBounce: true
-                //                height: 500
             });
 
             var slideObj = this;
 
-//            $.bind($(element).scroller(), 'scrollstart', function () {
-//                console.log("EVENT SCROLL START");
-////                slideObj.scrolling = true;
-//            });
-
             $.bind($(element).scroller(), 'scrollend', function () {
-//                console.log("EVENT SCROLL END");
                 slideObj.scrolling = false;
             });
 
@@ -531,10 +531,11 @@
 
         //удаляем слайд справа
         MySlider.prototype.removeSlideRight = function (callback) {
-            console.log("removeSlideRight", this.currentSlide, this.slideCount)
-            callback(this.$slideTrack.find('.slide:last'));
-            this.$slideTrack.find('.slide:last').remove();
-            if (this.currentSlide == this.slideCount - 1){
+            console.log("removeSlideRight", this.currentSlide, this.slideCount);
+            var removingSlide = this.$slideTrack.find('.slide:last').get(0);
+            callback(removingSlide);
+            removingSlide.remove();
+            if (this.currentSlide == this.slideCount - 1) {
                 this.currentSlide--;
             }
             this.slideCount--;
@@ -542,14 +543,16 @@
 
         //удаляем слайд слева
         MySlider.prototype.removeSlideLeft = function (callback) {
-            console.log("removeSlideLeft", this.currentSlide, this.slideCount)
-            callback(this.$slideTrack.find('.slide:first'));
-            this.$slideTrack.find('.slide:first').remove();
+            console.log("removeSlideLeft", this.currentSlide, this.slideCount);
+            var removingSlide = this.$slideTrack.find('.slide:first').get(0);
+            callback(removingSlide);
+            removingSlide.remove();
             this.slideCount--;
             if (this.currentSlide > 0)
                 this.currentSlide--;
             this.setTranslatePosition(this.getLeft(this.currentSlide));
         }
+        
 
         MySlider.prototype.shiftSlide = function (toRight) {
             console.log("shiftSlide", this.currentSlide, this.slideCount, toRight)
@@ -565,7 +568,7 @@
                         });
                         return this.$slideTrack.find('.slide').get(this.currentSlide + 1);
                     }
-                    
+
                 }
                 return null;
             } else {
@@ -675,7 +678,7 @@
             });
         };
         $.fn.scrollerRewind = function () {
-            if (this.scroller && this.scroller() && this.scroller().scrollToTop){
+            if (this.scroller && this.scroller() && this.scroller().scrollToTop) {
                 this.scroller().scrollToTop(0);
             }
         }
