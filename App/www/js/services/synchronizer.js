@@ -1,7 +1,6 @@
 myApp.service("Synchronizer", ["Storage", "RealServer", "ModelConverter", "Loader", "$rootScope", "storageSupport",
     function (Storage, RealServer, ModelConverter, Loader, $rootScope, storageSupport) {
         var Server;
-        var synchEnd = true;
 
         function save(data, className, offset, callback) {
             if (offset >= data.length) {
@@ -26,23 +25,23 @@ myApp.service("Synchronizer", ["Storage", "RealServer", "ModelConverter", "Loade
                 "count": count,
                 "offset": offset
             }, function (data) {
-                //                console.log('data ', className, data);
+                console.log('new data ', className, data);
                 if (data == null || data.length < count) {
                     Server.lastModified(["OperationalStatistics", "Visit", "Expenditure"], function (date) {
-                        lastLocalModified = lastServerModified;
+                        lastLocalModified[className] = lastServerModified[className];
                         var lastMod = ModelConverter.getObject("LastModified", lastLocalModified);
-                        console.log("lastMod ", lastMod);
                         Storage.update(lastMod);
                         if (date[className] == lastServerModified[className]) {
                             Server.fieldStat([{
                                 type: className,
                                 field: "date"
                                     }], function (serverStat) {
-                                var fieldStat = ModelConverter.getObject("FieldStat", stat);
+                                var fieldStat = ModelConverter.getObject("FieldStat", serverStat);
                                 Storage.update(fieldStat);
-                                save(data, className, 0, callback);
-                                synchEnd = true;
-                                $rootScope.$emit('synchEnd' + className, '');
+                                save(data, className, 0, function () {
+                                    $rootScope.$emit('synchEnd' + className, '');
+                                    callback();
+                                });
                             });
                         } else {
                             updateData(className, count, 0, callback, lastLocalModified, date);
@@ -62,19 +61,13 @@ myApp.service("Synchronizer", ["Storage", "RealServer", "ModelConverter", "Loade
             Storage.get("LastModified", 'primary', function (lastLocalModified) {
                 Server.lastModified(["OperationalStatistics", "Visit", "Expenditure"], function (lastServerModified) {
                     lastLocalModified = ModelConverter.getObject("LastModified", lastLocalModified);
+//                    console.log(lastLocalModified, lastServerModified);
                     if (!(className in lastLocalModified))
                         callback();
                     else {
-//                        console.log("className", className, new Date(lastLocalModified[className]), new Date(lastServerModified[className]));
                         if (new Date(lastLocalModified[className]) < new Date(lastServerModified[className])) {
                             console.log('synch need');
-                            lastLocalModified[className] = new Date(lastServerModified[className]);
-                            Storage.update(lastLocalModified, function () {
-                                $rootScope.$emit('synchEnd' + className, '');
-                                callback();
-                            });
-                            //                            if (synchEnd)
-                            //                                updateData(className, 20, 0, callback, lastLocalModified, lastServerModified);
+                            updateData(className, 20, 0, callback, lastLocalModified, lastServerModified);
                         } else {
                             callback();
                         }
@@ -91,7 +84,7 @@ myApp.service("Synchronizer", ["Storage", "RealServer", "ModelConverter", "Loade
                     synchCheck("OperationalStatistics", function () {
                         synchCheck("Visit", function () {
                             synchCheck("Expenditure", function () {
-                                setInterval(synch.beginSynch, 15000);
+                                setInterval(synch.beginSynch, 10000);
                             });
                         });
                     });

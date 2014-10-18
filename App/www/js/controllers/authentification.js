@@ -21,7 +21,6 @@ myApp.controller('AuthentificationController', function ($scope, $location, Auth
                 $scope.loading = false;
             } else {
                 if (token) {
-//                    console.log("auth", token);
                     localStorage.setItem("User", login + ":" + password);
                     localStorage.setItem("UserToken", token);
                     Loader.getFieldStat();

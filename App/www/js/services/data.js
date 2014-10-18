@@ -36,10 +36,10 @@
                  })
                      .success(callback)
                      .error(function (data, status, headers, config) {
-//                         console.log(
-//                             "FAILURE", url, $.extend(true, {}, param),
-//                             status, headers, config
-//                         );
+                         console.log(
+                             "FAILURE", url, $.extend(true, {}, param),
+                             status, headers, config
+                         );
                          $rootScope.$emit('serverError', '');
                          callback();
                      });

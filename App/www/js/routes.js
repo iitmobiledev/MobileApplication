@@ -3,7 +3,7 @@ var myApp = angular.module('myApp', ['ngRoute', 'ngAnimate', 'angulartics', 'ang
 myApp.run(function ($templateCache, Storage, storageSupport) {
     console.log = function () {};
     console.error = function (msg) {};
-    //    Storage.clearStorage();
+//        Storage.clearStorage();
     if (Storage.isSupported()) {
         console.log("localStorage is supported!");
         storageSupport = true;

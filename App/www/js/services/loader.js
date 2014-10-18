@@ -20,7 +20,7 @@ myApp.service("Loader", ["ModelConverter", "RealServer", "$rootScope", "fieldSta
         function getServerFieldStat() {
             Server = new RealServer(localStorage.getItem("UserToken"));
             Server.fieldStat(fieldStatQuery, function (stat) {
-//                console.log(stat);
+                console.log(stat);
                 fieldStat = stat;
                 if (stat.error) {
                     $rootScope.$emit('serverError', '');
