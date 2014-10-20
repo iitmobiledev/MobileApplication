@@ -78,7 +78,10 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
 
 
 
-            var ready = false;
+            var ready = true;
+            
+            var canLoadLeft = false;
+            var canLoadRight = false;
 
             /**
              * @ngdoc method
@@ -96,12 +99,15 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
                     onAfterChange: function () {
                         var curScope = angular.element(element.find('.my-slider').getCurrentSlide()).scope();
                         updateDate(curScope);
+                        if (curScope){
+                            curScope.$apply();
+                        }
                         if (ready && curScope) {
                             ready = false;
-                            if (curScope.canLoadLeft) {
+                            if (canLoadLeft) {
                                 console.log("READY = FALSE");
                                 addNewSlides(element.find('.my-slider').getFirstSlide(), "Left", addPastData);
-                            } else if (curScope.canLoadRight) {
+                            } else if (canLoadRight) {
                                 console.log("READY = FALSE");
                                 addNewSlides(element.find('.my-slider').getLastSlide(), "Right", addFutureData);
                             } else {
@@ -109,7 +115,7 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
                             }
 
                         } else {
-                            console.log("IGNORE AFTER CHANGE")
+                            console.log("IGNORE AFTER CHANGE", ready)
                         }
                     },
                     onBeforeChange: function (nextSlide) {
@@ -155,13 +161,16 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
             }
 
             function checkCanLoad(currentSlide) {
-                // if (ready) {
+                console.log("checkCanLoad LEFT", element.find('.my-slider').whichFromLeft(currentSlide), "RIGHT",
+                                            element.find('.my-slider').whichFromRight(currentSlide));
+                canLoadLeft = false;
+                canLoadRight = false;
                 if (element.find('.my-slider').whichFromLeft(currentSlide) <= 1) {
                     var first = element.find('.my-slider').getFirstSlide();
                     var curScope = angular.element(first).scope()
                     if (curScope) {
                         if (scope.$eval(attrs.hasPastData)(curScope.page)) {
-                            curScope.canLoadLeft = true;
+                            canLoadLeft = true;
                         }
                     }
                 } else if (element.find('.my-slider').whichFromRight(currentSlide) <= 1) {
@@ -169,7 +178,7 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
                     var curScope = angular.element(last).scope()
                     if (curScope) {
                         if (scope.$eval(attrs.hasFutureData)(curScope.page)) {
-                            curScope.canLoadRight = true;
+                            canLoadRight = true;
                         }
                     }
                 }
@@ -183,14 +192,14 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
              * @description Первоначальная инициализация слайдера, добавляются первые данные
              */
             function init() {
-                //$('.my-slider').destroySlider();
-                //                console.log("INIT")
+                console.log("INIT")
                 $(window).scrollTop(0);
                 element.find('.my-slider').html("")
                 toSlick();
                 ready = false;
                 element.find('.my-slider').addLoadBarLeft(loadslider);
                 dataCallback(null, count, true, function (content, pageKey) {
+                    console.log("dataCallback")
                     ready = true;
                     addCurrentDayData(content, pageKey);
                     setTimeout(function () {
@@ -220,7 +229,6 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
                     newscope.page = $.extend(true, {}, obj);
                     compiled(newscope, function (clonedElement, scope) {
                         setTimeout(function () {
-                            //                            clonedElement.attr("contentkey", keyFunc(obj))
                             element.find('.my-slider').addSlideLeft(clonedElement, destroyScope);
                         }, 0);
                     });
@@ -248,7 +256,6 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
                     newscope.page = $.extend(true, {}, obj);
                     compiled(newscope, function (clonedElement, scope) {
                         setTimeout(function () {
-                            //                            clonedElement.attr("contentkey", keyFunc(obj))
                             element.find('.my-slider').addSlideRight(clonedElement, destroyScope);
                         });
                     }, 0);
@@ -270,7 +277,6 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
              * @param {Array} contentData Список объектов, чьи данные будут отображаться на слайдах
              */
             function addCurrentDayData(contentData, startPageKey) {
-                //                console.log("STARTPAGEKEY", contentData, startPageKey)
                 if (!startPageKey) {
                     startPageKey = null;
                 }
@@ -278,7 +284,6 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
                 var setUpSlide = function (newscope, k) {
                     compiled(newscope, function (clonedElement, scope) {
                         setTimeout(function () {
-                            //                            clonedElement.attr("contentkey", k);
                             if (k == startPageKey || (startPageKey == null && i == contentData.length)) {
                                 element.find('.my-slider')
                                     .addSlideRight(clonedElement, destroyScope, true);
@@ -299,7 +304,6 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
                         var k = keyFunc(contentData[i]);
                         setUpSlide(newscope, k)
                     }
-
                     $(window).scrollTop(0);
                     ready = true;
                 }
@@ -309,9 +313,7 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
             function destroyScope(obj) {
                 var objScope = angular.element(obj).scope()
                 if (objScope) {
-                    //                    console.log("DESTROY PARENT", scope.$parent)
-//                    scope.$broadcast("pingpong");
-//                    objScope.$destroy();
+                    objScope.$destroy();
                 }
             }
 
@@ -326,7 +328,6 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
 
             scope.$watch(attrs.reinit, function (newValue, oldValue) {
                 if (oldValue != newValue) {
-                    //                    scope.loading = true;
                     init();
                 }
             })
@@ -350,17 +351,6 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
                 }
                 return keyFunc(curScope.page);
             }
-
-            //            $("#slides").height($(".upage-content").height() - $("#header").height());
-
-            //            console.log("HEIGHT", intel.xdk.display.window.landheight, $('.my-slider').offset().top)
-            //            
-            //            $("#slides").height(intel.xdk.display.window.landheight - $('.my-slider').offset().top)
-
-            //            function updateSlider() {
-            //                console.log(getCurrentKey());
-            //                dataCallback(null, count, true, addCurrentDayData);
-            //            }
         },
         templateUrl: 'views/slider.html'
 
