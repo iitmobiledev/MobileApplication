@@ -395,7 +395,8 @@
 
         var removeTimeout;
 
-        MySlider.prototype.removeSlide = function (callback) {
+        MySlider.prototype.removeSlide = function (callback, time) {
+            time = time || 500;
             if (this.slideCount >= this.options.maxSlideCount) {
                 clearTimeout(removeTimeout);
                 var self = this;
@@ -405,8 +406,8 @@
                     } else {
                         self.removeSlideRight(callback);
                     }
-                    self.removeSlide(callback);
-                }, 500);
+                    self.removeSlide(callback, 50);
+                }, time);
             }
         }
 
