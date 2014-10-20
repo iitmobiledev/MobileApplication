@@ -6,8 +6,8 @@
  * @requires myApp.service:VisitLoader
  */
 myApp.controller('VisitController', function ($scope, $filter, $routeParams, Loader, DateHelper, $rootScope) {
-//    var today = new Date();
-//    $scope.date = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+    //    var today = new Date();
+    //    $scope.date = new Date(today.getFullYear(), today.getMonth(), today.getDate());
 
     $scope.step = DateHelper.steps.DAY;
 
@@ -18,11 +18,13 @@ myApp.controller('VisitController', function ($scope, $filter, $routeParams, Loa
     $scope.future = true;
     $scope.past = true;
 
+    $scope.listID;
+
     $rootScope.$on('synchEndVisit', function () {
         console.log('synchEndVisit');
         $scope.needUpdating = true;
     });
-    
+
     $scope.maxSlideCount = 100;
 
     $scope.getData = function (key, quantity, forward, callback) {
@@ -34,8 +36,8 @@ myApp.controller('VisitController', function ($scope, $filter, $routeParams, Loa
         var date;
         Loader.get("Visit", $routeParams.id, function (obj) {
             if (obj) {
-//                console.log(obj);
-//                $scope.id = obj.id;
+                //                console.log(obj);
+                //                $scope.id = obj.id;
                 hasData = true;
                 date = new Date(obj.date.getFullYear(), obj.date.getMonth(), obj.date.getDate(), 0, 0, 0);
                 $scope.backLink = "#/" + $routeParams.backLink + "/" + date;
@@ -51,15 +53,15 @@ myApp.controller('VisitController', function ($scope, $filter, $routeParams, Loa
 
                     data = $filter('orderBy')(data, 'startTime', false);
                     $scope.minTime = data[0].startTime;
-                    $scope.maxTime = data[data.length-1].startTime;
-                    
+                    $scope.maxTime = data[data.length - 1].startTime;
+
                     for (var i = 0; i < data.length; i++) {
                         data[i].visitTime = $filter('date')(data[i].startTime, "H:mm");
                         data[i].servList = [];
                         data[i].sum = 0;
                         data[i].client.phone = formatLocal("RU", data[i].client.phone);
                         data[i].client.hasPhone = true;
-                        if (data[i].client.phone == ""){
+                        if (data[i].client.phone == "") {
                             data[i].client.hasPhone = false;
                         }
                         for (var j = 0; j < data[i].serviceList.length; j++) {
@@ -90,107 +92,34 @@ myApp.controller('VisitController', function ($scope, $filter, $routeParams, Loa
                         }
                     }
                     $scope.loading = false;
+                    setListID(data);
                     callback(data, $routeParams.id);
                 });
             }
         });
     };
 
+    function setListID(data) {
+        $scope.listID = [];
+        for (var i = 0; i < data.length; i++) {
+            $scope.listID.push($scope.getKey(data[i]));
+        }
+    }
+
     $scope.getKey = function (obj) {
         return obj && obj.__primary__;
     };
-    
-    $scope.hasFutureData = function(obj){
-        if (!obj)
-            return false;
-        return obj.startTime < $scope.maxTime;
-    }
-    
-    $scope.hasPastData = function(obj){
-        if (!obj)
-            return false;
-        return obj.startTime > $scope.minTime;
-    }
-    
-//    $scope.updateDate = function (curScope) {
-//        if (curScope.page && curScope.page.id)
-//            $scope.id = curScope.page.id;
-//    }
-//    
-//    $scope.$watch("id", function(){
-//        $scope.future = false;
-//        $scope.past = false;
-//        if ($scope.id > $scope.minId)
-//            $scope.past = true;
-//        if ($scope.id < $scope.maxId)
-//            $scope.future = true;
-//        console.log('change id');
-//    });
-    
-    
-    //    $scope.getServList = function (visit) {
-    //        console.log(visit);
-    //        //
-    //        //        var newArr = $scope.handlePages.filter(function (elem) {
-    //        //            return elem.id === visit.id;
-    //        //        });
-    //        //        
-    //        //        console.log('newArr ', newArr);
-    //        //        
-    //        //        if (newArr.length > 0 && $scope.servList)
-    //        //            return;
-    //        //        console.log('getServList ', visit.serviceList);
-    //
-    //        $scope.servList = [];
-    //        $scope.sum = 0;
-    //        for (var i = 0; i < visit.serviceList.length; i++) {
-    //            var service = visit.serviceList[i];
-    //            $scope.sum += visit.serviceList[i].cost;
-    //            var serviceItem = {};
-    //            serviceItem.description = service.description;
-    //            serviceItem.time = $filter('date')(service.startTime, "H:mm") + " - " + $filter('date')(service.endTime, "H:mm");
-    //            serviceItem.cost = service.cost;
-    //            serviceItem.master = 'Мастер: ' + service.master.lastName + " " + service.master.firstName[0];
-    //            $scope.servList.push(serviceItem);
-    //        }
-    //        $scope.balColor = "red";
-    //        if (visit.client.balance >= 0) {
-    //            $scope.balColor = "green";
-    //        }
-    //
-    //        //        $scope.handlePages.push(visit);
-    //    }
 
+    $scope.hasFutureData = function (obj) {
+        if (!obj && listID.length > 1)
+            return false;
+        return $scope.listID.indexOf($scope.getKey(obj)) < $scope.listID.length - 1;
+    }
 
-    //    $scope.fff = false;
-    //    Loader.get("Visit", $routeParams.id, function (data) {
-    //        $scope.visit = data;
-    //        console.log($scope.visit.status);
-    //        $scope.status = $scope.visit.status;
-    //        $scope.date = $scope.visit.date;
-    //        $scope.clientName = $scope.visit.client.lastName + " " + $scope.visit.client.firstName; // + " " + $scope.visit.client.middleName;
-    //        $scope.clientPhoneNumber = $scope.visit.client.phoneNumber;
-    //        $scope.comment = $scope.visit.comment;
-    //        $scope.balColor = "red";
-    //        if ($scope.visit.client.balance >= 0) {
-    //            $scope.balColor = "green";
-    //        }
-    //        $scope.clientBalance = $scope.visit.client.balance;
-    //        $scope.clientDiscount = $scope.visit.client.discount + "%"
-    //        $scope.paid=$scope.visit.paid;
-    //        $scope.servList = [];
-    //        $scope.sum = 0;
-    //        for (var i = 0; i < $scope.visit.serviceList.length; i++) {
-    //            var service = $scope.visit.serviceList[i];
-    //            $scope.sum += $scope.visit.serviceList[i].cost;
-    //            var serviceItem = {};
-    //            serviceItem.description = service.description;
-    //            serviceItem.time = $filter('date')(service.startTime, "H:mm") + " - " + $filter('date')(service.endTime, "H:mm");
-    //            serviceItem.cost = service.cost;
-    //            serviceItem.master = 'Мастер: ' + service.master.lastName + " " + service.master.firstName[0];
-    //            $scope.servList.push(serviceItem);
-    //        }
-    //        $scope.comment = $scope.visit.comment;
-    //    });
+    $scope.hasPastData = function (obj) {
+        if (!obj && listID.length > 1)
+            return false;
+        return $scope.listID.indexOf($scope.getKey(obj)) > 0;
+    }
 
 });
