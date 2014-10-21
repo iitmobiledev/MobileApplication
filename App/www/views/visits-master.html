@@ -10,8 +10,9 @@
     <script type="text/ng-template" id="visits-master">
         <div id="visitsContent">
             <date-changer date='page.date' step='$parent.step' has-future-data='hasFutureData(page.date)' has-prev-data='hasPrevData(page.date)'></date-changer>
-            <status-statistics visits='page.visits'></status-statistics>
+            
             <ul class="list inset" ng-repeat="masterVis in page.list" id="visitsPerMasters">
+            <status-statistics title='"Зарплата сотрудника:"' visits='masterVis.visList'></status-statistics>
                 <li class="divider">
                 {{$parent.getMasterInfo(masterVis.master)}}
                     <img style="border-radius: 50%;margin-right: 10px;border: 1px solid rgb(149,24,185);height: 40px; width: 40px;" ng-src="http://test.arnica.pro{{masterVis.master.photo}}" ng-show="hasMaster">

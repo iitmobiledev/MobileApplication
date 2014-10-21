@@ -83,7 +83,6 @@ myApp.controller('VisitsMasterController', function ($scope, $filter, $location,
         $location.path('visit/' + id + '/visits-master');
     };
 
-    //    $scope.visits = [];
     $scope.getVisits = function (visitsByMaster) {
         var v = [];
         for (var i = 0; i < visitsByMaster.length; i++) {
@@ -94,8 +93,6 @@ myApp.controller('VisitsMasterController', function ($scope, $filter, $location,
             }
         }
         $scope.visits = v;
-        //        console.log($scope.visits);
-        //        return $scope.visits;
     };
 
     /**

@@ -3,10 +3,11 @@ myApp.directive('statusStatistics', function (Visit, Status) {
         restrict: 'E',
         replace: true,
         link: function (scope, element, attrs) {
-            var visits, salary = 0;
+            var visits, salary = 0, title;
 
             var updateStatus = function () {
                 visits = scope.$eval(attrs.visits);
+                title = scope.$eval(attrs.title);
                 salary = 0;
 
                 var statuses = {
@@ -37,6 +38,7 @@ myApp.directive('statusStatistics', function (Visit, Status) {
                 element.find('#confirmedCount').html(statuses['confirm'].count);
                 element.find('#confirmedAmount').html(Math.round(statuses['confirm'].amount));
                 element.find('#salary').html(Math.round(salary));
+                element.find('#salaryTitle').html(title);
             }
 
                 function getServicesCost(services) {
@@ -55,7 +57,7 @@ myApp.directive('statusStatistics', function (Visit, Status) {
                     return salary;
                 }
 
-//            scope.$watch(attrs.visits, updateStatus);
+            scope.$watch(attrs.visits, updateStatus);
             updateStatus();
         },
         templateUrl: 'views/statuses-statistics.html'
