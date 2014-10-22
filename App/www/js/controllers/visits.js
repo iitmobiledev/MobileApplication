@@ -67,12 +67,10 @@ myApp.controller('VisitsController', function ($scope, $filter, $location, Loade
     });
 
     $scope.onMasters = function () {
-        $scope.loading = true;
         $location.path('visits-master/' + $scope.date);
     };
     
     $scope.toVisit = function(id){
-        $scope.loading = true;
         console.log('id ', id);
         $location.path('visit/'+id+'/visits');
     };
