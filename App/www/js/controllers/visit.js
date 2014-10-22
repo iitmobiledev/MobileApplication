@@ -56,6 +56,7 @@ myApp.controller('VisitController', function ($scope, $filter, $routeParams, Loa
                     $scope.maxTime = data[data.length - 1].startTime;
 
                     for (var i = 0; i < data.length; i++) {
+                        data[i].dateString = $filter('date')(data[i].date, "dd.MM.yyyy")
                         data[i].visitTime = $filter('date')(data[i].startTime, "H:mm");
                         data[i].servList = [];
                         data[i].sum = 0;
@@ -81,8 +82,17 @@ myApp.controller('VisitController', function ($scope, $filter, $routeParams, Loa
                             }
                             serviceItem.time = time.join("-");
                             serviceItem.cost = service.cost;
+                            var master = "";
                             if (service.master.lastName && service.master.firstName) {
-                                serviceItem.master = 'Мастер: ' + service.master.lastName + " " + service.master.firstName;
+                                master = 'Мастер: ' + service.master.lastName + " " + service.master.firstName;
+                            }
+                            serviceItem.masterAndComment = master;
+                            if (master != "" && service.comment != "")
+                                serviceItem.masterAndComment += '. ' + service.comment;
+                            else {
+                                if (service.comment != "")
+
+                                    serviceItem.masterAndComment += service.comment;
                             }
                             data[i].servList.push(serviceItem);
                         }

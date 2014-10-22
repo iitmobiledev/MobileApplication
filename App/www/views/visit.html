@@ -32,16 +32,24 @@
             <tr>
                 <td style="font-size:15pt;white-space:pre;color:#969696;text-align: left;width: 30%; ">Сумма услуг:</td>
                 <td style="text-align:left;font-size:15pt; font-weight:bold ">
-                    <div style="text-align:right;display: inline-block;">
+                    <div style="margin-left: 10px; text-align:right;display: inline-block;">
                         {{page.sum| money:0}} <span class="price ">ю</span>
                     </div>
                 </td>
             </tr>
             <tr>
                 <td style="font-size:15pt;white-space:pre;color:#969696;text-align: left;width: 30%; ">Оплачено:</td>
-                <td style="text-align:left;font-size:15pt; font-weight:bold ">
-                    <div style="text-align:right;display: inline-block;">
+                <td style="margin-left: 10px; text-align:left;font-size:15pt; font-weight:bold ">
+                    <div style="margin-left: 10px; text-align:right;display: inline-block;">
                         {{page.paid| money:0}} <span class="price ">ю</span>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td style="font-size:15pt;white-space:pre;color:#969696;text-align: left;width: 30%; ">Дата:</td>
+                <td style="margin-left: 10px; text-align:left;font-size:15pt; font-weight:bold ">
+                    <div style="margin-left: 10px; text-align:right;display: inline-block;">
+                        {{page.dateString}}
                     </div>
                 </td>
             </tr>
@@ -90,7 +98,7 @@
                     </div>
                     {{item.time}}
 
-                    <div style="color:#969696">{{item.master}}
+                    <div style="color:#969696">{{item.masterAndComment}}
                     </div>
                 </div>
             </li>

@@ -61,6 +61,10 @@ myApp.factory('Service', function (Model, Master) {
                 self.endTime = new Date(self.date.getFullYear(), self.date.getMonth(), self.date.getDate(), parseTime[0], parseTime[1]);
             } else
                 self.endTime = "";
+            if (data.hasOwnProperty('comment') && data.comment != null)
+                self.comment = data.comment;
+            else
+                self.comment = "";
         },
         primary: ['id']
     });
