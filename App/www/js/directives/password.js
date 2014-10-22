@@ -9,12 +9,12 @@ myApp.directive('password', function () {
 //                    element.find("#passwordShow").val(element.find("#password").val());
                     element.find('#passwordEye').attr('src', 'images/closeEye.png');
                     scope.show = true;
-                    scope.$apply();
+                    scope.$digest();
                 } else {
 //                    element.find("#password").val(element.find("#passwordShow").val());
                     element.find('#passwordEye').attr('src', 'images/eye.png');
                     scope.show = false;
-                    scope.$apply();
+                    scope.$digest();
                 }
             });
 

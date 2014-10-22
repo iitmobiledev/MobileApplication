@@ -100,7 +100,7 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
                         var curScope = angular.element(element.find('.my-slider').getCurrentSlide()).scope();
                         updateDate(curScope);
                         if (curScope){
-                            curScope.$apply();
+                            curScope.$digest();
                         }
                         if (ready && curScope) {
                             ready = false;

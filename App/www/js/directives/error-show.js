@@ -21,15 +21,15 @@ myApp.directive('errorShow', function () {
             updateCorrect();
             $("body").on("click", function(){
                 scope.correct = true;
-                scope.$apply();
+                scope.$digest();
             });
             $("body").on("touchstart mousedown", function(){
                 scope.correct = true;
-                scope.$apply();
+                scope.$digest();
             });
             $("body").on("touchend mouseup", function(){
                 scope.correct = true;
-                scope.$apply();
+                scope.$digest();
             });
         },
         template: '<div class="sample-show-hide" style="background-color: rgb(255,66,91); color: white; margin: 4% 10%;padding:15px 10px;position:relative" ng-hide="correct">'+
