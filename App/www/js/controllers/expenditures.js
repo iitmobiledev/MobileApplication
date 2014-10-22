@@ -15,7 +15,7 @@
 myApp.controller('ExpendituresController', function ($scope, $filter, Loader, DateHelper, $routeParams, $rootScope) {
     var today = new Date($routeParams.date) || new Date();
     $scope.date = new Date(today.getFullYear(), today.getMonth(), today.getDate());
-//    console.log("$scope.date", $scope.date);
+    //    console.log("$scope.date", $scope.date);
 
     $scope.backLink = '#/index/' + $scope.date;
 
@@ -39,7 +39,7 @@ myApp.controller('ExpendituresController', function ($scope, $filter, Loader, Da
     setMinMax();
 
     $rootScope.$on('synchEndExpenditure', function () {
-//        console.log('synchEndExpenditure');
+        //        console.log('synchEndExpenditure');
         setMinMax();
         $scope.needUpdating = true;
     });
@@ -55,9 +55,6 @@ myApp.controller('ExpendituresController', function ($scope, $filter, Loader, Da
         var resultArr = [];
         var date;
         if (key) {
-            //            Loader.get("Expenditure", key, function (obj) {
-            //                if (obj) {
-            //                    console.log(obj);
             date = new Date(key);
             console.log("date ", date);
             if (forward) {
@@ -73,6 +70,11 @@ myApp.controller('ExpendituresController', function ($scope, $filter, Loader, Da
                 } else {
                     beginDate = DateHelper.getPrevPeriod(beginDate, DateHelper.steps.DAY).begin;
                 }
+            }
+            if (endDate > $scope.max) {
+                endDate = new Date($scope.max)
+            } else if (beginDate < $scope.min) {
+                beginDate = new Date($scope.min)
             }
             Loader.search("Expenditure", {
                 dateFrom: beginDate,
@@ -99,60 +101,66 @@ myApp.controller('ExpendituresController', function ($scope, $filter, Loader, Da
                         page = new ExpenditurePage(new Date(tmpdate), []);
                     list.push(page);
                 }
-                //                console.log("list ", list);
                 $scope.loading = false;
                 callback(list);
             });
-            //                }
-            //            });
         } else {
-            date = $scope.date;
-            var beginDate = date,
-                endDate = date;
-            for (var i = 0; i < quantity; i++) {
-                endDate = DateHelper.getNextPeriod(endDate, $scope.step).end;
-                beginDate = DateHelper.getPrevPeriod(beginDate, $scope.step).begin;
-            }
-            if (beginDate == endDate && $scope.step != DateHelper.steps.DAY) {
-                var period = DateHelper.getPeriod(beginDate, $scope.step);
-                beginDate = period.begin;
-                endDate = period.end;
-
-            }
-            console.log(beginDate, endDate);
-            Loader.search("Expenditure", {
-                dateFrom: beginDate,
-                dateTill: endDate,
-                step: DateHelper.steps.DAY,
-                index: "date"
-            }, function (data) {
-                var expsByDate = {};
-                angular.forEach(data, function (exp) {
-                    var key = exp.date.toDateString();
-                    if (!expsByDate[key]) {
-                        expsByDate[key] = [];
-                    }
-                    expsByDate[key].push(exp);
-                });
-                var list = [];
-                for (var tmpdate = new Date(beginDate); tmpdate < endDate || tmpdate.toDateString() == endDate.toDateString(); tmpdate.setDate(tmpdate.getDate() + 1)) {
-                    if (expsByDate[tmpdate.toDateString()]) {
-                        var page = new ExpenditurePage(new Date(tmpdate), expsByDate[tmpdate.toDateString()].sort(function (a, b) {
-                            return new Date(a.date).getTime() - new Date(b.date).getTime();
-                        }));
-                        list.push(page);
-                    }
+            if ($scope.min !== null && $scope.max !== null) {
+                if ($scope.date > $scope.max) {
+                    $scope.date = new Date($scope.max)
+                } else if ($scope.date < $scope.min) {
+                    $scope.date = new Date($scope.min)
                 }
-                $scope.loading = false;
-                callback(list);
-            });
+                date = $scope.date;
+                var beginDate = date,
+                    endDate = date;
+                for (var i = 0; i < quantity; i++) {
+                    endDate = DateHelper.getNextPeriod(endDate, $scope.step).end;
+                    beginDate = DateHelper.getPrevPeriod(beginDate, $scope.step).begin;
+                }
+                if (beginDate == endDate && $scope.step != DateHelper.steps.DAY) {
+                    var period = DateHelper.getPeriod(beginDate, $scope.step);
+                    beginDate = period.begin;
+                    endDate = period.end;
+
+                }
+                console.log(beginDate, endDate);
+                Loader.search("Expenditure", {
+                    dateFrom: beginDate,
+                    dateTill: endDate,
+                    step: DateHelper.steps.DAY,
+                    index: "date"
+                }, function (data) {
+                    var expsByDate = {};
+                    angular.forEach(data, function (exp) {
+                        var key = exp.date.toDateString();
+                        if (!expsByDate[key]) {
+                            expsByDate[key] = [];
+                        }
+                        expsByDate[key].push(exp);
+                    });
+                    var list = [];
+                    for (var tmpdate = new Date(beginDate); tmpdate < endDate || tmpdate.toDateString() == endDate.toDateString(); tmpdate.setDate(tmpdate.getDate() + 1)) {
+                        if (expsByDate[tmpdate.toDateString()]) {
+                            var page = new ExpenditurePage(new Date(tmpdate), expsByDate[tmpdate.toDateString()].sort(function (a, b) {
+                                return new Date(a.date).getTime() - new Date(b.date).getTime();
+                            }));
+                            list.push(page);
+                        }
+                    }
+
+                    callback(list);
+                });
+            }
+            $scope.loading = false;
         }
     };
 
-     $scope.hasFutureData = function(obj){
-         if (!obj)
+    $scope.hasFutureData = function(obj){
+        if (!obj)
             return false;
-        return obj.date < $scope.max;
+        var result = obj.date.toDateString() != $scope.max.toDateString() && obj.date < $scope.max;
+        return result;
     }
     
     $scope.hasPastData = function(obj){
