@@ -15,11 +15,10 @@
 myApp.controller('ExpendituresController', function ($scope, $filter, Loader, DateHelper, $routeParams, $rootScope) {
     var today = new Date($routeParams.date) || new Date();
     $scope.date = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+    $scope.step = DateHelper.steps.DAY;
     //    console.log("$scope.date", $scope.date);
 
     $scope.backLink = '#/index/' + $scope.date;
-
-    $scope.loading = true;
 
     $scope.min = null;
     $scope.max = null;
@@ -51,12 +50,10 @@ myApp.controller('ExpendituresController', function ($scope, $filter, Loader, Da
 
     $scope.getData = function (key, quantity, forward, callback) {
         $scope.needUpdating = false;
-        $scope.loading = true;
         var resultArr = [];
         var date;
         if (key) {
             date = new Date(key);
-            console.log("date ", date);
             if (forward) {
                 date = DateHelper.getNextPeriod(date, $scope.step).end;
             } else {
@@ -101,7 +98,6 @@ myApp.controller('ExpendituresController', function ($scope, $filter, Loader, Da
                         page = new ExpenditurePage(new Date(tmpdate), []);
                     list.push(page);
                 }
-                $scope.loading = false;
                 callback(list);
             });
         } else {
@@ -124,7 +120,6 @@ myApp.controller('ExpendituresController', function ($scope, $filter, Loader, Da
                     endDate = period.end;
 
                 }
-                console.log(beginDate, endDate);
                 Loader.search("Expenditure", {
                     dateFrom: beginDate,
                     dateTill: endDate,
@@ -140,7 +135,8 @@ myApp.controller('ExpendituresController', function ($scope, $filter, Loader, Da
                         expsByDate[key].push(exp);
                     });
                     var list = [];
-                    for (var tmpdate = new Date(beginDate); tmpdate < endDate || tmpdate.toDateString() == endDate.toDateString(); tmpdate.setDate(tmpdate.getDate() + 1)) {
+                    for (var tmpdate = new Date(beginDate); tmpdate < endDate || tmpdate.toDateString() == endDate.toDateString(); tmpdate.setDate(tmpdate.getDate() + 1)) 
+                    {
                         if (expsByDate[tmpdate.toDateString()]) {
                             var page = new ExpenditurePage(new Date(tmpdate), expsByDate[tmpdate.toDateString()].sort(function (a, b) {
                                 return new Date(a.date).getTime() - new Date(b.date).getTime();
@@ -148,11 +144,20 @@ myApp.controller('ExpendituresController', function ($scope, $filter, Loader, Da
                             list.push(page);
                         }
                     }
-
-                    callback(list);
+                    
+                    
+                    var todayPeriod = DateHelper.getPeriod($scope.date, $scope.step);
+                    var curIndex;
+                    for (var i = 0; i < list.length; i++) {
+                        var curPeriod = DateHelper.getPeriod(list[i].date, $scope.step);
+                        
+                        if (curPeriod.begin.toDateString() == todayPeriod.begin.toDateString()) {
+                            curIndex = $scope.getKey(list[i]);
+                        }
+                    }
+                    callback(list, curIndex);
                 });
             }
-            $scope.loading = false;
         }
     };
 
@@ -171,14 +176,14 @@ myApp.controller('ExpendituresController', function ($scope, $filter, Loader, Da
 
     $scope.getKey = function (obj) {
         //        console.log(obj, obj.list[0].__primary__);
-        return obj && obj.date;
+        return obj && obj.date.toDateString();
     };
 
 
     $scope.$watch('date', function (newValue, oldValue) {
         var period = DateHelper.getPeriod(new Date($scope.date), DateHelper.steps.DAY);
 
-        console.log("minmaxx", $scope.min, $scope.max, period.begin, period.end, newValue)
+//        console.log("minmaxx", $scope.min, $scope.max, period.begin, period.end, newValue)
         $scope.past = false, $scope.future = false;
         if (period.begin > $scope.min || $scope.min === null)
             $scope.past = true;
