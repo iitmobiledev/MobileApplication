@@ -331,6 +331,12 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
                     init();
                 }
             })
+            
+            scope.$on('$routeChangeStart', function(routeChangeStartObject, current) {
+//                console.log("$routeChangeStart", routeChangeStartObject.currentScope, current)
+                element.find('.my-slider').destroySlider(destroyScope);
+                
+            });
 
 
             /**
