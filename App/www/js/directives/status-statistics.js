@@ -4,11 +4,16 @@ myApp.directive('statusStatistics', function (Visit, Status) {
         replace: true,
         link: function (scope, element, attrs) {
             var visits, salary = 0, title;
-
+    
             var updateStatus = function () {
                 visits = scope.$eval(attrs.visits);
                 title = scope.$eval(attrs.title);
                 salary = 0;
+                scope.hasCome = false;
+            scope.hasNotCome = false;
+            scope.hasConfirmed = false;
+            scope.hasNewRecord = false;
+
 
                 var statuses = {
                     "new": new Status(),
@@ -28,6 +33,14 @@ myApp.directive('statusStatistics', function (Visit, Status) {
 
                     });
                 }
+                if (statuses["new"].count > 0)
+                    scope.hasNewRecord = true;
+                if (statuses['not-come'].count > 0)
+                    scope.hasNotCome = true;
+                if (statuses['come'].count > 0)
+                    scope.hasCome = true;
+                if (statuses['confirm'].count > 0)
+                    scope.hasConfirmed = true;            
 
                 element.find('#newRecordCount').html(statuses["new"].count);
                 element.find('#newRecordAmount').html(Math.round(statuses["new"].amount));
