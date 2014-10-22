@@ -29,6 +29,8 @@ myApp.directive('chart', function () {
                         weekdays: ['Воскресенье', 'Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота'],
                         resetZoomTitle: "Масштаб 100%",
                         resetZoom: "Масштаб 100%",
+                        decimalPoint: '.',
+                        thousandsSep: ' '
                     }
                 });
                 var chart = new Highcharts.Chart({
@@ -52,6 +54,7 @@ myApp.directive('chart', function () {
                         },
                     },
                     yAxis: {
+                        allowDecimals: false,
                         title: {
                             text: scope.yFormat,
                         },
@@ -59,7 +62,6 @@ myApp.directive('chart', function () {
                     legend: {
                         enabled: false,
                     },
-
                     plotOptions: {
                         area: {
                             marker: {
@@ -102,7 +104,7 @@ myApp.directive('chart', function () {
             }
 
             window.addEventListener("resize", drawChart);
-//            console.error("CHAAART!");
+            //            console.error("CHAAART!");
             /*
              *watch, смотрящий за изменением данных для графика
              */
