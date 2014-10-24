@@ -65,7 +65,7 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
                     var subtractionHeight = 0;
                     $(attrs.heightElements).each(function () {
                         subtractionHeight += $(this).outerHeight();
-                    })
+                    });
                     element.outerHeight(
                         $('body').height() - subtractionHeight);
                     init();
