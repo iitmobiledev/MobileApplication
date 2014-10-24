@@ -32,16 +32,24 @@
             <tr>
                 <td style="font-size:15pt;white-space:pre;color:#969696;text-align: left;width: 30%; ">Сумма услуг:</td>
                 <td style="text-align:left;font-size:15pt; font-weight:bold ">
-                    <div style="text-align:right;display: inline-block;">
+                    <div style="margin-left: 10px; text-align:right;display: inline-block;">
                         {{page.sum| money:0}} <span class="price ">ю</span>
                     </div>
                 </td>
             </tr>
             <tr>
                 <td style="font-size:15pt;white-space:pre;color:#969696;text-align: left;width: 30%; ">Оплачено:</td>
-                <td style="text-align:left;font-size:15pt; font-weight:bold ">
-                    <div style="text-align:right;display: inline-block;">
+                <td style="margin-left: 10px; text-align:left;font-size:15pt; font-weight:bold ">
+                    <div style="margin-left: 10px; text-align:right;display: inline-block;">
                         {{page.paid| money:0}} <span class="price ">ю</span>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td style="font-size:15pt;white-space:pre;color:#969696;text-align: left;width: 30%; ">Дата:</td>
+                <td style="margin-left: 10px; text-align:left;font-size:15pt; font-weight:bold ">
+                    <div style="margin-left: 10px; text-align:right;display: inline-block;">
+                        {{page.dateString}}
                     </div>
                 </td>
             </tr>
@@ -77,7 +85,7 @@
 
     <div id="services">
         <ul class="list inset" style="border:none;">
-            <li class="divider">
+            <li class="divider" style="background-color: #F8F8F8;">
                 <span style="font-size:15pt;color:gray;margin: 0% 10%;">Услуги</span>
             </li>
             <li ng-repeat="item in page.servList">
@@ -86,15 +94,15 @@
                 <div style="width:90%;margin-left:10%;">
                     <div>
                     <span style="display: inline-block;max-width:65%;white-space:nowrap;text-overflow:ellipsis;overflow: hidden;">{{item.description}}</span>
-                    <span style="display: inline-block;float: right;font-weight: bold;text-align:right;white-space:nowrap;text-overflow:ellipsis;overflow: hidden;">{{item.cost| money:0}}<span class="price">ю</span>
+                    <span style="display: inline-block;float: right;font-weight: bold;text-align:right;white-space:nowrap;text-overflow:ellipsis;overflow: hidden;">{{item.cost| money:0}}       <span class="price">ю</span>
                     </div>
                     {{item.time}}
 
-                    <div style="color:#969696">{{item.master}}
+                    <div style="color:#969696">{{item.masterAndComment}}
                     </div>
                 </div>
             </li>
-            <li class="divider" ng-if="page.comment">
+            <li class="divider" ng-if="page.comment" style="background-color: #F8F8F8;">
                 <span style="font-size:15pt;color:gray;margin: 0% 10%;">Комментарий</span>
             </li>
             <li style="position:relative;border-bottom: none;border-left: none;border-right: none;" ng-if="page.comment">

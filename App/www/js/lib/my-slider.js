@@ -605,6 +605,12 @@
         MySlider.prototype.lastSlide = function () {
             return this.$slideTrack.find('.slide:last');
         }
+        
+        MySlider.prototype.destroy = function (callback){
+            while (this.slideCount !== 0){
+                this.removeSlideRight(callback);
+            }
+        }
 
         $.fn.addSlideLeft = function (content, callback, isCurrent) {
             return this.each(function (index, element) {
@@ -684,10 +690,10 @@
             }
         }
 
-        $.fn.destroySlider = function () {
+        $.fn.destroySlider = function (callback) {
             return this.each(function (index, element) {
                 if (element.slider) {
-                    element.slider.destroy();
+                    element.slider.destroy(callback);
                 }
 
             });

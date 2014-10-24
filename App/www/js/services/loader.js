@@ -70,8 +70,8 @@ myApp.service("Loader", ["ModelConverter", "RealServer", "$rootScope", "fieldSta
                         Storage.update(lastMod);
 
                         if (result instanceof Array) {
+                            console.log('server.search ', result);
                             var objs = ModelConverter.getObjects(className, result);
-//                            console.log('server.search ', objs);
                             for (var i in objs)
                                 Storage.update(objs[i]);
                             synchNeed[className] = false;
@@ -163,6 +163,7 @@ myApp.service("Loader", ["ModelConverter", "RealServer", "$rootScope", "fieldSta
             search: function (className, params, callback) {
                 if (storageSupport && !synchNeed[className]) {
                     Storage.search(className, params, function (data) {
+                        console.log("data ", data);
                         if (data) {
                             var objs = ModelConverter.getObjects(className, data).reverse();
                             console.log('storage.search ', objs);

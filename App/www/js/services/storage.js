@@ -50,7 +50,8 @@ myApp.service("Storage", ["$injector",
             try {
                 var serv = $injector.get(obj.getClass());
                 serv.onUpdate(obj);
-                storage.setItem(obj.getClass() + ":" + obj.getKey().join(":"), obj);
+                var primary = obj.getClass() + ":" + obj.getKey().join(":")
+                storage.setItem(primary, obj);
             } catch (e) {
                 console.log(e.message);
             }
@@ -100,10 +101,12 @@ myApp.service("Storage", ["$injector",
             for (var i = 0; i < keys.length; i++) {
                 var item;
                 if (keys[i] instanceof Array){
-                    item = storage.getItem(keys[i].join(":"));
+                    var key = keys[i].join(":");
+                    item = storage.getItem(key);
                 }
-                else
+                else{
                     item = storage.getItem(keys[i]);
+                }
                 if (item) {
                     results.push(item);
                 }
