@@ -308,6 +308,11 @@ myApp.factory("Model", function () {
                 return this.getKey().join(":");
             }
         });
+        Object.defineProperty(clz.prototype, "className", {
+            get: function () {
+                return this.__class__;
+            }
+        });
         clz.__primary__ = options.primary;
         clz.__class__ = className;
         clz.__indexes__ = options.indexes;
