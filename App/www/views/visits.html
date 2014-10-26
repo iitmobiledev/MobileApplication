@@ -9,7 +9,7 @@
     <slider content-id="visits" get-data='getData' key-expression='getKey' update-date='updateDate' loaded-slide-count='loadedSlideCount' max-slide-count='maxSlideCount' need-updating='needUpdating' has-future-data="hasFutureData"  has-past-data="hasPastData" height-elements="#navbar, .typeChangerTime"></slider>
     <script type="text/ng-template" id="visits">
     <div id="visitsContent">
-        <date-changer date='page.date' step='$parent.step' has-future-data='$parent.hasFutureData(page.date)' has-prev-data='$parent.hasPrevData(page.date)'></date-changer>
+        <date-changer date='page.date' step='$parent.step' has-future-data='$parent.hasFutureData(page.date)' has-prev-data='$parent.hasPrevData(page.date)' style="border-bottom: 1px solid #ccc;"></date-changer>
         <status-statistics title='"Зарплата сотрудников:"' visits='page.list'></status-statistics>
         <ul class="list inset">
             <li ng-repeat="visit in page.list" id="visitsPerTime" style="border-radius:0;">
