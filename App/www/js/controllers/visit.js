@@ -21,8 +21,8 @@ myApp.controller('VisitController', function ($scope, $filter, $routeParams, Loa
 
     $scope.listID;
 
-    $rootScope.$on('synchEndVisit', function () {
-        console.log('synchEndVisit');
+    $rootScope.$on('synchEndVisit', function (event, newObjs) {
+        console.log('synchEndVisit on visit ', newObjs);
         $scope.needUpdating = true;
     });
 

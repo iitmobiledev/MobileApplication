@@ -37,8 +37,8 @@ myApp.controller('ExpendituresController', function ($scope, $filter, Loader, Da
 
     setMinMax();
 
-    $rootScope.$on('synchEndExpenditure', function () {
-        //        console.log('synchEndExpenditure');
+    $rootScope.$on('synchEndExpenditure', function (event, newObjs) {
+        console.log('synchEndExpenditure ', newObjs);
         setMinMax();
         $scope.needUpdating = true;
     });
