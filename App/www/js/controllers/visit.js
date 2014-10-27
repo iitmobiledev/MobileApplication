@@ -17,6 +17,7 @@ myApp.controller('VisitController', function ($scope, $filter, $routeParams, Loa
 
     $scope.future = true;
     $scope.past = true;
+    $scope.needUpdating = false;
 
     $scope.listID;
 
@@ -28,11 +29,8 @@ myApp.controller('VisitController', function ($scope, $filter, $routeParams, Loa
     $scope.maxSlideCount = 100;
 
     $scope.getData = function (key, quantity, forward, callback) {
+        $scope.needUpdating = false;
         $scope.loading = true;
-        if (hasData) {
-            $scope.loading = false;
-            return callback(null);
-        }
         var date;
         Loader.get("Visit", $routeParams.id, function (obj) {
             if (obj) {
@@ -110,6 +108,7 @@ myApp.controller('VisitController', function ($scope, $filter, $routeParams, Loa
     };
 
     function setListID(data) {
+        console.log("setListID");
         $scope.listID = [];
         for (var i = 0; i < data.length; i++) {
             $scope.listID.push($scope.getKey(data[i]));
@@ -121,12 +120,16 @@ myApp.controller('VisitController', function ($scope, $filter, $routeParams, Loa
     };
 
     $scope.hasFutureData = function (obj) {
+//        if (typeof(listID) == 'undefined')
+//            return false;
         if (!obj && listID.length > 1)
             return false;
         return $scope.listID.indexOf($scope.getKey(obj)) < $scope.listID.length - 1;
     }
 
     $scope.hasPastData = function (obj) {
+//        if (typeof(listID) == 'undefined')
+//            return false;
         if (!obj && listID.length > 1)
             return false;
         return $scope.listID.indexOf($scope.getKey(obj)) > 0;

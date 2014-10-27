@@ -79,7 +79,7 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
 
 
             var ready = true;
-            
+
             var canLoadLeft = false;
             var canLoadRight = false;
 
@@ -99,7 +99,7 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
                     onAfterChange: function () {
                         var curScope = angular.element(element.find('.my-slider').getCurrentSlide()).scope();
                         updateDate(curScope);
-                        if (curScope){
+                        if (curScope) {
                             curScope.$digest();
                         }
                         if (ready && curScope) {
@@ -162,7 +162,7 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
 
             function checkCanLoad(currentSlide) {
                 console.log("checkCanLoad LEFT", element.find('.my-slider').whichFromLeft(currentSlide), "RIGHT",
-                                            element.find('.my-slider').whichFromRight(currentSlide));
+                    element.find('.my-slider').whichFromRight(currentSlide));
                 canLoadLeft = false;
                 canLoadRight = false;
                 if (element.find('.my-slider').whichFromLeft(currentSlide) <= 1) {
@@ -331,11 +331,13 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
                     init();
                 }
             })
-            
-            scope.$on('$routeChangeStart', function(routeChangeStartObject, current) {
-//                console.log("$routeChangeStart", routeChangeStartObject.currentScope, current)
-                element.find('.my-slider').destroySlider(destroyScope);
-                
+
+            scope.$on('$routeChangeStart', function (routeChangeStartObject, current) {
+                //                console.log("$routeChangeStart", routeChangeStartObject.currentScope, current)
+                scope.$evalAsync(function () {
+                    element.find('.my-slider').destroySlider(destroyScope)
+                });
+
             });
 
 

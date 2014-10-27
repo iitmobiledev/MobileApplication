@@ -86,6 +86,7 @@ myApp.factory('Visit', function (Model, Client, Service, Author, DateHelper) {
             self.client = data.client;
             self.comment = data.comment;
             self.status = data.status;
+            self.visible = data.visible;
 
             var serviceList = [];
             if (data.serviceList) {

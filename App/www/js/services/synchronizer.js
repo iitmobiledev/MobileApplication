@@ -6,15 +6,14 @@ myApp.service("Synchronizer", ["Storage", "RealServer", "ModelConverter", "Loade
             if (offset >= data.length) {
                 callback();
             } else {
-                //                if (data[offset].visible) {
-                Storage.update(ModelConverter.getObject(className, data[offset]));
-                save(data, className, offset + 1, callback)
-                //                } else {
-                //                    console.log("not visible");
-                //                    Storage.del(ModelConverter.getObject(className, data[offset]), function () {
-                //                        save(data, className, offset + 1, callback)
-                //                    });
-                //                }
+                if (data[offset].hasOwnProperty('visible') && data[offset].visible == 0) {
+//                    console.log("not visible ", data[offset]);
+                    Storage.del(ModelConverter.getObject(className, data[offset]));
+                    save(data, className, offset + 1, callback);
+                } else {
+                    Storage.update(ModelConverter.getObject(className, data[offset]));
+                    save(data, className, offset + 1, callback)
+                }
             }
         };
 
@@ -25,7 +24,7 @@ myApp.service("Synchronizer", ["Storage", "RealServer", "ModelConverter", "Loade
                 "count": count,
                 "offset": offset
             }, function (data) {
-                console.log('new data ', className, data);
+//                console.log('new data ', offset, className, data);
                 if (data == null || data.length < count) {
                     Server.lastModified(["OperationalStatistics", "Visit", "Expenditure"], function (date) {
                         lastLocalModified[className] = lastServerModified[className];
@@ -84,7 +83,7 @@ myApp.service("Synchronizer", ["Storage", "RealServer", "ModelConverter", "Loade
                     synchCheck("OperationalStatistics", function () {
                         synchCheck("Visit", function () {
                             synchCheck("Expenditure", function () {
-                                setInterval(synch.beginSynch, 10000);
+                                setInterval(synch.beginSynch, 15000);
                             });
                         });
                     });

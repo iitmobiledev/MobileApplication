@@ -20,7 +20,7 @@ myApp.service("Loader", ["ModelConverter", "RealServer", "$rootScope", "fieldSta
         function getServerFieldStat() {
             Server = new RealServer(localStorage.getItem("UserToken"));
             Server.fieldStat(fieldStatQuery, function (stat) {
-//                console.log(stat);
+                //                console.log(stat);
                 fieldStat = stat;
                 if (stat.error) {
                     $rootScope.$emit('serverError', '');
@@ -64,7 +64,7 @@ myApp.service("Loader", ["ModelConverter", "RealServer", "$rootScope", "fieldSta
             Server.lastModified([className], function (lastServerModified) {
                 Server.search(className, params, function (result) {
                     Storage.get("LastModified", 'primary', function (lastMod) {
-                        
+
                         lastMod = ModelConverter.getObject("LastModified", lastMod);
                         lastMod[className] = lastServerModified[className];
                         Storage.update(lastMod);
@@ -72,10 +72,21 @@ myApp.service("Loader", ["ModelConverter", "RealServer", "$rootScope", "fieldSta
                         if (result instanceof Array) {
                             console.log('server.search ', result);
                             var objs = ModelConverter.getObjects(className, result);
-                            for (var i in objs)
-                                Storage.update(objs[i]);
+                            var needObjs = [];
+                            for (var i in objs) 
+                            {
+                                if (objs[i].hasOwnProperty('visible') && objs[i].visible == 0)
+                                {
+                                    Storage.del(objs[i]);
+                                }
+                                else{
+                                    Storage.update(objs[i]);
+                                    needObjs.push(objs[i]);
+                                }
+
+                            }
                             synchNeed[className] = false;
-                            callback(objs);
+                            callback(needObjs);
                         } else
                             callback([]);
                     });
@@ -87,7 +98,7 @@ myApp.service("Loader", ["ModelConverter", "RealServer", "$rootScope", "fieldSta
             getFieldStat: getFieldStat,
             getMaxDate: function (className) {
                 try {
-//                    console.log(fieldStat);
+                    //                    console.log(fieldStat);
                     if (fieldStat) {
                         var typeStat = fieldStat.filter(function (stat) {
                             return stat.type == className;
@@ -98,7 +109,7 @@ myApp.service("Loader", ["ModelConverter", "RealServer", "$rootScope", "fieldSta
                     }
                 } catch (e) {
                     console.log(e.message);
-//                    $rootScope.$emit('serverError', '');
+                    //                    $rootScope.$emit('serverError', '');
                     return 'error';
                 }
             },
@@ -115,7 +126,7 @@ myApp.service("Loader", ["ModelConverter", "RealServer", "$rootScope", "fieldSta
                     }
                 } catch (e) {
                     console.log(e.message);
-//                    $rootScope.$emit('serverError', '');
+                    //                    $rootScope.$emit('serverError', '');
                     return 'error';
                 }
             },
@@ -134,7 +145,7 @@ myApp.service("Loader", ["ModelConverter", "RealServer", "$rootScope", "fieldSta
              * объекта по первичному ключу.
              */
             get: function (className, primaryKey, callback) {
-                if (storageSupport && !synchNeed[className]) {
+                if (storageSupport) {
                     Storage.get(className, primaryKey, function (result) {
                         if (result) {
                             console.log("storage.get ", result);
@@ -161,9 +172,8 @@ myApp.service("Loader", ["ModelConverter", "RealServer", "$rootScope", "fieldSta
 
             //получение объектов за период
             search: function (className, params, callback) {
-                if (storageSupport && !synchNeed[className]) {
+                if (storageSupport) {
                     Storage.search(className, params, function (data) {
-                        console.log("data ", data);
                         if (data) {
                             var objs = ModelConverter.getObjects(className, data).reverse();
                             console.log('storage.search ', objs);

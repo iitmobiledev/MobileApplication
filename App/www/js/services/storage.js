@@ -128,7 +128,11 @@ myApp.service("Storage", ["$injector",
          */
         var del = function (obj, callback) {
             try {
-                storage.removeItem(obj.getKey());
+                var key = obj.getKey();
+                if (key instanceof Array)
+                    key = key.join(':');
+                key = obj.className + ":" + key;
+                storage.removeItem(key);
             } catch (e) {
                 console.log(e.message);
             }
