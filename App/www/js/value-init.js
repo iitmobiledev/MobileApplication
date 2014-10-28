@@ -1,9 +1,10 @@
 myApp.
 value('APPID', "test").
 value('SECRET_PHRASE', "WatchThatStupidLeech").
+value('SYNC_TIMEOUT', 120000). // two minutes timeout for update
 value('VERSION', "1.0").
-value("DATA_URL", "http://test.arnica.pro/api/data/").
-value("AUTH_URL", "http://auth.test.arnica.pro/rest/").
+value("DATA_URL", "http://app.arnica.pro/api/data/").
+value("AUTH_URL", "http://auth.arnica.pro/rest/").
 value('ClassesLastModified', function () {
     this.primary = "primary";
     this.OperationalStatistics = null;

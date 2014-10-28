@@ -1,5 +1,5 @@
-myApp.service("Synchronizer", ["Storage", "RealServer", "ModelConverter", "Loader", "$rootScope", "storageSupport",
-    function (Storage, RealServer, ModelConverter, Loader, $rootScope, storageSupport) {
+myApp.service("Synchronizer", ["Storage", "RealServer", "ModelConverter", "Loader", "$rootScope", "storageSupport","SYNC_TIMEOUT",
+    function (Storage, RealServer, ModelConverter, Loader, $rootScope, storageSupport,SYNC_TIMEOUT) {
         var Server;
         var newObjs = [];
 
@@ -87,7 +87,7 @@ myApp.service("Synchronizer", ["Storage", "RealServer", "ModelConverter", "Loade
                     synchCheck("OperationalStatistics", function () {
                         synchCheck("Visit", function () {
                             synchCheck("Expenditure", function () {
-                                setInterval(synch.beginSynch, 15000);
+                                setInterval(synch.beginSynch, SYNC_TIMEOUT);
                             });
                         });
                     });
