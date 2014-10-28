@@ -1,6 +1,7 @@
 myApp.service("Synchronizer", ["Storage", "RealServer", "ModelConverter", "Loader", "$rootScope", "storageSupport",
     function (Storage, RealServer, ModelConverter, Loader, $rootScope, storageSupport) {
         var Server;
+        var newObjs = [];
 
         function save(data, className, offset, callback) {
             if (offset >= data.length) {
@@ -11,7 +12,9 @@ myApp.service("Synchronizer", ["Storage", "RealServer", "ModelConverter", "Loade
                     Storage.del(ModelConverter.getObject(className, data[offset]));
                     save(data, className, offset + 1, callback);
                 } else {
-                    Storage.update(ModelConverter.getObject(className, data[offset]));
+                    var obj = ModelConverter.getObject(className, data[offset]);
+                    newObjs.push(obj);
+                    Storage.update(obj);
                     save(data, className, offset + 1, callback)
                 }
             }
@@ -38,7 +41,8 @@ myApp.service("Synchronizer", ["Storage", "RealServer", "ModelConverter", "Loade
                                 var fieldStat = ModelConverter.getObject("FieldStat", serverStat);
                                 Storage.update(fieldStat);
                                 save(data, className, 0, function () {
-                                    $rootScope.$emit('synchEnd' + className, '');
+                                    $rootScope.$emit('synchEnd' + className, newObjs);
+                                    newObjs = [];
                                     callback();
                                 });
                             });

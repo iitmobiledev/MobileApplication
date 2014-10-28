@@ -154,13 +154,16 @@ myApp.factory('Visit', function (Model, Client, Service, Author, DateHelper) {
     visitConstructor.keysByDates = {};
     visitConstructor.onUpdate = function (obj) {
         var key = visitConstructor.keysByDates[obj.date.toDateString()] || [];
-        key.push("Visit:" + obj.getKey());
-        visitConstructor.keysByDates[obj.date.toDateString()] = key;
+        var strKey = "Visit:" + obj.getKey();
+        if (key.indexOf(strKey) == -1) {
+            key.push(strKey);
+            visitConstructor.keysByDates[obj.date.toDateString()] = key;
+        }
     }
 
 
     visitConstructor.searchInLocalStorage = function (params, callback) {
-//        console.log("saved_keys:", visitConstructor.keysByDates);
+        //        console.log("saved_keys:", visitConstructor.keysByDates);
         var keys = [];
         var startDate = new Date(params.dateFrom);
         var endDate = new Date(params.dateTill);

@@ -34,14 +34,11 @@ myApp.controller('OperationalStatisticController', function ($scope, $location, 
     $scope.reinit = false;
 
     $scope.getData = function (key, quantity, forward, callback) {
-        $scope.needUpdating = false; //???
-        //        $scope.loading = true;
+        $scope.needUpdating = false; 
         var resultArr = [];
         var date;
         if (key) {
-//            console.log(key);
             date = new Date(key.replace(/:[^:]*$/,""));
-//            console.log("date", date);
             if (forward) {
                 date = DateHelper.getNextPeriod(date, $scope.step).end;
             } else {
@@ -70,9 +67,6 @@ myApp.controller('OperationalStatisticController', function ($scope, $location, 
                 data.reverse();
                 callback(data)
             });
-            //                }
-            //            });
-
         } else {
             if ($scope.min !== null && $scope.max !== null) {
                 if ($scope.date > $scope.max) {
@@ -158,8 +152,8 @@ myApp.controller('OperationalStatisticController', function ($scope, $location, 
 
     setMinMax();
 
-    $rootScope.$on('synchEndOperationalStatistics', function () {
-//        console.log('synchEndOperationalStatistics');
+    $rootScope.$on('synchEndOperationalStatistics', function (event, newObjs) {
+        console.log('synchEndOperationalStatistics ', newObjs);
         setMinMax();
         $scope.needUpdating = true;
     });

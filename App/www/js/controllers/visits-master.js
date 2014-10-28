@@ -58,8 +58,8 @@ myApp.controller('VisitsMasterController', function ($scope, $filter, $location,
 
     setMinMax();
 
-    $rootScope.$on('synchEndVisit', function () {
-        console.log('synchEndVisit');
+    $rootScope.$on('synchEndVisit', function (event, newObjs) {
+        console.log('synchEndVisit on masters ', newObjs);
         setMinMax();
         $scope.needUpdating = true;
     });

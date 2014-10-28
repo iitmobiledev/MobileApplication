@@ -18,11 +18,13 @@ myApp.controller('VisitController', function ($scope, $filter, $routeParams, Loa
     $scope.future = true;
     $scope.past = true;
     $scope.needUpdating = false;
+    
+    $scope.currentID = null;
 
     $scope.listID;
 
-    $rootScope.$on('synchEndVisit', function () {
-        console.log('synchEndVisit');
+    $rootScope.$on('synchEndVisit', function (event, newObjs) {
+        console.log('synchEndVisit on visit ', newObjs);
         $scope.needUpdating = true;
     });
 
@@ -101,7 +103,11 @@ myApp.controller('VisitController', function ($scope, $filter, $routeParams, Loa
                     }
                     $scope.loading = false;
                     setListID(data);
-                    callback(data, $routeParams.id);
+                    console.log("DATA", data)
+                    if ($scope.currentID == null){
+                        $scope.currentID = $routeParams.id
+                    }
+                    callback(data, $scope.currentID);
                 });
             }
         });
@@ -113,6 +119,11 @@ myApp.controller('VisitController', function ($scope, $filter, $routeParams, Loa
         for (var i = 0; i < data.length; i++) {
             $scope.listID.push($scope.getKey(data[i]));
         }
+    }
+    
+    $scope.updateCurrentID = function (curScope) {
+        if (curScope && curScope.page)
+            $scope.currentID = $scope.getKey(curScope.page);
     }
 
     $scope.getKey = function (obj) {

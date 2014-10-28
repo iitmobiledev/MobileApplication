@@ -52,6 +52,7 @@ myApp.service("Storage", ["$injector",
                 serv.onUpdate(obj);
                 var primary = obj.getClass() + ":" + obj.getKey().join(":")
                 storage.setItem(primary, obj);
+                //console.log("storage ", storage);
             } catch (e) {
                 console.log(e.message);
             }

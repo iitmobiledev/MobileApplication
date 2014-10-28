@@ -60,8 +60,8 @@ myApp.controller('VisitsController', function ($scope, $filter, $location, Loade
 
     setMinMax();
 
-    $rootScope.$on('synchEndVisit', function () {
-//        console.log('synchEndVisit');
+    $rootScope.$on('synchEndVisit', function (event, newObjs) {
+        console.log('synchEndVisit ', newObjs);
         setMinMax();
         $scope.needUpdating = true;
     });
@@ -95,14 +95,10 @@ myApp.controller('VisitsController', function ($scope, $filter, $location, Loade
 
     $scope.getData = function (key, quantity, forward, callback) {
         $scope.needUpdating = false;
-        //        $scope.loading = true;
-        //        console.log("scope.visit",$scope.visit);
         var resultArr = [];
         var date;
-//        console.log("KEY", key)
         if (key) {
             date = new Date(key);
-//            console.log("date ", date);
             if (forward) {
                 date = DateHelper.getNextPeriod(date, $scope.step).end;
             } else {
