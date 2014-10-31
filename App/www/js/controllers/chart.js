@@ -22,14 +22,30 @@ myApp.controller('GraphicController', function ($scope, $routeParams, Loader, Da
     $scope.yFormat = '';
 
     var goodData = [];
-    var today = new Date($routeParams.date);
+    var today = new Date();
+    var backDate = new Date($routeParams.date);
     
-    $scope.backLink = '#/index/' + new Date(today);
+    $scope.backLink = '#/index/' + new Date(backDate);
+    
+    function setMinMax() {
+        var min = Loader.getMinDate("OperationalStatistics");
+        var max = Loader.getMaxDate("OperationalStatistics");
+        if (min == 'error' || max == 'error') {
+            $scope.min = new Date(today.getFullYear()-1, today.getMonth(), today.getDate());
+            $scope.max = today;
+        } else {
+            $scope.min = min;
+            $scope.max = max;
+        }
+    }
+
+    setMinMax();
     
     $scope.loading = true;
+    
     Loader.search("OperationalStatistics", {
-            dateFrom: new Date(today.getFullYear() - 1, today.getMonth(), today.getDate()),
-            dateTill: today,
+            dateFrom: $scope.min,
+            dateTill: $scope.max,
             step: DateHelper.steps.DAY,
         },
         function (data) {

@@ -12,7 +12,7 @@ myApp.directive('footerContent', function () {
         restrict: 'E',
         transclude: false,
         link: function (scope, element, attrs) {
-            var show; // = scope.$eval(attrs.show);
+            var show=true; // = scope.$eval(attrs.show);
             var activePage = attrs.activePage;
             var inactivePages = scope.$eval(attrs.inactivePages) || [];
 
@@ -39,25 +39,25 @@ myApp.directive('footerContent', function () {
              * @methodOf myApp.directive:footerContent
              */
             function showFooter() {
-//                console.log(show);
-//                if (intel.xdk && intel.xdk.device) {
-                    if (show) {
-                        $(element).hide().html();
-                        $("#navbar").show();
+                //                console.log(show);
+                //                if (intel.xdk && intel.xdk.device) {
+                if (show) {
+                    $(element).hide().html();
+                    $("#navbar").show();
 
-                        $('#' + activePage).addClass('pressed');
-                        for (var i = 0; i < inactivePages.length; i++) {
-                            $('#' + inactivePages[i]).removeClass('pressed');
-                        }
-                    } else {
-                        $(element).hide().html();
-                        $("#navbar").hide();
+                    $('#' + activePage).addClass('pressed');
+                    for (var i = 0; i < inactivePages.length; i++) {
+                        $('#' + inactivePages[i]).removeClass('pressed');
                     }
-//                } else {
-//                    setTimeout(showFooter, 100);
-//                }
+                } else {
+                    $(element).hide().html();
+                    $("#navbar").hide();
+                }
+                //                } else {
+                //                    setTimeout(showFooter, 100);
+                //                }
             }
-            
+
             showFooter();
         }
     }

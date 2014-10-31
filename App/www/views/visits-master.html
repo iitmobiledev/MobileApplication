@@ -13,7 +13,7 @@
             <ul class="list inset" ng-repeat="masterVis in page.list" id="visitsPerMasters">
                 <li class="divider" style="background-color: #F8F8F8;border-bottom:none;">
                 {{$parent.getMasterInfo(masterVis.master)}}
-                    <img style="border-radius: 50%;margin-right: 10px;border: 1px solid rgb(149,24,185);height: 40px; width: 40px;" ng-src="http://test.arnica.pro{{masterVis.master.photo}}" ng-show="hasMaster">
+                    <img style="border-radius: 50%;margin-right: 10px;border: 1px solid rgb(149,24,185);height: 40px; width: 40px;" ng-src="http://mobile.arnica.pro{{masterVis.master.photo}}" ng-show="hasMaster">
                     {{master}}
                 </li>
                 <status-statistics title='"Зарплата сотрудника:"' visits='masterVis.visList'></status-statistics>
