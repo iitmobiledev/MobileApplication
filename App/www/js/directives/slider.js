@@ -35,11 +35,7 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
                     return;
                 };
 
-            element.find('.prevButtonBlack').show();
-            element.find('.prevButtonGrey').hide();
-
-            element.find('.nextButtonBlack').show();
-            element.find('.nextButtonGrey').hide();
+            setButtonColor(false, false);
 
             var loadslider = $("<div style='height:100%;width:100%;'/>");
             loadslider.append($("<div id='loading' class='square spin' style='position:relative;'/>"));
@@ -313,6 +309,7 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
             function destroyScope(obj) {
                 var objScope = angular.element(obj).scope()
                 if (objScope) {
+                    setButtonColor(false, false);
                     objScope.$destroy();
                 }
             }
@@ -328,9 +325,27 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
 
             scope.$watch(attrs.reinit, function (newValue, oldValue) {
                 if (oldValue != newValue) {
+                    setButtonColor(false, false);
                     init();
                 }
             })
+
+            function setButtonColor(leftBlack, rightBlack) {
+                if (leftBlack) {
+                    element.find('.prevButtonBlack').show();
+                    element.find('.prevButtonGrey').hide();
+                } else {
+                    element.find('.prevButtonBlack').hide();
+                    element.find('.prevButtonGrey').show();
+                }
+                if (rightBlack) {
+                    element.find('.nextButtonBlack').show();
+                    element.find('.nextButtonGrey').hide();
+                } else {
+                    element.find('.nextButtonBlack').hide();
+                    element.find('.nextButtonGrey').show();
+                }
+            }
 
             scope.$on('$routeChangeStart', function (routeChangeStartObject, current) {
                 //                console.log("$routeChangeStart", routeChangeStartObject.currentScope, current)
