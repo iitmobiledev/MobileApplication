@@ -113,7 +113,12 @@
                 //                });
                 var current = this.getCurrent();
                 //current.scrollerRewind()
-                switch (this.swipeDirection()) {
+                
+                var dir = this.swipeDirection();
+                if (dir == 'vertical'){
+                    dir = this.lastHorisontalDirection;
+                }
+                switch (dir) {
                 case 'left':
                     this.slideHandler(this.currentSlide + 1, function () {
                         current.scrollerRewind();
@@ -143,6 +148,7 @@
             }
 
             this.swipeLength = null;
+            this.lastHorisontalDirection = null;
 
 
         };
@@ -295,6 +301,8 @@
                 //                this.setTranslatePositiony(this.swipeTop);
                 return;
             }
+            
+            this.lastHorisontalDirection = this.swipeDirection();
 
             if (this.swipeLength > 20) {
                 //                $.scrolling = true;
