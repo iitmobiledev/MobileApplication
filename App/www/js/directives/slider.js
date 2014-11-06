@@ -309,7 +309,6 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
             function destroyScope(obj) {
                 var objScope = angular.element(obj).scope()
                 if (objScope) {
-                    setButtonColor(false, false);
                     objScope.$destroy();
                 }
             }
@@ -350,6 +349,7 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
             scope.$on('$routeChangeStart', function (routeChangeStartObject, current) {
                 //                console.log("$routeChangeStart", routeChangeStartObject.currentScope, current)
                 scope.$evalAsync(function () {
+                    setButtonColor(false, false);
                     element.find('.my-slider').destroySlider(destroyScope)
                 });
 
