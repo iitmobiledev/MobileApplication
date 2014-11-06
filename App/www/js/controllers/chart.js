@@ -34,14 +34,20 @@ myApp.controller('GraphicController', function ($scope, $routeParams, Loader, Da
             $scope.min = new Date(today.getFullYear()-1, today.getMonth(), today.getDate());
             $scope.max = today;
         } else {
-            $scope.min = min;
             $scope.max = max;
+            var yearBefore = new Date(max.getFullYear()-1, max.getMonth(), max.getDate());
+            if (min < yearBefore)
+                $scope.min = yearBefore;
+            else
+                $scope.min = min;
         }
+        //console.log(min, max, $scope.min, $scope.max);
     }
 
     setMinMax();
     
     $scope.loading = true;
+    
     
     Loader.search("OperationalStatistics", {
             dateFrom: $scope.min,
