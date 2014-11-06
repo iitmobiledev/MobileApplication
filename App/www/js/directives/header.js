@@ -45,7 +45,7 @@ myApp.directive('headerContent', function () {
                         listenHardBack();
                         var hC = $(element).hide().html();
                         $("#header").html(hC);
-                        $("#header").show();
+                        $("#header").fadeIn();
                     }
                 } else {
                     setTimeout(showHeader, 100);
@@ -55,10 +55,10 @@ myApp.directive('headerContent', function () {
             scope.$watch(attrs.show, function () {
                 if (show) {
                     $(element).hide().html();
-                    $("#header").show();
+                    $("#header").fadeIn();
                 } else {
                     $(element).hide().html();
-                    $("#header").hide();
+                    $("#header").fadeOut();
                 }
             })
 

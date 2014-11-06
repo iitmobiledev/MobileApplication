@@ -31,7 +31,7 @@ myApp.config(['$routeProvider', '$analyticsProvider',
             templateUrl: 'views/chart.html',
             controller: 'GraphicController'
         }).
-        when('/expenditures/:date', {
+        when('/expenditures/:date/:step', {
             templateUrl: 'views/expenditures.html',
             controller: 'ExpendituresController'
         }).

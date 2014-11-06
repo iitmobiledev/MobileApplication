@@ -15,10 +15,10 @@
 myApp.controller('ExpendituresController', function ($scope, $filter, Loader, DateHelper, $routeParams, $rootScope) {
     var today = new Date($routeParams.date) || new Date();
     $scope.date = new Date(today.getFullYear(), today.getMonth(), today.getDate());
-    $scope.step = DateHelper.steps.DAY;
+    $scope.step = $routeParams.step || DateHelper.steps.DAY;
     //    console.log("$scope.date", $scope.date);
 
-    $scope.backLink = '#/index/' + $scope.date;
+    $scope.backLink = '#/index/' + $scope.date + '/' + $scope.step;
 
     $scope.min = null;
     $scope.max = null;

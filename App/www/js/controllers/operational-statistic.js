@@ -248,7 +248,7 @@ myApp.controller('OperationalStatisticController', function ($scope, $location, 
      * @description Метод для перехода на страницу расходов.
      */
     $scope.toExpenditures = function () {
-        $location.path('expenditures/' + $scope.date);
+        $location.path('expenditures/' + $scope.date + '/' + $scope.step);
     };
 
     $scope.hasFinance = function (statistics) {
