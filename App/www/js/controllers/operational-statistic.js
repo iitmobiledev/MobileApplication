@@ -21,11 +21,16 @@ myApp.controller('OperationalStatisticController', function ($scope, $location, 
         today = new Date($routeParams.date);
     else
         today = new Date();
+
+    if (typeof ($routeParams.step) != 'undefined') {
+        $scope.step = $routeParams.step;
+        $(".periodButtons a").removeClass('active');
+        $("." + $scope.step).addClass("active");
+    } else
+        $scope.step = DateHelper.steps.DAY;
+
     $scope.date = new Date(today.getFullYear(), today.getMonth(), today.getDate());
-
-    $scope.step = DateHelper.steps.DAY;
     $scope.loading = true;
-
     $scope.future = true;
     $scope.past = true;
 
@@ -34,11 +39,11 @@ myApp.controller('OperationalStatisticController', function ($scope, $location, 
     $scope.reinit = false;
 
     $scope.getData = function (key, quantity, forward, callback) {
-        $scope.needUpdating = false; 
+        $scope.needUpdating = false;
         var resultArr = [];
         var date;
         if (key) {
-            date = new Date(key.replace(/:[^:]*$/,""));
+            date = new Date(key.replace(/:[^:]*$/, ""));
             if (forward) {
                 date = DateHelper.getNextPeriod(date, $scope.step).end;
             } else {
@@ -57,7 +62,6 @@ myApp.controller('OperationalStatisticController', function ($scope, $location, 
                 beginDate = period.begin;
                 endDate = period.end;
             }
-//            console.log("begend", beginDate, endDate);
             Loader.search("OperationalStatistics", {
                 dateFrom: beginDate.toDateString(),
                 dateTill: endDate.toDateString(),
@@ -89,7 +93,7 @@ myApp.controller('OperationalStatisticController', function ($scope, $location, 
                     endDate = period.end;
 
                 }
-//                console.log("begend", beginDate, endDate)
+                console.log("begend", beginDate, endDate, $scope.step);
                 Loader.search("OperationalStatistics", {
                     dateFrom: beginDate.toDateString(),
                     dateTill: endDate.toDateString(),
@@ -183,7 +187,7 @@ myApp.controller('OperationalStatisticController', function ($scope, $location, 
         var pend = DateHelper.getPeriod(obj.date, obj.step).end;
 
         var result = pend.toDateString() != $scope.max.toDateString() && pend < $scope.max;
-//        console.log("HAS FUTURE:", result, pend.toDateString(), $scope.max.toDateString());
+        //        console.log("HAS FUTURE:", result, pend.toDateString(), $scope.max.toDateString());
         return result;
     }
 
@@ -232,7 +236,7 @@ myApp.controller('OperationalStatisticController', function ($scope, $location, 
      * @description Метод для перехода на страницу графика.
      */
     $scope.toChart = function (type) {
-        $location.path('chart/' + type + '/' + $scope.date);
+        $location.path('chart/' + type + '/' + $scope.date + '/' + $scope.step);
     };
 
 
@@ -272,7 +276,7 @@ myApp.controller('OperationalStatisticController', function ($scope, $location, 
     };
 
     $scope.goForWeek = function () {
-//        console.log("goForWeek")
+        //        console.log("goForWeek")
         if ($scope.step != DateHelper.steps.WEEK) {
             $scope.loading = true;
             $(".periodButtons a").removeClass('active');

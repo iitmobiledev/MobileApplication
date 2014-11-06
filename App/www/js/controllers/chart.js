@@ -24,8 +24,9 @@ myApp.controller('GraphicController', function ($scope, $routeParams, Loader, Da
     var goodData = [];
     var today = new Date();
     var backDate = new Date($routeParams.date);
+    var backStep = $routeParams.step;
     
-    $scope.backLink = '#/index/' + new Date(backDate);
+    $scope.backLink = '#/index/' + new Date(backDate) + '/' + backStep;
     
     function setMinMax() {
         var min = Loader.getMinDate("OperationalStatistics");

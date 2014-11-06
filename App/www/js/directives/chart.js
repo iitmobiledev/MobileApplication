@@ -71,7 +71,8 @@ myApp.directive('chart', function () {
                         series: {
                             tooltip: {
                                 dateTimeLabelFormats: {
-                                    day: '%A, %d %b , %Y'
+                                    day: '%A, %d %b , %Y',
+                                    week: '%A, %b %e, %Y'
                                 },
                                 valueSuffix: scope.yFormat
                             },
