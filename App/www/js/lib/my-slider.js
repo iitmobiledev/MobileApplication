@@ -85,12 +85,12 @@
                 }
 
             case 'end':
-                if (this.swipe) {
+//                if (this.swipe) {
                     console.log("swipeEnd")
                     this.swipe = false;
                     this.scrolling = false;
                     this.swipeEnd(event);
-                }
+//                }
                 break;
             }
 
