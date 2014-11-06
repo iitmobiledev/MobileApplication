@@ -143,9 +143,9 @@ myApp.controller('VisitsController', function ($scope, $filter, $location, Loade
                     list.push(page);
                 }
 
-                list = list.filter(function (page) {
-                    return page.list.length != 0;
-                });
+//                list = list.filter(function (page) {
+//                    return page.list.length != 0;
+//                });
 
                 $scope.loading = false;
                 callback(list);
