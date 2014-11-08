@@ -101,17 +101,17 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
                         if (ready && curScope) {
                             ready = false;
                             if (canLoadLeft) {
-                                console.log("READY = FALSE");
+                                //console.log("READY = FALSE");
                                 addNewSlides(element.find('.my-slider').getFirstSlide(), "Left", addPastData);
                             } else if (canLoadRight) {
-                                console.log("READY = FALSE");
+                                //console.log("READY = FALSE");
                                 addNewSlides(element.find('.my-slider').getLastSlide(), "Right", addFutureData);
                             } else {
                                 ready = true;
                             }
 
                         } else {
-                            console.log("IGNORE AFTER CHANGE", ready)
+                            //console.log("IGNORE AFTER CHANGE", ready)
                         }
                     },
                     onBeforeChange: function (nextSlide) {
@@ -122,7 +122,7 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
             }
 
             function addNewSlides(keySlide, side, addCallback) {
-                console.log("addNewSlides" + side)
+                //console.log("addNewSlides" + side)
                 var key = getCurrentKey(keySlide);
                 element.find('.my-slider')['addLoadBar' + side](loadslider);
                 dataCallback(key, count, side == "Right", function (content) {
@@ -132,7 +132,7 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
                         var curScope = angular.element(element.find('.my-slider').getCurrentSlide()).scope();
                         updateDate(curScope);
                         setButtonState(element.find('.my-slider').getCurrentSlide());
-                        console.log("READY = TRUE (SLIDES ADDED)");
+                        //console.log("READY = TRUE (SLIDES ADDED)");
                         ready = true;
                     }, 0);
                 });
@@ -157,8 +157,8 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
             }
 
             function checkCanLoad(currentSlide) {
-                console.log("checkCanLoad LEFT", element.find('.my-slider').whichFromLeft(currentSlide), "RIGHT",
-                    element.find('.my-slider').whichFromRight(currentSlide));
+                //console.log("checkCanLoad LEFT", element.find('.my-slider').whichFromLeft(currentSlide), "RIGHT",
+                    //element.find('.my-slider').whichFromRight(currentSlide));
                 canLoadLeft = false;
                 canLoadRight = false;
                 if (element.find('.my-slider').whichFromLeft(currentSlide) <= 1) {
@@ -188,14 +188,14 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
              * @description Первоначальная инициализация слайдера, добавляются первые данные
              */
             function init() {
-                console.log("INIT")
+                //console.log("INIT")
                 $(window).scrollTop(0);
                 element.find('.my-slider').html("")
                 toSlick();
                 ready = false;
                 element.find('.my-slider').addLoadBarLeft(loadslider);
                 dataCallback(null, count, true, function (content, pageKey) {
-                    console.log("dataCallback")
+                    //console.log("dataCallback")
                     ready = true;
                     addCurrentDayData(content, pageKey);
                     setTimeout(function () {
@@ -294,7 +294,7 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
                     for (var i = 0; i < contentData.length; i++) {
                         newscope = scope.$new();
                         newscope.$on("pingpong", function () {
-                            console.log("SCOPEEEE!");
+                            //console.log("SCOPEEEE!");
                         });
                         newscope.page = $.extend(true, {}, contentData[i]);
                         var k = keyFunc(contentData[i]);
@@ -347,7 +347,7 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
             }
 
             scope.$on('$routeChangeStart', function (routeChangeStartObject, current) {
-                //                console.log("$routeChangeStart", routeChangeStartObject.currentScope, current)
+                //                //console.log("$routeChangeStart", routeChangeStartObject.currentScope, current)
                 scope.$evalAsync(function () {
                     setButtonColor(false, false);
                     element.find('.my-slider').destroySlider(destroyScope)

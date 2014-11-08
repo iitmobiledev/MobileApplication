@@ -70,12 +70,12 @@
             switch (event.data.action) {
             case 'start':
                 if (!this.swipe) {
+                    console.log("swipeStart")
                     this.swipe = true;
                     this.swipeStart(event);
                 }
                 break;
             case 'move':
-
                 if (!this.scrolling) {
                     if (this.swipe) {
                         $('.scrollBar').css("opacity", "0");
@@ -85,12 +85,12 @@
                 }
 
             case 'end':
-//                if (this.swipe) {
+                if (this.swipe) {
                     console.log("swipeEnd")
                     this.swipe = false;
                     this.scrolling = false;
                     this.swipeEnd(event);
-//                }
+                }
                 break;
             }
 
@@ -113,9 +113,9 @@
                 //                });
                 var current = this.getCurrent();
                 //current.scrollerRewind()
-                
+
                 var dir = this.swipeDirection();
-                if (dir == 'vertical'){
+                if (dir == 'vertical') {
                     dir = this.lastHorisontalDirection;
                 }
                 switch (dir) {
@@ -123,29 +123,26 @@
                     this.slideHandler(this.currentSlide + 1, function () {
                         current.scrollerRewind();
                         $('.scrollBar').css("opacity", "0.5");
-                        //console.log("current after slideHandler", current);
+                        //.log("current after slideHandler", current);
                     });
-                    this.startX = null;
-                    this.startY = null;
                     break;
 
                 case 'right':
                     this.slideHandler(this.currentSlide - 1, function () {
                         current.scrollerRewind();
                         $('.scrollBar').css("opacity", "0.5");
-                        //console.log("current after slideHandler", current);
+                        ////console.log("current after slideHandler", current);
                     });
-                    this.startX = null;
-                    this.startY = null;
                     break;
                 }
             } else {
                 if (this.startX !== this.curX) {
                     this.slideHandler(this.currentSlide);
-                    this.startX = null;
-                    this.startY = null;
                 }
             }
+
+            this.startX = null;
+            this.startY = null;
 
             this.swipeLength = null;
             this.lastHorisontalDirection = null;
@@ -155,7 +152,7 @@
 
         //�� ���� �������������� �� ��������� �����
         MySlider.prototype.slideHandler = function (index, callback) {
-            console.log("slideHandler")
+            //console.log("slideHandler")
             var _ = this;
             var targetSlide,
                 animSlide,
@@ -235,7 +232,7 @@
                 r,
                 swipeAngle;
 
-            //            console.log("swipeDirection", this.startX, this.curX);
+            //            //console.log("swipeDirection", this.startX, this.curX);
             xDist = this.startX - this.curX;
             yDist = this.startY - this.curY;
             r = Math.atan2(yDist, xDist);
@@ -263,10 +260,13 @@
 
         //�������� ��� �������� ������� �� ������
         MySlider.prototype.swipeMove = function (event) {
+            if (!this.startX || !this.startY) {
+//                console.log("START UNDEFINED!");
+                return;
+            }
             var curLeft,
                 positionOffset,
                 touches;
-            //console.log("swipeSlider")
             touches = event.originalEvent !== undefined ? event.originalEvent.touches : null;
 
             curLeft = this.getLeft(this.currentSlide);
@@ -279,12 +279,9 @@
 
             this.curX = touches !== undefined ? touches[0].pageX : event.clientX;
             this.curY = touches !== undefined ? touches[0].pageY : event.clientY;
-
-            //            console.log("start", this.startX);
-            //            console.log("current", this.curX, current);
-            //            if (this.curX != current)
-            //                progression = this.curX > current ? 1 : -1;
-            //            console.log("progression", progression);
+            
+            
+//            console.log("X", this.curX, this.startX, touches !== undefined);
             this.swipeLength = Math.round(Math.sqrt(
                 Math.pow(this.curX - this.startX, 2)));
 
@@ -293,32 +290,15 @@
                 if (this.swipeLength > 20) {
                     this.scrolling = true;
                 }
-
-                //                positionOffsetY = this.curY > this.startY ? 1 : -1;
-                //
-                //                this.swipeTop = this.swipeLength * positionOffset;
-                //
-                //                this.setTranslatePositiony(this.swipeTop);
                 return;
             }
-            
+
             this.lastHorisontalDirection = this.swipeDirection();
-
-            if (this.swipeLength > 20) {
-                //                $.scrolling = true;
-                //                this.$slideTrack.find('.slide').scrollerDisable();
-            }
-
-            //            if (this.swipeLength > 20) {
-            //                $(".afScrollPanel").css("overflow", "hidden").css("height", "100%");
-            //            }
 
             if (event.originalEvent !== undefined && this.swipeLength > 4) {
                 event.preventDefault();
             }
 
-            //            if (this.curX != current)
-            //                positionOffset = this.curX > current ? 1 : -1;
             positionOffset = this.curX > this.startX ? 1 : -1;
 
             this.swipeLeft = curLeft + this.swipeLength * positionOffset;
@@ -335,13 +315,14 @@
             }
 
             this.startX = touches !== undefined ? touches.pageX : event.clientX;
+            
             this.startY = touches !== undefined ? touches.pageY : event.clientY;
         };
 
         // ������ ������� ��� ����� ��������
         MySlider.prototype.setTranslatePosition = function (position) {
             var e = new Error()
-//            console.log("setTranslatePosition", this.currentSlide, this.slideCount, position)
+            //            //console.log("setTranslatePosition", this.currentSlide, this.slideCount, position)
             this.$slideTrack.css({
                 'transform': 'translate(' + position + 'px,0)'
             });
@@ -356,16 +337,16 @@
 
         //�������������� ������� �� ��������
         MySlider.prototype.initEvents = function () {
-            this.$slideTrack.on('touchstart mousedown', {
+            this.$slideTrack.on('touchstart', {
                 action: 'start'
             }, this.swipeHandler);
-            this.$slideTrack.on('touchmove mousemove', {
+            this.$slideTrack.on('touchmove', {
                 action: 'move'
             }, this.swipeHandler);
-            this.$slideTrack.on('touchend mouseup', {
+            this.$slideTrack.on('touchend', {
                 action: 'end'
             }, this.swipeHandler);
-            this.$slideTrack.on('touchcancel mouseleave', {
+            this.$slideTrack.on('touchcancel', {
                 action: 'end'
             }, this.swipeHandler);
             this.$slideTrack.on('touchleave', {
@@ -397,7 +378,7 @@
                     this.setTranslatePosition(this.getLeft(this.currentSlide))
                 }
             }
-            //            console.log("after", this.currentSlide);
+            //            //console.log("after", this.currentSlide);
             //setActive();
         }
 
@@ -508,7 +489,7 @@
             if (!lb.length) {
                 this.$slideTrack.prepend(element);
             } else {
-                console.log("prepend", element, lb)
+                //console.log("prepend", element, lb)
                 element.insertAfter(lb)
             }
 
@@ -540,7 +521,7 @@
 
         //удаляем слайд справа
         MySlider.prototype.removeSlideRight = function (callback) {
-            console.log("removeSlideRight", this.currentSlide, this.slideCount);
+            //console.log("removeSlideRight", this.currentSlide, this.slideCount);
             var removingSlide = this.$slideTrack.find('.slide:last').get(0);
             callback(removingSlide);
             removingSlide.remove();
@@ -552,7 +533,7 @@
 
         //удаляем слайд слева
         MySlider.prototype.removeSlideLeft = function (callback) {
-            console.log("removeSlideLeft", this.currentSlide, this.slideCount);
+            //console.log("removeSlideLeft", this.currentSlide, this.slideCount);
             var removingSlide = this.$slideTrack.find('.slide:first').get(0);
             callback(removingSlide);
             removingSlide.remove();
@@ -561,10 +542,10 @@
                 this.currentSlide--;
             this.setTranslatePosition(this.getLeft(this.currentSlide));
         }
-        
+
 
         MySlider.prototype.shiftSlide = function (toRight) {
-            console.log("shiftSlide", this.currentSlide, this.slideCount, toRight)
+            //console.log("shiftSlide", this.currentSlide, this.slideCount, toRight)
             var current = this.getCurrent();
 
             //если текущий слайд - крайний, то ничего не делать
@@ -613,9 +594,9 @@
         MySlider.prototype.lastSlide = function () {
             return this.$slideTrack.find('.slide:last');
         }
-        
-        MySlider.prototype.destroy = function (callback){
-            while (this.slideCount !== 0){
+
+        MySlider.prototype.destroy = function (callback) {
+            while (this.slideCount !== 0) {
                 this.removeSlideRight(callback);
             }
         }

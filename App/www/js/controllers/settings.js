@@ -22,11 +22,12 @@ myApp.controller('SettingsController', function ($scope, AuthService, $location,
             $('#console').html("");
             counter = 0;
             console.log = function () {
+                var res = [];
                 for (var i = 0; i < arguments.length; i++) {
                     var msg = arguments[i];
-
-                    $('#console').append(JSON.stringify(msg) + '<br/> ');
+                    res.push(JSON.stringify(msg));
                 }
+                $('#console').append('<div>' + res.join(", ") + "</div>");
             };
             console.error = function (msg) {
                 $('#console').append(msg + ' ');
