@@ -41,6 +41,7 @@ myApp.directive('chart', function () {
                         width: $("#content").width(),
                         height: $("#content").height(),
                         animation: true,
+                        marginRight: 15
                     },
                     credits: {
                         enabled: false,
