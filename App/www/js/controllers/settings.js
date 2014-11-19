@@ -20,6 +20,7 @@ myApp.controller('SettingsController', function ($scope, AuthService, $location,
         counter++;
         if (counter > 4) {
             $('#console').html("");
+            $("#console").show();
             counter = 0;
             console.log = function () {
                 var res = [];

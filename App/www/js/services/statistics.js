@@ -13,6 +13,7 @@ myApp.factory('FinanceStatistics', function (Model, DateHelper) {
             self.morningMoney = data.morningMoney;
             self.credit = data.credit;
             self.debit = data.debit;
+            self.name = data.name;
         },
         primary: ['date']
     });
