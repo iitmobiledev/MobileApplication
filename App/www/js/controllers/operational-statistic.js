@@ -63,8 +63,8 @@ myApp.controller('OperationalStatisticController', function ($scope, $location, 
                 endDate = period.end;
             }
             Loader.search("OperationalStatistics", {
-                dateFrom: beginDate.toDateString(),
-                dateTill: endDate.toDateString(),
+                dateFrom: beginDate,
+                dateTill: endDate,
                 step: $scope.step,
             }, function (data) {
                 $scope.loading = false;
@@ -72,12 +72,14 @@ myApp.controller('OperationalStatisticController', function ($scope, $location, 
                 callback(data)
             });
         } else {
+            
             if ($scope.min !== null && $scope.max !== null) {
                 if ($scope.date > $scope.max) {
                     $scope.date = new Date($scope.max)
                 } else if ($scope.date < $scope.min) {
                     $scope.date = new Date($scope.min)
                 }
+                $scope.date = $scope.calculateCurrentDate($scope.oldStep, $scope.step,$scope.date);
                 date = $scope.date;
                 var beginDate = date,
                     endDate = date;
@@ -93,10 +95,10 @@ myApp.controller('OperationalStatisticController', function ($scope, $location, 
                     endDate = period.end;
 
                 }
-                console.log("begend", beginDate, endDate, $scope.step);
+                console.log("begend", beginDate, endDate, $scope.step, JSON.stringify($scope.date));
                 Loader.search("OperationalStatistics", {
-                    dateFrom: beginDate.toDateString(),
-                    dateTill: endDate.toDateString(),
+                    dateFrom: beginDate,
+                    dateTill: endDate,
                     step: $scope.step,
                     index: "date"
                 }, function (data) {
@@ -117,6 +119,24 @@ myApp.controller('OperationalStatisticController', function ($scope, $location, 
                 $scope.loading = false;
             }
         };
+    }
+    
+    $scope.calculateCurrentDate = function(oldStep,newStep, date){
+        var p = DateHelper.getPeriod(date, oldStep);
+        var now = new Date();
+        now.setHours(0,0,0,0);
+        //console.log("CALCULAT CURRENT: ", oldStep + "->" + newStep, date.toUTCString());        
+        // if old preiod contains current date, then pick up current period
+        if (now > p.begin && now < p.end){
+            var np = DateHelper.getPeriod(now,newStep);
+            return np.begin;
+        }
+        // keep new preiod start date  inside old period
+        var np = DateHelper.getPeriod(date,newStep);
+        if (np.begin < p.begin && np.end < p.end){
+            return DateHelper.getNextPeriod(date, newStep).begin;
+        }
+        return date;
     }
 
     $scope.getKey = function (obj) {
@@ -163,23 +183,23 @@ myApp.controller('OperationalStatisticController', function ($scope, $location, 
     });
 
 
-    $scope.$watch('step', function (newValue, oldValue) {
-        var period = DateHelper.getPeriod($scope.date, newValue);
-        if (oldValue == DateHelper.steps.WEEK) {
-            if (period.end < new Date()) {
-                $scope.date = new Date(period.end.getFullYear(), period.end.getMonth(),
-                    period.end.getDate());
-            } else {
-                $scope.date = new Date();
-            }
-        } else {
-            $scope.date = new Date(period.begin.getFullYear(), period.begin.getMonth(),
-                period.begin.getDate());
-            //        $scope.$apply();
-        }
-
-        //        $scope.page = getStatistic($scope.date, $scope.step);
-    });
+//    $scope.$watch('step', function (newValue, oldValue) {
+//        var period = DateHelper.getPeriod($scope.date, newValue);
+//        if (oldValue == DateHelper.steps.WEEK) {
+//            if (period.end < new Date()) {
+//                $scope.date = new Date(period.end.getFullYear(), period.end.getMonth(),
+//                    period.end.getDate());
+//            } else {
+//                $scope.date = new Date();
+//            }
+//        } else {
+//            $scope.date = new Date(period.begin.getFullYear(), period.begin.getMonth(),
+//                period.begin.getDate());
+//            //        $scope.$apply();
+//        }
+//
+//        //        $scope.page = getStatistic($scope.date, $scope.step);
+//    });
 
     $scope.hasFutureData = function (obj) {
         if (!obj)
@@ -266,6 +286,7 @@ myApp.controller('OperationalStatisticController', function ($scope, $location, 
     }
 */
     $scope.goForDay = function () {
+        $scope.oldStep = $scope.step;        
         if ($scope.step != DateHelper.steps.DAY) {
             $scope.loading = true;
             $(".periodButtons a").removeClass('active');
@@ -277,22 +298,26 @@ myApp.controller('OperationalStatisticController', function ($scope, $location, 
 
     $scope.goForWeek = function () {
         //        console.log("goForWeek")
+        $scope.oldStep = $scope.step;        
         if ($scope.step != DateHelper.steps.WEEK) {
             $scope.loading = true;
             $(".periodButtons a").removeClass('active');
             $(".week").addClass("active");
             $scope.step = DateHelper.steps.WEEK;
         }
+        
         //$scope.date = new Date(getCurrentPeriod().begin);
     };
 
     $scope.goForMonth = function () {
+        $scope.oldStep = $scope.step;        
         if ($scope.step != DateHelper.steps.MONTH) {
             $scope.loading = true;
             $(".periodButtons a").removeClass('active');
             $(".month").addClass("active");
             $scope.step = DateHelper.steps.MONTH;
         }
+        
         //$scope.date = new Date(getCurrentPeriod().begin);
     };
 });

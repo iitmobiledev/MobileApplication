@@ -6,8 +6,8 @@
  * этих данных.
  * @name myApp.service:Loader
  */
-myApp.service("Loader", ["ModelConverter", "RealServer", "$rootScope", "fieldStatQuery", "Storage", "ClassesLastModified", "storageSupport",
-    function (ModelConverter, RealServer, $rootScope, fieldStatQuery, Storage, ClassesLastModified, storageSupport) {
+myApp.service("Loader", ["DateHelper","ModelConverter", "RealServer", "$rootScope", "fieldStatQuery", "Storage", "ClassesLastModified", "storageSupport",
+    function (DateHelper, ModelConverter, RealServer, $rootScope, fieldStatQuery, Storage, ClassesLastModified, storageSupport) {
 
         var fieldStat = null;
         var Server;
@@ -61,6 +61,13 @@ myApp.service("Loader", ["ModelConverter", "RealServer", "$rootScope", "fieldSta
         });
 
         function serverSearch(className, params, callback) {
+            for (var i in params){
+                if (params.hasOwnProperty(i)){
+                    if (params[i] instanceof Date){
+                        params[i] = DateHelper.dateCanonicalFormat(params[i]);
+                    }
+                }
+            }
             Server.lastModified([className], function (lastServerModified) {
                 Server.search(className, params, function (result) {
                     Storage.get("LastModified", 'primary', function (lastMod) {
@@ -70,10 +77,10 @@ myApp.service("Loader", ["ModelConverter", "RealServer", "$rootScope", "fieldSta
                         Storage.update(lastMod);
 
                         if (result instanceof Array) {
-                            console.log('server.search ', result);
+                            console.log('server.search ',JSON.stringify(params), result);
                             var objs = ModelConverter.getObjects(className, result);
                             var needObjs = [];
-                            for (var i in objs) 
+                            for (var i in objs)
                             {
                                 if (objs[i].hasOwnProperty('visible') && objs[i].visible == 0)
                                 {

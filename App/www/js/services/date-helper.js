@@ -133,6 +133,17 @@ myApp.factory('DateHelper', function () {
         getPrevPeriod: getPrevPeriod,
         getNextPeriod: getNextPeriod,
         getMonthTitle: getMonthTitle,
-        getWeekDayTitle: getWeekDayTitle
+        getWeekDayTitle: getWeekDayTitle,
+        dateCanonicalFormat: function(date){
+            var m = String(date.getMonth() + 1);
+            if (m.length < 2){
+                m = '0' + m;
+            }
+            var d = String(date.getDate());
+            if (d.length < 2) {
+                d = '0' + d;
+            }
+            return [date.getFullYear(), m, d].join("-");
+        }
     };
 });
