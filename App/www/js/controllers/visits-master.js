@@ -308,9 +308,9 @@ myApp.controller('VisitsMasterController', function ($scope, $filter, $location,
     $scope.getMasterInfo = function (master) {
         $scope.masterId = master.id;
         $scope.master = "(нет мастера)";
-        if (master.lastName && master.firstName) {
+        if (master.id) {
             $scope.hasMaster = true;
-            $scope.master = master.lastName + " " + master.firstName;
+            $scope.master = [master.lastName, master.firstName, master.middleName].join(" ");
         } else
             $scope.hasMaster = false;
 
