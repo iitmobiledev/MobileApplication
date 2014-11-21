@@ -222,3 +222,4 @@ pip-log.txt
 *.xdk
 *.xdke
 App/*.xml
+App/.brackets.json
