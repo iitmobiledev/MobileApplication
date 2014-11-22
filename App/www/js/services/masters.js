@@ -99,8 +99,7 @@ myApp.factory('MastersForPeriod', function (DateHelper, Loader, $filter) {
     return function (visits, period) {
         var visitsByDate = {};
         for (var tmpDate = new Date(period.begin); tmpDate <= new Date(period.end); tmpDate.setDate(tmpDate.getDate() + 1)) {
-            var key = tmpDate.toDateString();
-            visitsByDate[key] = [];
+            visitsByDate[tmpDate.toDateString()] = [];
         }
         angular.forEach(visits, function (visit) {
             visitsByDate[visit.date.toDateString()].push(visit);
@@ -131,7 +130,7 @@ myApp.factory('MastersForPeriod', function (DateHelper, Loader, $filter) {
                     needData = data[l];
             }
             if (needData.length == 0) {
-                mastersForPeriod.push(mastersForDay);
+                mastersForPeriod.push([]);
             } else {
                 for (var i = 0; i < needData.length; i++) {
                     for (var j = 0; j < needData[i].serviceList.length; j++) {
@@ -166,41 +165,6 @@ myApp.factory('MastersForPeriod', function (DateHelper, Loader, $filter) {
                 mastersForPeriod.push(mastersForDay);
             }
         }
-
-
-
-        //        for (var k = 0; k < data.length; k++) {
-        //            var mastersForDay = [];
-        //            for (var i = 0; i < data[k].length; i++) {
-        //                for (var j = 0; j < data[k][i].serviceList.length; j++) {
-        //                    var usl = checkMasterInList(data[k][i].serviceList[j].master, mastersForDay);
-        //                    if (usl !== null) {
-        //                        if (checkVisitInList(data[k][i], mastersForDay[usl].visList) == null)
-        //                            mastersForDay[usl].visList.push(data[k][i]);
-        //                    } else {
-        //                        if (data[k][i].serviceList[j].master)
-        //                            mastersForDay.push(new perMaster(data[k][i].serviceList[j].master, data[k][i]));
-        //                    }
-        //                }
-        //            }
-        //
-        //            mastersForDay = mastersForDay.sort(function (a, b) {
-        //                if (typeof (b.master.lastName) == 'undefined')
-        //                    b.master.lastName = "";
-        //                if (a.master.lastName.toLowerCase() < b.master.lastName.toLowerCase())
-        //                    return -1;
-        //                if (nameA = a.master.lastName.toLowerCase() > b.master.lastName.toLowerCase())
-        //                    return 1;
-        //                return 0;
-        //            });
-        //
-        //            for (var i in mastersForDay) {
-        //                var vlist = mastersForDay[i].visList;
-        //                mastersForDay[i].visList = getGoodVisitsList(vlist, mastersForDay[i].master.id);
-        //            }
-        //            //                console.log('mastersForDay', mastersForDay);
-        //            mastersForPeriod.push(mastersForDay);
-        //        }
         return mastersForPeriod;
     };
 });

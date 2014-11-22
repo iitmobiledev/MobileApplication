@@ -13,10 +13,8 @@
  * @requires myApp.service:DateHelper
  */
 myApp.controller('VisitsMasterController', function ($scope, $filter, $location, DateHelper, $routeParams, MastersForPeriod, Loader, $rootScope) {
-    //    new Date($routeParams.date) || 
     var today = new Date($routeParams.date) || new Date();
     $scope.date = new Date(today.getFullYear(), today.getMonth(), today.getDate());
-    //    console.log($routeParams.date);
     $scope.step = DateHelper.steps.DAY;
     $scope.loading = true;
 
@@ -32,7 +30,6 @@ myApp.controller('VisitsMasterController', function ($scope, $filter, $location,
     $scope.needUpdating = false;
 
     var errorHandling = function () {
-//        console.log('serverError');
         $scope.correct = false;
         $scope.errorText = "Не удается подключиться к серверу. Пожалуйста, попробуйте зайти еще раз.";
     };
@@ -136,7 +133,6 @@ myApp.controller('VisitsMasterController', function ($scope, $filter, $location,
         pages = pages.sort(function (a, b) {
             return a.date > b.date;
         });
-        //        console.log('visits pages ', pages);
         return pages;
     }
 
@@ -148,12 +144,10 @@ myApp.controller('VisitsMasterController', function ($scope, $filter, $location,
 
     $scope.getData = function (key, quantity, forward, callback) {
         $scope.needUpdating = false;
-        //        $scope.loading = true;
         var resultArr = [];
         var date;
         if (key) {
             date = new Date(key);
-            console.log("date ", date);
             if (forward) {
                 date = DateHelper.getNextPeriod(date, $scope.step).end;
             } else {
@@ -193,14 +187,13 @@ myApp.controller('VisitsMasterController', function ($scope, $filter, $location,
                     list.push(page);
                     i++;
                 }
-                list = list.filter(function (page) {
-                    return page.list.length != 0;
-                });
+//                list = list.filter(function (page) {
+//                    return page.list.length != 0;
+//                });
                 $scope.loading = false;
+                console.log('visits by masters', list);
                 callback(list);
             });
-            //                }
-            //            });
         } else {
             if ($scope.min !== null && $scope.max !== null) {
                 if ($scope.date > $scope.max) {
@@ -255,6 +248,7 @@ myApp.controller('VisitsMasterController', function ($scope, $filter, $location,
                     }
 
                     $scope.loading = false;
+                    console.log('visits by masters', list);
                     callback(list, curIndex);
                 });
             } else {
