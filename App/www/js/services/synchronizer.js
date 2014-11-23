@@ -8,7 +8,6 @@ myApp.service("Synchronizer", ["Storage", "RealServer", "ModelConverter", "Loade
                 callback();
             } else {
                 if (data[offset].hasOwnProperty('visible') && data[offset].visible == 0) {
-//                    console.log("not visible ", data[offset]);
                     Storage.del(ModelConverter.getObject(className, data[offset]));
                     save(data, className, offset + 1, callback);
                 } else {
@@ -64,7 +63,7 @@ myApp.service("Synchronizer", ["Storage", "RealServer", "ModelConverter", "Loade
             Storage.get("LastModified", 'primary', function (lastLocalModified) {
                 Server.lastModified(["OperationalStatistics", "Visit", "Expenditure"], function (lastServerModified) {
                     lastLocalModified = ModelConverter.getObject("LastModified", lastLocalModified);
-                    //console.log(lastLocalModified, lastServerModified);
+                    console.log(lastLocalModified, lastServerModified);
                     if (!(className in lastLocalModified))
                         callback();
                     else {

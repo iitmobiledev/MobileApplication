@@ -16,7 +16,6 @@ myApp.controller('ExpendituresController', function ($scope, $filter, Loader, Da
     var today = new Date($routeParams.date) || new Date();
     $scope.date = new Date(today.getFullYear(), today.getMonth(), today.getDate());
     $scope.step = $routeParams.step || DateHelper.steps.DAY;
-    //    console.log("$scope.date", $scope.date);
 
     $scope.backLink = '#/index/' + $scope.date + '/' + $scope.step;
 
@@ -85,7 +84,13 @@ myApp.controller('ExpendituresController', function ($scope, $filter, Loader, Da
                     if (!expsByDate[key]) {
                         expsByDate[key] = [];
                     }
-                    expsByDate[key].push(exp);
+                    var hasSame = false;
+                    for (var e in expsByDate[key]) {
+                        if (expsByDate[key][e].id == exp.id)
+                            hasSame = true;
+                    }
+                    if (!hasSame)
+                        expsByDate[key].push(exp);
                 });
                 var list = [];
                 for (var tmpdate = new Date(beginDate); tmpdate < endDate || tmpdate.toDateString() == endDate.toDateString(); tmpdate.setDate(tmpdate.getDate() + 1)) {
@@ -120,7 +125,6 @@ myApp.controller('ExpendituresController', function ($scope, $filter, Loader, Da
                     endDate = period.end;
 
                 }
-                //console.log("BEGIN", beginDate, "END", endDate)
                 Loader.search("Expenditure", {
                     dateFrom: beginDate,
                     dateTill: endDate,
@@ -133,11 +137,16 @@ myApp.controller('ExpendituresController', function ($scope, $filter, Loader, Da
                         if (!expsByDate[key]) {
                             expsByDate[key] = [];
                         }
-                        expsByDate[key].push(exp);
+                        var hasSame = false;
+                        for (var e in expsByDate[key]) {
+                            if (expsByDate[key][e].id == exp.id)
+                                hasSame = true;
+                        }
+                        if (!hasSame)
+                            expsByDate[key].push(exp);
                     });
                     var list = [];
                     for (var tmpdate = new Date(beginDate); tmpdate < endDate || tmpdate.toDateString() == endDate.toDateString(); tmpdate.setDate(tmpdate.getDate() + 1)) {
-                        //console.log("TMP DATE", tmpdate.toDateString())
                         if (expsByDate[tmpdate.toDateString()]) {
                             var page = new ExpenditurePage(new Date(tmpdate), expsByDate[tmpdate.toDateString()].sort(function (a, b) {
                                 return new Date(a.date).getTime() - new Date(b.date).getTime();
@@ -146,22 +155,16 @@ myApp.controller('ExpendituresController', function ($scope, $filter, Loader, Da
                             page = new ExpenditurePage(new Date(tmpdate), []);
                         list.push(page);
                     }
-                    //console.log("LIST", list)
-
 
                     var todayPeriod = DateHelper.getPeriod($scope.date, $scope.step);
                     var curIndex;
                     for (var i = 0; i < list.length; i++) {
                         var curPeriod = DateHelper.getPeriod(list[i].date, $scope.step);
-                        //console.log("curPeriod", curPeriod.begin.toDateString(), "todayPeriod", todayPeriod.begin.toDateString());
                         if (curPeriod.begin.toDateString() == todayPeriod.begin.toDateString()) {
 
-                            //console.log("curPeriod", curPeriod.begin.toDateString(), "todayPeriod", todayPeriod.begin.toDateString(), $scope.getKey(list[i]), list[i])
                             curIndex = $scope.getKey(list[i]);
                         }
                     }
-                    //console.log("CURINDEX", curIndex)
-
                     callback(list, curIndex);
                 });
             }
