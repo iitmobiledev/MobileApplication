@@ -84,13 +84,7 @@ myApp.controller('ExpendituresController', function ($scope, $filter, Loader, Da
                     if (!expsByDate[key]) {
                         expsByDate[key] = [];
                     }
-                    var hasSame = false;
-                    for (var e in expsByDate[key]) {
-                        if (expsByDate[key][e].id == exp.id)
-                            hasSame = true;
-                    }
-                    if (!hasSame)
-                        expsByDate[key].push(exp);
+                    expsByDate[key].push(exp);
                 });
                 var list = [];
                 for (var tmpdate = new Date(beginDate); tmpdate < endDate || tmpdate.toDateString() == endDate.toDateString(); tmpdate.setDate(tmpdate.getDate() + 1)) {
@@ -137,13 +131,7 @@ myApp.controller('ExpendituresController', function ($scope, $filter, Loader, Da
                         if (!expsByDate[key]) {
                             expsByDate[key] = [];
                         }
-                        var hasSame = false;
-                        for (var e in expsByDate[key]) {
-                            if (expsByDate[key][e].id == exp.id)
-                                hasSame = true;
-                        }
-                        if (!hasSame)
-                            expsByDate[key].push(exp);
+                        expsByDate[key].push(exp);
                     });
                     var list = [];
                     for (var tmpdate = new Date(beginDate); tmpdate < endDate || tmpdate.toDateString() == endDate.toDateString(); tmpdate.setDate(tmpdate.getDate() + 1)) {

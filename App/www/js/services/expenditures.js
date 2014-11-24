@@ -18,44 +18,18 @@ myApp.factory('Expenditure', function (Model, DateHelper) {
             self.id = data.id;
             self.description = data.description || "Расход№" + data.id;
         },
-        primary: ['date','id'],
+        primary: ['description','date'],
         indexes: ['date']
     });
-
-    //    Expenditure.searchIndexedDb = function (trans, params, callback) {
-    //        var result = [];
-    //        var dates = [];
-    //        var store = trans.objectStore("Expenditure"); //найдем хранилище для объектов данного класса
-    //        var keyRange = IDBKeyRange.bound(new Date(params.dateFrom), new Date(params.dateTill));
-    //        console.log(keyRange);
-    //        var request = store.index("date").openCursor(keyRange);
-    //
-    //        request.onerror = function (event) {
-    //            callback(null);
-    //        };
-    //        request.onsuccess = function (event) {
-    //            var cursor = event.target.result;
-    //            if (cursor) {
-    //                result.push(cursor.value);
-    //                cursor.continue();
-    //            }
-    //        };
-    //
-    //        trans.oncomplete = function (e) {
-    //            if (result.length != 0) {
-    //                callback(result);
-    //            } else {
-    //                callback(null);
-    //            }
-    //        }
-    //    }
 
     Expenditure.keysByDates = {};
     Expenditure.onUpdate = function (obj) {
         var key = Expenditure.keysByDates[obj.date.toDateString()] || [];
-//        key.push("Expenditure" + obj.getKey());
-        key.push("Expenditure:" + obj.getKey().join(":"));
-        Expenditure.keysByDates[obj.date.toDateString()] = key;
+        var strKey = "Expenditure:" + obj.getKey().join(":");
+        if (key.indexOf(strKey) == -1) {
+            key.push(strKey);
+            Expenditure.keysByDates[obj.date.toDateString()] = key;
+        }
     }
 
     Expenditure.searchInLocalStorage = function (params, callback) {
