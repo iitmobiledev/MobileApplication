@@ -17,6 +17,10 @@ myApp.factory('Expenditure', function (Model, DateHelper) {
             self.amount = data.amount;
             self.id = data.id;
             self.description = data.description || "Расход№" + data.id;
+            if (data.amount != 0)
+                self.visible = 1;
+            else
+                self.visible = 0;
         },
         primary: ['description','date'],
         indexes: ['date']
@@ -37,7 +41,7 @@ myApp.factory('Expenditure', function (Model, DateHelper) {
         var startDate = new Date(params.dateFrom);
         var endDate = new Date(params.dateTill);
         for (var i = startDate; i < endDate || i.toDateString() == endDate.toDateString(); i = DateHelper.getNextPeriod(new Date(i), params.step).begin) {
-            console.log("date.toDateString()", i.toDateString());
+//            console.log("date.toDateString()", i.toDateString());
 
             if (Expenditure.keysByDates[i.toDateString()]) {
 //                keys.push(Expenditure.keysByDates[i.toDateString()][0]);
