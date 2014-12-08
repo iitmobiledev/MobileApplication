@@ -7,13 +7,13 @@ myApp.service("Synchronizer", ["Storage", "RealServer", "ModelConverter", "Loade
             if (offset >= data.length) {
                 callback();
             } else {
-                if (data[offset].hasOwnProperty('visible') && data[offset].visible == 0) {
-                    Storage.del(ModelConverter.getObject(className, data[offset]));
+                var model = ModelConverter.getObject(className, data[offset]);
+                if (model.hasOwnProperty('visible') && model.visible == 0) {
+                    Storage.del(model);
                     save(data, className, offset + 1, callback);
                 } else {
-                    var obj = ModelConverter.getObject(className, data[offset]);
-                    newObjs.push(obj);
-                    Storage.update(obj);
+                    newObjs.push(model);
+                    Storage.update(model);
                     save(data, className, offset + 1, callback)
                 }
             }
