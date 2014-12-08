@@ -82,7 +82,8 @@ myApp.service("Loader", ["DateHelper","ModelConverter", "RealServer", "$rootScop
                             var needObjs = [];
                             for (var i in objs)
                             {
-                                if (objs[i].hasOwnProperty('visible') && objs[i].visible == 0)
+                                //console.log("VISIBILITY CHECK:", objs[i].visible);
+                                if ("visible" in objs[i] && !objs[i].visible)
                                 {
                                     Storage.del(objs[i]);
                                 }

@@ -312,8 +312,7 @@ myApp.directive('slider', function (DateHelper, $compile, $rootScope, $templateC
                     objScope.$destroy();
                 }
             }
-
-
+            
             $('.slider-back-button').on('click', function () {
                 element.find('.my-slider').shiftLeft();
             });

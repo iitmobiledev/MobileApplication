@@ -20,7 +20,7 @@
                 <div ng-repeat="visit in masterVis.visList">
                     <li style="border-top: none;">
                         {{$parent.getVisitByMasterInfo(visit)}}
-                        <a href="#/visit/{{visit.id}}/visits-master" style="text-decoration: none;color: black;">
+                        <a href="#/visit/{{visit.id}}/visits-master" style="text-decoration: none;color: black;" >
                             <div style="width:100%" ng-click="toVisit(visit.id)">
                                 <visit-status status='masterVisitInfo.status'></visit-status>
                                 <span ng-click="toVisit(visit.id)" style="float:right;top:-25px;position:relative"><img style="top:-25px;left: -95px;" src="images/time.png" ng-show="hasTime"> {{masterVisitInfo.time}}</span>
@@ -32,7 +32,7 @@
                                 <div ng-click="toVisit(visit.id)">
 
                                     <span ng-click="toVisit(visit.id)" style="display: inline-block;max-width:75%;white-space:nowrap;text-overflow:ellipsis;overflow: hidden;">{{masterVisitInfo.service}}</span>
-                                    <span ng-click="toVisit(visit.id)" style="display: inline-block;text-align:right;max-width:18%;white-space:nowrap;text-overflow:ellipsis;overflow: hidden;">{{masterVisitInfo.cost| money:0}}  <span class="price">ю</span>
+                                    <span ng-click="toVisit(visit.id)" style="display: inline-block;text-align:right;max-width:18%;white-space:nowrap;text-overflow:ellipsis;overflow: hidden;">{{masterVisitInfo.cost| money:0}}  <span class="price" currency>ю</span>
                                 </div>
                             </div>
                         </a>

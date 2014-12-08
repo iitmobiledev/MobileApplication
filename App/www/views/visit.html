@@ -8,11 +8,11 @@
 <!--
    <div style="width:90%;text-align:left;font-size:15pt;margin: 2% 10%;">
     <span style="text-align:right;width:30%;font-size:15pt;white-space:pre;color:#969696">Сумма услуг:</span>
-    <span style="text-align:right;font-size:15pt; font-weight:bold">{{page.sum| money:0}} <span class="price">ю</span></span>
+    <span style="text-align:right;font-size:15pt; font-weight:bold">{{page.sum| money:0}} <span class="price" currency>ю</span></span>
 </div>
 <div style="width:90%;text-align:left;font-size:15pt;margin: 0 10%;">
     <span style="text-align:right;width:30%;font-size:15pt;white-space:pre;color:#969696">Оплачено:    </span>
-    <span style="text-align:right;font-size:15pt; font-weight:bold">{{page.paid| money:0}} <span class="price">ю</span></span>
+    <span style="text-align:right;font-size:15pt; font-weight:bold">{{page.paid| money:0}} <span class="price" currency>ю</span></span>
 </div>
 -->
     <script type="text/ng-template" id="visit">
@@ -33,7 +33,7 @@
                 <td style="font-size:15pt;white-space:pre;color:#969696;text-align: left;width: 30%; ">Сумма услуг:</td>
                 <td style="text-align:left;font-size:15pt; font-weight:bold ">
                     <div style="margin-left: 10px; text-align:right;display: inline-block;">
-                        {{page.sum| money:0}} <span class="price ">ю</span>
+                        {{page.sum| money:0}} <span class="price " currency>ю</span>
                     </div>
                 </td>
             </tr>
@@ -41,7 +41,7 @@
                 <td style="font-size:15pt;white-space:pre;color:#969696;text-align: left;width: 30%; ">Оплачено:</td>
                 <td style="margin-left: 10px; text-align:left;font-size:15pt; font-weight:bold ">
                     <div style="margin-left: 10px; text-align:right;display: inline-block;">
-                        {{page.paid| money:0}} <span class="price ">ю</span>
+                        {{page.paid| money:0}} <span class="price " currency>ю</span>
                     </div>
                 </td>
             </tr>
@@ -76,7 +76,7 @@
     </div>
     <div style="width:90%;text-align:left;font-size:12pt;margin: 3% 10%;">
         <span style="text-align:right;width:30%;white-space:pre;color:#969696">Баланс:     </span>
-        <span style="text-align:left;font-weight:bold;color:{{page.balColor}};">{{page.client.balance| money:0}} <span class="price">ю</span></span>
+        <span style="text-align:left;font-weight:bold;color:{{page.balColor}};">{{page.client.balance| money:0}} <span class="price" currency>ю</span></span>
     </div>
     <div style="width:90%;text-align:left;font-size:12pt;margin: 3% 10%;">
         <span style="text-align:right;width:30%;white-space:pre;color:#969696">Оформил: </span>
@@ -94,7 +94,7 @@
                 <div style="width:90%;margin-left:10%;">
                     <div>
                     <span style="display: inline-block;max-width:65%;white-space:nowrap;text-overflow:ellipsis;overflow: hidden;">{{item.description}}</span>
-                    <span style="display: inline-block;float: right;font-weight: bold;text-align:right;white-space:nowrap;text-overflow:ellipsis;overflow: hidden;">{{item.cost| money:0}}       <span class="price">ю</span>
+                    <span style="display: inline-block;float: right;font-weight: bold;text-align:right;white-space:nowrap;text-overflow:ellipsis;overflow: hidden;">{{item.cost| money:0}}       <span class="price" currency>ю</span>
                     </div>
                     {{item.time}}
 

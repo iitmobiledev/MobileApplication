@@ -23,6 +23,10 @@ myApp.controller('AuthentificationController', function ($scope, $location, Auth
                 if (token) {
                     localStorage.setItem("User", login + ":" + password);
                     localStorage.setItem("UserToken", token);
+                    AuthService.getUserInfo(token, function(data){
+                    console.log("GETUSERINFO",data);
+                       myApp.regional = data.regional; 
+                    });
                     Loader.getFieldStat();
                     Synchronizer.beginSynch();
                     $location.path('index');

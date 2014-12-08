@@ -16,9 +16,9 @@ myApp.factory('Expenditure', function (Model, DateHelper) {
             self.date = new Date(data.date);
             self.amount = data.amount;
             self.id = data.id;
-            self.description = data.description || "Расход№" + data.id;
+            self.description = data.description;
         },
-        primary: ['description','date'],
+        primary: ['date','id'],
         indexes: ['date']
     });
 
@@ -31,6 +31,10 @@ myApp.factory('Expenditure', function (Model, DateHelper) {
             Expenditure.keysByDates[obj.date.toDateString()] = key;
         }
     }
+    
+    Object.defineProperty(Expenditure.prototype, "visible", {
+        get : function(){ return this.amount != 0; }
+    });
 
     Expenditure.searchInLocalStorage = function (params, callback) {
         var keys = [];

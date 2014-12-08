@@ -33,34 +33,34 @@
                 <date-changer date='page.date' step='$parent.step' has-future-data='hasFutureData(page)' has-prev-data='hasPastData(page)'></date-changer>
                 <table id="statisticTable">
                     <tr>
-                        <td class="sCell" ar-click="$parent.toChart('proceeds')" style="border-right: none;border-bottom: none;" analytics-on="click" analytics-event="ToProceedsChart" analytics-category="Statistics" >
+                        <td class="sCell" deselect ar-click="$parent.toChart('proceeds')" style="border-right: none;border-bottom: none;" analytics-on="click" analytics-event="ToProceedsChart" analytics-category="Statistics" >
                             <img src="images/proceeds.PNG" style="margin:5px;">
-                            <p style="font-size:23pt; font-weight: bold">{{page.proceeds| money:0}} <span class="price">ю</span></p>
+                            <p style="font-size:23pt; font-weight: bold">{{page.proceeds| money:0}} <span class="price"  currency>ю</span></p>
                             <p style="font-weight: lighter">Выручка</p>
                         </td>
-                        <td class="sCell" ar-click="$parent.toChart('profit')" style="border-bottom: none;" analytics-on="click" analytics-event="ToProfitChart" analytics-category="Statistics">
+                        <td class="sCell" deselect ar-click="$parent.toChart('profit')" style="border-bottom: none;" analytics-on="click" analytics-event="ToProfitChart" analytics-category="Statistics">
                             <img src="images/profit.PNG" style="margin:5px">
-                            <p style="font-size:23pt; font-weight: bold">{{page.profit| money:0}} <span class="price">ю</span></p>
+                            <p style="font-size:23pt; font-weight: bold">{{page.profit| money:0}} <span class="price" currency>ю</span></p>
                             <p style="font-weight: lighter">Прибыль</p>
                         </td>
                     </tr>
                     <tr>
-                        <td class="sCell" ar-click="$parent.toChart('clients')" style="border-right: none;" analytics-on="click" analytics-event="ToClientsChart" analytics-category="Statistics">
+                        <td class="sCell" deselect ar-click="$parent.toChart('clients')" style="border-right: none;" analytics-on="click" analytics-event="ToClientsChart" analytics-category="Statistics">
                             <img src="images/clients.PNG" style="margin:5px">
                             <p style="font-size:23pt; font-weight: bold">{{page.clients}}</p>
                             <p style="font-weight: lighter">Оформлено визитов</p>
                         </td>
-                        <td class="sCell" ar-click="$parent.toChart('workload')" analytics-on="click" analytics-event="ToWorkloadChart" analytics-category="Statistics">
+                        <td class="sCell" deselect ar-click="$parent.toChart('workload')" analytics-on="click" analytics-event="ToWorkloadChart" analytics-category="Statistics">
                             <img src="images/workload.PNG" style="margin:5px">
                             <p style="font-size:23pt; font-weight: bold">{{page.workload| money:0}}%</p>
                             <p style="font-weight: lighter">Загруженность</p>
                         </td>
                     </tr>
-                    <tr ar-click="toExpenditures()" id="financeTable" ng-show='hasFinance(page)'>
+                    <tr ar-click="toExpenditures()" deselect  id="financeTable" ng-show='hasFinance(page)'>
                         <td class="financeCell">
                             
                             <div style="text-align:left;display:inline-block;">
-                            <h1>{{page.financialStat.tillMoney| money:0}} <span class="price">ю</span></h1>
+                            <h1>{{page.financialStat.tillMoney| money:0}} <span class="price" currency>ю</span></h1>
                             <span style="font-size:14px; font-weight: lighter">В кассе<br/>&laquo;{{page.financialStat.name}}&raquo;</span>
                             </div>
                         </td>
@@ -68,16 +68,16 @@
                             <table align="center">
                                 <tr>
                                     <td style="text-align:left">Утром:</td>
-                                    <td style="font-weight: bold;text-align:right">{{page.financialStat.morningMoney| money:0}} <span class="price">ю</span></td>
+                                    <td style="font-weight: bold;text-align:right">{{page.financialStat.morningMoney| money:0}} <span class="price" currency>ю</span></td>
                                 </tr>
                                 <tr>
                                     <td style="text-align:left">Приход:</td>
-                                    <td style="font-weight: bold;text-align:right">{{page.financialStat.credit| money:0}} <span class="price">ю</span></td>
+                                    <td style="font-weight: bold;text-align:right">{{page.financialStat.credit| money:0}} <span class="price" currency>ю</span></td>
                                 </tr>
 
                                 <tr>
                                     <td style="text-align:left">Расход:</td>
-                                    <td style="font-weight: bold;text-align:right">{{page.financialStat.debit| money:0}} <span class="price">ю</span></td>
+                                    <td style="font-weight: bold;text-align:right">{{page.financialStat.debit| money:0}} <span class="price" currency>ю</span></td>
                                 </tr>
 
                             </table>

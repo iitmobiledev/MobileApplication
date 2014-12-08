@@ -16,17 +16,6 @@
     <title>Арника</title>
     <meta http-equiv="Content-type" content="text/html; charset=utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=0">
-    <style type="text/css">
-        /* Prevent copy paste for all elements except text fields */
-        * {
-            -webkit-user-select: none;
-            -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
-        }
-        input,
-        textarea {
-            -webkit-user-select: text;
-        }
-    </style>
     <!--    <script src="js/lib/flurry.js"></script>-->
 
 
@@ -90,7 +79,9 @@
     <script src="js/controllers/authentification.js"></script>
     <script src="js/directives/header.js"></script>
     <script src="js/directives/footer.js"></script>
+    <script src="js/directives/currency.js"></script>
     <script src="js/directives/orientation.js"></script>
+    <script src="js/directives/deselect.js"></script>
     <script src="js/directives/chart.js"></script>
     <script src="js/directives/loadbar.js"></script>
     <script src="js/directives/date-changer.js"></script>
@@ -186,9 +177,9 @@
     </div>
 
     <div id="navbar" class="inner-element uib_w_22" style="font-weight: lighter" data-uib="app_framework/footer" data-ver="1">
-        <a class="statistic" href="#/index" id="StatisticsFooter" analytics-on="click" analytics-event="ToStatisticPage" analytics-category="Меню">Отчетность</a>
-        <a class="visits" href="#/visits" id="VisitsFooter" analytics-on="click" analytics-event="ToVisitsPage" analytics-category="Меню">Визиты</a>
-        <a class="settings" href="#/settings" id="SettingsFooter" analytics-on="click" analytics-event="ToSettingsPage" analytics-category="Меню">Настройки</a>
+        <a deselect class="statistic" href="#/index" id="StatisticsFooter" analytics-on="click" analytics-event="ToStatisticPage" analytics-category="Меню">Отчетность</a>
+        <a deselect class="visits" href="#/visits" id="VisitsFooter" analytics-on="click" analytics-event="ToVisitsPage" analytics-category="Меню">Визиты</a>
+        <a deselect class="settings" href="#/settings" id="SettingsFooter" analytics-on="click" analytics-event="ToSettingsPage" analytics-category="Меню">Настройки</a>
     </div>
 </body>
 

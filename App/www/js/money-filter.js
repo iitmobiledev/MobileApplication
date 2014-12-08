@@ -18,3 +18,4 @@ myApp.filter('money', ['$filter', '$locale',
             return value.substring(0, sep).replace(/,/g, " ");
         };
 }]);
+

@@ -70,11 +70,11 @@ myApp.controller('GraphicController', function ($scope, $routeParams, Loader, Da
 
     switch ($scope.type) {
     case 'proceeds':
-        $scope.yFormat = ' руб.';
+        $scope.yFormat = ' ' + myApp.currency("plain");
         $scope.title = 'Выручка';
         break;
     case 'profit':
-        $scope.yFormat = ' руб.';
+        $scope.yFormat = ' ' + myApp.currency("plain");
         $scope.title = 'Прибыль';
         break;
     case 'clients':
